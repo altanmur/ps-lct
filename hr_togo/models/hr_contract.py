@@ -34,6 +34,8 @@ class hr_contract(osv.osv):
         'performance_allowance': fields.float('Performance allowance', digits=(16,2)),  # Indemnité de rendement == bonus???
         'other_allowances': fields.float('Other allowances', digits=(16,2)),  # Autres indemnités
         'benefits': fields.float('Benefits', digits=(16,2)),  # Sursalaires
-        'loan_repayments': fields.float('Loan repayments', digits=(16,2)),  # Remboursement de prêts - doesn't belong here, but placeholding it because I need to figure out how it's calculated
         'other_deductions': fields.float('Other deductions', digits=(16,2)),  # Autres retenues - think this probably goes on the contract, need to verify
+        'pension_annuities': fields.float('Pension or annuities', digits=(16,2)),
+        'life_insurance': fields.float('Life insurance', digits=(16,2)),
     }
+

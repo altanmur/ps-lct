@@ -30,4 +30,7 @@ class hr_employee(osv.osv):
         'nbr_dependents': fields.integer('Number of dependents'),  # nombre de personnes à charges
         'start_date': fields.date('Start date'),  # For calculation of Prime d'ancienneté: 2% if >= 2y, 3% if >= 3y (remains flat afterwards)
         'mortgage_interests': fields.float('Interests on mortgage(s)', digits=(16,2)),  # Intérêts sur prêts immobiliérs
+        'advance_on_salary': fields.float('Advance on salary', digits=(16,2)),  # Changes monthly; uploaded through screens, Avance sur salaire
+        'loan_repayments': fields.float('Loan repayments', digits=(16,2)),  # Changes monthly; uploaded through screens, Remboursement de prêt
+        'other_deductions': fields.float('Other deductions', digits=(16,2)),  # Changes monthly; uploaded through screens, Autres retenues
     }

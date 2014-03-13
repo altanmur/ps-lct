@@ -28,7 +28,7 @@ HR Module for Togo
 ==================
     """,
     'author': 'OpenERP SA',
-    'depends': ['hr_contract'],
+    'depends': ['hr_contract','hr_payroll'],
     'data': [
         'views/hr_contract.xml',
         'views/hr_employee.xml',

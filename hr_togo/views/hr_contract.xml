@@ -16,7 +16,8 @@
                     <field name="performance_allowance"/>
                     <field name="other_allowances"/>
                     <field name="benefits"/>
-                    <field name="loan_repayments"/>
+                    <field name="pension_annuities"/>
+                    <field name="life_insurance"/>
                     <field name="other_deductions"/>
                 </field>
             </field>
