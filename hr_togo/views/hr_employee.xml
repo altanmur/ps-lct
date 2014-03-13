@@ -12,6 +12,7 @@
                     <field name="nbr_dependents"/>
                     <field name="mortgage_interests"/>
                     <field name="advance_on_salary"/>
+                    <field name="overtime"/>
                     <field name="loan_repayments"/>
                     <field name="other_deductions"/>
                 </field>

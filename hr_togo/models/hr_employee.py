@@ -32,5 +32,6 @@ class hr_employee(osv.osv):
         'mortgage_interests': fields.float('Interests on mortgage(s)', digits=(16,2)),  # Intérêts sur prêts immobiliérs
         'advance_on_salary': fields.float('Advance on salary', digits=(16,2)),  # Changes monthly; uploaded through screens, Avance sur salaire
         'loan_repayments': fields.float('Loan repayments', digits=(16,2)),  # Changes monthly; uploaded through screens, Remboursement de prêt
+        'overtime': fields.float('Overtime', digits=(16,2), help="Expressed in monetary terms, not hours"),  # Changes monthly; uploaded through screens, Heures supplementaires
         'other_deductions': fields.float('Other deductions', digits=(16,2)),  # Changes monthly; uploaded through screens, Autres retenues
     }
