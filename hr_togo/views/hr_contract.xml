@@ -8,6 +8,13 @@
             <field name="priority">1</field>
             <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
             <field name="arch" type="xml">
+                <group name="salary_and_advantages" position="before">
+                    <group name="categorisation" string="Categorisation">
+                        <!-- <field name="category"/> -->
+                        <field name="class"/>
+                        <field name="echelon"/>
+                    </group>
+                </group>
                 <field name="wage" position="after">
                     <field name="benefits_in_kind"/>
                     <field name="transport_allowance"/>

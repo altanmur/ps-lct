@@ -22,6 +22,20 @@
 
 from openerp.osv import fields, osv
 
+# Constants for LCT
+class_mult = {
+    'EA': [1, 1.05],
+    'EB': [1.28, 1.05],
+    'EC': [1.28**2, 1.05],
+    'ED': [1.28**3, 1.05],
+    'ME': [1.28**3*1.3, 1.055],
+    'MF': [1.28**3*1.3**2, 1.055],
+    'MG': [1.28**3*1.3**3, 1.055],
+    'CH': [1.28**3*1.3**4, 1.055],
+    'CI': [1.28**3*1.3**5, 1.055],
+    'HC': [1.28**3*1.3**5*1.8, 1.055],
+}
+
 
 class hr_contract(osv.osv):
     _inherit = 'hr.contract'
@@ -37,5 +51,62 @@ class hr_contract(osv.osv):
         'other_deductions': fields.float('Other deductions', digits=(16,2)),  # Autres retenues - think this probably goes on the contract, need to verify
         'pension_annuities': fields.float('Pension or annuities', digits=(16,2)),
         'life_insurance': fields.float('Life insurance', digits=(16,2)),
+        # 'category': fields.selection([
+        #     ('1','1'),
+        #     ('2','2'),
+        #     ('3','3'),
+        #     ], 'Category', select=True),
+        'class': fields.selection([
+            ('EA','EA'),
+            ('EB','EB'),
+            ('EC','EC'),
+            ('ED','ED'),
+            ('ME','ME'),
+            ('MF','MF'),
+            ('MG','MG'),
+            ('CH','CH'),
+            ('CI','CI'),
+            ('HC','HC'),
+            ], 'Class', select=True),
+        'echelon': fields.selection([
+            ('1','1'),
+            ('2','2'),
+            ('3','3'),
+            ('4','4'),
+            ('5','5'),
+            ('6','6'),
+            ('7','7'),
+            ('8','8'),
+            ('9','9'),
+            ('10','10'),
+            ('11','11'),
+            ('12','12'),
+            ('13','13'),
+            ('14','14'),
+            ('15','15'),
+            ], 'Echelon', select=True),
+        # Override; this one's calculated based on class and echelon
+        'wage': fields.function(lambda self, *args, **kwargs: self._calculate_wage(*args, **kwargs),
+                                 method=True,
+                                 type='float',
+                                 string='Wage',
+                                 store=False),
     }
 
+    _defaults = {
+        # 'category': '1',
+        'class': 'EA',
+        'echelon': '1',
+        }
+
+    def _calculate_wage(self, cr, uid, ids, field_name, args, context=None):
+        res = dict.fromkeys(ids, 0.0)
+        config = self.pool.get('hr.payroll.base_wage')
+        conf_ids = config.search(cr, uid, [('base_wage','>',0)], context=context)
+        base_wage = config.browse(cr, uid, conf_ids[0], context=context).base_wage
+        for contract_id in ids:
+            contract_data = self.read(cr, uid, contract_id, ['class', 'echelon'], context)
+            hr_class, hr_echelon = contract_data['class'] or 'EA', contract_data['echelon'] or '1'
+            wage = base_wage * class_mult[hr_class][0] * class_mult[hr_class][1] ** (int(hr_echelon) - 1)
+            res.update({contract_id: wage})
+        return res

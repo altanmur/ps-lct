@@ -32,6 +32,7 @@ HR Module for Togo
     'data': [
         'views/hr_contract.xml',
         'views/hr_employee.xml',
+        'views/hr_payroll_base_wage.xml',
     ],
     'demo': [],
     'test': [],
