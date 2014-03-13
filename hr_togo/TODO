@@ -1,0 +1,17 @@
+TODO:
+=====
+* Seniority: it's 2% after 2 years, 1% for each subsequent year. But the percentages are calculated according to the wage at the time they "entered" that year.
+* People automatically raise to the next echelon after 2 years, and their pay automatically follows.
+* Calculate base wage based on category, class, echelon (see spreadsheet)
+* Create export fieldset for employees containing id, name, loan repayment, advance salary, other deductions, overtime (all in monetary terms, no hours for overtime since the formula is complex and not user-friendly to capture through the screens)
+* French translations
+* Payslips & report: montly/yearly
+* Figure out how to print all payslips at once (must be in standard)
+
+
+Terms:
+======
+NTS == Net Taxable Salary
+CNSS == something with Social Security (private & self-employed vs CRS for public sector)
+TCS == Taxe Complementaire sur Salaires
+IRPP == Impôt sur le Revenu des Personnes Physiques
