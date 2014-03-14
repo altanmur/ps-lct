@@ -1,2 +1,2 @@
-id,note,name,parent_id/id,code
-hr_togo.hr_payroll_structure_togo,,Togo,,TOGO
+id,note,name,parent_id/id,code,rule_ids/id
+hr_togo.hr_payroll_structure_togo,,Togo,,TOGO,"hr_togo.hr_salary_rule_4,hr_togo.hr_salary_rule_5,hr_togo.hr_salary_rule_6,hr_togo.hr_salary_rule_28,hr_togo.hr_salary_rule_7,hr_togo.hr_salary_rule_8,hr_togo.hr_salary_rule_9,hr_togo.hr_salary_rule_10,hr_togo.hr_salary_rule_11,hr_togo.hr_salary_rule_12,hr_togo.hr_salary_rule_13,hr_togo.hr_salary_rule_14,hr_togo.hr_salary_rule_15,hr_togo.hr_salary_rule_16,hr_togo.hr_salary_rule_17,hr_togo.hr_salary_rule_18,hr_togo.hr_salary_rule_19,hr_togo.hr_salary_rule_20,hr_togo.hr_salary_rule_21,hr_togo.hr_salary_rule_22,hr_togo.hr_salary_rule_23,hr_togo.hr_salary_rule_24,hr_togo.hr_salary_rule_25,hr_togo.hr_salary_rule_26,hr_togo.hr_salary_rule_27"
