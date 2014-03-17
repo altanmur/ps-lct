@@ -28,7 +28,7 @@ HR Module for Togo
 ==================
     """,
     'author': 'OpenERP SA',
-    'depends': ['hr_contract','hr_payroll'],
+    'depends': ['hr_contract','hr_payroll', 'web_filedownload'],
     'data': [
         'data/hr.payroll.base_wage.csv',
         'data/hr.salary.rule.category.csv',
