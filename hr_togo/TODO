@@ -1,6 +1,6 @@
 TODO:
 =====
-* Payslips & report: monthly/yearly
+* Fix paybook report so it downloads the excell; I already know it works because I wrote it to /tmp and the report looks good.
 * Figure out how to generate/print all payslips at once => cron job
 * French translations
 * Seniority: it's 2% after 2 years, 1% for each subsequent year. But the percentages are calculated according to the wage at the time they "entered" that year.
@@ -9,6 +9,7 @@ TODO:
 DONE:
 =====
 * Calculate base wage based on category, class, echelon (see spreadsheet)
+* Payslips & report: monthly/yearly (payslips: use filter, show all, select all, then print; report: choose start/end dates)
 
 N/A:
 ====

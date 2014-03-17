@@ -34,4 +34,5 @@ class hr_employee(osv.osv):
         'loan_repayments': fields.float('Loan repayments', digits=(16,2)),  # Changes monthly; uploaded through screens, Remboursement de prêt
         'overtime': fields.float('Overtime', digits=(16,2), help="Expressed in monetary terms, not hours"),  # Changes monthly; uploaded through screens, Heures supplementaires
         'other_deductions': fields.float('Other deductions', digits=(16,2)),  # Changes monthly; uploaded through screens, Autres retenues
+        'reg_nbr': fields.char('Registration number', size=64),
     }
