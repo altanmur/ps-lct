@@ -90,7 +90,7 @@ class hr_contract(osv.osv):
                                  method=True,
                                  type='float',
                                  string='Wage',
-                                 store=False),
+                                 store=True),
     }
 
     _defaults = {

@@ -31,7 +31,7 @@ class hr_payslip(orm.Model):
                                  method=True,
                                  type='float',
                                  string='Seniority rate',
-                                 store=False),
+                                 store=True),
         }
 
     def _calculate_seniority_rate(self, cr, uid, ids, field_name, args, context=None):

@@ -32,7 +32,7 @@ HR Module for Togo
     'data': [
         'data/hr.payroll.base_wage.csv',
         'data/hr.salary.rule.category.csv',
-        'data/hr.salary.rule.csv',
+        'data/hr.salary.rule.xml',
         'data/hr.payroll.structure.csv',
         'views/hr_contract.xml',
         'views/hr_employee.xml',
