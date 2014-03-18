@@ -20,12 +20,12 @@
 ##############################################################################
 
 {
-    'name': 'HR Togo',
+    'name': 'LCT HR',
     'version': '1.0',
     'category': 'Tools',
     'description': """
-HR Module for Togo
-==================
+HR Module for LCT
+=================
     """,
     'author': 'OpenERP SA',
     'depends': ['hr_contract','hr_payroll', 'web_filedownload'],

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data noupdate="0">
+    <data noupdate="1">
 
-        <record id="hr_togo.hr_salary_rule_4" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_4" model="hr.salary.rule">
             <field name="name">Togo - Basic</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
@@ -48,7 +48,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">1000</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_5" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_5" model="hr.salary.rule">
             <field name="name">Togo - Seniority</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
@@ -96,7 +96,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">1001</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_6" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_6" model="hr.salary.rule">
             <field name="name">Togo - Benefits</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
@@ -142,7 +142,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">1002</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_28" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_28" model="hr.salary.rule">
             <field name="name">Togo - Overtime</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
@@ -188,7 +188,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">1003</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_7" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_7" model="hr.salary.rule">
             <field name="name">Togo - Transportation allowance</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
@@ -234,7 +234,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">1004</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_8" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_8" model="hr.salary.rule">
             <field name="name">Togo - Representation allowance</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
@@ -280,7 +280,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">1005</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_9" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_9" model="hr.salary.rule">
             <field name="name">Togo - Individual allowance</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
@@ -326,7 +326,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">1006</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_10" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_10" model="hr.salary.rule">
             <field name="name">Togo - Performance allowance</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
@@ -372,7 +372,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">1007</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_11" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_11" model="hr.salary.rule">
             <field name="name">Togo - Other Allowances</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
@@ -418,7 +418,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">1008</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_12" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_12" model="hr.salary.rule">
             <field name="name">Togo - Gross</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
@@ -464,12 +464,12 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">1999</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_13" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_13" model="hr.salary.rule">
             <field name="name">Togo - CNSS</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
-            <field name="category_id" ref="hr_togo.hr_salary_rule_category_cnss"/>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_cnss"/>
             <field name="code">2000</field>
             <field name="register_id"></field>
             <field name="note"></field>
@@ -510,12 +510,12 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">2000</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_14" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_14" model="hr.salary.rule">
             <field name="name">Togo - Professional Tax</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
-            <field name="category_id" ref="hr_togo.hr_salary_rule_category_proftax"/>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_proftax"/>
             <field name="code">2030</field>
             <field name="register_id"></field>
             <field name="note"></field>
@@ -556,12 +556,12 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">2030</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_15" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_15" model="hr.salary.rule">
             <field name="name">Togo - Tax Allowance</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
-            <field name="category_id" ref="hr_togo.hr_salary_rule_category_taxal"/>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_taxal"/>
             <field name="code">2031</field>
             <field name="register_id"></field>
             <field name="note"></field>
@@ -603,12 +603,12 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">2031</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_16" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_16" model="hr.salary.rule">
             <field name="name">Togo - Dependents</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
-            <field name="category_id" ref="hr_togo.hr_salary_rule_category_dependents"/>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_dependents"/>
             <field name="code">2032</field>
             <field name="register_id"></field>
             <field name="note"></field>
@@ -649,12 +649,12 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">2032</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_17" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_17" model="hr.salary.rule">
             <field name="name">Togo - Pension or Annuities</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
-            <field name="category_id" ref="hr_togo.hr_salary_rule_category_pension"/>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_pension"/>
             <field name="code">2034</field>
             <field name="register_id"></field>
             <field name="note"></field>
@@ -695,12 +695,12 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">2034</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_18" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_18" model="hr.salary.rule">
             <field name="name">Togo - Interests on mortgages</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
-            <field name="category_id" ref="hr_togo.hr_salary_rule_category_pension"/>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_pension"/>
             <field name="code">2033</field>
             <field name="register_id"></field>
             <field name="note"></field>
@@ -741,12 +741,12 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">2033</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_19" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_19" model="hr.salary.rule">
             <field name="name">Togo - Life Insurance</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
-            <field name="category_id" ref="hr_togo.hr_salary_rule_category_pension"/>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_pension"/>
             <field name="code">2034</field>
             <field name="register_id"></field>
             <field name="note"></field>
@@ -787,12 +787,12 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">2035</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_20" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_20" model="hr.salary.rule">
             <field name="name">Togo – NTS</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
-            <field name="category_id" ref="hr_togo.hr_salary_rule_category_nts"/>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_nts"/>
             <field name="code">NTS</field>
             <field name="register_id"></field>
             <field name="note"></field>
@@ -833,12 +833,12 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">2099</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_21" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_21" model="hr.salary.rule">
             <field name="name">Togo - TCS</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
-            <field name="category_id" ref="hr_togo.hr_salary_rule_category_tcs"/>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_tcs"/>
             <field name="code">2010</field>
             <field name="register_id"></field>
             <field name="note"></field>
@@ -891,12 +891,12 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">4010</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_22" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_22" model="hr.salary.rule">
             <field name="name">Togo - IRPP</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
-            <field name="category_id" ref="hr_togo.hr_salary_rule_category_irpp"/>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_irpp"/>
             <field name="code">2020</field>
             <field name="register_id"></field>
             <field name="note"></field>
@@ -953,12 +953,12 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">4020</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_23" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_23" model="hr.salary.rule">
             <field name="name">Togo - Advance on salary</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
-            <field name="category_id" ref="hr_togo.hr_salary_rule_category_other_ded"/>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_other_ded"/>
             <field name="code">3000</field>
             <field name="register_id"></field>
             <field name="note"></field>
@@ -999,12 +999,12 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">3000</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_24" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_24" model="hr.salary.rule">
             <field name="name">Togo - Loan repayments</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
-            <field name="category_id" ref="hr_togo.hr_salary_rule_category_other_ded"/>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_other_ded"/>
             <field name="code">3001</field>
             <field name="register_id"></field>
             <field name="note"></field>
@@ -1045,12 +1045,12 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">3001</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_25" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_25" model="hr.salary.rule">
             <field name="name">Togo - Other deductions</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
-            <field name="category_id" ref="hr_togo.hr_salary_rule_category_other_ded"/>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_other_ded"/>
             <field name="code">3002</field>
             <field name="register_id"></field>
             <field name="note"></field>
@@ -1091,12 +1091,12 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">3002</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_26" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_26" model="hr.salary.rule">
             <field name="name">Togo - Total Other deductions</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
-            <field name="category_id" ref="hr_togo.hr_salary_rule_category_other_ded_tot"/>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_other_ded_tot"/>
             <field name="code">Total Other deductions</field>
             <field name="register_id"></field>
             <field name="note"></field>
@@ -1137,7 +1137,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">3100</field>
         </record>
 
-        <record id="hr_togo.hr_salary_rule_27" model="hr.salary.rule">
+        <record id="lct_hr.hr_salary_rule_27" model="hr.salary.rule">
             <field name="name">Togo - To pay</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
