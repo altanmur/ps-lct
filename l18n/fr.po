@@ -225,7 +225,7 @@ msgstr "Le rapport a été généré"
 #. module: lct_hr
 #: field:hr.employee,pension_allowance:0
 msgid "Pension allowance"
-msgstr "Indemnité de pension"
+msgstr "Indemnité de départ à la retraite"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_4
@@ -235,7 +235,7 @@ msgstr "Salaire de base"
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_5
 msgid "Seniority"
-msgstr "Seniorité"
+msgstr "Ancienneté"
 
 #. module: lct_hr
 #: field:hr.contract,benefits:0
@@ -246,13 +246,13 @@ msgstr "Avantages"
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_7
 msgid "Transportation allowance"
-msgstr "Indemnité de déplacement"
+msgstr "Indemnités de déplacement"
 
 #. module: lct_hr
 #: field:hr.contract,representation_allowance:0
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_8
 msgid "Representation allowance"
-msgstr "Indemnité de représentation"
+msgstr "Indemnités de représentation"
 
 #. module: lct_hr
 #: field:hr.contract,individual_allowance:0
@@ -269,7 +269,7 @@ msgstr "Indemnité de rendement"
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_11
 msgid "Other Allowances"
-msgstr "Autres retenues"
+msgstr "Autres indemnités"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_12
@@ -284,17 +284,17 @@ msgstr "CNSS"
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_14
 msgid "Professional Tax"
-msgstr "Professional Tax"
+msgstr "Frais professionnels"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_15
 msgid "Tax Allowance"
-msgstr "Tax Allowance"
+msgstr "Abattement"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_16
 msgid "Dependents"
-msgstr "Dépendants"
+msgstr "Personnes à charge"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_17
@@ -304,17 +304,17 @@ msgstr "Pension ou Rentes"
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_18
 msgid "Interests on mortgages"
-msgstr "Intérêts sur prêts hypothécaires"
+msgstr "Intérêts sur prêts immobiliers"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_19
 msgid "Life Insurance"
-msgstr "Life Insurance"
+msgstr "Assurance-vie"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_20
 msgid "NTS"
-msgstr "NTS"
+msgstr "Revenu Net Taxable"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_21
@@ -336,7 +336,7 @@ msgstr "Avance sur salaire"
 #: field:hr.employee,loan_repayments:0
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_24
 msgid "Loan repayments"
-msgstr "Remboursements de prêt"
+msgstr "Remboursement de prêt"
 
 #. module: lct_hr
 #: field:hr.employee,other_deductions:0
