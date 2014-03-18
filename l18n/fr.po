@@ -142,7 +142,7 @@ msgstr "Salaires de base"
 #. module: lct_hr
 #: field:hr.contract,pension_annuities:0
 msgid "Pension or annuities"
-msgstr "Pension or rentes"
+msgstr "Pension ou rentes"
 
 #. module: lct_hr
 #: model:ir.model,name:lct_hr.model_hr_contract
@@ -222,3 +222,140 @@ msgstr "Fermer"
 msgid "The report has been generated"
 msgstr "Le rapport a été généré"
 
+#. module: lct_hr
+#: field:hr.employee,pension_allowance:0
+msgid "Pension allowance"
+msgstr "Indemnité de pension"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_4
+msgid "Basic"
+msgstr "Salaire de base"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_5
+msgid "Seniority"
+msgstr "Seniorité"
+
+#. module: lct_hr
+#: field:hr.contract,benefits:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_6
+msgid "Benefits"
+msgstr "Avantages"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_7
+msgid "Transportation allowance"
+msgstr "Indemnité de déplacement"
+
+#. module: lct_hr
+#: field:hr.contract,representation_allowance:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_8
+msgid "Representation allowance"
+msgstr "Indemnité de représentation"
+
+#. module: lct_hr
+#: field:hr.contract,individual_allowance:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_9
+msgid "Individual allowance"
+msgstr "Indemnité de sujetion particulière"
+
+#. module: lct_hr
+#: field:hr.contract,performance_allowance:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_10
+msgid "Performance allowance"
+msgstr "Indemnité de rendement"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_11
+msgid "Other Allowances"
+msgstr "Autres retenues"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_12
+msgid "Gross"
+msgstr "Brut"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_13
+msgid "CNSS"
+msgstr "CNSS"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_14
+msgid "Professional Tax"
+msgstr "Professional Tax"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_15
+msgid "Tax Allowance"
+msgstr "Tax Allowance"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_16
+msgid "Dependents"
+msgstr "Dépendants"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_17
+msgid "Pension or Annuities"
+msgstr "Pension ou Rentes"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_18
+msgid "Interests on mortgages"
+msgstr "Intérêts sur prêts hypothécaires"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_19
+msgid "Life Insurance"
+msgstr "Life Insurance"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_20
+msgid "NTS"
+msgstr "NTS"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_21
+msgid "TCS"
+msgstr "TCS"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_22
+msgid "IRPP"
+msgstr "IRPP"
+
+#. module: lct_hr
+#: field:hr.employee,advance_on_salary:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_23
+msgid "Advance on salary"
+msgstr "Avance sur salaire"
+
+#. module: lct_hr
+#: field:hr.employee,loan_repayments:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_24
+msgid "Loan repayments"
+msgstr "Remboursements de prêt"
+
+#. module: lct_hr
+#: field:hr.employee,other_deductions:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_25
+msgid "Other deductions"
+msgstr "Autres retenues"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_26
+msgid "Total Other deductions"
+msgstr "Total Autres retenues"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_27
+msgid "To pay"
+msgstr "Net"
+
+#. module: lct_hr
+#: field:hr.employee,overtime:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_28
+msgid "Overtime"
+msgstr "Heures supplémentaires"

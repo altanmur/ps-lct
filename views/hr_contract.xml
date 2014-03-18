@@ -25,7 +25,6 @@
                     <field name="benefits"/>
                     <field name="pension_annuities"/>
                     <field name="life_insurance"/>
-                    <field name="other_deductions"/>
                 </field>
             </field>
         </record>

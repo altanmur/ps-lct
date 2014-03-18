@@ -1,10 +1,13 @@
 TODO:
 =====
-* French translations (salary rules in xml)
+* The salary rule 'Togo - Benefit' takes contract.benefits_in_kind whereas it should take contract.benefits.
+    Probably better to rename 'Benefits' into 'Bonus', create a new rule with contract.bonus and change the name of the existing 'Togo - Benefits' into ' Togo - Benefits in kind'.
+* Maybe add employee pension allowance rule, so it shows up on the payslip as well? And what's with the other pension allowance?
 * Employer's contribution on payslip
 * Figure out how to generate/print all payslips at once => cron job
+* People automatically raise to the next echelon after 2 years, and their pay automatically follows. Cron job. First do echelon, then seniority!
 * Seniority: it's 2% after 2 years, 1% for each subsequent year. But the percentages are calculated according to the wage at the time they "entered" that year.
-* People automatically raise to the next echelon after 2 years, and their pay automatically follows.
+    => cron job that checks on a daily basis if years of service > stored years of service; adds 1 to years of service if so, adapts stored seniority pay. First do echelon, then seniority!
 
 DONE:
 =====
@@ -13,6 +16,11 @@ DONE:
 * Fix paybook report so it downloads the excell; I already know it works because I wrote it to /tmp and the report looks good.
 * Round salary to lower 1000
 * Fix Python code in salary rules to deal with OpenERP's insane convention of storing 0 as None in the DB
+* remove 'Other deductions' from contract (already used on employee)
+* Add 'Pension allowance' ('Indemnité de départ à la retraite' in fr) on employee after 'Other deductions'
+* Include 75% of 'Pension allowance' in computation of GROSS
+* French translations
+* French translations: salary rules in xml, new fields (Pension allowance on Employee)
 
 N/A:
 ====

@@ -15,6 +15,7 @@
                     <field name="overtime"/>
                     <field name="loan_repayments"/>
                     <field name="other_deductions"/>
+                    <field name="pension_allowance"/>
                 </field>
                 <field name="active" position="after">
                     <field name="start_date"/>
