@@ -24,9 +24,11 @@ from osv import fields
 from xlwt import Workbook, Font, XFStyle
 import base64
 import StringIO
+from tools.translate import _
 
 
 # Some constants
+# Yes, hardcoding this one in French; sorry.
 header = ["No Mlle", "NOM & PRENOM", "SALAIRE DE BASE", "PRIME D'ANCIENNETE", "SURSALAIRES",
             "HEURES SUPPLEMENTAIRES", "INDEMNITES DE DEPLACEMENT", "INDEMNITES DE REPRESENTATION",
             "INDEMNITE DE SUJETION PARTICULIERE", "INDEMNITE DE RENDEMENT", "AUTRES INDEMNITES",
@@ -34,9 +36,8 @@ header = ["No Mlle", "NOM & PRENOM", "SALAIRE DE BASE", "PRIME D'ANCIENNETE", "S
             "REMBOURSEMENT DE PRETS", "AUTRES", "SALAIRES NETS"]
 mapping = ['basic', 'seniority', 'benefits', 'overtime', 'transportation allowance',
             'representation allowance', 'individual allowance', 'performance allowance',
-            'other allowances', 'gross', 'cnss', 'irpp', 'tcs', '', '', 'advance on salary',
+            'other allowances', 'gross', 'cnss', 'irrp', 'tcs', '', '', 'advance on salary',
             'loan repayments', 'other deductions', 'to pay']
-
 
 class paybook_report(TransientModel):
     _name = 'paybook_report'
@@ -63,12 +64,13 @@ class paybook_report(TransientModel):
             dt_end = report.dt_end + ' 23:59:59'
             args = (dt_start, dt_end)
             query = """
-                SELECT employee.reg_nbr, employee.name_related, payslip.id AS payslip_id, line.total, line.name
+                SELECT employee.reg_nbr, employee.name_related, payslip.id AS payslip_id, line.total, rule.name
                 FROM hr_payslip AS payslip
                 LEFT OUTER JOIN hr_employee AS employee ON payslip.employee_id = employee.id
                 LEFT OUTER JOIN hr_payslip_line  AS line ON line.slip_id = payslip.id
+                LEFT OUTER JOIN hr_salary_rule AS rule ON line.salary_rule_id = rule.id
                 WHERE payslip.date_from >= '%s' AND payslip.date_to <= '%s' AND line.active = 't'
-                GROUP BY employee.name_related, employee.reg_nbr, payslip.id, line.total, line.name
+                GROUP BY employee.name_related, employee.reg_nbr, payslip.id, line.total, rule.name
                 ORDER BY employee.name_related, payslip.date_from
             """ % args
             cr.execute(query)
@@ -99,7 +101,7 @@ class paybook_report(TransientModel):
             row = 3
             for slip_id in ordered_ids:
                 raw_data = row_data[slip_id]
-                from pprint import pprint ; pprint(raw_data)
+                # TODO: these need to become rules on the payslip and just taken from there.
                 sheet1.write(row, 0, raw_data['reg_nbr'])
                 sheet1.write(row, 1, raw_data['name_related'])
                 for field in mapping:
