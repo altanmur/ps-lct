@@ -1,6 +1,7 @@
 TODO:
 =====
-* French translations
+* French translations (salary rules in xml)
+* Employer's contribution on payslip
 * Figure out how to generate/print all payslips at once => cron job
 * Seniority: it's 2% after 2 years, 1% for each subsequent year. But the percentages are calculated according to the wage at the time they "entered" that year.
 * People automatically raise to the next echelon after 2 years, and their pay automatically follows.
