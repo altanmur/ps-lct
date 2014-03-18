@@ -583,7 +583,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
 base = categories.GROSS + categories.CNSS + categories.PROFTAX
-result = base * -0.15 if base &lt;= 10000000 else base * -0.5
+result = base * -0.15 if base &lt;= 10000000/12 else base * -0.05
             </field>
             <field name="condition_python">
 # Available variables:
@@ -629,7 +629,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = min(432000, 72000*employee.nbr_dependents) * -1
+result = min(36000, (6000)*employee.nbr_dependents) * -1
             </field>
             <field name="condition_python">
 # Available variables:
@@ -788,7 +788,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_20" model="hr.salary.rule">
-            <field name="name">Togo – NTS</field>
+            <field name="name">NTS</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -813,7 +813,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = 1000 * ((categories.GROSS + categories.CNSS + categories.PROFTAX + categories.TAXAL + categories.NTS_DED)//1000)
+result = 1000 * ((categories.GROSS + categories.CNSS + categories.PROFTAX + categories.TAXAL + categories.DEPENDENTS + categories.PENSION)//1000)
             </field>
             <field name="condition_python">
 # Available variables:
@@ -859,18 +859,10 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-if categories.NTS &lt;= 900000:
-    result = 3000
-elif categories.NTS &lt;= 4000000:
-    result = 4500
-elif categories.NTS &lt;= 6000000:
-    result = 6000
-elif categories.NTS &lt;= 10000000:
-    result = 7500
-elif categories.NTS &lt;= 15000000:
-    result = 9000
+if categories.NTS &lt;= 75000:
+    result = 250
 else:
-    result = 10500
+    result = 125
 result = -result
             </field>
             <field name="condition_python">
@@ -919,20 +911,20 @@ result = rules.NET &gt; categories.NET * 0.10
 # Note: returned value have to be set in the variable 'result'
 nts = categories.NTS
 result = 0
-if nts &gt; 15000000:
-    result += 0.35 * (nts - 15000000)
-    nts = 15000000
-if nts &gt; 10000000:
-    result += 0.3 * (nts - 10000000)
-    nts = 10000000
-if nts &gt; 6000000:
-    result += 0.25 * (nts - 6000000)
-    nts = 6000000
-if nts &gt; 4000000:
-    result += 0.15 * (nts - 4000000)
-    nts = 4000000
-if nts &gt; 900000:
-    result += 0.07 * (nts - 900000)
+if nts &gt; 1250000:
+    result += 0.35 * (nts - 1250000)
+    nts = 1250000
+if nts &gt; 10000000/12:
+    result += 0.3 * (nts - 10000000/12)
+    nts = 10000000/12
+if nts &gt; 500000:
+    result += 0.25 * (nts - 500000)
+    nts = 500000
+if nts &gt; 4000000/12:
+    result += 0.15 * (nts - 4000000/12)
+    nts = 4000000/12
+if nts &gt; 75000:
+    result += 0.07 * (nts - 75000)
 result = -result
             </field>
             <field name="condition_python">
@@ -1163,7 +1155,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = 1000 * ((categories.NTS + categories.TCS + categories.IRPP + categories.PROFTAX + categories.CNSS + categories.OTHER_DED_TOT)//1000)
+result = 1000 * ((categories.GROSS + categories.TCS + categories.IRPP + categories.PROFTAX + categories.CNSS + categories.OTHER_DED_TOT)//1000)
             </field>
             <field name="condition_python">
 # Available variables:
