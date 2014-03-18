@@ -1,0 +1,224 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#   * lct_hr
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-03-18 07:49+0000\n"
+"PO-Revision-Date: 2014-03-18 07:49+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lct_hr
+#: field:hr.contract,other_deductions:0
+#: field:hr.employee,other_deductions:0
+msgid "Other deductions"
+msgstr "Autres retenues"
+
+#. module: lct_hr
+#: field:paybook_report,state:0
+msgid "Status"
+msgstr "Statut"
+
+#. module: lct_hr
+#: field:hr.contract,life_insurance:0
+msgid "Life insurance"
+msgstr "Assurance-vie"
+
+#. module: lct_hr
+#: field:hr.contract,transport_allowance:0
+msgid "Transport allowance"
+msgstr "Indemnités de déplacement"
+
+#. module: lct_hr
+#: selection:paybook_report,state:0
+msgid "Draft"
+msgstr "Brouillon"
+
+#. module: lct_hr
+#: model:ir.model,name:lct_hr.model_hr_employee
+msgid "Employee"
+msgstr "Employé"
+
+#. module: lct_hr
+#: field:hr.employee,start_date:0
+#: field:paybook_report,dt_start:0
+msgid "Start date"
+msgstr "Date de début"
+
+#. module: lct_hr
+#: field:paybook_report,datas_fname:0
+msgid "File name"
+msgstr "Nom de fichier"
+
+#. module: lct_hr
+#: view:hr.contract:0
+msgid "Categorisation"
+msgstr "Catégorisation"
+
+#. module: lct_hr
+#: field:hr.contract,performance_allowance:0
+msgid "Performance allowance"
+msgstr "Indemnité de rendement"
+
+#. module: lct_hr
+#: field:hr.employee,reg_nbr:0
+msgid "Registration number"
+msgstr "N° Mlle"
+
+#. module: lct_hr
+#: help:hr.payroll.base_wage,base_wage:0
+msgid "Salary for Category 1, class EA, echelon 1"
+msgstr "Salaire pour Catégorie 1, classe EA, échelon 1"
+
+#. module: lct_hr
+#: field:hr.employee,overtime:0
+msgid "Overtime"
+msgstr "Heures supplémentaires"
+
+#. module: lct_hr
+#: view:paybook_report:0
+msgid "Report for : "
+msgstr "Rapport de : "
+
+#. module: lct_hr
+#: help:hr.employee,overtime:0
+msgid "Expressed in monetary terms, not hours"
+msgstr "Exprimé en termes monétaires, pas en heures"
+
+#. module: lct_hr
+#: field:hr.employee,nbr_dependents:0
+msgid "Number of dependents"
+msgstr "Nombre de personnes à charges"
+
+#. module: lct_hr
+#: field:hr.contract,other_allowances:0
+msgid "Other allowances"
+msgstr "Autres indemnités"
+
+#. module: lct_hr
+#: field:hr.employee,advance_on_salary:0
+msgid "Advance on salary"
+msgstr "Avance sur salaire"
+
+#. module: lct_hr
+#: model:ir.model,name:lct_hr.model_hr_payslip
+msgid "Pay Slip"
+msgstr "Feuille de paie"
+
+#. module: lct_hr
+#: field:hr.contract,class:0
+msgid "Class"
+msgstr "Classe"
+
+#. module: lct_hr
+#: field:hr.contract,benefits:0
+msgid "Benefits"
+msgstr "Sursalaires"
+
+#. module: lct_hr
+#: field:paybook_report,dt_end:0
+msgid "End date"
+msgstr "Date de fin"
+
+#. module: lct_hr
+#: field:hr.payslip,seniority_rate:0
+msgid "Seniority rate"
+msgstr "Niveau d'ancienneté"
+
+#. module: lct_hr
+#: view:hr.payroll.base_wage:0
+#: model:ir.actions.act_window,name:lct_hr.action_hr_payroll_base_wage_tree_view
+#: model:ir.ui.menu,name:lct_hr.hr_payroll_base_wage_menu
+msgid "Base wages"
+msgstr "Salaires de base"
+
+#. module: lct_hr
+#: field:hr.contract,pension_annuities:0
+msgid "Pension or annuities"
+msgstr "Pension or rentes"
+
+#. module: lct_hr
+#: model:ir.model,name:lct_hr.model_hr_contract
+msgid "Contract"
+msgstr "Contrat"
+
+#. module: lct_hr
+#: field:paybook_report,xls_file:0
+msgid "Report"
+msgstr "Rapport"
+
+#. module: lct_hr
+#: field:hr.employee,mortgage_interests:0
+msgid "Interests on mortgage(s)"
+msgstr "Intérêts sur prêts immobiliers"
+
+#. module: lct_hr
+#: view:paybook_report:0
+msgid "Continue"
+msgstr "Continue"
+
+#. module: lct_hr
+#: field:hr.contract,representation_allowance:0
+msgid "Representation allowance"
+msgstr "Indemnités de représentation"
+
+#. module: lct_hr
+#: view:hr.payroll.base_wage:0
+#: field:hr.payroll.base_wage,base_wage:0
+#: model:ir.model,name:lct_hr.model_hr_payroll_base_wage
+msgid "Base wage"
+msgstr "Salaire de base"
+
+#. module: lct_hr
+#: field:hr.employee,loan_repayments:0
+msgid "Loan repayments"
+msgstr "Remboursement de prêt"
+
+#. module: lct_hr
+#: field:hr.contract,benefits_in_kind:0
+msgid "Benefits in kind"
+msgstr "Avantages en nature"
+
+#. module: lct_hr
+#: field:hr.contract,echelon:0
+msgid "Echelon"
+msgstr "Echelon"
+
+#. module: lct_hr
+#: model:ir.actions.act_window,name:lct_hr.action_paybook_report
+#: model:ir.model,name:lct_hr.model_paybook_report
+msgid "Paybook report"
+msgstr "Rapport livre de paie"
+
+#. module: lct_hr
+#: selection:paybook_report,state:0
+msgid "Done"
+msgstr "Prêt"
+
+#. module: lct_hr
+#: field:hr.contract,individual_allowance:0
+msgid "Individual allowance"
+msgstr "Indemnité de sujetion particulière"
+
+#. module: lct_hr
+#: view:paybook_report:0
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: lct_hr
+#: view:paybook_report:0
+msgid "Close"
+msgstr "Fermer"
+
+#. module: lct_hr
+#: view:paybook_report:0
+msgid "The report has been generated"
+msgstr "Le rapport a été généré"
+
