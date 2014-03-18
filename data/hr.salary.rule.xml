@@ -110,7 +110,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage">100</field>
-            <field name="amount_percentage_base">contract.benefits_in_kind</field>
+            <field name="amount_percentage_base">contract.benefits</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -444,7 +444,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = categories.BASIC + categories.ALLOWANCE
+result = categories.BASIC + categories.ALLOWANCE + 0.75 * employee.pension_allowance
             </field>
             <field name="condition_python">
 # Available variables:
