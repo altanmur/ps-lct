@@ -1,8 +1,7 @@
 TODO:
 =====
-* Fix Python code in salary rules to deal with OpenERP's insane convention of storing 0 as None in the DB
-* Figure out how to generate/print all payslips at once => cron job
 * French translations
+* Figure out how to generate/print all payslips at once => cron job
 * Seniority: it's 2% after 2 years, 1% for each subsequent year. But the percentages are calculated according to the wage at the time they "entered" that year.
 * People automatically raise to the next echelon after 2 years, and their pay automatically follows.
 
@@ -12,6 +11,7 @@ DONE:
 * Payslips & report: monthly/yearly (payslips: use filter, show all, select all, then print; report: choose start/end dates)
 * Fix paybook report so it downloads the excell; I already know it works because I wrote it to /tmp and the report looks good.
 * Round salary to lower 1000
+* Fix Python code in salary rules to deal with OpenERP's insane convention of storing 0 as None in the DB
 
 N/A:
 ====
