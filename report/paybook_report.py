@@ -99,13 +99,14 @@ class paybook_report(TransientModel):
             row = 3
             for slip_id in ordered_ids:
                 raw_data = row_data[slip_id]
+                from pprint import pprint ; pprint(raw_data)
                 sheet1.write(row, 0, raw_data['reg_nbr'])
                 sheet1.write(row, 1, raw_data['name_related'])
                 for field in mapping:
-                    if 'togo - ' + field in raw_data:
-                        sheet1.write(row, mapping.index(field) + 2, raw_data['togo - ' + field])
-                sheet1.write(row, 15, raw_data['togo - gross'] * 0.175)
-                sheet1.write(row, 16, raw_data['togo - gross'] * 0.03)
+                    if field in raw_data:
+                        sheet1.write(row, mapping.index(field) + 2, raw_data[field])
+                sheet1.write(row, 15, raw_data['gross'] * 0.175)
+                sheet1.write(row, 16, raw_data['gross'] * 0.03)
                 row += 1
             output = StringIO.StringIO()
             xls.save(output)

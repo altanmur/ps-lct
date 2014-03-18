@@ -3,7 +3,7 @@
     <data noupdate="1">
 
         <record id="lct_hr.hr_salary_rule_4" model="hr.salary.rule">
-            <field name="name">Togo - Basic</field>
+            <field name="name">Basic</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -49,7 +49,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_5" model="hr.salary.rule">
-            <field name="name">Togo - Seniority</field>
+            <field name="name">Seniority</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -97,7 +97,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_6" model="hr.salary.rule">
-            <field name="name">Togo - Benefits</field>
+            <field name="name">Benefits</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -143,7 +143,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_28" model="hr.salary.rule">
-            <field name="name">Togo - Overtime</field>
+            <field name="name">Overtime</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -189,7 +189,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_7" model="hr.salary.rule">
-            <field name="name">Togo - Transportation allowance</field>
+            <field name="name">Transportation allowance</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -235,7 +235,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_8" model="hr.salary.rule">
-            <field name="name">Togo - Representation allowance</field>
+            <field name="name">Representation allowance</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -281,7 +281,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_9" model="hr.salary.rule">
-            <field name="name">Togo - Individual allowance</field>
+            <field name="name">Individual allowance</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -327,7 +327,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_10" model="hr.salary.rule">
-            <field name="name">Togo - Performance allowance</field>
+            <field name="name">Performance allowance</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -373,7 +373,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_11" model="hr.salary.rule">
-            <field name="name">Togo - Other Allowances</field>
+            <field name="name">Other Allowances</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -419,7 +419,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_12" model="hr.salary.rule">
-            <field name="name">Togo - Gross</field>
+            <field name="name">Gross</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -465,7 +465,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_13" model="hr.salary.rule">
-            <field name="name">Togo - CNSS</field>
+            <field name="name">CNSS</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -511,7 +511,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_14" model="hr.salary.rule">
-            <field name="name">Togo - Professional Tax</field>
+            <field name="name">Professional Tax</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -557,7 +557,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_15" model="hr.salary.rule">
-            <field name="name">Togo - Tax Allowance</field>
+            <field name="name">Tax Allowance</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -604,7 +604,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_16" model="hr.salary.rule">
-            <field name="name">Togo - Dependents</field>
+            <field name="name">Dependents</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -650,7 +650,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_17" model="hr.salary.rule">
-            <field name="name">Togo - Pension or Annuities</field>
+            <field name="name">Pension or Annuities</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -696,7 +696,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_18" model="hr.salary.rule">
-            <field name="name">Togo - Interests on mortgages</field>
+            <field name="name">Interests on mortgages</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -742,7 +742,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_19" model="hr.salary.rule">
-            <field name="name">Togo - Life Insurance</field>
+            <field name="name">Life Insurance</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -834,7 +834,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_21" model="hr.salary.rule">
-            <field name="name">Togo - TCS</field>
+            <field name="name">TCS</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -892,7 +892,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_22" model="hr.salary.rule">
-            <field name="name">Togo - IRPP</field>
+            <field name="name">IRPP</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -954,7 +954,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_23" model="hr.salary.rule">
-            <field name="name">Togo - Advance on salary</field>
+            <field name="name">Advance on salary</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -1000,7 +1000,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_24" model="hr.salary.rule">
-            <field name="name">Togo - Loan repayments</field>
+            <field name="name">Loan repayments</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -1046,7 +1046,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_25" model="hr.salary.rule">
-            <field name="name">Togo - Other deductions</field>
+            <field name="name">Other deductions</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -1092,7 +1092,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_26" model="hr.salary.rule">
-            <field name="name">Togo - Total Other deductions</field>
+            <field name="name">Total Other deductions</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
@@ -1138,7 +1138,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_27" model="hr.salary.rule">
-            <field name="name">Togo - To pay</field>
+            <field name="name">To pay</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
