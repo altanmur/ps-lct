@@ -359,3 +359,15 @@ msgstr "Net"
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_28
 msgid "Overtime"
 msgstr "Heures supplémentaires"
+
+#. module: lct_hr
+#: field:hr.contract,benefits_in_kind:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_29
+msgid "Benefits in kind"
+msgstr "Avantages en nature"
+
+#. module: lct_hr
+#: field:hr.employee,pension_allowance:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_30
+msgid "Pension allowance"
+msgstr "Indemnité de départ à la retraite"

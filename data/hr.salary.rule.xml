@@ -1175,5 +1175,97 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="sequence">5000</field>
         </record>
 
+        <record id="lct_hr.hr_salary_rule_29" model="hr.salary.rule">
+            <field name="name">Benefits in kind</field>
+            <field name="amount_select">percentage</field>
+            <field name="active">True</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="code">1009</field>
+            <field name="register_id"></field>
+            <field name="note"></field>
+            <field name="amount_fix"></field>
+            <field name="condition_range_max"></field>
+            <field name="condition_range_min"></field>
+            <field name="parent_rule_id"></field>
+            <field name="amount_percentage">100</field>
+            <field name="amount_percentage_base">contract.benefits_in_kind</field>
+            <field name="amount_python_compute">
+# Available variables:
+#----------------------
+# payslip: object containing the payslips
+# employee: hr.employee object
+# contract: hr.contract object
+# rules: object containing the rules code (previously computed)
+# categories: object containing the computed salary rule categories (sum of amount of all rules belonging to that category).
+# worked_days: object containing the computed worked days.
+# inputs: object containing the computed inputs.
+# Note: returned value have to be set in the variable 'result'
+result = contract.wage * 0.10
+            </field>
+            <field name="condition_python">
+# Available variables:
+#----------------------
+# payslip: object containing the payslips
+# employee: hr.employee object
+# contract: hr.contract object
+# rules: object containing the rules code (previously computed)
+# categories: object containing the computed salary rule categories (sum of amount of all rules belonging to that category).
+# worked_days: object containing the computed worked days
+# inputs: object containing the computed inputs
+# Note: returned value have to be set in the variable 'result'
+result = rules.NET &gt; categories.NET * 0.10
+            </field>
+            <field name="quantity">1</field>
+            <field name="condition_range">contract.wage</field>
+            <field name="sequence">1009</field>
+        </record>
+
+        <record id="lct_hr.hr_salary_rule_30" model="hr.salary.rule">
+            <field name="name">Pension allowance</field>
+            <field name="amount_select">percentage</field>
+            <field name="active">True</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="code">1010</field>
+            <field name="register_id"></field>
+            <field name="note"></field>
+            <field name="amount_fix"></field>
+            <field name="condition_range_max"></field>
+            <field name="condition_range_min"></field>
+            <field name="parent_rule_id"></field>
+            <field name="amount_percentage">75</field>
+            <field name="amount_percentage_base">employee.pension_allowance</field>
+            <field name="amount_python_compute">
+# Available variables:
+#----------------------
+# payslip: object containing the payslips
+# employee: hr.employee object
+# contract: hr.contract object
+# rules: object containing the rules code (previously computed)
+# categories: object containing the computed salary rule categories (sum of amount of all rules belonging to that category).
+# worked_days: object containing the computed worked days.
+# inputs: object containing the computed inputs.
+# Note: returned value have to be set in the variable 'result'
+result = contract.wage * 0.10
+            </field>
+            <field name="condition_python">
+# Available variables:
+#----------------------
+# payslip: object containing the payslips
+# employee: hr.employee object
+# contract: hr.contract object
+# rules: object containing the rules code (previously computed)
+# categories: object containing the computed salary rule categories (sum of amount of all rules belonging to that category).
+# worked_days: object containing the computed worked days
+# inputs: object containing the computed inputs
+# Note: returned value have to be set in the variable 'result'
+result = rules.NET &gt; categories.NET * 0.10
+            </field>
+            <field name="quantity">1</field>
+            <field name="condition_range">contract.wage</field>
+            <field name="sequence">1010</field>
+        </record>
+
     </data>
 </openerp>
