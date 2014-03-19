@@ -234,8 +234,8 @@ msgstr "Salaire de base"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_5
-msgid "Seniority"
-msgstr "Ancienneté"
+msgid "Seniority premium"
+msgstr "Prime d'ancienneté"
 
 #. module: lct_hr
 #: field:hr.contract,bonus:0

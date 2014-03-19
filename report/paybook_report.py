@@ -24,7 +24,6 @@ from osv import fields
 from xlwt import Workbook, Font, XFStyle
 import base64
 import StringIO
-from tools.translate import _
 
 
 # Some constants
@@ -36,7 +35,7 @@ header = ["No Mlle", "NOM & PRENOM", "SALAIRE DE BASE", "PRIME D'ANCIENNETE", "S
             "REMBOURSEMENT DE PRETS", "AUTRES", "SALAIRES NETS"]
 mapping = ['basic', 'seniority', 'benefits', 'overtime', 'transportation allowance',
             'representation allowance', 'individual allowance', 'performance allowance',
-            'other allowances', 'gross', 'cnss', 'irpp', 'tcs', '', '', 'advance on salary',
+            'other allowances', 'gross', 'cnss', 'irpp', 'tcs', 'cnss 17.5%', 'ts 3%', 'advance on salary',
             'loan repayments', 'other deductions', 'to pay']
 
 class paybook_report(TransientModel):
@@ -107,8 +106,6 @@ class paybook_report(TransientModel):
                 for field in mapping:
                     if field in raw_data:
                         sheet1.write(row, mapping.index(field) + 2, raw_data[field])
-                sheet1.write(row, 15, raw_data['gross'] * 0.175)
-                sheet1.write(row, 16, raw_data['gross'] * 0.03)
                 row += 1
             output = StringIO.StringIO()
             xls.save(output)
