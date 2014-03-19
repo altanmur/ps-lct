@@ -42,3 +42,7 @@ class hr_employee(osv.osv):
     _defaults = {
         'start_date': datetime.today().strftime('%Y-%m-%d')
     }
+
+    _sql_constraints = [
+        ('unique_reg_nbr', 'unique(reg_nbr)', 'An employee with the same registration number already exists.'),
+    ]
