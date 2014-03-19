@@ -118,8 +118,8 @@ msgid "Class"
 msgstr "Classe"
 
 #. module: lct_hr
-#: field:hr.contract,benefits:0
-msgid "Benefits"
+#: field:hr.contract,bonus:0
+msgid "Bonus"
 msgstr "Sursalaires"
 
 #. module: lct_hr
@@ -238,10 +238,10 @@ msgid "Seniority"
 msgstr "Ancienneté"
 
 #. module: lct_hr
-#: field:hr.contract,benefits:0
+#: field:hr.contract,bonus:0
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_6
-msgid "Benefits"
-msgstr "Avantages"
+msgid "Bonus"
+msgstr "Sursalaires"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_7

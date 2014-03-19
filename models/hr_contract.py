@@ -47,7 +47,7 @@ class hr_contract(osv.osv):
         'individual_allowance': fields.float('Individual allowance', digits=(16,2)),  # Indemnité de sujetion particulière
         'performance_allowance': fields.float('Performance allowance', digits=(16,2)),  # Indemnité de rendement == bonus???
         'other_allowances': fields.float('Other allowances', digits=(16,2)),  # Autres indemnités
-        'benefits': fields.float('Benefits', digits=(16,2)),  # Sursalaires
+        'bonus': fields.float('Bonus', digits=(16,2)),  # Sursalaires
         'pension_annuities': fields.float('Pension or annuities', digits=(16,2)),
         'life_insurance': fields.float('Life insurance', digits=(16,2)),
         # 'category': fields.selection([

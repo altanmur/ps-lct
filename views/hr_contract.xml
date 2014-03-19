@@ -22,7 +22,7 @@
                     <field name="individual_allowance"/>
                     <field name="performance_allowance"/>
                     <field name="other_allowances"/>
-                    <field name="benefits"/>
+                    <field name="bonus"/>
                     <field name="pension_annuities"/>
                     <field name="life_insurance"/>
                 </field>
