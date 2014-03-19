@@ -36,7 +36,7 @@ header = ["No Mlle", "NOM & PRENOM", "SALAIRE DE BASE", "PRIME D'ANCIENNETE", "S
             "REMBOURSEMENT DE PRETS", "AUTRES", "SALAIRES NETS"]
 mapping = ['basic', 'seniority', 'benefits', 'overtime', 'transportation allowance',
             'representation allowance', 'individual allowance', 'performance allowance',
-            'other allowances', 'gross', 'cnss', 'irrp', 'tcs', '', '', 'advance on salary',
+            'other allowances', 'gross', 'cnss', 'irpp', 'tcs', '', '', 'advance on salary',
             'loan repayments', 'other deductions', 'to pay']
 
 class paybook_report(TransientModel):
