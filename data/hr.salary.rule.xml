@@ -583,7 +583,10 @@ result = rules.NET &gt; categories.NET * 0.10
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
 base = categories.GROSS + categories.CNSS + categories.PROFTAX
-result = base * -0.15 if base &lt;= 10000000/12 else base * -0.05
+if base > 10000000/12:
+    result = -0.15 * 10000000/12 - 0.05 * (base-10000000/12)
+else:
+    result =  base * -0.05
             </field>
             <field name="condition_python">
 # Available variables:
