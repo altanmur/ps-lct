@@ -38,6 +38,7 @@ HR Module for LCT
         'views/hr_employee.xml',
         'views/hr_payroll_base_wage.xml',
         'report/paybook_report.xml',
+        'report/payslip_report.xml',
     ],
     'demo': [],
     'test': [],

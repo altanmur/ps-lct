@@ -62,7 +62,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage"></field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage_base">100</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -432,7 +432,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage"></field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage_base">100</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -477,8 +477,8 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_max"></field>
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
-            <field name="amount_percentage"></field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage">4</field>
+            <field name="amount_percentage_base">3</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -523,8 +523,8 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_max"></field>
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
-            <field name="amount_percentage"></field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage">10</field>
+            <field name="amount_percentage_base">100</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -570,7 +570,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage"></field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage_base">100</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -620,7 +620,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage"></field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage_base">100</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -712,7 +712,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage">-100</field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage_base">100</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -758,7 +758,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage">100</field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage_base">100</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -804,7 +804,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage"></field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage_base">100</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -850,7 +850,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage"></field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage_base">100</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -900,7 +900,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage"></field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage_base">100</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -962,7 +962,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage"></field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage_base">100</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -1008,7 +1008,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage"></field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage_base">100</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -1054,7 +1054,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage"></field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage_base">100</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -1100,7 +1100,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage"></field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage_base">100</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -1146,7 +1146,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage"></field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage_base">100</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -1284,7 +1284,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage"></field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage_base">17.5</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -1330,7 +1330,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage"></field>
-            <field name="amount_percentage_base"></field>
+            <field name="amount_percentage_base">100</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------

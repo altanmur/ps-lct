@@ -1,1 +1,2 @@
 import paybook_report
+import payslip_report

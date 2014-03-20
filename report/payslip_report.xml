@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+           <record model="ir.ui.view" id="payslip_report_wizard">
+                <field name="name">Payslip Report</field>
+                <field name="model">payslip_report</field>
+                <field name="type">form</field>
+                <field name="arch" type="xml">
+                <form string="">
+                    <group colspan="4" attrs="{'invisible' : [('state', '=', 'done')]}">
+                        <label string='' colspan='4'/>
+                        <field name="payslip_ids" invisible="1"/>
+                        <newline/>
+                        <field name="state" invisible="1"/>
+                        <button string="Cancel" special="cancel" icon="gtk-cancel"/>
+                        <button type="object" name="export_xls" string="Continue" icon="gtk-go-forward"/>
+                    </group>
+                    <group colspan="4" attrs="{'invisible' : [('state', '=', 'draft')]}">
+                        <label string="The report has been generated" colspan='4'/>
+                        <field name="datas_fname" invisible="1"/>
+                        <field name="out_file" colspan='2' filename="datas_fname"/>
+                        <label string='' colspan='2'/>
+                        <label string='' colspan='3'/>
+                        <button string="Close" special="cancel" icon="gtk-cancel" colspan='1'/>
+                    </group>
+                </form>
+                </field>
+            </record>
+            <act_window id="action_payslip_report"
+            name="Payslip report"
+            res_model="payslip_report" src_model="hr.payslip"
+            view_mode="form" view_type="form" target="new" key2="client_action_multi"/>
+    </data>
+</openerp>

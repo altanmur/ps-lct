@@ -4,6 +4,10 @@ TODO:
 * Seniority: it's 2% after 2 years, 1% for each subsequent year. But the percentages are calculated according to the wage at the time they "entered" that year.
     => cron job that checks on a daily basis if years of service > stored years of service; adds 1 to years of service if so, adapts stored seniority pay. First do echelon, then seniority!
 * Wizard for all payslips in a given year
+* French translation of salary rule categories
+* Move base salary to XML so it doesn't autoupdate with the module
+* Make base wage "unique" (I'm thinking about adding a field with a default, invisible, unique constraint; need to check if there's a less kludgy way)
+* Create methods for getting the default start/end dates for paybook report (monthly)
 * Employer's contribution on payslip (half done)
 * Figure out how to generate/print all payslips at once => cron job
 
