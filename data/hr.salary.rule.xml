@@ -424,7 +424,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
             <field name="category_id" ref="hr_payroll.GROSS"/>
-            <field name="code">Gross</field>
+            <field name="code"> </field>
             <field name="register_id"></field>
             <field name="note"></field>
             <field name="amount_fix"></field>
@@ -466,7 +466,7 @@ result = rules.NET &gt; categories.NET * 0.10
 
         <record id="lct_hr.hr_salary_rule_13" model="hr.salary.rule">
             <field name="name">CNSS</field>
-            <field name="amount_select">code</field>
+            <field name="amount_select">percentage</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_cnss"/>
@@ -477,8 +477,8 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_max"></field>
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
-            <field name="amount_percentage">4</field>
-            <field name="amount_percentage_base">3</field>
+            <field name="amount_percentage">-4</field>
+            <field name="amount_percentage_base">categories.GROSS</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -512,7 +512,7 @@ result = rules.NET &gt; categories.NET * 0.10
 
         <record id="lct_hr.hr_salary_rule_14" model="hr.salary.rule">
             <field name="name">Professional Tax</field>
-            <field name="amount_select">code</field>
+            <field name="amount_select">percentage</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_proftax"/>
@@ -523,8 +523,8 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_max"></field>
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
-            <field name="amount_percentage">10</field>
-            <field name="amount_percentage_base">100</field>
+            <field name="amount_percentage">-10</field>
+            <field name="amount_percentage_base">categories.GROSS</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -1092,7 +1092,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_other_ded_tot"/>
-            <field name="code">Total Other deductions</field>
+            <field name="code">  </field>
             <field name="register_id"></field>
             <field name="note"></field>
             <field name="amount_fix"></field>
@@ -1138,7 +1138,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
             <field name="category_id" ref="hr_payroll.NET"/>
-            <field name="code">To Pay</field>
+            <field name="code">   </field>
             <field name="register_id"></field>
             <field name="note"></field>
             <field name="amount_fix"></field>
@@ -1272,7 +1272,7 @@ result = rules.NET &gt; categories.NET * 0.10
 
         <record id="lct_hr.hr_salary_rule_31" model="hr.salary.rule">
             <field name="name">CNSS 17.5%</field>
-            <field name="amount_select">code</field>
+            <field name="amount_select">percentage</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_employer_contrib"/>
@@ -1283,8 +1283,8 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_max"></field>
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
-            <field name="amount_percentage"></field>
-            <field name="amount_percentage_base">17.5</field>
+            <field name="amount_percentage">17.5</field>
+            <field name="amount_percentage_base">categories.GROSS</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
@@ -1318,7 +1318,7 @@ result = rules.NET &gt; categories.NET * 0.10
 
         <record id="lct_hr.hr_salary_rule_32" model="hr.salary.rule">
             <field name="name">TS 3%</field>
-            <field name="amount_select">code</field>
+            <field name="amount_select">percentage</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_employer_contrib"/>
@@ -1329,8 +1329,8 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_max"></field>
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
-            <field name="amount_percentage"></field>
-            <field name="amount_percentage_base">100</field>
+            <field name="amount_percentage">3</field>
+            <field name="amount_percentage_base">categories.GROSS</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
