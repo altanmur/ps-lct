@@ -21,6 +21,8 @@
                     <field name="start_date"/>
                     <field name="reg_nbr"/>
                     <field name="cnss_nbr"/>
+                    <field name="active_years"/>
+                    <field name="seniority_pay"/>
                 </field>
             </field>
         </record>

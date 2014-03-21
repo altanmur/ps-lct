@@ -1,14 +1,11 @@
 TODO:
 =====
-* People automatically raise to the next echelon after 2 years, and their pay automatically follows. Cron job. First do echelon, then seniority!
-* Seniority: it's 2% after 2 years, 1% for each subsequent year. But the percentages are calculated according to the wage at the time they "entered" that year.
-    => cron job that checks on a daily basis if years of service > stored years of service; adds 1 to years of service if so, adapts stored seniority pay. First do echelon, then seniority!
-* Wizard for all payslips in a given year
+* Wizard for all payslips in a given month/year (adapt existing one to be able to work with either selected records or date ranges)
+* 13th month
 * French translation of salary rule categories
 * Move base salary to XML so it doesn't autoupdate with the module
-* Make base wage "unique" (I'm thinking about adding a field with a default, invisible, unique constraint; need to check if there's a less kludgy way)
+* Make base wage "unique" (I'm thinking about adding a field with a default, invisible, unique constraint; need to check if there's a cleaner way)
 * Create methods for getting the default start/end dates for paybook report (monthly)
-* Employer's contribution on payslip (half done)
 * Figure out how to generate/print all payslips at once => cron job
 
 DONE:
@@ -26,6 +23,10 @@ DONE:
 * The salary rule 'Togo - Benefit' takes contract.benefits_in_kind whereas it should take contract.benefits.
     Probably better to rename 'Benefits' into 'Bonus', create a new rule with contract.bonus and change the name of the existing 'Togo - Benefits' into ' Togo - Benefits in kind'.
 * Add employee pension allowance rule, so it shows up on the payslip as well? And what's with the other pension allowance?
+* Employer's contribution on payslip (half done)
+* People automatically raise to the next echelon after 2 years, and their pay automatically follows. Cron job. First do echelon, then seniority!
+* Seniority: it's 2% after 2 years, 1% for each subsequent year. But the percentages are calculated according to the wage at the time they "entered" that year.
+    => cron job that checks on a daily basis if years of service > stored years of service; adds 1 to years of service if so, adapts stored seniority pay. First do echelon, then seniority!
 
 N/A:
 ====
