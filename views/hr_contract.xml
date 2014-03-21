@@ -11,7 +11,7 @@
                 <group name="salary_and_advantages" position="before">
                     <group name="categorisation" string="Categorisation">
                         <!-- <field name="category"/> -->
-                        <field name="class"/>
+                        <field name="hr_class"/>
                         <field name="echelon"/>
                     </group>
                 </group>

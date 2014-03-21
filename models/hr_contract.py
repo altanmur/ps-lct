@@ -36,6 +36,19 @@ class_mult = {
     'HC': [1.28**3*1.3**5*1.8, 1.055],
 }
 
+class_cat = {
+            'EA': '1',
+            'EB': '1',
+            'EC': '1',
+            'ED': '1',
+            'ME': '2',
+            'MF': '2',
+            'MG': '2',
+            'CH': '3',
+            'CI': '3',
+            'HC': 'Hors Cat.',
+            }
+
 
 class hr_contract(osv.osv):
     _inherit = 'hr.contract'
@@ -55,7 +68,7 @@ class hr_contract(osv.osv):
         #     ('2','2'),
         #     ('3','3'),
         #     ], 'Category', select=True),
-        'class': fields.selection([
+        'hr_class': fields.selection([
             ('EA','EA'),
             ('EB','EB'),
             ('EC','EC'),
@@ -94,7 +107,7 @@ class hr_contract(osv.osv):
 
     _defaults = {
         # 'category': '1',
-        'class': 'EA',
+        'hr_class': 'EA',
         'echelon': '1',
         }
 
@@ -104,8 +117,11 @@ class hr_contract(osv.osv):
         conf_ids = config.search(cr, uid, [('base_wage','>',0)], context=context)
         base_wage = config.browse(cr, uid, conf_ids[0], context=context).base_wage
         for contract_id in ids:
-            contract_data = self.read(cr, uid, contract_id, ['class', 'echelon'], context)
-            hr_class, hr_echelon = contract_data['class'] or 'EA', contract_data['echelon'] or '1'
+            contract_data = self.read(cr, uid, contract_id, ['hr_class', 'echelon'], context)
+            hr_class, hr_echelon = contract_data['hr_class'] or 'EA', contract_data['echelon'] or '1'
             wage = base_wage * class_mult[hr_class][0] * class_mult[hr_class][1] ** (int(hr_echelon) - 1)
             res.update({contract_id: wage})
         return res
+
+    def get_cat(self, hr_class):
+        return class_cat[hr_class].decode('utf-8') or '-'
