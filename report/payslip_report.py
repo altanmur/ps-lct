@@ -138,10 +138,10 @@ class payslip_report(TransientModel):
                 sheet1.write_merge(2, 2, 8, 10, payslip.employee_id.name, style_center)
                 sheet1.write_merge(3, 3, 8, 10, u'ADRESSE', style_bold_center)
                 sheet1.write_merge(4, 4, 8, 10, u'S/C LCT 09 BP 9103 LOME', style_bold_center)
-                sheet1.write(5, 8, u'N° CNSS', style_center)
-                sheet1.write(6, 8, u'???')
+                sheet1.write(5, 8, u'N° CNSS')
+                sheet1.write(6, 8, payslip.employee_id.cnss_nbr)
                 sheet1.write(5, 9, u'ANCIENNETE')
-                sheet1.write(6, 9, '%dA, %dM, %dJ' % (1, 3, 12))
+                sheet1.write(6, 9, '%dA, %dM, %dJ' % self.pool.get('hr.employee').get_seniority_ymd(cr, uid, payslip.employee_id.id, context=context))
                 sheet1.write(5, 10, u'HORAIRE')
                 sheet1.write(6, 10, payslip.contract_id.working_hours.name)
                 ###############

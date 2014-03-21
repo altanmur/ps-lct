@@ -20,6 +20,7 @@
                 <field name="active" position="after">
                     <field name="start_date"/>
                     <field name="reg_nbr"/>
+                    <field name="cnss_nbr"/>
                 </field>
             </field>
         </record>

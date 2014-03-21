@@ -22,6 +22,7 @@
 
 from openerp.osv import fields, osv
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 
 class hr_employee(osv.osv):
@@ -37,6 +38,7 @@ class hr_employee(osv.osv):
         'other_deductions': fields.float('Other deductions', digits=(16,2)),  # Changes monthly; uploaded through screens, Autres retenues
         'pension_allowance': fields.float('Pension allowance', digits=(16,2)),  # Indemnité de départ à la retraite
         'reg_nbr': fields.char('Registration number', size=64),
+        'cnss_nbr': fields.char('CNSS Number', size=64),
     }
 
     _defaults = {
@@ -45,4 +47,14 @@ class hr_employee(osv.osv):
 
     _sql_constraints = [
         ('unique_reg_nbr', 'unique(reg_nbr)', 'An employee with the same registration number already exists.'),
+        ('unique_cnss_nbr', 'unique(cnss_nbr)', 'An employee with the same CNSS number already exists.'),
     ]
+
+    def get_seniority_ymd(self, cr, uid, id, context=None):
+        emp = self.browse(cr, uid, id, context=context)
+        if emp:
+            print emp.start_date
+            start_date = datetime.strptime(emp.start_date, '%Y-%m-%d')
+            delta = relativedelta(datetime.today(), start_date)
+            return(delta.years, delta.months, delta.days)
+        return (0, 0, 0)
