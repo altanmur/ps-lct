@@ -1,10 +1,10 @@
 TODO:
 =====
-* Change layout of paybook report to match the example report.
+* Footer under payslip report
 * 13th month
 * French translation of salary rule categories
-* Move base salary to XML so it doesn't autoupdate with the module
 * Make base wage "unique": ir.config_parameter and get_param()
+* Move base salary to XML so it doesn't autoupdate with the module
 * Figure out how to generate/print all payslips at once => cron job
 
 DONE:
@@ -28,6 +28,7 @@ DONE:
     => cron job that checks on a daily basis if years of service > stored years of service; adds 1 to years of service if so, adapts stored seniority pay. First do echelon, then seniority!
 * Create methods for getting the default start/end dates for paybook/payslip report (monthly)
 * Wizard for all payslips in a given month/year (adapt existing one to be able to work with either selected records or date ranges)
+* Change layout of paybook report to match the example report.
 
 N/A:
 ====

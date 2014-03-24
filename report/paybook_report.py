@@ -21,7 +21,7 @@
 
 from osv.orm import TransientModel
 from osv import fields
-from xlwt import Workbook, Font, XFStyle
+from xlwt import Workbook, easyxf
 import base64
 import StringIO
 from datetime import date
@@ -35,7 +35,7 @@ header = ["No Mlle", "NOM & PRENOM", "SALAIRE DE BASE", "PRIME D'ANCIENNETE", "S
             "INDEMNITE DE SUJETION PARTICULIERE", "INDEMNITE DE RENDEMENT", "AUTRES INDEMNITES",
             "TOTAL SALAIRE BRUT", "CNSS 4%", "IRPP", "TCS", "CNSS 17.5%", "TS 3%", "AVANCE SUR SALAIRES",
             "REMBOURSEMENT DE PRETS", "AUTRES", "SALAIRES NETS"]
-mapping = ['basic', 'seniority', 'benefits', 'overtime', 'transportation allowance',
+mapping = ['basic', 'seniority premium', 'benefits in kind', 'overtime', 'transportation allowance',
             'representation allowance', 'individual allowance', 'performance allowance',
             'other allowances', 'gross', 'cnss', 'irpp', 'tcs', 'cnss 17.5%', 'ts 3%', 'advance on salary',
             'loan repayments', 'other deductions', 'to pay']
@@ -69,6 +69,7 @@ class paybook_report(TransientModel):
 
     def export_xls(self, cr, uid, ids, context=None):
         for report in self.browse(cr, uid, ids, context=context):
+            data_start_row = 5
             dt_start = report.dt_start
             dt_end = report.dt_end
             args = (dt_start, dt_end)
@@ -97,17 +98,27 @@ class paybook_report(TransientModel):
                 row_data[payslip_id].update({rec['name'].lower(): rec['total']})
 
             xls = Workbook()
-            font_bold = Font()
-            font_bold.bold = True
-            style_bold = XFStyle()
-            style_bold.font = font_bold
-            sheet1 = xls.add_sheet('Pay book')
+            style_default = easyxf('border: left thin, right thin')
+            style_gray = easyxf('pattern: pattern solid, fore_color grey25; border: top thin, bottom thin, left thin, right thin')
+            style_bold_center = easyxf('font: bold on; align: horiz center')
+            style_bold_center_gray = easyxf('font: bold on; align: horiz center, vert top; pattern: pattern solid, fore_color grey25; border: top thin, bottom thin, left thin, right thin')
+            style_center_wrap = easyxf('align: wrap on, horiz center')
+            style_center_gray = easyxf('align: wrap on, horiz center; pattern: pattern solid, fore_color grey25; border: top thin, bottom thin, left thin, right thin')
+            sheet1 = xls.add_sheet('Livre de paie')
+            for i in range(21):
+                sheet1.col(i).width = 256*20
+            sheet1.row(4).height = 720
             # add header
-            sheet1.write(1, 0, 'From %s' % dt_start, style_bold)
-            sheet1.write(1, 1, 'To %s' % dt_end.split()[0], style_bold)
+            sheet1.write_merge(0, 0, 0, 19, u'ETAT COLLECTIF DES SALAIRES', style_bold_center)
+            sheet1.write_merge(1, 1, 0, 19, u'LIVRE DE PAIE, DE %s A %s' % (dt_start, dt_end), style_center_wrap)
+            sheet1.write_merge(2, 2, 12, 16, u'RETENUES SUR SALAIRES', style_bold_center_gray)
+            sheet1.write_merge(2, 3, 17, 19, u'AUTRES RETENUES', style_bold_center_gray)
+            sheet1.write_merge(3, 3, 12, 14, u'PART SALARIALE', style_bold_center_gray)
+            sheet1.write_merge(3, 3, 15, 16, u'PART PATRONALE', style_bold_center_gray)
             for title in header:
-                sheet1.write(2, header.index(title), title)
-            row = 3
+                sheet1.write(4, header.index(title), title, style_center_gray)
+            row = data_start_row
+            totals = [0] * len(mapping)
             for slip_id in ordered_ids:
                 raw_data = row_data[slip_id]
                 # TODO: these need to become rules on the payslip and just taken from there.
@@ -115,8 +126,12 @@ class paybook_report(TransientModel):
                 sheet1.write(row, 1, raw_data['name_related'])
                 for field in mapping:
                     if field in raw_data:
-                        sheet1.write(row, mapping.index(field) + 2, raw_data[field])
+                        sheet1.write(row, mapping.index(field) + 2, raw_data[field], style_default)
+                        totals[mapping.index(field)] += raw_data[field]
                 row += 1
+            sheet1.write_merge(row, row, 0, 1, u'Total:', style_center_gray)
+            for idx, val in enumerate(totals):
+                sheet1.write(row, idx + 2, val, style_gray)
             output = StringIO.StringIO()
             xls.save(output)
             encode_text = base64.encodestring(output.getvalue())
