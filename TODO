@@ -1,11 +1,10 @@
 TODO:
 =====
-* Wizard for all payslips in a given month/year (adapt existing one to be able to work with either selected records or date ranges)
+* Change layout of paybook report to match the example report.
 * 13th month
 * French translation of salary rule categories
 * Move base salary to XML so it doesn't autoupdate with the module
-* Make base wage "unique" (I'm thinking about adding a field with a default, invisible, unique constraint; need to check if there's a cleaner way)
-* Create methods for getting the default start/end dates for paybook report (monthly)
+* Make base wage "unique": ir.config_parameter and get_param()
 * Figure out how to generate/print all payslips at once => cron job
 
 DONE:
@@ -27,6 +26,8 @@ DONE:
 * People automatically raise to the next echelon after 2 years, and their pay automatically follows. Cron job. First do echelon, then seniority!
 * Seniority: it's 2% after 2 years, 1% for each subsequent year. But the percentages are calculated according to the wage at the time they "entered" that year.
     => cron job that checks on a daily basis if years of service > stored years of service; adds 1 to years of service if so, adapts stored seniority pay. First do echelon, then seniority!
+* Create methods for getting the default start/end dates for paybook/payslip report (monthly)
+* Wizard for all payslips in a given month/year (adapt existing one to be able to work with either selected records or date ranges)
 
 N/A:
 ====
@@ -39,3 +40,9 @@ NTS == Net Taxable Salary
 CNSS == something with Social Security (private & self-employed vs CRS for public sector)
 TCS == Taxe Complementaire sur Salaires
 IRPP == Impôt sur le Revenu des Personnes Physiques
+
+
+ 22956
+-18418
+------
+ 4538

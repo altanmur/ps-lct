@@ -24,6 +24,8 @@ from osv import fields
 from xlwt import Workbook, Font, XFStyle
 import base64
 import StringIO
+from datetime import date
+from dateutil.relativedelta import relativedelta
 
 
 # Some constants
@@ -53,14 +55,22 @@ class paybook_report(TransientModel):
     _defaults = {
         'datas_fname' : 'Livre de Paie.xls',
         'state' : 'draft',
-        # 'dt_start': _get_dt_start,
-        # 'dt_end': _get_dt_end,
+        'dt_start': lambda self, *args, **kwargs: self._get_dt_start(*args, **kwargs),
+        'dt_end': lambda self, *args, **kwargs: self._get_dt_end(*args, **kwargs),
     }
+
+    def _get_dt_start(self, cr, uid, context=None):
+        today = date.today().replace(day=1)
+        return today.strftime("%Y-%m-%d")
+
+    def _get_dt_end(self, cr, uid, context=None):
+        end_of_month = (date.today() + relativedelta(months=1)).replace(day=1)
+        return end_of_month.strftime("%Y-%m-%d")
 
     def export_xls(self, cr, uid, ids, context=None):
         for report in self.browse(cr, uid, ids, context=context):
             dt_start = report.dt_start
-            dt_end = report.dt_end + ' 23:59:59'
+            dt_end = report.dt_end
             args = (dt_start, dt_end)
             query = """
                 SELECT employee.reg_nbr, employee.name_related, payslip.id AS payslip_id, line.total, rule.name
@@ -68,7 +78,7 @@ class paybook_report(TransientModel):
                 LEFT OUTER JOIN hr_employee AS employee ON payslip.employee_id = employee.id
                 LEFT OUTER JOIN hr_payslip_line  AS line ON line.slip_id = payslip.id
                 LEFT OUTER JOIN hr_salary_rule AS rule ON line.salary_rule_id = rule.id
-                WHERE payslip.date_from >= '%s' AND payslip.date_to <= '%s' AND line.active = 't'
+                WHERE payslip.date_from >= '%s' AND payslip.date_to < '%s' AND line.active = 't'
                 GROUP BY employee.name_related, employee.reg_nbr, payslip.id, line.total, rule.name
                 ORDER BY employee.name_related, payslip.date_from
             """ % args

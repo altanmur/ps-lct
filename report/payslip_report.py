@@ -28,6 +28,9 @@ import StringIO
 from openerp.modules import get_module_path
 from zipfile import ZipFile
 import os
+from datetime import date
+from dateutil.relativedelta import relativedelta
+
 
 base_bath = get_module_path('lct_hr')
 
@@ -41,16 +44,30 @@ class payslip_report(TransientModel):
     _description = "Payslip report"
 
     _columns = {
+        'export_selected_only': fields.boolean('Export selected payslips only'),
         'payslip_ids': fields.many2many('hr.payslip', 'payslip_report_payslip_rel', 'report_id', 'payslip_id', 'Payslips'),
+        'dt_start': fields.date('Start date'),
+        'dt_end': fields.date('End date'),
         'out_file': fields.binary('Report',readonly=True),
         'datas_fname': fields.char('File name', 64),
         'state': fields.selection([('draft', 'Draft'),('done', 'Done')], string="Status"),
     }
 
     _defaults = {
+        'export_selected_only': True,
+        'dt_start': lambda self, *args, **kwargs: self._get_dt_start(*args, **kwargs),
+        'dt_end': lambda self, *args, **kwargs: self._get_dt_end(*args, **kwargs),
         'datas_fname': 'Bulletin de paie.xls',
         'state': 'draft',
     }
+
+    def _get_dt_start(self, cr, uid, context=None):
+        today = date.today().replace(day=1)
+        return today.strftime("%Y-%m-%d")
+
+    def _get_dt_end(self, cr, uid, context=None):
+        end_of_month = (date.today() + relativedelta(months=1)).replace(day=1)
+        return end_of_month.strftime("%Y-%m-%d")
 
     # Returns only the lines that actually appear on the payslip
     def get_payslip_lines(self, cr, uid, obj, context=None):
@@ -66,7 +83,11 @@ class payslip_report(TransientModel):
 
     def export_xls(self, cr, uid, ids, context=None):
         for report in self.browse(cr, uid, ids, context=context):
-            payslip_ids = context.get('active_ids')
+            payslip_ids = []
+            if report.export_selected_only:
+                payslip_ids = context.get('active_ids')
+            else:
+                payslip_ids = self.pool.get('hr.payslip').search(cr, uid, [('date_from', '>=', report.dt_start), ('date_to', '<', report.dt_end)], context=context)
             payslips = self.pool.get('hr.payslip').browse(cr, uid, payslip_ids, context=context)
             filenames = []
             for payslip in payslips:
