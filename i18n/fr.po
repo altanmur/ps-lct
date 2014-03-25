@@ -371,3 +371,32 @@ msgstr "Avantages en nature"
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_30
 msgid "Pension allowance"
 msgstr "Indemnité de départ à la retraite"
+
+
+
+
+
+#. module: lct_hr
+#: sql_constraint:hr.employee:0
+msgid "An employee with the same CNSS number already exists."
+msgstr "Un employee avec le même N° CNSS existe déjà."
+
+#. module: lct_hr
+#: field:hr.employee,cnss_nbr:0
+msgid "CNSS Number"
+msgstr "N° CNSS"
+
+#. module: lct_hr
+#: field:hr.employee,active_years:0
+msgid "Active years"
+msgstr "Ans actives"
+
+#. module: lct_hr
+#: field:hr.employee,seniority_pay:0
+msgid "Seniority pay"
+msgstr "Prime d'ancienneté"
+
+#. module: lct_hr
+#: field:payslip_report,export_selected_only:0
+msgid "Export selected payslips only"
+msgstr "Exporter seulement les bulletins d'employé sélectés"
