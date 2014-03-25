@@ -1,9 +1,9 @@
 TODO:
 =====
 * Footer under payslip report, improve layout
+* Figure out how to generate/print all payslips at once => cron job
 * 13th month
 * French translation of salary rule categories
-* Figure out how to generate/print all payslips at once => cron job
 
 DONE:
 =====
