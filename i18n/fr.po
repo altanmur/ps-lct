@@ -389,7 +389,7 @@ msgstr "N° CNSS"
 #. module: lct_hr
 #: field:hr.employee,active_years:0
 msgid "Active years"
-msgstr "Ans actives"
+msgstr "Années d'activé"
 
 #. module: lct_hr
 #: field:hr.employee,seniority_pay:0
