@@ -1,10 +1,8 @@
 TODO:
 =====
-* Footer under payslip report
+* Footer under payslip report, improve layout
 * 13th month
 * French translation of salary rule categories
-* Make base wage "unique": ir.config_parameter and get_param()
-* Move base salary to XML so it doesn't autoupdate with the module
 * Figure out how to generate/print all payslips at once => cron job
 
 DONE:
@@ -29,10 +27,12 @@ DONE:
 * Create methods for getting the default start/end dates for paybook/payslip report (monthly)
 * Wizard for all payslips in a given month/year (adapt existing one to be able to work with either selected records or date ranges)
 * Change layout of paybook report to match the example report.
+* Make base wage "unique": ir.config_parameter and get_param()
 
 N/A:
 ====
 * Create export fieldset for employees containing id, name, loan repayment, advance salary, other deductions, overtime (all in monetary terms, no hours for overtime since the formula is complex and not user-friendly to capture through the screens)  ==> Short manual action, no need to figure out how to export that into a data file.
+* Move base salary to XML so it doesn't autoupdate with the module
 
 
 Terms:

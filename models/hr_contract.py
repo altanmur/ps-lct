@@ -119,9 +119,7 @@ class hr_contract(osv.osv):
 
     def _calculate_wage(self, cr, uid, ids, field_name, args, context=None):
         res = dict.fromkeys(ids, 0.0)
-        config = self.pool.get('hr.payroll.base_wage')
-        conf_ids = config.search(cr, uid, [('base_wage','>',0)], context=context)
-        base_wage = config.browse(cr, uid, conf_ids[0], context=context).base_wage
+        base_wage = float(self.pool.get('ir.config_parameter').get_param(cr, uid, 'lct_hr.base_wage', default='69250', context=context))
         for contract_id in ids:
             contract_data = self.read(cr, uid, contract_id, ['hr_class', 'echelon'], context)
             hr_class, hr_echelon = contract_data['hr_class'] or 'EA', contract_data['echelon'] or '1'
