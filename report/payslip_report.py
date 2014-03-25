@@ -147,7 +147,7 @@ class payslip_report(TransientModel):
                 sheet1.write(4, 7, payslip.contract_id.hr_class)
                 sheet1.write(5, 6, u'Coefficient:')
                 sheet1.write(5, 7, payslip.contract_id.echelon)
-                sheet1.write_merge(6, 7, 6, 7, u'Employ Occupé', style_center)
+                sheet1.write_merge(6, 7, 6, 7, u'Emploi Occupé', style_center)
                 sheet1.write_merge(8, 9, 6, 7, payslip.employee_id.job_id.name, style_center)
                 ###################
                 # TOP RIGHT BLOCK #

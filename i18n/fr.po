@@ -372,10 +372,6 @@ msgstr "Avantages en nature"
 msgid "Pension allowance"
 msgstr "Indemnité de départ à la retraite"
 
-
-
-
-
 #. module: lct_hr
 #: sql_constraint:hr.employee:0
 msgid "An employee with the same CNSS number already exists."
