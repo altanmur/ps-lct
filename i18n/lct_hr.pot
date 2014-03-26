@@ -473,3 +473,14 @@ msgstr ""
 #: view:payslip_report:0
 msgid "The report has been generated"
 msgstr ""
+
+#. module: lct_hr
+#: field:hr.config.settings,base_wage:0
+#: model:ir.model,name:lct_hr.model_hr_payroll_base_wage
+msgid "Base wage"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.payslip.employees,select_all_active_employees:0
+msgid "Generate for all active employees"
+msgstr ""

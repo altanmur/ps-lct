@@ -133,13 +133,6 @@ msgid "Seniority rate"
 msgstr "Niveau d'ancienneté"
 
 #. module: lct_hr
-#: view:hr.payroll.base_wage:0
-#: model:ir.actions.act_window,name:lct_hr.action_hr_payroll_base_wage_tree_view
-#: model:ir.ui.menu,name:lct_hr.hr_payroll_base_wage_menu
-msgid "Base wages"
-msgstr "Salaires de base"
-
-#. module: lct_hr
 #: field:hr.contract,pension_annuities:0
 msgid "Pension or annuities"
 msgstr "Pension ou rentes"
@@ -168,13 +161,6 @@ msgstr "Continue"
 #: field:hr.contract,representation_allowance:0
 msgid "Representation allowance"
 msgstr "Indemnités de représentation"
-
-#. module: lct_hr
-#: view:hr.payroll.base_wage:0
-#: field:hr.payroll.base_wage,base_wage:0
-#: model:ir.model,name:lct_hr.model_hr_payroll_base_wage
-msgid "Base wage"
-msgstr "Salaire de base"
 
 #. module: lct_hr
 #: field:hr.employee,loan_repayments:0
@@ -396,3 +382,14 @@ msgstr "Prime d'ancienneté"
 #: field:payslip_report,export_selected_only:0
 msgid "Export selected payslips only"
 msgstr "Exporter seulement les bulletins d'employé sélectés"
+
+#. module: lct_hr
+#: field:hr.config.settings,base_wage:0
+#: model:ir.model,name:lct_hr.model_hr_payroll_base_wage
+msgid "Base wage"
+msgstr "Salaire de base"
+
+#. module: lct_hr
+#: field:hr.payslip.employees,select_all_active_employees:0
+msgid "Generate for all active employees"
+msgstr "Génère pour tous les employés actifs"
