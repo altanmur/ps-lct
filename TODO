@@ -1,7 +1,6 @@
 TODO:
 =====
 * Footer under payslip report, improve layout
-* Figure out how to generate/print all payslips at once => cron job
 * 13th month
 * French translation of salary rule categories
 
@@ -28,6 +27,7 @@ DONE:
 * Wizard for all payslips in a given month/year (adapt existing one to be able to work with either selected records or date ranges)
 * Change layout of paybook report to match the example report.
 * Make base wage "unique": ir.config_parameter and get_param()
+* Figure out how to generate/print all payslips at once => cron job
 
 N/A:
 ====
@@ -42,8 +42,3 @@ CNSS == something with Social Security (private & self-employed vs CRS for publi
 TCS == Taxe Complementaire sur Salaires
 IRPP == Impôt sur le Revenu des Personnes Physiques
 
-
- 22956
--18418
-------
- 4538

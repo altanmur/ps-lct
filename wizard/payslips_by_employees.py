@@ -19,33 +19,26 @@
 #
 ##############################################################################
 
-{
-    'name': 'LCT HR',
-    'version': '1.0',
-    'category': 'Tools',
-    'description': """
-HR Module for LCT
-=================
-    """,
-    'author': 'OpenERP SA',
-    'depends': ['hr_contract','hr_payroll', 'web_filedownload'],
-    'data': [
-        'data/hr.salary.rule.category.csv',
-        'data/hr.salary.rule.xml',
-        'data/hr.payroll.structure.csv',
-        'views/hr_contract.xml',
-        'views/hr_employee.xml',
-        'views/res_config.xml',
-        'report/paybook_report.xml',
-        'report/payslip_report.xml',
-        'cron/auto_promote.xml',
-        'wizard/payslips_by_employees.xml',
-    ],
-    'demo': [],
-    'test': [],
-    'installable': True,
-    'auto_install': False,
-    'images': [],
-    'css': [],
-}
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+from openerp.osv import fields, osv
+
+
+class hr_payslip_employees(osv.osv_memory):
+
+    _inherit ='hr.payslip.employees'
+
+    _columns = {
+        'select_all_active_employees': fields.boolean('Generate for all active employees'),
+    }
+
+    _defaults = {
+        'select_all_active_employees': True,
+    }
+
+    def compute_sheet(self, cr, uid, ids, context=None):
+        data = self.read(cr, uid, ids, context=context)[0]
+        if data['select_all_active_employees']:
+            employee_ids = self.pool.get('hr.employee').search(cr, uid, [('active','=',True)])
+            employee_ids_m2m = [(6, 0, employee_ids)]
+            self.write(cr, uid, ids, {'employee_ids': employee_ids_m2m}, context=context)
+            print(self.read(cr, uid, ids, context=context)[0])
+        return super(hr_payslip_employees, self).compute_sheet(cr, uid, ids, context=context)
