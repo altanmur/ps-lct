@@ -1,6 +1,5 @@
 TODO:
 =====
-* Footer under payslip report, improve layout
 * 13th month
 * French translation of salary rule categories
 
@@ -28,6 +27,7 @@ DONE:
 * Change layout of paybook report to match the example report.
 * Make base wage "unique": ir.config_parameter and get_param()
 * Figure out how to generate/print all payslips at once => cron job
+* Footer under payslip report, improve layout
 
 N/A:
 ====

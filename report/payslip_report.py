@@ -34,10 +34,6 @@ from dateutil.relativedelta import relativedelta
 
 base_bath = get_module_path('lct_hr')
 
-# mapping = ['basic', 'seniority', 'benefits', 'overtime', 'transportation allowance',
-#             'representation allowance', 'individual allowance', 'performance allowance',
-#             'other allowances', 'gross', 'cnss', 'irpp', 'tcs', 'cnss 17.5%', 'ts 3%', 'advance on salary',
-#             'loan repayments', 'other deductions', 'to pay']
 
 class payslip_report(TransientModel):
     _name = 'payslip_report'
@@ -94,17 +90,23 @@ class payslip_report(TransientModel):
                 lines = self.get_payslip_lines(cr, uid, payslip.line_ids, context=context)
 
                 xls = Workbook()
-                # font_bold = Font()
-                # font_bold.bold = True
-                # style_bold = XFStyle()
-                # style_bold.font = font_bold
                 style_default = easyxf('font: height 200')
-                style_bold = easyxf('font: bold on, height 200')
-                style_bold_center = easyxf('font: bold on, height 200; align: horiz center')
-                style_bold_center_wrap = easyxf('font: bold on, height 200; align: wrap on, horiz center')
-                style_bold_right = easyxf('font: bold on, height 200; align: horiz right')
-                style_center = easyxf('align: horiz center; font: height 200')
-                style_right = easyxf('align: horiz right; font: height 200')
+                style_bold_boxed = easyxf('font: bold on, height 200; align: wrap on; border: top thin, bottom thin, left thin, right thin')
+                style_bold_center_boxed = easyxf('font: bold on, height 200; align: horiz center, wrap on; border: top thin, bottom thin, left thin, right thin')
+                style_bold_right_boxed = easyxf('font: bold on, height 200; align: horiz right, wrap on; border: top thin, bottom thin, left thin, right thin')
+                style_leftbox = easyxf('font: height 200; border: top thin, bottom thin, left thin')
+                style_rightbox = easyxf('font: height 200; border: top thin, bottom thin, right thin')
+                style_leftfence = easyxf('font: height 200; border: left thin')
+                style_rightfence = easyxf('font: height 200; border: right thin')
+                style_fenced = easyxf('font: height 200; border: left thin, right thin')
+                style_bold_right_rightfence = easyxf('font: bold on, height 200; align: horiz right; border: right thin')
+                style_bold_fenced = easyxf('font: bold on, height 200; border: left thin, right thin')
+                style_bold_center_fenced = easyxf('font: bold on, height 200; align: horiz center; border: left thin, right thin')
+                style_center_fenced = easyxf('font: height 200; align: horiz center; border: left thin, right thin')
+                style_center_boxed = easyxf('font: height 200; align: horiz center; border: left thin, right thin, top thin, bottom thin')
+                style_right_fenced = easyxf('align: horiz right; font: height 200; border: left thin, right thin')
+                style_right_leftfence = easyxf('align: horiz right; font: height 200; border: left thin')
+                style_right_leftbox = easyxf('align: horiz right; font: height 200; border: left thin, top thin, bottom thin')
                 sheet1 = xls.add_sheet('Pay book')
                 sheet1.paper_size_code = 77
                 sheet1.col(0).width = 256*10
@@ -118,90 +120,131 @@ class payslip_report(TransientModel):
                 # TOP LEFT BLOCK #
                 ##################
                 # Strats at r0, c0
-                sheet1.insert_bitmap(base_bath + '/report/logo.bmp', 1, 0)
+                sheet1.insert_bitmap(base_bath + '/report/logo.bmp', 1, 1)
                 for row in range(100):
                     sheet1.row(row).set_style(style_default)
                     sheet1.row(row).height = 240
-                sheet1.write(0, 1, u'BULLETIN DE PAIE', style_bold_center)
-                sheet1.write(1, 4, u'Lomé Container Terminal S.A.', style_bold_right)
-                sheet1.write(4, 0, u'Zone Portuaire Rte A3 Akodessewa', style_bold)
-                sheet1.write(5, 0, u'Immeuble MSC TOGO', style_bold)
-                sheet1.write(6, 0, u'09 BP 9103 Lomé', style_bold)
-                sheet1.write(8, 2, u'N° Employeur:', style_right)
-                sheet1.write(8, 4, u'17295', style_bold_right)
-                sheet1.write(9, 2, u'NIF:', style_right)
-                sheet1.write(9, 4, u'090164 W', style_bold_right)
+                sheet1.write_merge(0, 0, 0, 5, u'BULLETIN DE PAIE', style_bold_center_boxed)
+                sheet1.write(1, 5, u'Lomé Container Terminal S.A.', style_bold_right_rightfence)
+                sheet1.write(1, 0, '', style_leftfence)
+                sheet1.write_merge(2, 3, 0, 5, '', style_fenced)
+                sheet1.write_merge(4, 4, 0, 5, u'Zone Portuaire Rte A3 Akodessewa', style_bold_fenced)
+                sheet1.write_merge(5, 5, 0, 5, u'Immeuble MSC TOGO', style_bold_fenced)
+                sheet1.write_merge(6, 6, 0, 5, u'09 BP 9103 Lomé', style_bold_fenced)
+                sheet1.write_merge(7, 7, 0, 5, '', style_fenced)
+                sheet1.write_merge(8, 8, 0, 2, u'N° Employeur:', style_right_leftfence)
+                sheet1.write(8, 5, u'17295', style_bold_right_rightfence)
+                sheet1.write_merge(9, 9, 0, 2, u'NIF:', style_right_leftfence)
+                sheet1.write(9, 5, u'090164 W', style_bold_right_rightfence)
                 ####################
                 # TOP CENTER BLOCK #
                 ####################
                 # Starts at r0, c6
-                sheet1.write(0, 6, u'Periode du')
-                sheet1.write_merge(0, 0, 7, 8, '%s - %s' % (payslip.date_from, payslip.date_to))
+                sheet1.write(0, 6, u'Periode du', style_leftbox)
+                sheet1.write_merge(0, 0, 7, 8, '%s - %s' % (payslip.date_from, payslip.date_to), style_rightbox)
                 sheet1.write(1, 6, u"Date d'embauche:")
-                sheet1.write(1, 7, payslip.employee_id.start_date)
+                sheet1.write(1, 7, payslip.employee_id.start_date, style_rightfence)
                 sheet1.write(2, 6, u'Matricule:')
-                sheet1.write(2, 7, payslip.employee_id.reg_nbr)
+                sheet1.write(2, 7, payslip.employee_id.reg_nbr, style_rightfence)
                 sheet1.write(3, 6, u'Niveau:')
-                sheet1.write(3, 7, self.pool.get('hr.contract').get_cat(payslip.contract_id.hr_class))
+                sheet1.write(3, 7, self.pool.get('hr.contract').get_cat(payslip.contract_id.hr_class), style_rightfence)
                 sheet1.write(4, 6, u'Indice sal.')
-                sheet1.write(4, 7, payslip.contract_id.hr_class)
+                sheet1.write(4, 7, payslip.contract_id.hr_class, style_rightfence)
                 sheet1.write(5, 6, u'Coefficient:')
-                sheet1.write(5, 7, payslip.contract_id.echelon)
-                sheet1.write_merge(6, 7, 6, 7, u'Emploi Occupé', style_center)
-                sheet1.write_merge(8, 9, 6, 7, payslip.employee_id.job_id.name, style_center)
+                sheet1.write(5, 7, payslip.contract_id.echelon, style_rightfence)
+                sheet1.write_merge(6, 7, 6, 7, u'Emploi Occupé', style_center_boxed)
+                sheet1.write_merge(8, 9, 6, 7, payslip.employee_id.job_id.name, style_center_boxed)
                 ###################
                 # TOP RIGHT BLOCK #
                 ###################
                 # Starts at r0, c8
-                sheet1.write(0, 9, u'Date de paiement:')
-                sheet1.write(0, 10, '???')
-                sheet1.write_merge(1, 1, 8, 10, u'NOM & PRENOMS', style_center)
-                sheet1.write_merge(2, 2, 8, 10, payslip.employee_id.name, style_center)
-                sheet1.write_merge(3, 3, 8, 10, u'ADRESSE', style_bold_center)
-                sheet1.write_merge(4, 4, 8, 10, u'S/C LCT 09 BP 9103 LOME', style_bold_center)
-                sheet1.write(5, 8, u'N° CNSS')
-                sheet1.write(6, 8, payslip.employee_id.cnss_nbr)
-                sheet1.write(5, 9, u'ANCIENNETE')
-                sheet1.write(6, 9, '%dA, %dM, %dJ' % self.pool.get('hr.employee').get_seniority_ymd(cr, uid, payslip.employee_id.id, context=context))
-                sheet1.write(5, 10, u'HORAIRE')
-                sheet1.write(6, 10, payslip.contract_id.working_hours.name)
+                sheet1.write(0, 9, u'Date de paiement:', style_leftbox)
+                sheet1.write(0, 10, '???', style_rightbox)
+                sheet1.write_merge(1, 1, 8, 10, u'NOM & PRENOMS', style_center_fenced)
+                sheet1.write_merge(2, 2, 8, 10, payslip.employee_id.name, style_center_fenced)
+                sheet1.write_merge(3, 3, 8, 10, u'ADRESSE', style_bold_center_fenced)
+                sheet1.write_merge(4, 4, 8, 10, u'S/C LCT 09 BP 9103 LOME', style_bold_center_fenced)
+                sheet1.write(5, 8, u'N° CNSS', style_center_boxed)
+                sheet1.write(6, 8, payslip.employee_id.cnss_nbr, style_center_boxed)
+                sheet1.write(5, 9, u'ANCIENNETE', style_center_boxed)
+                sheet1.write(6, 9, '%dA, %dM, %dJ' % self.pool.get('hr.employee').get_seniority_ymd(cr, uid, payslip.employee_id.id, context=context), style_center_boxed)
+                sheet1.write(5, 10, u'HORAIRE', style_center_boxed)
+                sheet1.write(6, 10, payslip.contract_id.working_hours.name, style_center_boxed)
+                sheet1.write_merge(7, 9, 8, 10, '', style_center_boxed)
                 ###############
                 # LINE HEADER #
                 ###############
                 # Starts at 10, 0
-                sheet1.write_merge(10, 10, 0, 2, u'Convention collective:', style_right)
-                sheet1.write_merge(10, 10, 3, 7, u'Convention collective Interprofessionelle du Togo')
-                sheet1.write(10, 8, u'Département:')
-                sheet1.write_merge(10, 10, 9, 10, payslip.employee_id.department_id.name)
+                sheet1.write_merge(10, 10, 0, 2, u'Convention collective:', style_right_leftbox)
+                sheet1.write_merge(10, 10, 3, 7, u'Convention collective Interprofessionelle du Togo', style_rightbox)
+                sheet1.write(10, 8, u'Département:', style_leftbox)
+                sheet1.write_merge(10, 10, 9, 10, payslip.employee_id.department_id.name, style_rightbox)
                 # 2nd header
-                sheet1.write_merge(11,12, 0, 0, u'N°', style_bold_center)
-                sheet1.write_merge(11, 12, 1, 2, u'Designation', style_bold_center)
-                sheet1.write_merge(11,12, 3, 3, u'NOMBRE DE JOURS', style_bold_center_wrap)
-                sheet1.write_merge(11,12, 4, 4, u'BASE', style_bold_center)
-                sheet1.write_merge(11, 11, 5, 7, u'PART SALARIALE', style_bold_center)
-                sheet1.write(12, 5, u'TAUX', style_bold_center)
-                sheet1.write(12, 6, u'GAIN', style_bold_center)
-                sheet1.write(12, 7, u'RETENUE', style_bold_center)
-                sheet1.write_merge(11, 11, 8, 10, u'PART PATRONALE', style_bold_center)
-                sheet1.write(12, 8, u'TAUX', style_bold_center)
-                sheet1.write(12, 9, u'GAIN', style_bold_center)
-                sheet1.write(12, 10, u'RETENUE', style_bold_center)
+                sheet1.write_merge(11,12, 0, 0, u'N°', style_bold_center_boxed)
+                sheet1.write_merge(11, 12, 1, 2, u'Designation', style_bold_center_boxed)
+                sheet1.write_merge(11,12, 3, 3, u'NOMBRE DE JOURS', style_bold_center_boxed)
+                sheet1.write_merge(11,12, 4, 4, u'BASE', style_bold_center_boxed)
+                sheet1.write_merge(11, 11, 5, 7, u'PART SALARIALE', style_bold_center_boxed)
+                sheet1.write(12, 5, u'TAUX', style_bold_center_boxed)
+                sheet1.write(12, 6, u'GAIN', style_bold_center_boxed)
+                sheet1.write(12, 7, u'RETENUE', style_bold_center_boxed)
+                sheet1.write_merge(11, 11, 8, 10, u'PART PATRONALE', style_bold_center_boxed)
+                sheet1.write(12, 8, u'TAUX', style_bold_center_boxed)
+                sheet1.write(12, 9, u'GAIN', style_bold_center_boxed)
+                sheet1.write(12, 10, u'RETENUE', style_bold_center_boxed)
                 #########
                 # LINES #
                 #########
                 # Starts at 13, 0
-                for line in lines:
-                    row = 13 + lines.index(line)
-                    sheet1.write(row, 0, _(line.code), style_center)
-                    sheet1.write_merge(row, row, 1, 2, _(line.name))
-                    sheet1.write(row, 3, len(payslip.worked_days_line_ids))
-                    sheet1.write(row, 4, line.amount)
+                for row_offset, line in enumerate(lines):
+                    row = 13 + row_offset
+                    if row_offset == len(lines) - 1:
+                        continue
+                    sheet1.write(row, 0, _(line.code), style_center_fenced)
+                    sheet1.write_merge(row, row, 1, 2, _(line.name), style_fenced)
+                    sheet1.write(row, 3, len(payslip.worked_days_line_ids), style_fenced)
+                    sheet1.write(row, 4, line.amount, style_fenced)
                     if line.salary_rule_id.category_id.name != 'Employer Contributions':
-                        sheet1.write(row, 5, '%.2f%%' % (line.amount_percentage or 100,), style_right)
-                        sheet1.write(row, 6, line.total)
+                        sheet1.write(row, 5, '%.2f%%' % (line.amount_percentage or 100,), style_right_fenced)
+                        sheet1.write(row, 6, line.total, style_fenced)
+                        sheet1.write(row, 7, '', style_fenced)
+                        sheet1.write(row, 8, '', style_fenced)
+                        sheet1.write(row, 9, '', style_fenced)
+                        sheet1.write(row, 10, '', style_fenced)
                     else:
-                        sheet1.write(row, 8, '%.2f%%' % (line.amount_percentage or 100,), style_right)
-                        sheet1.write(row, 9, line.total)
+                        sheet1.write(row, 5, '', style_fenced)
+                        sheet1.write(row, 6, '', style_fenced)
+                        sheet1.write(row, 7, '', style_fenced)
+                        sheet1.write(row, 8, '%.2f%%' % (line.amount_percentage or 100,), style_right_fenced)
+                        sheet1.write(row, 9, line.total, style_fenced)
+                        sheet1.write(row, 10, '', style_fenced)
+                # Last line: To Pay. Special format for this one.
+                last_line = lines[-1]
+                row = 13 + len(lines) - 1
+                sheet1.write(row, 0, _(line.code), style_bold_center_boxed)
+                sheet1.write_merge(row, row, 1, 2, _(line.name), style_bold_boxed)
+                sheet1.write(row, 3, len(payslip.worked_days_line_ids), style_bold_boxed)
+                sheet1.write(row, 4, line.amount, style_bold_boxed)
+                sheet1.write(row, 5, '%.2f%%' % (last_line.amount_percentage or 100,), style_bold_right_boxed)
+                sheet1.write(row, 6, last_line.total, style_bold_center_boxed)
+                sheet1.write(row, 7, '', style_center_boxed)
+                sheet1.write(row, 8, '', style_center_boxed)
+                sheet1.write(row, 9, '', style_center_boxed)
+                sheet1.write(row, 10, '', style_center_boxed)
+                ##############
+                # BOTTOM BOX #
+                ##############
+                # sheet1.write_merge(start_row, start_row, 0, 10, '', style_border_top)
+                # # No way; this is just too much of a hassle to compute. Leaving the partial work in
+                # # as comment, but not implementing actually looking up values for period and entire year,
+                # # it will go slow as hell when you do this for 4k employees!
+                # sheet1.write_merge(start_row, start_row, 0, 2, u'Montants', style_center_boxed)
+                # sheet1.write(start_row, 3, u'de la période', style_center_boxed)
+                # sheet1.write(start_row, 4, u"de l'année", style_center_boxed)
+                # sheet1.write_merge(start_row, start_row, 5, 6, u'Net à payer:', style_center_boxed)
+                # sheet1.write_merge(start_row, start_row, 7, 7, u'XXX', style_center_boxed)
+                # sheet1.write_merge(start_row, start_row, 8, 10, u'CONGES', style_bold_center_boxed)
+
 
                 fn_report = "%s - %s - %s (%s).xls" % (report.datas_fname[:-4], payslip.employee_id.reg_nbr, payslip.employee_id.name, payslip.id)
                 if len(payslip_ids) > 1:
