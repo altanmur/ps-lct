@@ -79,7 +79,7 @@ class paybook_report(TransientModel):
                 LEFT OUTER JOIN hr_employee AS employee ON payslip.employee_id = employee.id
                 LEFT OUTER JOIN hr_payslip_line  AS line ON line.slip_id = payslip.id
                 LEFT OUTER JOIN hr_salary_rule AS rule ON line.salary_rule_id = rule.id
-                WHERE payslip.date_from >= '%s' AND payslip.date_to < '%s' AND line.active = 't'
+                WHERE payslip.date_from >= '%s' AND payslip.date_to <= '%s' AND line.active = 't'
                 GROUP BY employee.name_related, employee.reg_nbr, payslip.id, line.total, rule.name
                 ORDER BY employee.name_related, payslip.date_from
             """ % args

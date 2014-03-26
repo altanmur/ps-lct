@@ -87,7 +87,7 @@ class payslip_report(TransientModel):
             if report.export_selected_only:
                 payslip_ids = context.get('active_ids')
             else:
-                payslip_ids = self.pool.get('hr.payslip').search(cr, uid, [('date_from', '>=', report.dt_start), ('date_to', '<', report.dt_end)], context=context)
+                payslip_ids = self.pool.get('hr.payslip').search(cr, uid, [('date_from', '>=', report.dt_start), ('date_to', '<=', report.dt_end)], context=context)
             payslips = self.pool.get('hr.payslip').browse(cr, uid, payslip_ids, context=context)
             filenames = []
             for payslip in payslips:
@@ -203,24 +203,6 @@ class payslip_report(TransientModel):
                         sheet1.write(row, 8, '%.2f%%' % (line.amount_percentage or 100,), style_right)
                         sheet1.write(row, 9, line.total)
 
-
-
-
-                # add header
-                # sheet1.write(1, 0, 'From %s' % dt_start, style_bold)
-                # sheet1.write(1, 1, 'To %s' % dt_end.split()[0], style_bold)
-                # for title in header:
-                #     sheet1.write(2, header.index(title), title)
-                # row = 3
-                # for slip_id in ordered_ids:
-                #     raw_data = row_data[slip_id]
-                #     # TODO: these need to become rules on the payslip and just taken from there.
-                #     sheet1.write(row, 0, raw_data['reg_nbr'])
-                #     sheet1.write(row, 1, raw_data['name_related'])
-                #     for field in mapping:
-                #         if field in raw_data:
-                #             sheet1.write(row, mapping.index(field) + 2, raw_data[field])
-                #     row += 1
                 fn_report = "%s - %s - %s (%s).xls" % (report.datas_fname[:-4], payslip.employee_id.reg_nbr, payslip.employee_id.name, payslip.id)
                 if len(payslip_ids) > 1:
                     xls.save('/tmp/' + fn_report)
