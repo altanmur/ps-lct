@@ -267,8 +267,8 @@ msgstr "Brut"
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_13
 #: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_cnss
-msgid "CNSS"
-msgstr "CNSS"
+msgid "Employee CNSS"
+msgstr "CNSS Salariale"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_14
@@ -369,6 +369,16 @@ msgstr "Avantages en nature"
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_30
 msgid "Pension allowance"
 msgstr "Indemnité de départ à la retraite"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_31
+msgid "Employer CNSS"
+msgstr "CNSS Patronale"
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_32
+msgid "Tax on salary"
+msgstr "Taxe sur salaire"
 
 #. module: lct_hr
 #: field:hr.employee,pension_allowance:0

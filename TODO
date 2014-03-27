@@ -1,5 +1,8 @@
 TODO:
 =====
+* CNSS, CNSS 17.5%, TS 3%, TCS, IRPP, Total cotisations, Avance sur salaire, remboursement de pret, autres retenues, total autres retenues: make positive (and adapt rules that use them) + put in Retenues column of their respective Salariale/Patronale section
+* The total of CNSS 17.5 and TS 3 should appear in row 'Total cotisations', also with positive sign, in the column 'retenue' but in the section 'Part patronale'
+* Sequence of 'Taxe sur salaire' should be 2030 and it should appear after IRPP.
 * 13th month
 
 DONE:
@@ -28,6 +31,9 @@ DONE:
 * Figure out how to generate/print all payslips at once => cron job
 * Footer under payslip report, improve layout
 * French translation of salary rule categories
+* CNSS should be called 'CNSS salariale'
+* CNSS 17.5% should be called 'CNSS patronale'
+* TS 3% should be called 'Taxe sur salaire'.
 
 N/A:
 ====
