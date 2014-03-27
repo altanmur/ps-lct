@@ -259,16 +259,42 @@ class payslip_report(TransientModel):
                 ##############
                 # BOTTOM BOX #
                 ##############
-                # sheet1.write_merge(start_row, start_row, 0, 10, '', style_border_top)
-                # # No way; this is just too much of a hassle to compute. Leaving the partial work in
-                # # as comment, but not implementing actually looking up values for period and entire year,
-                # # it will go slow as hell when you do this for 4k employees!
-                # sheet1.write_merge(start_row, start_row, 0, 2, u'Montants', style_center_boxed)
-                # sheet1.write(start_row, 3, u'de la période', style_center_boxed)
-                # sheet1.write(start_row, 4, u"de l'année", style_center_boxed)
-                # sheet1.write_merge(start_row, start_row, 5, 6, u'Net à payer:', style_center_boxed)
-                # sheet1.write_merge(start_row, start_row, 7, 7, u'XXX', style_center_boxed)
+                start_row = 13 + len(lines)
+                # Header
+                sheet1.write_merge(start_row, start_row, 0, 2, u'Montants', style_center_boxed)
+                sheet1.write_merge(start_row, start_row, 3, 4, u'de la période', style_center_boxed)
+                sheet1.write_merge(start_row, start_row, 5, 8, u'Net à payer:', style_center_boxed)
+                to_pay = sum(x.total for x in lines if x.sequence in [5000])
+                sheet1.write_merge(start_row, start_row, 9, 10, to_pay, style_center_boxed)
                 # sheet1.write_merge(start_row, start_row, 8, 10, u'CONGES', style_bold_center_boxed)
+                # Numbers
+                sheet1.write(start_row+1, 0, u'Heures Travaillées', style_leftfence)
+                worked_hours = sum([x.number_of_hours for x in payslip.worked_days_line_ids])
+                sheet1.write(start_row+1, 4, worked_hours, style_rightfence)
+                sheet1.write(start_row+2, 0, u'Salaire brut', style_leftfence)
+                gross = sum(x.total for x in lines if x.sequence in [1999])
+                sheet1.write(start_row+2, 4, gross, style_rightfence)
+                sheet1.write(start_row+3, 0, u'Charges salariales', style_leftfence)
+                salarial_costs = - sum(x.total for x in lines if x.sequence in [2000, 2010, 2020])
+                sheet1.write(start_row+3, 4, salarial_costs, style_rightfence)
+                sheet1.write(start_row+4, 0, u'Charges patronales', style_leftfence)
+                patronal_costs = sum(x.total for x in lines if x.sequence in [2001, 2011])
+                sheet1.write(start_row+4, 4, patronal_costs, style_rightfence)
+                sheet1.write(start_row+5, 0, u'Salaire net', style_leftfence)
+                net_salary = sum(x.total for x in lines if x.sequence in [2040])
+                sheet1.write(start_row+5, 4, net_salary, style_rightfence)
+                sheet1.write(start_row+6, 0, u'Avantage en nature', style_leftfence)
+                benefits_in_kind = sum(x.total for x in lines if x.sequence in [1009])
+                sheet1.write(start_row+6, 4, benefits_in_kind, style_rightfence)
+                # Other stuff
+                sheet1.write_merge(start_row+1, start_row+1, 5, 10, u'MODE DE REGLEMENT', style_bold_center_fenced)
+                sheet1.write_merge(start_row+2, start_row+3, 5, 10, u'Virement bancaire', style_center_fenced)
+                sheet1.write(start_row+4, 5, u'Cpte n°', style_leftfence)
+                sheet1.write_merge(start_row+4, start_row+4, 6, 10, payslip.employee_id.bank_account_id.name, style_rightfence)
+                sheet1.write_merge(start_row+5, start_row+6, 6, 10, '', style_rightfence)
+                sheet1.write_merge(start_row+7, start_row+9, 0, 1, u'Commentaire:', style_leftbox)
+                sheet1.write_merge(start_row+7, start_row+9, 2, 10, '', style_rightbox)
+                sheet1.write_merge(start_row+10, start_row+10, 0, 10, u'Pour vous aider à faire valoir vos droits, conservez ce bulletin de paye sans limitation de durée', style_bold_center_boxed)
 
 
                 fn_report = "%s - %s - %s (%s).xls" % (report.datas_fname[:-4], payslip.employee_id.reg_nbr, payslip.employee_id.name, payslip.id)
