@@ -484,3 +484,9 @@ msgstr ""
 #: field:hr.payslip.employees,select_all_active_employees:0
 msgid "Generate for all active employees"
 msgstr ""
+
+#. module: lct_hr
+#: field:hr.employee,pension_allowance:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_33
+msgid "Total Costing"
+msgstr ""

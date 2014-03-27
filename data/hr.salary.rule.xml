@@ -562,7 +562,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_taxal"/>
-            <field name="code">2031</field>
+            <field name="code">2050</field>
             <field name="register_id"></field>
             <field name="note"></field>
             <field name="amount_fix"></field>
@@ -603,7 +603,7 @@ result = rules.NET &gt; categories.NET * 0.10
             </field>
             <field name="quantity">1</field>
             <field name="condition_range">contract.wage</field>
-            <field name="sequence">2031</field>
+            <field name="sequence">2050</field>
         </record>
 
         <record id="lct_hr.hr_salary_rule_16" model="hr.salary.rule">
@@ -612,7 +612,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_dependents"/>
-            <field name="code">2032</field>
+            <field name="code">2051</field>
             <field name="register_id"></field>
             <field name="note"></field>
             <field name="amount_fix"></field>
@@ -649,7 +649,7 @@ result = rules.NET &gt; categories.NET * 0.10
             </field>
             <field name="quantity">1</field>
             <field name="condition_range">contract.wage</field>
-            <field name="sequence">2032</field>
+            <field name="sequence">2051</field>
         </record>
 
         <record id="lct_hr.hr_salary_rule_17" model="hr.salary.rule">
@@ -658,7 +658,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_pension"/>
-            <field name="code">2034</field>
+            <field name="code">2053</field>
             <field name="register_id"></field>
             <field name="note"></field>
             <field name="amount_fix"></field>
@@ -695,7 +695,7 @@ result = rules.NET &gt; categories.NET * 0.10
             </field>
             <field name="quantity">1</field>
             <field name="condition_range">contract.wage</field>
-            <field name="sequence">2034</field>
+            <field name="sequence">2053</field>
         </record>
 
         <record id="lct_hr.hr_salary_rule_18" model="hr.salary.rule">
@@ -704,7 +704,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_pension"/>
-            <field name="code">2033</field>
+            <field name="code">2052</field>
             <field name="register_id"></field>
             <field name="note"></field>
             <field name="amount_fix"></field>
@@ -741,7 +741,7 @@ result = rules.NET &gt; categories.NET * 0.10
             </field>
             <field name="quantity">1</field>
             <field name="condition_range">contract.wage</field>
-            <field name="sequence">2033</field>
+            <field name="sequence">2052</field>
         </record>
 
         <record id="lct_hr.hr_salary_rule_19" model="hr.salary.rule">
@@ -750,7 +750,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_pension"/>
-            <field name="code">2035</field>
+            <field name="code">2054</field>
             <field name="register_id"></field>
             <field name="note"></field>
             <field name="amount_fix"></field>
@@ -787,7 +787,7 @@ result = rules.NET &gt; categories.NET * 0.10
             </field>
             <field name="quantity">1</field>
             <field name="condition_range">contract.wage</field>
-            <field name="sequence">2035</field>
+            <field name="sequence">2054</field>
         </record>
 
         <record id="lct_hr.hr_salary_rule_20" model="hr.salary.rule">
@@ -883,7 +883,7 @@ result = rules.NET &gt; categories.NET * 0.10
             </field>
             <field name="quantity">1</field>
             <field name="condition_range">contract.wage</field>
-            <field name="sequence">4010</field>
+            <field name="sequence">2010</field>
         </record>
 
         <record id="lct_hr.hr_salary_rule_22" model="hr.salary.rule">
@@ -945,7 +945,7 @@ result = rules.NET &gt; categories.NET * 0.10
             </field>
             <field name="quantity">1</field>
             <field name="condition_range">contract.wage</field>
-            <field name="sequence">4020</field>
+            <field name="sequence">2020</field>
         </record>
 
         <record id="lct_hr.hr_salary_rule_23" model="hr.salary.rule">
@@ -1276,7 +1276,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_employer_contrib"/>
-            <field name="code">4900</field>
+            <field name="code">2001</field>
             <field name="register_id"></field>
             <field name="note"></field>
             <field name="amount_fix"></field>
@@ -1313,7 +1313,7 @@ result = rules.NET &gt; categories.NET * 0.10
             </field>
             <field name="quantity">1</field>
             <field name="condition_range">contract.wage</field>
-            <field name="sequence">4900</field>
+            <field name="sequence">2001</field>
         </record>
 
         <record id="lct_hr.hr_salary_rule_32" model="hr.salary.rule">
@@ -1322,7 +1322,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_employer_contrib"/>
-            <field name="code">4901</field>
+            <field name="code">2011</field>
             <field name="register_id"></field>
             <field name="note"></field>
             <field name="amount_fix"></field>
@@ -1359,7 +1359,53 @@ result = rules.NET &gt; categories.NET * 0.10
             </field>
             <field name="quantity">1</field>
             <field name="condition_range">contract.wage</field>
-            <field name="sequence">4901</field>
+            <field name="sequence">2011</field>
+        </record>
+
+        <record id="lct_hr.hr_salary_rule_33" model="hr.salary.rule">
+            <field name="name">Total Costing</field>
+            <field name="amount_select">code</field>
+            <field name="active">True</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_total_costing"/>
+            <field name="code">    </field>
+            <field name="register_id"></field>
+            <field name="note"></field>
+            <field name="amount_fix"></field>
+            <field name="condition_range_max"></field>
+            <field name="condition_range_min"></field>
+            <field name="parent_rule_id"></field>
+            <field name="amount_percentage"></field>
+            <field name="amount_percentage_base">100</field>
+            <field name="amount_python_compute">
+# Available variables:
+#----------------------
+# payslip: object containing the payslips
+# employee: hr.employee object
+# contract: hr.contract object
+# rules: object containing the rules code (previously computed)
+# categories: object containing the computed salary rule categories (sum of amount of all rules belonging to that category).
+# worked_days: object containing the computed worked days.
+# inputs: object containing the computed inputs.
+# Note: returned value have to be set in the variable 'result'
+result = categories.GROSS + categories.CNSS + categories.TCS + categories.IRPP + categories.PROFTAX
+            </field>
+            <field name="condition_python">
+# Available variables:
+#----------------------
+# payslip: object containing the payslips
+# employee: hr.employee object
+# contract: hr.contract object
+# rules: object containing the rules code (previously computed)
+# categories: object containing the computed salary rule categories (sum of amount of all rules belonging to that category).
+# worked_days: object containing the computed worked days
+# inputs: object containing the computed inputs
+# Note: returned value have to be set in the variable 'result'
+result = rules.NET &gt; categories.NET * 0.10
+            </field>
+            <field name="quantity">1</field>
+            <field name="condition_range">contract.wage</field>
+            <field name="sequence">2040</field>
         </record>
 
 
