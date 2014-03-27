@@ -1,7 +1,6 @@
 TODO:
 =====
 * 13th month
-* French translation of salary rule categories
 
 DONE:
 =====
@@ -28,6 +27,7 @@ DONE:
 * Make base wage "unique": ir.config_parameter and get_param()
 * Figure out how to generate/print all payslips at once => cron job
 * Footer under payslip report, improve layout
+* French translation of salary rule categories
 
 N/A:
 ====

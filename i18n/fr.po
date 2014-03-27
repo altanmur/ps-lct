@@ -215,6 +215,7 @@ msgstr "Indemnité de départ à la retraite"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_4
+#: model:hr.salary.rule.category,name:hr_payroll.BASIC
 msgid "Basic"
 msgstr "Salaire de base"
 
@@ -259,31 +260,37 @@ msgstr "Autres indemnités"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_12
+#: model:hr.salary.rule.category,name:hr_payroll.GROSS
 msgid "Gross"
 msgstr "Brut"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_13
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_cnss
 msgid "CNSS"
 msgstr "CNSS"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_14
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_proftax
 msgid "Professional Tax"
 msgstr "Taxe sur salaire"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_15
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_taxal
 msgid "Tax Allowance"
 msgstr "Abattement"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_16
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_dependents
 msgid "Dependents"
 msgstr "Personnes à charge"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_17
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_pension
 msgid "Pension or Annuities"
 msgstr "Pension ou Rentes"
 
@@ -299,16 +306,19 @@ msgstr "Assurance-vie"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_20
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_nts
 msgid "NTS"
 msgstr "Revenu Net Taxable"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_21
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_tcs
 msgid "TCS"
 msgstr "TCS"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_22
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_irpp
 msgid "IRPP"
 msgstr "IRPP"
 
@@ -327,11 +337,13 @@ msgstr "Remboursement de prêt"
 #. module: lct_hr
 #: field:hr.employee,other_deductions:0
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_25
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_other_ded
 msgid "Other deductions"
 msgstr "Autres retenues"
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_26
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_other_ded_tot
 msgid "Total Other deductions"
 msgstr "Total Autres retenues"
 
@@ -361,6 +373,7 @@ msgstr "Indemnité de départ à la retraite"
 #. module: lct_hr
 #: field:hr.employee,pension_allowance:0
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_33
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_total_costing
 msgid "Total Costing"
 msgstr "Total Cotisations"
 
@@ -399,3 +412,29 @@ msgstr "Salaire de base"
 #: field:hr.payslip.employees,select_all_active_employees:0
 msgid "Generate for all active employees"
 msgstr "Génère pour tous les employés actifs"
+
+#. module: lct_hr
+#: model:ir.actions.act_window,name:lct_hr.action_payslip_report
+#: model:ir.model,name:lct_hr.model_payslip_report
+msgid "Payslip report"
+msgstr "Rapport bulletin de paie"
+
+#. module: lct_hr
+#: model:ir.model,name:lct_hr.model_hr_salary_rule_category
+msgid "Salary Rule Category"
+msgstr "Catégorie de règle salariale"
+
+#. module: lct_hr
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_nts_ded
+msgid "NTS Deductions"
+msgstr "Retenues NTS"
+
+#. module: lct_hr
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_employer_contrib
+msgid "Employer Contributions"
+msgstr "Contributions Patronales"
+
+#. module: lct_hr
+#: model:hr.salary.rule.category,name:hr_payroll.ALW
+msgid "Allowance"
+msgstr "Indemnités"

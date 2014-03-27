@@ -104,6 +104,7 @@ msgstr ""
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_22
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_irpp
 msgid "IRPP"
 msgstr ""
 
@@ -115,6 +116,7 @@ msgstr ""
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_13
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_cnss
 msgid "CNSS"
 msgstr ""
 
@@ -167,6 +169,7 @@ msgstr ""
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_21
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_tcs
 msgid "TCS"
 msgstr ""
 
@@ -183,6 +186,7 @@ msgstr ""
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_26
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_other_ded_tot
 msgid "Total Other deductions"
 msgstr ""
 
@@ -195,6 +199,7 @@ msgstr ""
 #. module: lct_hr
 #: field:hr.employee,other_deductions:0
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_25
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_other_ded
 msgid "Other deductions"
 msgstr ""
 
@@ -277,6 +282,7 @@ msgstr ""
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_4
+#: model:hr.salary.rule.category,name:hr_payroll.BASIC
 msgid "Basic"
 msgstr ""
 
@@ -356,6 +362,7 @@ msgstr ""
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_20
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_nts
 msgid "NTS"
 msgstr ""
 
@@ -378,11 +385,13 @@ msgstr ""
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_12
+#: model:hr.salary.rule.category,name:hr_payroll.GROSS
 msgid "Gross"
 msgstr ""
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_14
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_proftax
 msgid "Professional Tax"
 msgstr ""
 
@@ -394,6 +403,7 @@ msgstr ""
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_15
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_taxal
 msgid "Tax Allowance"
 msgstr ""
 
@@ -442,6 +452,7 @@ msgstr ""
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_16
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_dependents
 msgid "Dependents"
 msgstr ""
 
@@ -453,6 +464,7 @@ msgstr ""
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_17
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_pension
 msgid "Pension or Annuities"
 msgstr ""
 
@@ -488,5 +500,32 @@ msgstr ""
 #. module: lct_hr
 #: field:hr.employee,pension_allowance:0
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_33
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_total_costing
 msgid "Total Costing"
+msgstr ""
+
+#. module: lct_hr
+#: model:ir.actions.act_window,name:lct_hr.action_payslip_report
+#: model:ir.model,name:lct_hr.model_payslip_report
+msgid "Payslip report"
+msgstr ""
+
+#. module: lct_hr
+#: model:ir.model,name:lct_hr.model_hr_salary_rule_category
+msgid "Salary Rule Category"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_nts_ded
+msgid "NTS Deductions"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_employer_contrib
+msgid "Employer Contributions"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule.category,name:hr_payroll.ALW
+msgid "Allowance"
 msgstr ""
