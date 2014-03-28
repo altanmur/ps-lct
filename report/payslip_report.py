@@ -94,7 +94,7 @@ class payslip_report(TransientModel):
                 style_bold_boxed = easyxf('font: bold on, height 200; align: wrap on; border: top thin, bottom thin, left thin, right thin')
                 style_bold_center_boxed = easyxf('font: bold on, height 200; align: horiz center, wrap on; border: top thin, bottom thin, left thin, right thin')
                 style_bold_right_boxed = easyxf('font: bold on, height 200; align: horiz right, wrap on; border: top thin, bottom thin, left thin, right thin')
-                style_leftbox = easyxf('font: height 200; border: top thin, bottom thin, left thin')
+                style_leftbox = easyxf('font: height 200; border: top thin, bottom thin, left thin; align: vert top')
                 style_rightbox = easyxf('font: height 200; border: top thin, bottom thin, right thin')
                 style_leftfence = easyxf('font: height 200; border: left thin')
                 style_rightfence = easyxf('font: height 200; border: right thin')
@@ -213,7 +213,7 @@ class payslip_report(TransientModel):
                             style_center_boxed,
                             style_center_boxed,
                         ]
-                    elif line.sequence in [1999, 2040, 3100]:
+                    elif line.sequence in [1999, 2040, 2041, 3100]:
                         styles = [
                             style_bold_center_fenced,
                             style_bold_fenced,
@@ -221,10 +221,10 @@ class payslip_report(TransientModel):
                             style_bold_fenced,
                             style_bold_right_fenced,
                             style_bold_right_fenced,
-                            style_center_fenced,
-                            style_center_fenced,
-                            style_center_fenced,
-                            style_center_fenced,
+                            style_bold_right_fenced,
+                            style_bold_right_fenced,
+                            style_bold_right_fenced,
+                            style_bold_right_fenced,
                         ]
                     else:
                         styles = [
@@ -233,29 +233,37 @@ class payslip_report(TransientModel):
                             style_fenced,
                             style_fenced,
                             style_right_fenced,
-                            style_fenced,
-                            style_fenced,
                             style_right_fenced,
-                            style_fenced,
-                            style_fenced,
+                            style_right_fenced,
+                            style_right_fenced,
+                            style_right_fenced,
+                            style_right_fenced,
                         ]
                     sheet1.write(row, 0, _(line.code), styles[0])
                     sheet1.write_merge(row, row, 1, 2, _(line.name), styles[1])
                     sheet1.write(row, 3, len(payslip.worked_days_line_ids), styles[2])
                     sheet1.write(row, 4, line.amount, styles[3])
-                    if line.salary_rule_id.category_id.name != 'Employer Contributions':
+                    if line.salary_rule_id.category_id.code in ['EMPLOYER_CONTRIB', 'TOTAL_EMPLOYER_CONTRIB']:
+                        sheet1.write(row, 5, '', styles[4])
+                        sheet1.write(row, 6, '', styles[5])
+                        sheet1.write(row, 7, '', styles[6])
+                        sheet1.write(row, 8, '', styles[9])
+                        sheet1.write(row, 9, '%.2f%%' % (line.amount_percentage or 100,), styles[8])
+                        sheet1.write(row, 10, line.total, styles[7])
+                    elif line.salary_rule_id.category_id.code in ['CNSS', 'TCS', 'IRPP', 'PROFTAX',
+                            'TOTAL_EMPLOYEE_CONTRIB', 'OTHER_DED', 'OTHER_DED_TOT']:
+                        sheet1.write(row, 5, '%.2f%%' % (line.amount_percentage or 100,), styles[4])
+                        sheet1.write(row, 6, '', styles[5])
+                        sheet1.write(row, 7, line.total, styles[6])
+                        sheet1.write(row, 8, '', styles[7])
+                        sheet1.write(row, 9, '', styles[8])
+                        sheet1.write(row, 10, '', styles[9])
+                    else:
                         sheet1.write(row, 5, '%.2f%%' % (line.amount_percentage or 100,), styles[4])
                         sheet1.write(row, 6, line.total, styles[5])
                         sheet1.write(row, 7, '', styles[6])
                         sheet1.write(row, 8, '', styles[7])
                         sheet1.write(row, 9, '', styles[8])
-                        sheet1.write(row, 10, '', styles[9])
-                    else:
-                        sheet1.write(row, 5, '', styles[4])
-                        sheet1.write(row, 6, '', styles[5])
-                        sheet1.write(row, 7, '', styles[6])
-                        sheet1.write(row, 8, '%.2f%%' % (line.amount_percentage or 100,), styles[7])
-                        sheet1.write(row, 9, line.total, styles[8])
                         sheet1.write(row, 10, '', styles[9])
                 ##############
                 # BOTTOM BOX #

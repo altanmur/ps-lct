@@ -383,9 +383,16 @@ msgstr "Taxe sur salaire"
 #. module: lct_hr
 #: field:hr.employee,pension_allowance:0
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_33
-#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_total_costing
-msgid "Total Costing"
-msgstr "Total Cotisations"
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_total_employer_contrib
+msgid "Total Employer Contributions"
+msgstr "Total Cotisations Patronales"
+
+#. module: lct_hr
+#: field:hr.employee,pension_allowance:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_34
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_total_employee_contrib
+msgid "Total Employee Contributions"
+msgstr "Total Cotisations Salariales"
 
 #. module: lct_hr
 #: sql_constraint:hr.employee:0

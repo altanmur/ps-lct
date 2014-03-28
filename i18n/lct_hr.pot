@@ -501,7 +501,7 @@ msgstr ""
 #: field:hr.employee,pension_allowance:0
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_33
 #: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_total_costing
-msgid "Total Costing"
+msgid "Total Contributions"
 msgstr ""
 
 #. module: lct_hr
@@ -528,4 +528,11 @@ msgstr ""
 #. module: lct_hr
 #: model:hr.salary.rule.category,name:hr_payroll.ALW
 msgid "Allowance"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.employee,pension_allowance:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_34
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_total_employee_contrib
+msgid "Total Employee Contributions"
 msgstr ""

@@ -477,7 +477,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_max"></field>
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
-            <field name="amount_percentage">-4</field>
+            <field name="amount_percentage">4</field>
             <field name="amount_percentage_base">categories.GROSS</field>
             <field name="amount_python_compute">
 # Available variables:
@@ -490,7 +490,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = categories.GROSS * -0.04
+result = categories.GROSS * 0.04
             </field>
             <field name="condition_python">
 # Available variables:
@@ -523,7 +523,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_max"></field>
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
-            <field name="amount_percentage">-10</field>
+            <field name="amount_percentage">10</field>
             <field name="amount_percentage_base">categories.GROSS</field>
             <field name="amount_python_compute">
 # Available variables:
@@ -536,7 +536,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = (categories.GROSS + categories.CNSS) * -0.1
+result = (categories.GROSS - categories.CNSS) * 0.1
             </field>
             <field name="condition_python">
 # Available variables:
@@ -582,11 +582,11 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-base = categories.GROSS + categories.CNSS + categories.PROFTAX
+base = categories.GROSS - categories.CNSS - categories.PROFTAX
 if base > 10000000/12:
-    result = -0.15 * 10000000/12 - 0.05 * (base-10000000/12)
+    result = 0.15 * 10000000/12 + 0.05 * (base-10000000/12)
 else:
-    result =  base * -0.05
+    result =  base * 0.05
             </field>
             <field name="condition_python">
 # Available variables:
@@ -632,7 +632,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = min(36000, (6000)*employee.nbr_dependents) * -1
+result = min(36000, (6000)*employee.nbr_dependents)
             </field>
             <field name="condition_python">
 # Available variables:
@@ -678,7 +678,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = contract.pension_annuities * -1
+result = contract.pension_annuities
             </field>
             <field name="condition_python">
 # Available variables:
@@ -724,7 +724,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = employee.mortgage_interests * -1
+result = employee.mortgage_interests
             </field>
             <field name="condition_python">
 # Available variables:
@@ -770,7 +770,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = contract.life_insurance * -1
+result = contract.life_insurance
             </field>
             <field name="condition_python">
 # Available variables:
@@ -816,7 +816,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = 1000 * ((categories.GROSS + categories.CNSS + categories.PROFTAX + categories.TAXAL + categories.DEPENDENTS + categories.PENSION)//1000)
+result = 1000 * ((categories.GROSS - categories.CNSS - categories.PROFTAX - categories.TAXAL - categories.DEPENDENTS - categories.PENSION)//1000)
             </field>
             <field name="condition_python">
 # Available variables:
@@ -866,7 +866,6 @@ if categories.NTS &lt;= 75000:
     result = 250
 else:
     result = 125
-result = -result
             </field>
             <field name="condition_python">
 # Available variables:
@@ -928,7 +927,6 @@ if nts &gt; 4000000/12:
     nts = 4000000/12
 if nts &gt; 75000:
     result += 0.07 * (nts - 75000)
-result = -result
             </field>
             <field name="condition_python">
 # Available variables:
@@ -974,7 +972,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = employee.advance_on_salary * -1
+result = employee.advance_on_salary
             </field>
             <field name="condition_python">
 # Available variables:
@@ -1020,7 +1018,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = employee.loan_repayments * -1
+result = employee.loan_repayments
             </field>
             <field name="condition_python">
 # Available variables:
@@ -1066,7 +1064,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = employee.other_deductions * -1
+result = employee.other_deductions
             </field>
             <field name="condition_python">
 # Available variables:
@@ -1158,7 +1156,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = 1000 * ((categories.GROSS + categories.TCS + categories.IRPP + categories.PROFTAX + categories.CNSS + categories.OTHER_DED_TOT)//1000)
+result = 1000 * ((categories.GROSS - categories.TCS - categories.IRPP - categories.PROFTAX - categories.CNSS - categories.OTHER_DED_TOT)//1000)
             </field>
             <field name="condition_python">
 # Available variables:
@@ -1363,11 +1361,11 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_33" model="hr.salary.rule">
-            <field name="name">Total Costing</field>
+            <field name="name">Total Employer Contributions</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
-            <field name="category_id" ref="lct_hr.hr_salary_rule_category_total_costing"/>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_total_employer_contrib"/>
             <field name="code">    </field>
             <field name="register_id"></field>
             <field name="note"></field>
@@ -1388,7 +1386,54 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = categories.GROSS + categories.CNSS + categories.TCS + categories.IRPP + categories.PROFTAX
+result = categories.EMPLOYER_CONTRIB
+            </field>
+            <field name="condition_python">
+# Available variables:
+#----------------------
+# payslip: object containing the payslips
+# employee: hr.employee object
+# contract: hr.contract object
+# rules: object containing the rules code (previously computed)
+# categories: object containing the computed salary rule categories (sum of amount of all rules belonging to that category).
+# worked_days: object containing the computed worked days
+# inputs: object containing the computed inputs
+# Note: returned value have to be set in the variable 'result'
+result = rules.NET &gt; categories.NET * 0.10
+            </field>
+            <field name="quantity">1</field>
+            <field name="condition_range">contract.wage</field>
+            <field name="sequence">2041</field>
+        </record>
+
+
+        <record id="lct_hr.hr_salary_rule_34" model="hr.salary.rule">
+            <field name="name">Total Employee Contributions</field>
+            <field name="amount_select">code</field>
+            <field name="active">True</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_total_employee_contrib"/>
+            <field name="code">     </field>
+            <field name="register_id"></field>
+            <field name="note"></field>
+            <field name="amount_fix"></field>
+            <field name="condition_range_max"></field>
+            <field name="condition_range_min"></field>
+            <field name="parent_rule_id"></field>
+            <field name="amount_percentage"></field>
+            <field name="amount_percentage_base">100</field>
+            <field name="amount_python_compute">
+# Available variables:
+#----------------------
+# payslip: object containing the payslips
+# employee: hr.employee object
+# contract: hr.contract object
+# rules: object containing the rules code (previously computed)
+# categories: object containing the computed salary rule categories (sum of amount of all rules belonging to that category).
+# worked_days: object containing the computed worked days.
+# inputs: object containing the computed inputs.
+# Note: returned value have to be set in the variable 'result'
+result = categories.CNSS + categories.TCS + categories.IRPP + categories.PROFTAX
             </field>
             <field name="condition_python">
 # Available variables:
@@ -1407,7 +1452,6 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range">contract.wage</field>
             <field name="sequence">2040</field>
         </record>
-
 
     </data>
 </openerp>
