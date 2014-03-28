@@ -168,7 +168,8 @@ class payslip_report(TransientModel):
                 sheet1.write(5, 8, u'N° CNSS', style_center_boxed)
                 sheet1.write(6, 8, payslip.employee_id.cnss_nbr, style_center_boxed)
                 sheet1.write(5, 9, u'ANCIENNETE', style_center_boxed)
-                sheet1.write(6, 9, '%dA, %dM, %dJ' % self.pool.get('hr.employee').get_seniority_ymd(cr, uid, payslip.employee_id.id, context=context), style_center_boxed)
+                sen_yr, sen_mon, sen_day = self.pool.get('hr.employee').get_seniority_ymd(cr, uid, payslip.employee_id.id, context=context)
+                sheet1.write(6, 9, '%dA, %dM, %dJ' % (sen_yr, sen_mon, sen_day), style_center_boxed)
                 sheet1.write(5, 10, u'HORAIRE', style_center_boxed)
                 sheet1.write(6, 10, payslip.contract_id.working_hours.name, style_center_boxed)
                 sheet1.write_merge(7, 9, 8, 10, '', style_center_boxed)
@@ -294,7 +295,8 @@ class payslip_report(TransientModel):
                 sheet1.write_merge(start_row+5, start_row+6, 6, 10, '', style_rightfence)
                 sheet1.write_merge(start_row+7, start_row+9, 0, 1, u'Commentaire:', style_leftbox)
                 sheet1.write_merge(start_row+7, start_row+9, 2, 10, '', style_rightbox)
-                sheet1.write_merge(start_row+10, start_row+10, 0, 10, u'Pour vous aider à faire valoir vos droits, conservez ce bulletin de paye sans limitation de durée', style_bold_center_boxed)
+                sheet1.write_merge(start_row+10, start_row+10, 0, 10,
+                    u'Pour vous aider à faire valoir vos droits, conservez ce bulletin de paye sans limitation de durée', style_bold_center_boxed)
 
 
                 fn_report = "%s - %s - %s (%s).xls" % (report.datas_fname[:-4], payslip.employee_id.reg_nbr, payslip.employee_id.name, payslip.id)
