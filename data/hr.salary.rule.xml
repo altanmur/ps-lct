@@ -833,7 +833,7 @@ result = rules.NET &gt; categories.NET * 0.10
             </field>
             <field name="quantity">1</field>
             <field name="condition_range">contract.wage</field>
-            <field name="sequence">2099</field>
+            <field name="sequence">2097</field>
         </record>
 
         <record id="lct_hr.hr_salary_rule_21" model="hr.salary.rule">
@@ -943,7 +943,7 @@ result = rules.NET &gt; categories.NET * 0.10
             </field>
             <field name="quantity">1</field>
             <field name="condition_range">contract.wage</field>
-            <field name="sequence">2020</field>
+            <field name="sequence">2098</field>
         </record>
 
         <record id="lct_hr.hr_salary_rule_23" model="hr.salary.rule">
@@ -1357,7 +1357,7 @@ result = rules.NET &gt; categories.NET * 0.10
             </field>
             <field name="quantity">1</field>
             <field name="condition_range">contract.wage</field>
-            <field name="sequence">2030</field>
+            <field name="sequence">2099</field>
         </record>
 
         <record id="lct_hr.hr_salary_rule_33" model="hr.salary.rule">

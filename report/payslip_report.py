@@ -91,9 +91,7 @@ class payslip_report(TransientModel):
 
                 xls = Workbook()
                 style_default = easyxf('font: height 200')
-                style_bold_boxed = easyxf('font: bold on, height 200; align: wrap on; border: top thin, bottom thin, left thin, right thin')
                 style_bold_center_boxed = easyxf('font: bold on, height 200; align: horiz center, wrap on; border: top thin, bottom thin, left thin, right thin')
-                style_bold_right_boxed = easyxf('font: bold on, height 200; align: horiz right, wrap on; border: top thin, bottom thin, left thin, right thin')
                 style_leftbox = easyxf('font: height 200; border: top thin, bottom thin, left thin; align: vert top')
                 style_rightbox = easyxf('font: height 200; border: top thin, bottom thin, right thin')
                 style_leftfence = easyxf('font: height 200; border: left thin')

@@ -1,6 +1,5 @@
 TODO:
 =====
-* Payslip report in PDF
 * 13th month
 
 DONE:
@@ -43,6 +42,7 @@ N/A:
 ====
 * Create export fieldset for employees containing id, name, loan repayment, advance salary, other deductions, overtime (all in monetary terms, no hours for overtime since the formula is complex and not user-friendly to capture through the screens)  ==> Short manual action, no need to figure out how to export that into a data file.
 * Move base salary to XML so it doesn't autoupdate with the module
+* Payslip report in PDF => After discussion with Thibault, we won't do this. It removes flexibility and adds no security at all (which apparently is the reason it was requested)
 
 
 Terms:
