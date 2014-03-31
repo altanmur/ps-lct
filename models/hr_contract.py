@@ -65,11 +65,11 @@ class hr_contract(osv.osv):
         'bonus': fields.float('Bonus', digits=(16,2)),  # Sursalaires
         'pension_annuities': fields.float('Pension or annuities', digits=(16,2)),
         'life_insurance': fields.float('Life insurance', digits=(16,2)),
-        # 'category': fields.selection([
-        #     ('1','1'),
-        #     ('2','2'),
-        #     ('3','3'),
-        #     ], 'Category', select=True),
+        'category': fields.function(lambda self, *args, **kwargs: self._get_category(*args, **kwargs),
+                                 method=True,
+                                 type='char',
+                                 string='Category',
+                                 store=True),
         'hr_class': fields.selection([
             ('EA','EA'),
             ('EB','EB'),
@@ -127,8 +127,12 @@ class hr_contract(osv.osv):
             res.update({contract_id: wage})
         return res
 
-    def get_cat(self, hr_class):
-        return class_cat[hr_class].decode('utf-8') or '-'
+    def _get_category(self, cr, uid, ids, field_name, args, context=None):
+        res = dict.fromkeys(ids, False)
+        for contract_id in ids:
+            hr_class = self.read(cr, uid, contract_id, ['hr_class'], context)['hr_class'] or 'EA'
+            res.update({contract_id: class_cat[hr_class]})
+        return res
 
     def auto_promote(self, cr, uid, force_run=False):
         active_contract_ids = self.search(cr, uid, ['|', ('date_end', '>', datetime.today().strftime('%Y-%m-%d')), ('date_end', '=', False)])
