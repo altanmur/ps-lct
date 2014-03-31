@@ -286,9 +286,11 @@ class payslip_report(TransientModel):
                 sheet1.write(start_row+6, 4, benefits_in_kind, style_rightfence)
                 # Other stuff
                 sheet1.write_merge(start_row+1, start_row+1, 5, 10, u'MODE DE REGLEMENT', style_bold_center_fenced)
-                sheet1.write_merge(start_row+2, start_row+3, 5, 10, u'Virement bancaire', style_center_fenced)
+                sheet1.write_merge(start_row+2, start_row+2, 5, 10, u'Virement bancaire', style_center_fenced)
+                sheet1.write(start_row+3, 5, u'Banque', style_leftfence)
+                sheet1.write_merge(start_row+3, start_row+3, 6, 10, payslip.employee_id.bank_account_id.bank_name, style_rightfence)
                 sheet1.write(start_row+4, 5, u'Cpte n°', style_leftfence)
-                sheet1.write_merge(start_row+4, start_row+4, 6, 10, payslip.employee_id.bank_account_id.name, style_rightfence)
+                sheet1.write_merge(start_row+4, start_row+4, 6, 10, payslip.employee_id.bank_account_id.acc_number, style_rightfence)
                 sheet1.write_merge(start_row+5, start_row+6, 6, 10, '', style_rightfence)
                 sheet1.write_merge(start_row+7, start_row+9, 0, 1, u'Commentaire:', style_leftbox)
                 sheet1.write_merge(start_row+7, start_row+9, 2, 10, '', style_rightbox)

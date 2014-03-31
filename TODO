@@ -1,7 +1,6 @@
 TODO:
 =====
 * Payslip report in PDF
-* Category field (functional) on hr.contract in case they want to report on this.
 * 13th month
 
 DONE:
@@ -38,6 +37,7 @@ DONE:
 * Sequence of 'Taxe sur salaire' should be 2030 and it should appear after IRPP.
 * Hide from payslip/report: battement, personnes à charge, pension ou rente, intérêts sur prêts, assurance-vie , RNT, avantages en nature, indemnités de départ à la retraite, frais professionnels , net (only as line from report, but keep on payslip)
 * Date de paiement: last day of month
+* Category field (functional) on hr.contract in case they want to report on this.
 
 N/A:
 ====
