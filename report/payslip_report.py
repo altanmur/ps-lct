@@ -201,18 +201,7 @@ class payslip_report(TransientModel):
                 for row_offset, line in enumerate(lines):
                     row = 13 + row_offset
                     if line.sequence == 5000:
-                        styles = [
-                            style_bold_center_boxed,
-                            style_bold_boxed,
-                            style_bold_boxed,
-                            style_bold_boxed,
-                            style_bold_right_boxed,
-                            style_bold_right_boxed,
-                            style_center_boxed,
-                            style_center_boxed,
-                            style_center_boxed,
-                            style_center_boxed,
-                        ]
+                        continue
                     elif line.sequence in [1999, 2040, 2041, 3100]:
                         styles = [
                             style_bold_center_fenced,
@@ -268,7 +257,7 @@ class payslip_report(TransientModel):
                 ##############
                 # BOTTOM BOX #
                 ##############
-                start_row = 13 + len(lines)
+                start_row = 13 + len(lines) - 1 # Account for Net not appearing among the lines
                 # Header
                 sheet1.write_merge(start_row, start_row, 0, 2, u'Montants', style_center_boxed)
                 sheet1.write_merge(start_row, start_row, 3, 4, u'de la période', style_center_boxed)

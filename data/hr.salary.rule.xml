@@ -516,7 +516,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_proftax"/>
-            <field name="code">2030</field>
+            <field name="code">2011</field>
             <field name="register_id"></field>
             <field name="note"></field>
             <field name="amount_fix"></field>
@@ -553,14 +553,14 @@ result = rules.NET &gt; categories.NET * 0.10
             </field>
             <field name="quantity">1</field>
             <field name="condition_range">contract.wage</field>
-            <field name="sequence">2030</field>
+            <field name="sequence">2011</field>
         </record>
 
         <record id="lct_hr.hr_salary_rule_15" model="hr.salary.rule">
             <field name="name">Tax Allowance</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
-            <field name="appears_on_payslip">True</field>
+            <field name="appears_on_payslip"></field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_taxal"/>
             <field name="code">2050</field>
             <field name="register_id"></field>
@@ -610,7 +610,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="name">Dependents</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
-            <field name="appears_on_payslip">True</field>
+            <field name="appears_on_payslip"></field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_dependents"/>
             <field name="code">2051</field>
             <field name="register_id"></field>
@@ -656,7 +656,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="name">Pension or Annuities</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
-            <field name="appears_on_payslip">True</field>
+            <field name="appears_on_payslip"></field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_pension"/>
             <field name="code">2053</field>
             <field name="register_id"></field>
@@ -702,7 +702,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="name">Interests on mortgages</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
-            <field name="appears_on_payslip">True</field>
+            <field name="appears_on_payslip"></field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_pension"/>
             <field name="code">2052</field>
             <field name="register_id"></field>
@@ -748,7 +748,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="name">Life Insurance</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
-            <field name="appears_on_payslip">True</field>
+            <field name="appears_on_payslip"></field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_pension"/>
             <field name="code">2054</field>
             <field name="register_id"></field>
@@ -794,7 +794,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="name">NTS</field>
             <field name="amount_select">code</field>
             <field name="active">True</field>
-            <field name="appears_on_payslip">True</field>
+            <field name="appears_on_payslip"></field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_nts"/>
             <field name="code">NTS</field>
             <field name="register_id"></field>
@@ -1180,7 +1180,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="name">Benefits in kind</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
-            <field name="appears_on_payslip">True</field>
+            <field name="appears_on_payslip"></field>
             <field name="category_id" ref="hr_payroll.ALW"/>
             <field name="code">1009</field>
             <field name="register_id"></field>
@@ -1226,7 +1226,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="name">Pension allowance</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
-            <field name="appears_on_payslip">True</field>
+            <field name="appears_on_payslip"></field>
             <field name="category_id" ref="hr_payroll.ALW"/>
             <field name="code">1010</field>
             <field name="register_id"></field>
@@ -1320,7 +1320,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="active">True</field>
             <field name="appears_on_payslip">True</field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_employer_contrib"/>
-            <field name="code">2011</field>
+            <field name="code">2030</field>
             <field name="register_id"></field>
             <field name="note"></field>
             <field name="amount_fix"></field>
@@ -1357,7 +1357,7 @@ result = rules.NET &gt; categories.NET * 0.10
             </field>
             <field name="quantity">1</field>
             <field name="condition_range">contract.wage</field>
-            <field name="sequence">2011</field>
+            <field name="sequence">2030</field>
         </record>
 
         <record id="lct_hr.hr_salary_rule_33" model="hr.salary.rule">
