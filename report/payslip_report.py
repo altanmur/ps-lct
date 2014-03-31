@@ -160,7 +160,7 @@ class payslip_report(TransientModel):
                 ###################
                 # Starts at r0, c8
                 sheet1.write(0, 9, u'Date de paiement:', style_leftbox)
-                sheet1.write(0, 10, '???', style_rightbox)
+                sheet1.write(0, 10, payslip.date_to, style_rightbox)
                 sheet1.write_merge(1, 1, 8, 10, u'NOM & PRENOMS', style_center_fenced)
                 sheet1.write_merge(2, 2, 8, 10, payslip.employee_id.name, style_center_fenced)
                 sheet1.write_merge(3, 3, 8, 10, u'ADRESSE', style_bold_center_fenced)
@@ -236,8 +236,8 @@ class payslip_report(TransientModel):
                         sheet1.write(row, 5, '', styles[4])
                         sheet1.write(row, 6, '', styles[5])
                         sheet1.write(row, 7, '', styles[6])
-                        sheet1.write(row, 8, '', styles[9])
-                        sheet1.write(row, 9, '%.2f%%' % (line.amount_percentage or 100,), styles[8])
+                        sheet1.write(row, 8, '%.2f%%' % (line.amount_percentage or 100,), styles[8])
+                        sheet1.write(row, 9, '', styles[9])
                         sheet1.write(row, 10, line.total, styles[7])
                     elif line.salary_rule_id.category_id.code in ['CNSS', 'TCS', 'IRPP', 'PROFTAX',
                             'TOTAL_EMPLOYEE_CONTRIB', 'OTHER_DED', 'OTHER_DED_TOT']:

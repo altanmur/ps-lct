@@ -1,5 +1,7 @@
 TODO:
 =====
+* Payslip report in PDF
+* Category field (functional) on hr.contract in case they want to report on this.
 * 13th month
 
 DONE:
@@ -34,6 +36,8 @@ DONE:
 * The total of CNSS 17.5 and TS 3 should appear in row 'Total cotisations', also with positive sign, in the column 'retenue' but in the section 'Part patronale'
 * CNSS, TCS, IRPP, Avance sur salaire, remboursement de pret, autres retenues, total autres retenues: make positive (and adapt rules that use them) + put in Retenues column of their respective Salariale/Patronale section
 * Sequence of 'Taxe sur salaire' should be 2030 and it should appear after IRPP.
+* Hide from payslip/report: battement, personnes à charge, pension ou rente, intérêts sur prêts, assurance-vie , RNT, avantages en nature, indemnités de départ à la retraite, frais professionnels , net (only as line from report, but keep on payslip)
+* Date de paiement: last day of month
 
 N/A:
 ====
