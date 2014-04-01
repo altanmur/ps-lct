@@ -586,7 +586,7 @@ base = categories.GROSS - categories.CNSS - categories.PROFTAX
 if base > 10000000/12:
     result = 0.15 * 10000000/12 + 0.05 * (base-10000000/12)
 else:
-    result =  base * 0.05
+    result =  base * 0.15
             </field>
             <field name="condition_python">
 # Available variables:
