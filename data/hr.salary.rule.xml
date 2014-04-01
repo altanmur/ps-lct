@@ -514,7 +514,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="name">Professional Tax</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
-            <field name="appears_on_payslip">True</field>
+            <field name="appears_on_payslip"></field>
             <field name="category_id" ref="lct_hr.hr_salary_rule_category_proftax"/>
             <field name="code">2011</field>
             <field name="register_id"></field>
