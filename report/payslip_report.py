@@ -229,24 +229,31 @@ class payslip_report(TransientModel):
                     sheet1.write(row, 0, _(line.code), styles[0])
                     sheet1.write_merge(row, row, 1, 2, _(line.name), styles[1])
                     sheet1.write(row, 3, len(payslip.worked_days_line_ids), styles[2])
-                    sheet1.write(row, 4, line.amount, styles[3])
+                    # We only write base/taux when taux != 100%
+                    pct = line.amount_percentage or 100
+                    if pct != 100:
+                        base = line.amount
+                        tax = '%.2f%%' % (pct,)
+                    else:
+                        base = tax = ''
+                    sheet1.write(row, 4, base, styles[3])
                     if line.salary_rule_id.category_id.code in ['EMPLOYER_CONTRIB', 'TOTAL_EMPLOYER_CONTRIB']:
                         sheet1.write(row, 5, '', styles[4])
                         sheet1.write(row, 6, '', styles[5])
                         sheet1.write(row, 7, '', styles[6])
-                        sheet1.write(row, 8, '%.2f%%' % (line.amount_percentage or 100,), styles[8])
+                        sheet1.write(row, 8, tax, styles[8])
                         sheet1.write(row, 9, '', styles[9])
                         sheet1.write(row, 10, line.total, styles[7])
                     elif line.salary_rule_id.category_id.code in ['CNSS', 'TCS', 'IRPP', 'PROFTAX',
                             'TOTAL_EMPLOYEE_CONTRIB', 'OTHER_DED', 'OTHER_DED_TOT']:
-                        sheet1.write(row, 5, '%.2f%%' % (line.amount_percentage or 100,), styles[4])
+                        sheet1.write(row, 5, tax, styles[4])
                         sheet1.write(row, 6, '', styles[5])
                         sheet1.write(row, 7, line.total, styles[6])
                         sheet1.write(row, 8, '', styles[7])
                         sheet1.write(row, 9, '', styles[8])
                         sheet1.write(row, 10, '', styles[9])
                     else:
-                        sheet1.write(row, 5, '%.2f%%' % (line.amount_percentage or 100,), styles[4])
+                        sheet1.write(row, 5, tax, styles[4])
                         sheet1.write(row, 6, line.total, styles[5])
                         sheet1.write(row, 7, '', styles[6])
                         sheet1.write(row, 8, '', styles[7])

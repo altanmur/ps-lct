@@ -1,18 +1,5 @@
 TODO:
 =====
-* Show Taux only for following payslip lines, not for the others:
-    * Salaire de base
-    * Primed'ancienneté
-    * Sursalaires
-    * Heures supplémentaires
-    * Indemnité de déplacement
-    * Indemnité de représentation
-    * Indemnité de sujetion particulière
-    * Indemnité de rendement
-    * Autres indemnités
-    * CNSS
-    * CNSS patronale
-    * Taxe sur salaire
 * Payslip report: PDF instead of XLS, for batch printing.
 * 13th month
 
@@ -53,6 +40,7 @@ DONE:
 * Category field (functional) on hr.contract in case they want to report on this.
 * Move TAXAL, DEPENDENTS, PENSION rules up, right after PROFTAX. And NTS right after that.
 * Then, move TCS/IRPP back to their proper locations on the payslip.
+* Show Base/Taux only for payslip lines where Taux != 100%
 
 N/A:
 ====
