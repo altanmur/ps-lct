@@ -1,5 +1,21 @@
 TODO:
 =====
+* Move TAXAL, DEPENDENTS, PENSION rules up, right after PROFTAX. And NTS right after that.
+* Then, move TCS/IRPP back to their proper locations on the payslip.
+* Show Taux only for following payslip lines, not for the others:
+    * Salaire de base
+    * Primed'ancienneté
+    * Sursalaires
+    * Heures supplémentaires
+    * Indemnité de déplacement
+    * Indemnité de représentation
+    * Indemnité de sujetion particulière
+    * Indemnité de rendement
+    * Autres indemnités
+    * CNSS
+    * CNSS patronale
+    * Taxe sur salaire
+* Payslip report: PDF instead of XLS, for batch printing.
 * 13th month
 
 DONE:
@@ -42,7 +58,6 @@ N/A:
 ====
 * Create export fieldset for employees containing id, name, loan repayment, advance salary, other deductions, overtime (all in monetary terms, no hours for overtime since the formula is complex and not user-friendly to capture through the screens)  ==> Short manual action, no need to figure out how to export that into a data file.
 * Move base salary to XML so it doesn't autoupdate with the module
-* Payslip report in PDF => After discussion with Thibault, we won't do this. It removes flexibility and adds no security at all (which apparently is the reason it was requested)
 
 
 Terms:
