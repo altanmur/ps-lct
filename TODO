@@ -1,7 +1,5 @@
 TODO:
 =====
-* Move TAXAL, DEPENDENTS, PENSION rules up, right after PROFTAX. And NTS right after that.
-* Then, move TCS/IRPP back to their proper locations on the payslip.
 * Show Taux only for following payslip lines, not for the others:
     * Salaire de base
     * Primed'ancienneté
@@ -53,6 +51,8 @@ DONE:
 * Hide from payslip/report: battement, personnes à charge, pension ou rente, intérêts sur prêts, assurance-vie , RNT, avantages en nature, indemnités de départ à la retraite, frais professionnels , net (only as line from report, but keep on payslip)
 * Date de paiement: last day of month
 * Category field (functional) on hr.contract in case they want to report on this.
+* Move TAXAL, DEPENDENTS, PENSION rules up, right after PROFTAX. And NTS right after that.
+* Then, move TCS/IRPP back to their proper locations on the payslip.
 
 N/A:
 ====
