@@ -228,7 +228,11 @@ class payslip_report(TransientModel):
                         ]
                     sheet1.write(row, 0, _(line.code), styles[0])
                     sheet1.write_merge(row, row, 1, 2, _(line.name), styles[1])
-                    sheet1.write(row, 3, len(payslip.worked_days_line_ids), styles[2])
+
+                    # This is for phase 2 when they do timesheeting; right now, we leave it empty.
+                    # sheet1.write(row, 3, len(payslip.worked_days_line_ids), styles[2])
+                    sheet1.write(row, 3, '', styles[2])
+
                     # We only write base/taux when taux != 100%
                     pct = line.amount_percentage or 100
                     if pct != 100:
@@ -272,7 +276,9 @@ class payslip_report(TransientModel):
                 # sheet1.write_merge(start_row, start_row, 8, 10, u'CONGES', style_bold_center_boxed)
                 # Numbers
                 sheet1.write(start_row+1, 0, u'Heures Travaillées', style_leftfence)
-                worked_hours = sum([x.number_of_hours for x in payslip.worked_days_line_ids])
+                # Worked hours is 160 for now; we will use real values in phase 2 when we do timesheeting
+                # worked_hours = sum([x.number_of_hours for x in payslip.worked_days_line_ids])
+                worked_hours = 160
                 sheet1.write(start_row+1, 4, worked_hours, style_rightfence)
                 sheet1.write(start_row+2, 0, u'Salaire brut', style_leftfence)
                 gross = sum(x.total for x in lines if x.sequence in [1999])
