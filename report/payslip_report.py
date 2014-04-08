@@ -41,20 +41,14 @@ class payslip_report(TransientModel):
 
     _columns = {
         'export_selected_only': fields.boolean('Export selected payslips only'),
-        'payslip_ids': fields.many2many('hr.payslip', 'payslip_report_payslip_rel', 'report_id', 'payslip_id', 'Payslips'),
         'dt_start': fields.date('Start date'),
         'dt_end': fields.date('End date'),
-        'out_file': fields.binary('Report',readonly=True),
-        'datas_fname': fields.char('File name', 64),
-        'state': fields.selection([('draft', 'Draft'),('done', 'Done')], string="Status"),
     }
 
     _defaults = {
         'export_selected_only': True,
         'dt_start': lambda self, *args, **kwargs: self._get_dt_start(*args, **kwargs),
         'dt_end': lambda self, *args, **kwargs: self._get_dt_end(*args, **kwargs),
-        'datas_fname': 'Bulletin de paie.xls',
-        'state': 'draft',
     }
 
     def _get_dt_start(self, cr, uid, context=None):
@@ -335,3 +329,13 @@ class payslip_report(TransientModel):
                         pass  # We don't want to suddenly stop when something fails; the rest still needs to be deleted
                 os.unlink(fn_report)
             return {'type': 'ir.actions.client', 'tag': 'reload_dialog',}
+
+    def print_report(self, cr, uid, ids, context=None):
+        for report in self.browse(cr, uid, ids, context=context):
+            payslip_ids = []
+            if report.export_selected_only:
+                payslip_ids = context.get('active_ids')
+            else:
+                payslip_ids = self.pool.get('hr.payslip').search(cr, uid, [('date_from', '>=', report.dt_start), ('date_to', '<=', report.dt_end)], context=context)
+            context.update({'active_ids': payslip_ids})
+            return {'type': 'ir.actions.report.xml', 'report_name': 'webkit.payslip_report', 'context': context}

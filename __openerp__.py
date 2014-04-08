@@ -38,7 +38,7 @@ HR Module for LCT
         'views/hr_employee.xml',
         'views/res_config.xml',
         'report/paybook_report.xml',
-        # 'report/payslip_report.xml',
+        'report/payslip_report.xml',
         'report/reports.xml',
         'cron/auto_promote.xml',
         'wizard/payslips_by_employees.xml',
