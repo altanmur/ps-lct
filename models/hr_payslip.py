@@ -45,3 +45,19 @@ class hr_payslip(orm.Model):
             rate = 0.03 if years >= 3 else 0.02 if years >= 2 else 0.0
             res.update({slip_id: rate})
         return res
+
+
+    # Returns only the lines that actually appear on the payslip
+    def get_visible_lines(self, cr, uid, ids, context=None):
+        if isinstance(ids, list):
+            ids = ids[0]
+        payslip_line = self.pool.get('hr.payslip.line')
+        lines = self.browse(cr, uid, ids, context=context).line_ids
+        res = []
+        ids = []
+        for line in lines:
+            if line.appears_on_payslip:
+                ids.append(line.id)
+        if ids:
+            res = payslip_line.browse(cr, uid, ids, context=context)
+        return res

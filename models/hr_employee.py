@@ -52,10 +52,11 @@ class hr_employee(osv.osv):
         ('unique_cnss_nbr', 'unique(cnss_nbr)', 'An employee with the same CNSS number already exists.'),
     ]
 
-    def get_seniority_ymd(self, cr, uid, id, context=None):
-        emp = self.browse(cr, uid, id, context=context)
+    def get_seniority_ymd(self, cr, uid, ids, context=None):
+        if isinstance(ids, list):
+            ids = ids[0]
+        emp = self.browse(cr, uid, ids, context=context)
         if emp:
-            print emp.start_date
             start_date = datetime.strptime(emp.start_date, '%Y-%m-%d')
             delta = relativedelta(datetime.today(), start_date)
             return(delta.years, delta.months, delta.days)

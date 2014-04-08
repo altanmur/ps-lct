@@ -1,7 +1,8 @@
 TODO:
 =====
-* Payslip report: PDF instead of XLS, for batch printing.
-* 13th month
+* Wizard in front of PDF payslip report
+* Normal PDF payslip report takes current month
+* 13th month; prorata based on start date
 
 DONE:
 =====
@@ -41,6 +42,9 @@ DONE:
 * Move TAXAL, DEPENDENTS, PENSION rules up, right after PROFTAX. And NTS right after that.
 * Then, move TCS/IRPP back to their proper locations on the payslip.
 * Show Base/Taux only for payslip lines where Taux != 100%
+* Payslip report: PDF instead of XLS, for batch printing.
+* Payslip report PDF: finish the bottom box, using actual values
+* Fix layout of PDF payslip report
 
 N/A:
 ====
