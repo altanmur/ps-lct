@@ -40,5 +40,4 @@ class hr_payslip_employees(osv.osv_memory):
             employee_ids = self.pool.get('hr.employee').search(cr, uid, [('active','=',True)])
             employee_ids_m2m = [(6, 0, employee_ids)]
             self.write(cr, uid, ids, {'employee_ids': employee_ids_m2m}, context=context)
-            print(self.read(cr, uid, ids, context=context)[0])
         return super(hr_payslip_employees, self).compute_sheet(cr, uid, ids, context=context)
