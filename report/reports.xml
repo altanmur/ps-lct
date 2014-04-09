@@ -2,7 +2,7 @@
 <openerp>
   <data>
     <report id="lct_hr.report_payslip_webkit"
-            name="webkit.payslip_report"
+            name="webkit.payslip_report_pdf"
             auto="False"
             model="hr.payslip"
             file="lct_hr/report/payslip_report.html.mako"

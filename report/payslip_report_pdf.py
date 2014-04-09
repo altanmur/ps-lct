@@ -20,50 +20,21 @@
 ##############################################################################
 
 from report import report_sxw
-from osv import fields
 from openerp.modules import get_module_path
-from datetime import date
-from dateutil.relativedelta import relativedelta
 
 
 base_bath = get_module_path('lct_hr')
 
 
-class payslip_report(report_sxw.rml_parse):
-    _name = 'payslip_report'
-    _description = "Payslip report"
-
-    _columns = {
-        'export_selected_only': fields.boolean('Export selected payslips only'),
-        'payslip_ids': fields.many2many('hr.payslip', 'payslip_report_payslip_rel', 'report_id', 'payslip_id', 'Payslips'),
-        'dt_start': fields.date('Start date'),
-        'dt_end': fields.date('End date'),
-        'out_file': fields.binary('Report',readonly=True),
-        'datas_fname': fields.char('File name', 64),
-        'state': fields.selection([('draft', 'Draft'),('done', 'Done')], string="Status"),
-    }
-
-    _defaults = {
-        'export_selected_only': True,
-        'dt_start': lambda self, *args, **kwargs: self._get_dt_start(*args, **kwargs),
-        'dt_end': lambda self, *args, **kwargs: self._get_dt_end(*args, **kwargs),
-        'datas_fname': 'Bulletin de paie.pdf',
-        'state': 'draft',
-    }
+class payslip_report_pdf(report_sxw.rml_parse):
+    _name = 'payslip_report_pdf'
+    _description = "Payslip PDF report"
 
     def __init__(self, cr, uid, name, context):
-        super(payslip_report, self).__init__(cr, uid, name, context=context)
+        super(payslip_report_pdf, self).__init__(cr, uid, name, context=context)
         self.localcontext.update({
             'payslips': self.get_payslip_data(cr, uid, context=context),
             })
-
-    def _get_dt_start(self, cr, uid, context=None):
-        today = date.today().replace(day=1)
-        return today.strftime("%Y-%m-%d")
-
-    def _get_dt_end(self, cr, uid, context=None):
-        end_of_month = (date.today() + relativedelta(months=1)).replace(day=1)
-        return end_of_month.strftime("%Y-%m-%d")
 
     # Returns only the lines that actually appear on the payslip
     def get_payslip_lines(self, cr, uid, obj, context=None):
@@ -108,7 +79,7 @@ class payslip_report(report_sxw.rml_parse):
 
         return retval
 
-report_sxw.report_sxw('report.webkit.payslip_report',
+report_sxw.report_sxw('report.webkit.payslip_report_pdf',
                       'hr.payslip',
                       'lct_hr/report/payslip_report.html.mako',
-                      parser=payslip_report)
+                      parser=payslip_report_pdf)

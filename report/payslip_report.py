@@ -53,18 +53,6 @@ class payslip_report(TransientModel):
         end_of_month = (date.today() + relativedelta(months=1)).replace(day=1)
         return end_of_month.strftime("%Y-%m-%d")
 
-    # Returns only the lines that actually appear on the payslip
-    def get_payslip_lines(self, cr, uid, obj, context=None):
-        payslip_line = self.pool.get('hr.payslip.line')
-        res = []
-        ids = []
-        for id in range(len(obj)):
-            if obj[id].appears_on_payslip == True:
-                ids.append(obj[id].id)
-        if ids:
-            res = payslip_line.browse(cr, uid, ids, context=context)
-        return res
-
     def print_report(self, cr, uid, ids, context=None):
         for report in self.browse(cr, uid, ids, context=context):
             payslip_ids = []
@@ -73,4 +61,4 @@ class payslip_report(TransientModel):
             else:
                 payslip_ids = self.pool.get('hr.payslip').search(cr, uid, [('date_from', '>=', report.dt_start), ('date_to', '<=', report.dt_end)], context=context)
             context.update({'active_ids': payslip_ids})
-            return {'type': 'ir.actions.report.xml', 'report_name': 'webkit.payslip_report', 'context': context}
+            return {'type': 'ir.actions.report.xml', 'report_name': 'webkit.payslip_report_pdf', 'context': context}
