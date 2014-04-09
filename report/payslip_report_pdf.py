@@ -21,7 +21,6 @@
 
 from report import report_sxw
 from osv import fields
-from tools.translate import _
 from openerp.modules import get_module_path
 from datetime import date
 from dateutil.relativedelta import relativedelta
