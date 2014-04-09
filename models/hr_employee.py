@@ -40,7 +40,10 @@ class hr_employee(osv.osv):
         'reg_nbr': fields.char('Registration number', size=64),
         'cnss_nbr': fields.char('CNSS Number', size=64),
         'active_years': fields.integer('Active years', readonly=True),
-        'seniority_pay': fields.float('Seniority pay', digits=(16,2), readonly=True)
+        'seniority_pay': fields.float('Seniority pay', digits=(16,2), readonly=True),
+        # For functional reasons, specific to LCT.
+        'bank_name': fields.char('Bank name', required=True),
+        'acc_number': fields.char('Account number', required=True),
     }
 
     _defaults = {

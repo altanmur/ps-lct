@@ -684,7 +684,7 @@
                     </td>
                     <td colspan="5" style="text-align:left;width:3.133cm; " class="ce13">
                         <p>
-                            ${payslip.employee_id.bank_account_id.bank_name}
+                            ${payslip.employee_id.bank_name}
                         </p>
                     </td>
                 </tr>
@@ -715,7 +715,7 @@
                     </td>
                     <td colspan="5" style="text-align:left;width:3.133cm; " class="ce13">
                         <p>
-                            ${payslip.employee_id.bank_account_id.acc_number}
+                            ${payslip.employee_id.acc_number}
                         </p>
                     </td>
                 </tr>
