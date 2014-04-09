@@ -24,7 +24,7 @@ from report import report_sxw
 
 class payslip_report_pdf(report_sxw.rml_parse):
     _name = 'payslip_report_pdf'
-    _description = "Payslip PDF report"
+    _description = "Employee Payslips"
 
     def __init__(self, cr, uid, name, context):
         super(payslip_report_pdf, self).__init__(cr, uid, name, context=context)
