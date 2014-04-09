@@ -55,9 +55,10 @@ class hr_payslip(orm.Model):
         lines = self.browse(cr, uid, ids, context=context).line_ids
         res = []
         ids = []
-        for line in lines:
-            if line.appears_on_payslip:
-                ids.append(line.id)
+        if lines:
+            for line in lines:
+                if line.appears_on_payslip:
+                    ids.append(line.id)
         if ids:
             res = payslip_line.browse(cr, uid, ids, context=context)
         return res
