@@ -32,24 +32,13 @@ class payslip_report_pdf(report_sxw.rml_parse):
             'payslips': self.get_payslip_data(cr, uid, context=context),
             })
 
-    # Returns only the lines that actually appear on the payslip
-    def get_payslip_lines(self, cr, uid, obj, context=None):
-        payslip_line = self.pool.get('hr.payslip.line')
-        res = []
-        ids = []
-        for id in range(len(obj)):
-            if obj[id].appears_on_payslip == True:
-                ids.append(obj[id].id)
-        if ids:
-            res = payslip_line.browse(cr, uid, ids, context=context)
-        return res
-
     def get_payslip_data(self, cr, uid, context=None):
         retval = {}
+        payslip_obj = self.pool.get('hr.payslip')
         payslip_ids = context.get('active_ids')
-        payslips = self.pool.get('hr.payslip').browse(cr, uid, payslip_ids, context=context)
+        payslips = payslip_obj.browse(cr, uid, payslip_ids, context=context)
         for payslip in payslips:
-            lines = self.get_payslip_lines(cr, uid, payslip.line_ids, context=context)
+            lines = payslip_obj.get_visible_lines(cr, uid, payslip.id, context=context)
             sen_yr, sen_mon, sen_day = self.pool.get('hr.employee').get_seniority_ymd(cr, uid, payslip.employee_id.id, context=context)
             seniority = '%dA, %dM, %dJ' % (sen_yr, sen_mon, sen_day)
 
