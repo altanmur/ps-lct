@@ -33,7 +33,7 @@ HR Module for LCT
         'data/hr.salary.rule.category.csv',
         'data/hr.salary.rule.xml',
         'data/hr.payroll.structure.csv',
-        'data/ir.header_webkit.csv',
+        'data/ir.header_webkit.xml',
         'views/hr_contract.xml',
         'views/hr_employee.xml',
         'views/res_config.xml',

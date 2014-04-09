@@ -1,6 +1,5 @@
 TODO:
 =====
-* Staff Bank Information report
 * 3 salary structures, same set of rules: National/International/Trainees
 * Payslip report PDF: Heures Travaillées = 160, but prorata in the 1st month
 * Payslip report PDF: yearly values for all the lower left box fields
@@ -53,6 +52,7 @@ DONE:
 * Normal PDF payslip report takes active ids
 * Fix Payslip report PDF: bank info now comes directly from fields on employee due to functional reasons
 * Payslip report PDF: Nombre de Jours: hide for the moment.
+* Staff Bank Information report
 
 N/A:
 ====

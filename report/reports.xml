@@ -12,5 +12,14 @@
             report_type="webkit"
             webkit_header="lct_hr.ir_header_webkit_payslip"
             header="False" />
+    <report id="lct_hr.report_bankinfo_webkit"
+            name="webkit.bank_information_report_pdf"
+            auto="False"
+            model="hr.payslip.run"
+            file="lct_hr/report/bank_information_report.html.mako"
+            string="Staff Bank Information report"
+            report_type="webkit"
+            header="False"
+            webkit_header="lct_hr.ir_header_webkit_bank_info" />
     </data>
 </openerp>
