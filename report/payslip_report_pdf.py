@@ -20,10 +20,6 @@
 ##############################################################################
 
 from report import report_sxw
-from openerp.modules import get_module_path
-
-
-base_bath = get_module_path('lct_hr')
 
 
 class payslip_report_pdf(report_sxw.rml_parse):

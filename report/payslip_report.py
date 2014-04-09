@@ -21,12 +21,8 @@
 
 from osv.orm import TransientModel
 from osv import fields
-from openerp.modules import get_module_path
 from datetime import date
 from dateutil.relativedelta import relativedelta
-
-
-base_bath = get_module_path('lct_hr')
 
 
 class payslip_report(TransientModel):
