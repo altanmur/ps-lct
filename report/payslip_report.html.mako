@@ -404,7 +404,8 @@
                     </td>
                     <td style="text-align:right; width:2.267cm; " class="ce3">
                         <p>
-                            ${context.get('payslips').get(payslip).get('worked_days')}
+                            <!-- For now, leave empty. Will be used in Phase 2 when timesheeting is implemented. -->
+                            <!-- ${context.get('payslips').get(payslip).get('worked_days')} -->
                         </p>
                     </td>
 
