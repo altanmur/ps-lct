@@ -24,6 +24,10 @@
                     <field name="active_years"/>
                     <field name="seniority_pay"/>
                 </field>
+                <field name="bank_account_id" position="after">
+                    <field name="bank_name"/>
+                    <field name="acc_number"/>
+                </field>
             </field>
         </record>
     </data>
