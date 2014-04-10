@@ -57,6 +57,26 @@ class payslip_report_pdf(report_sxw.rml_parse):
             worked_hours = int(160 * min(1, float(days_in_service) / days_in_month))
             # worked_hours = sum([x.number_of_hours for x in payslip.worked_days_line_ids])
             worked_days = sum([x.number_of_days for x in payslip.worked_days_line_ids])
+            # Leaves
+            leave_obj = self.pool.get('hr.holidays')
+            leave_ids = leave_obj.search(cr, uid, [('employee_id', '=', payslip.employee_id.id)], context=context)
+            leaves = leave_obj.browse(cr, uid, leave_ids, context=context)
+            leaves_acquired = sum([x.number_of_days for x in leaves \
+                if x.state == 'validate' \
+                and x.type == 'add'\
+                and x.holiday_status_id.limit == False]) or 0.0
+            holidays = [x for x in leaves \
+                if x.state == 'validate' \
+                and x.type == 'remove' \
+                and x.date_from.split()[0] >= payslip.date_from.split()[0] \
+                and x.date_to.split()[0] <= payslip.date_to.split()[0]]
+            # leaves_taken = sum([x.number_of_days for x in leaves \
+            #     if x.state == 'validate' \
+            #     and x.type == 'remove'\
+            #     and x.holiday_status_id.limit == False])
+            leaves_remaining = sum([x.number_of_days for x in leaves\
+                if x.state == 'validate' \
+                and x.holiday_status_id.limit == False]) or 0.0
 
             retval[payslip] = {
                 'lines': lines,
@@ -68,6 +88,10 @@ class payslip_report_pdf(report_sxw.rml_parse):
                 'benefits_in_kind': benefits_in_kind,
                 'worked_hours': worked_hours,
                 'worked_days': worked_days,
+                'leaves_acquired': leaves_acquired,
+                # 'leaves_taken': leaves_taken,
+                'leaves_remaining': leaves_remaining,
+                'holidays': holidays,
             }
 
         return retval

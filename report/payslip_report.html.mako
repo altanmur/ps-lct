@@ -626,10 +626,13 @@
                             ${context.get('payslips').get(payslip).get('worked_hours')}
                         </p>
                     </td>
-                    <td colspan="6" style="text-align:left;width:2.267cm; " class="ce8">
+                    <td colspan="3" style="text-align:left;width:2.267cm; " class="ce8">
                         <p>
                             MODE DE REGLEMENT
                         </p>
+                    </td>
+                    <td colspan="3" class="ce8">
+                        CONGES
                     </td>
                 </tr>
                 <tr class="ro2">
@@ -652,10 +655,16 @@
                             ${context.get('payslips').get(payslip).get('gross')}
                         </p>
                     </td>
-                    <td colspan="6" style="text-align:left;width:2.267cm; " class="ce7">
+                    <td colspan="3" style="text-align:left;width:2.267cm; " class="ce7">
                         <p>
                             Virement bancaire
                         </p>
+                    </td>
+                    <td colspan="2" class="ce2">
+                        Acquis année:
+                    </td>
+                    <td class="ce13">
+                        ${context.get('payslips').get(payslip).get('leaves_acquired')}
                     </td>
                 </tr>
                 <tr class="ro2">
@@ -683,10 +692,16 @@
                             Banque
                         </p>
                     </td>
-                    <td colspan="5" style="text-align:left;width:3.133cm; " class="ce13">
+                    <td colspan="2" style="text-align:left;width:3.133cm; " class="ce13">
                         <p>
                             ${payslip.employee_id.bank_name}
                         </p>
+                    </td>
+                    <td colspan="2" class="ce2">
+                        Reste à prendre:
+                    </td>
+                    <td class="ce13">
+                        ${context.get('payslips').get(payslip).get('leaves_remaining')}
                     </td>
                 </tr>
                 <tr class="ro2">
@@ -714,10 +729,19 @@
                             Cpte n°
                         </p>
                     </td>
-                    <td colspan="5" style="text-align:left;width:3.133cm; " class="ce13">
+                    <td colspan="2" style="text-align:left;width:3.133cm; " class="ce13">
                         <p>
                             ${payslip.employee_id.acc_number}
                         </p>
+                    </td>
+                    <td class="ce2">
+                        Congés
+                    </td>
+                    <td>
+                        du
+                    </td>
+                    <td class="ce13">
+                        à
                     </td>
                 </tr>
                 <tr class="ro2">
@@ -743,8 +767,19 @@
                     <td style="text-align:left;width:2.267cm; " class="ce11">
 
                     </td>
-                    <td colspan="5" rowspan="2" style="text-align:left;width:3.133cm; " class="ce13">
+                    <td colspan="2" rowspan="2" style="text-align:left;width:3.133cm; " class="ce13">
 
+                    </td>
+                    <td rowspan="2" class="ce2"></td>
+                    <td rowspan="2">
+                        %for holiday in context.get('payslips').get(payslip).get('holidays'):
+                        ${holiday.date_from.split()[0]}<br/>
+                        %endfor
+                    </td>
+                    <td rowspan="2" class="ce13">
+                        %for holiday in context.get('payslips').get(payslip).get('holidays'):
+                        ${holiday.date_to.split()[0]}<br/>
+                        %endfor
                     </td>
                 </tr>
                 <tr class="ro2">
