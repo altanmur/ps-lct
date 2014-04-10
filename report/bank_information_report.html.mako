@@ -44,9 +44,9 @@
         <table>
             <tr>
                 <th style="width: 1cm;">N°</th>
-                <th style="width: 5cm;">Nom &amp; Prénoms</th>
-                <th style="width: 5cm;">Banque</th>
-                <th style="width: 5cm;">N° Compte à créditer</th>
+                <th style="width: 6.5cm;">Nom &amp; Prénoms</th>
+                <th style="width: 6cm;">Banque</th>
+                <th style="width: 2.5cm;">N° Compte à créditer</th>
                 <th style="width: 2.5cm;">Montant<br/>(FCFA)</th>
             </tr>
             %for idx, payslip in enumerate(context.get('payslips'), 1):
