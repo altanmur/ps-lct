@@ -5,11 +5,37 @@
         <title>Liste et informations sur le personnel</title>
         <style type="text/css">
             @page {}
-            table { border-collapse:collapse; border-spacing:0; empty-cells:show; border-width: 1px; border-style:solid; border-color:#000000;}
-            th {font-weight: bold; text-align:center; vertical-align: middle; border-width: 1px; border-style:solid; border-color:#000000;}
-            td {text-align: left; padding: 2mm; border-width: 1px; border-style:solid; border-color:#000000;}
-            h1, h2: {text-align: center;}
-            .numeric {text-align: right;}
+            table {
+                border-collapse:collapse;
+                border-spacing:0;
+                empty-cells:show;
+                border-width: 1px;
+                border-style:solid;
+                border-color:#000000;
+            }
+            th {
+                font-weight: bold;
+                text-align:center;
+                vertical-align: middle;
+                border-width: 1px;
+                border-style:solid;
+                border-color:#000000;
+            }
+            td {
+                text-align: left;
+                padding: 2mm;
+                border-width: 1px;
+                border-style:solid;
+                border-color:#000000;
+                font-size: 8pt;
+                vertical-align: top;
+            }
+            h1, h2: {
+                text-align: center;
+            }
+            .numeric {
+                text-align: right;
+            }
         </style>
     </head>
     <body style="text-align: center;">
@@ -28,7 +54,7 @@
                 <td class="numeric">${idx}</td>
                 <td>${payslip.employee_id.name}</td>
                 <td>${payslip.employee_id.bank_name}</td>
-                <td>${payslip.employee_id.acc_number}</td>
+                <td class="numeric">${payslip.employee_id.acc_number}</td>
                 <td class="numeric">${int(context.get('payslips').get(payslip).get('net_salary'))}</td>
             </tr>
             %endfor
