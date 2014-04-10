@@ -20,6 +20,7 @@
 ##############################################################################
 
 from report import report_sxw
+from datetime import datetime
 
 
 class payslip_report_pdf(report_sxw.rml_parse):
@@ -39,7 +40,8 @@ class payslip_report_pdf(report_sxw.rml_parse):
         payslips = payslip_obj.browse(cr, uid, payslip_ids, context=context)
         for payslip in payslips:
             lines = payslip_obj.get_visible_lines(cr, uid, payslip.id, context=context)
-            sen_yr, sen_mon, sen_day = self.pool.get('hr.employee').get_seniority_ymd(cr, uid, payslip.employee_id.id, context=context)
+            sen_yr, sen_mon, sen_day = self.pool.get('hr.employee')\
+                .get_seniority_ymd(cr, uid, payslip.employee_id.id, context=context)
             seniority = '%dA, %dM, %dJ' % (sen_yr, sen_mon, sen_day)
 
             gross = sum(x.total for x in lines if x.sequence in [1999])
@@ -47,7 +49,13 @@ class payslip_report_pdf(report_sxw.rml_parse):
             patronal_costs = sum(x.total for x in lines if x.sequence in [2041])
             net_salary = sum(x.total for x in lines if x.sequence in [5000])
             benefits_in_kind = sum(x.total for x in lines if x.sequence in [1009])
-            worked_hours = sum([x.number_of_hours for x in payslip.worked_days_line_ids])
+            # For now, it's 160, except the 1st month, when it's prorata.
+            days_in_service = (datetime.strptime(payslip.date_to, '%Y-%m-%d') \
+                - datetime.strptime(payslip.employee_id.start_date, '%Y-%m-%d')).days
+            days_in_month = (datetime.strptime(payslip.date_to, '%Y-%m-%d') \
+                - datetime.strptime(payslip.date_from, '%Y-%m-%d')).days
+            worked_hours = int(160 * min(1, float(days_in_service) / days_in_month))
+            # worked_hours = sum([x.number_of_hours for x in payslip.worked_days_line_ids])
             worked_days = sum([x.number_of_days for x in payslip.worked_days_line_ids])
 
             retval[payslip] = {

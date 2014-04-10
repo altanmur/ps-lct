@@ -1,7 +1,6 @@
 TODO:
 =====
 * 3 salary structures, same set of rules: National/International/Trainees
-* Payslip report PDF: Heures Travaillées = 160, but prorata in the 1st month
 * Payslip report PDF: yearly values for all the lower left box fields
 * Payslip report PDF: Holidays - acquired (see computation of employee.remaining_leave), remaining (employee.remaining_leave), list of from-to values for holidays taken that month.
 * Fix the auto-promote code: keep track of last promotion date.
@@ -53,6 +52,7 @@ DONE:
 * Fix Payslip report PDF: bank info now comes directly from fields on employee due to functional reasons
 * Payslip report PDF: Nombre de Jours: hide for the moment.
 * Staff Bank Information report
+* Payslip report PDF: Heures Travaillées = 160, but prorata in the 1st month
 
 N/A:
 ====
