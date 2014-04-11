@@ -99,11 +99,14 @@ class paybook_report(TransientModel):
 
             xls = Workbook()
             style_default = easyxf('border: left thin, right thin')
-            style_gray = easyxf('pattern: pattern solid, fore_color grey25; border: top thin, bottom thin, left thin, right thin')
+            style_gray = easyxf('pattern: pattern solid, fore_color grey25;'
+                ' border: top thin, bottom thin, left thin, right thin')
             style_bold_center = easyxf('font: bold on; align: horiz center')
-            style_bold_center_gray = easyxf('font: bold on; align: horiz center, vert top; pattern: pattern solid, fore_color grey25; border: top thin, bottom thin, left thin, right thin')
+            style_bold_center_gray = easyxf('font: bold on; align: horiz center, vert top;'
+                ' pattern: pattern solid, fore_color grey25; border: top thin, bottom thin, left thin, right thin')
             style_center_wrap = easyxf('align: wrap on, horiz center')
-            style_center_gray = easyxf('align: wrap on, horiz center; pattern: pattern solid, fore_color grey25; border: top thin, bottom thin, left thin, right thin')
+            style_center_gray = easyxf('align: wrap on, horiz center; pattern: pattern solid, fore_color grey25;'
+                ' border: top thin, bottom thin, left thin, right thin')
             sheet1 = xls.add_sheet('Livre de paie')
             for i in range(21):
                 sheet1.col(i).width = 256*20

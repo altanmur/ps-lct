@@ -56,13 +56,13 @@ class hr_contract(osv.osv):
     _inherit = 'hr.contract'
 
     _columns = {
-        'benefits_in_kind': fields.float('Benefits in kind', digits=(16,2)),  # Avantages en nature; maybe calculated from catégorie/classe/échelon?
-        'transport_allowance': fields.float('Transport allowance', digits=(16,2)),  # Indemnité de déplacement
-        'representation_allowance': fields.float('Representation allowance', digits=(16,2)),  # Indemnité de représentation
-        'individual_allowance': fields.float('Individual allowance', digits=(16,2)),  # Indemnité de sujetion particulière
-        'performance_allowance': fields.float('Performance allowance', digits=(16,2)),  # Indemnité de rendement == bonus???
-        'other_allowances': fields.float('Other allowances', digits=(16,2)),  # Autres indemnités
-        'bonus': fields.float('Bonus', digits=(16,2)),  # Sursalaires
+        'benefits_in_kind': fields.float('Benefits in kind', digits=(16,2)),
+        'transport_allowance': fields.float('Transport allowance', digits=(16,2)),
+        'representation_allowance': fields.float('Representation allowance', digits=(16,2)),
+        'individual_allowance': fields.float('Individual allowance', digits=(16,2)),
+        'performance_allowance': fields.float('Performance allowance', digits=(16,2)),
+        'other_allowances': fields.float('Other allowances', digits=(16,2)),
+        'bonus': fields.float('Bonus', digits=(16,2)),
         'pension_annuities': fields.float('Pension or annuities', digits=(16,2)),
         'life_insurance': fields.float('Life insurance', digits=(16,2)),
         'category': fields.function(lambda self, *args, **kwargs: self._get_category(*args, **kwargs),
@@ -135,14 +135,18 @@ class hr_contract(osv.osv):
         return res
 
     def auto_promote(self, cr, uid, force_run=False):
-        active_contract_ids = self.search(cr, uid, ['|', ('date_end', '>', datetime.today().strftime('%Y-%m-%d')), ('date_end', '=', False)])
+        active_contract_ids = self.search(cr, uid, [
+            '|',
+            ('date_end', '>', datetime.today().strftime('%Y-%m-%d')),
+            ('date_end', '=', False)])
         active_contracts = self.browse(cr, uid, active_contract_ids)
         for contract in active_contracts:
             employee = contract.employee_id
             seniority_pay = 0
             active_years = 0
             echelon = contract.echelon
-            if relativedelta(datetime.today(), datetime.strptime(employee.start_date, '%Y-%m-%d')).years > employee.active_years:
+            employee_start = datetime.strptime(employee.start_date, '%Y-%m-%d')
+            if relativedelta(datetime.today(), employee_start).years > employee.active_years:
                 active_years = employee.active_years + 1
                 # Sigh, why did I store this as a string intead of int?
                 echelon = str(min(int(echelon) + 1, 15))

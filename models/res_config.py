@@ -25,7 +25,8 @@ class human_resources_configuration(osv.osv_memory):
     _inherit = 'hr.config.settings'
 
     _columns = {
-        'base_wage': fields.float('Base wage', digits=(16, 2), help='Salary for Category 1, class EA, echelon 1'),
+        'base_wage': fields.float('Base wage', digits=(16, 2),
+            help='Salary for Category 1, class EA, echelon 1'),
     }
 
     _defaults = {
@@ -33,7 +34,8 @@ class human_resources_configuration(osv.osv_memory):
     }
 
     def get_base_wage(self, cr, uid, ids, context=None):
-        wage = self.pool.get('ir.config_parameter').get_param(cr, uid, 'lct_hr.base_wage', default='69250', context=context)
+        wage = self.pool.get('ir.config_parameter')\
+            .get_param(cr, uid, 'lct_hr.base_wage', default='69250', context=context)
         return float(wage)
 
     def set_base_wage(self, cr, uid, ids, context=None):

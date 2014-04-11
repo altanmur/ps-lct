@@ -55,6 +55,12 @@ class payslip_report(TransientModel):
             if report.export_selected_only:
                 payslip_ids = context.get('active_ids')
             else:
-                payslip_ids = self.pool.get('hr.payslip').search(cr, uid, [('date_from', '>=', report.dt_start), ('date_to', '<=', report.dt_end)], context=context)
+                payslip_ids = self.pool.get('hr.payslip').search(cr, uid,
+                    [('date_from', '>=', report.dt_start),
+                    ('date_to', '<=', report.dt_end)], context=context)
             context.update({'active_ids': payslip_ids})
-            return {'type': 'ir.actions.report.xml', 'report_name': 'webkit.payslip_report_pdf', 'context': context}
+            return {
+                'type': 'ir.actions.report.xml',
+                'report_name': 'webkit.payslip_report_pdf',
+                'context': context,
+            }

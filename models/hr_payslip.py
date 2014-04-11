@@ -27,11 +27,12 @@ class hr_payslip(orm.Model):
     _inherit = 'hr.payslip'
 
     _columns = {
-        'seniority_rate': fields.function(lambda self, *args, **kwargs: self._calculate_seniority_rate(*args, **kwargs),
-                                 method=True,
-                                 type='float',
-                                 string='Seniority rate',
-                                 store=True),
+        'seniority_rate': fields.function(lambda self, *args, **kwargs:
+                                self._calculate_seniority_rate(*args, **kwargs),
+                                method=True,
+                                type='float',
+                                string='Seniority rate',
+                                store=True),
         }
 
     def _calculate_seniority_rate(self, cr, uid, ids, field_name, args, context=None):
@@ -41,7 +42,8 @@ class hr_payslip(orm.Model):
             employee = payslip.employee_id
             # Yes, assuming all years have 365 days.
             # Also assuming the seniority is calculated w.r.t. the start date for the payslip, not the end date.
-            years = (datetime.strptime(payslip.date_from, DEFAULT_SERVER_DATE_FORMAT) - datetime.strptime(employee.start_date, DEFAULT_SERVER_DATE_FORMAT)).days / 365
+            years = (datetime.strptime(payslip.date_from, DEFAULT_SERVER_DATE_FORMAT) - \
+                datetime.strptime(employee.start_date, DEFAULT_SERVER_DATE_FORMAT)).days / 365
             rate = 0.03 if years >= 3 else 0.02 if years >= 2 else 0.0
             res.update({slip_id: rate})
         return res
