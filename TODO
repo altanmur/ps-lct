@@ -1,6 +1,5 @@
 TODO:
 =====
-* Payslip report PDF: yearly values for all the lower left box fields
 * Fix the auto-promote code: keep track of last promotion date.
 * 13th month; prorata based on start date
 
@@ -53,6 +52,7 @@ DONE:
 * Payslip report PDF: Heures Travaillées = 160, but prorata in the 1st month
 * Payslip report PDF: Holidays - acquired (see computation of employee.remaining_leave), remaining (employee.remaining_leave), list of from-to values for holidays taken that month.
 * 3 salary structures, same set of rules: National/International/Trainees
+* Payslip report PDF: yearly values for all the lower left box fields
 
 N/A:
 ====

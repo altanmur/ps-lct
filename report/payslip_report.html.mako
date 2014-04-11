@@ -589,9 +589,14 @@
                             Montants
                         </p>
                     </td>
-                    <td colspan="2" style="text-align:left;width:2.267cm; " class="ce9">
+                    <td style="text-align:left;width:2.267cm; " class="ce9">
                         <p>
                             de la période
+                        </p>
+                    </td>
+                    <td style="text-align:left;width:2.267cm; " class="ce9">
+                        <p>
+                            de l'année
                         </p>
                     </td>
                     <td colspan="4" style="text-align:left;width:2.267cm; " class="ce9">
@@ -618,12 +623,14 @@
                     <td style="text-align:left;width:1.958cm; " class="ce11">
 
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce11">
-
+                    <td style="text-align:right;width:2.267cm; " class="ce11">
+                        <p>
+                            ${context.get('payslips').get(payslip).get('worked_hours')}
+                        </p>
                     </td>
                     <td style="text-align:right; width:2.267cm; " class="ce13">
                         <p>
-                            ${context.get('payslips').get(payslip).get('worked_hours')}
+                            ${context.get('payslips').get(payslip).get('worked_hours_year')}
                         </p>
                     </td>
                     <td colspan="3" style="text-align:left;width:2.267cm; " class="ce8">
@@ -647,12 +654,14 @@
                     <td style="text-align:left;width:1.958cm; " class="ce11">
 
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce11">
-
+                    <td style="text-align:right;width:2.267cm; " class="ce11">
+                        <p>
+                            ${int(context.get('payslips').get(payslip).get('gross'))}
+                        </p>
                     </td>
                     <td style="text-align:right; width:2.267cm; " class="ce13">
                         <p>
-                            ${context.get('payslips').get(payslip).get('gross')}
+                            ${int(context.get('payslips').get(payslip).get('gross_year'))}
                         </p>
                     </td>
                     <td colspan="3" style="text-align:left;width:2.267cm; " class="ce7">
@@ -679,12 +688,14 @@
                     <td style="text-align:left;width:1.958cm; " class="ce11">
 
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce11">
-
+                    <td style="text-align:right;width:2.267cm; " class="ce11">
+                        <p>
+                            ${int(context.get('payslips').get(payslip).get('salarial_costs'))}
+                        </p>
                     </td>
                     <td style="text-align:right; width:2.267cm; " class="ce13">
                         <p>
-                            ${context.get('payslips').get(payslip).get('salarial_costs')}
+                            ${int(context.get('payslips').get(payslip).get('salarial_costs_year'))}
                         </p>
                     </td>
                     <td style="text-align:left;width:2.267cm; " class="ce2">
@@ -716,12 +727,14 @@
                     <td style="text-align:left;width:1.958cm; " class="ce11">
 
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce11">
-
+                    <td style="text-align:right;width:2.267cm; " class="ce11">
+                        <p>
+                            ${int(context.get('payslips').get(payslip).get('patronal_costs'))}
+                        </p>
                     </td>
                     <td style="text-align:right; width:2.267cm; " class="ce13">
                         <p>
-                            ${context.get('payslips').get(payslip).get('patronal_costs')}
+                            ${int(context.get('payslips').get(payslip).get('patronal_costs_year'))}
                         </p>
                     </td>
                     <td style="text-align:left;width:2.267cm; " class="ce2">
@@ -756,12 +769,14 @@
                     <td style="text-align:left;width:1.958cm; " class="ce11">
 
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce11">
-
+                    <td style="text-align:right;width:2.267cm; " class="ce11">
+                        <p>
+                            ${int(context.get('payslips').get(payslip).get('net_salary'))}
+                        </p>
                     </td>
                     <td style="text-align:right; width:2.267cm; " class="ce13">
                         <p>
-                            ${context.get('payslips').get(payslip).get('net_salary')}
+                            ${int(context.get('payslips').get(payslip).get('net_salary_year'))}
                         </p>
                     </td>
                     <td style="text-align:left;width:2.267cm; " class="ce11">
@@ -794,12 +809,14 @@
                     <td style="text-align:left;width:1.958cm; " class="ce11">
 
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce11">
-
+                    <td style="text-align:right;width:2.267cm; " class="ce11">
+                        <p>
+                            ${int(context.get('payslips').get(payslip).get('benefits_in_kind'))}
+                        </p>
                     </td>
                     <td style="text-align:right; width:2.267cm; " class="ce13">
                         <p>
-                            ${context.get('payslips').get(payslip).get('benefits_in_kind')}
+                            ${int(context.get('payslips').get(payslip).get('benefits_in_kind_year'))}
                         </p>
                     </td>
                     <td style="text-align:left;width:2.267cm; " class="ce11">
