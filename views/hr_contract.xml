@@ -13,6 +13,7 @@
                         <field name="category"/>
                         <field name="hr_class"/>
                         <field name="echelon"/>
+                        <field name="date_next_promotion"/>
                     </group>
                 </group>
                 <field name="wage" position="after">

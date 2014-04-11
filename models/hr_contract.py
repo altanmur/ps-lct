@@ -21,7 +21,7 @@
 # import time
 
 from openerp.osv import fields, osv
-from datetime import datetime
+from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 
 # Constants for LCT
@@ -100,21 +100,26 @@ class hr_contract(osv.osv):
             ('15','15'),
             ], 'Echelon', select=True),
         # Override; this one's calculated based on class and echelon
-        'wage': fields.function(lambda self, *args, **kwargs: self._calculate_wage(*args, **kwargs),
+        'wage': fields.function(lambda self, *args, **kwargs: \
+            self._calculate_wage(*args, **kwargs),
                                  method=True,
                                  type='float',
                                  string='Wage',
                                  store=True),
+        'date_next_promotion': fields.date('Next promotion'),
     }
 
     _defaults = {
         # 'category': '1',
         'hr_class': 'EA',
         'echelon': '1',
+        'date_next_promotion': lambda *a: \
+            (date.today() + relativedelta(years=2)).strftime('%Y-%m-%d'),
     }
 
     _sql_constraints = [
-        ('employee_id_uniq', 'unique(employee_id)', 'You can only have one contract per employee.'),
+        ('employee_id_uniq', 'unique(employee_id)',
+            'You can only have one contract per employee.'),
     ]
 
     def _calculate_wage(self, cr, uid, ids, field_name, args, context=None):
@@ -137,29 +142,33 @@ class hr_contract(osv.osv):
     def auto_promote(self, cr, uid, force_run=False):
         active_contract_ids = self.search(cr, uid, [
             '|',
-            ('date_end', '>', datetime.today().strftime('%Y-%m-%d')),
+            ('date_end', '>', date.today().strftime('%Y-%m-%d')),
             ('date_end', '=', False)])
         active_contracts = self.browse(cr, uid, active_contract_ids)
+        write_vals = {}
         for contract in active_contracts:
             employee = contract.employee_id
-            seniority_pay = 0
-            active_years = 0
+            # First, promote echelon if necessary
             echelon = contract.echelon
-            employee_start = datetime.strptime(employee.start_date, '%Y-%m-%d')
-            if relativedelta(datetime.today(), employee_start).years > employee.active_years:
-                active_years = employee.active_years + 1
+            date_next_promotion = datetime.strptime(contract.date_next_promotion, '%Y-%m-%d').date()
+            if date.today() >= date_next_promotion:
                 # Sigh, why did I store this as a string intead of int?
                 echelon = str(min(int(echelon) + 1, 15))
-                # contr_obj = self.pool.get(self._name)
+                self.write(cr, uid, contract.id, {
+                    'echelon': echelon,
+                    'date_next_promotion': (date.today() + relativedelta(years=2)).strftime('%Y-%m-%d')})
+            # Then update seniority, if applicable
+            employee_start = datetime.strptime(employee.start_date, '%Y-%m-%d').date()
+            if relativedelta(date.today(), employee_start).years > employee.active_years:
+                active_years = employee.active_years + 1
                 if active_years == 2:
                     wage = self._calculate_wage(cr, uid, [contract.id], field_name=None, args=None)[contract.id]
                     seniority_pay = wage * 0.02
                 elif active_years > 2:
                     wage = self._calculate_wage(cr, uid, [contract.id], field_name=None, args=None)[contract.id]
                     seniority_pay = employee.seniority_pay + wage * 0.01
-            values = {
-                'active_years': active_years,
-                'seniority_pay': seniority_pay,
-            }
-            self.pool.get('hr.employee').write(cr, uid, contract.employee_id.id, values)
-            self.write(cr, uid, contract.id, {'echelon': echelon,})
+                write_vals.update({
+                    'active_years': active_years,
+                    'seniority_pay': seniority_pay,
+                })
+                self.pool.get('hr.employee').write(cr, uid, contract.employee_id.id, write_vals)
