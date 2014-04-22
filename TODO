@@ -53,6 +53,8 @@ DONE:
 * 3 salary structures, same set of rules: National/International/Trainees
 * Payslip report PDF: yearly values for all the lower left box fields
 * Fix the auto-promote code: keep track of last promotion date.
+* Rename PROFTAX to PROFEXP (Professional Expenses)
+* Remove PROFEXP from To Pay
 
 N/A:
 ====

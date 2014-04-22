@@ -391,8 +391,8 @@ msgstr ""
 
 #. module: lct_hr
 #: model:hr.salary.rule,name:lct_hr.hr_salary_rule_14
-#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_proftax
-msgid "Professional Tax"
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_profexp
+msgid "Professional Expenses"
 msgstr ""
 
 #. module: lct_hr

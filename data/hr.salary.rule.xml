@@ -515,7 +515,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
             <field name="appears_on_payslip"></field>
-            <field name="category_id" ref="lct_hr.hr_salary_rule_category_proftax"/>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_profexp"/>
             <field name="code">2011</field>
             <field name="register_id"></field>
             <field name="note"></field>
@@ -582,7 +582,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-base = categories.GROSS - categories.CNSS - categories.PROFTAX
+base = categories.GROSS - categories.CNSS - categories.PROFEXP
 if base > 10000000/12:
     result = 0.15 * 10000000/12 + 0.05 * (base-10000000/12)
 else:
@@ -816,7 +816,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = 1000 * ((categories.GROSS - categories.CNSS - categories.PROFTAX - categories.TAXAL - categories.DEPENDENTS - categories.PENSION)//1000)
+result = 1000 * ((categories.GROSS - categories.CNSS - categories.TAXAL - categories.DEPENDENTS - categories.PENSION)//1000)
             </field>
             <field name="condition_python">
 # Available variables:
@@ -1156,7 +1156,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = 1000 * ((categories.GROSS - categories.TCS - categories.IRPP - categories.PROFTAX - categories.CNSS - categories.OTHER_DED_TOT)//1000)
+result = 1000 * ((categories.GROSS - categories.TCS - categories.IRPP - categories.PROFEXP - categories.CNSS - categories.OTHER_DED_TOT)//1000)
             </field>
             <field name="condition_python">
 # Available variables:
@@ -1433,7 +1433,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = categories.CNSS + categories.TCS + categories.IRPP + categories.PROFTAX
+result = categories.CNSS + categories.TCS + categories.IRPP + categories.PROFEXP
             </field>
             <field name="condition_python">
 # Available variables:

@@ -1,6 +1,6 @@
 id,code,note,name,parent_id/id
 lct_hr.hr_salary_rule_category_cnss,CNSS,,CNSS,
-lct_hr.hr_salary_rule_category_proftax,PROFTAX,,Professional Tax,
+lct_hr.hr_salary_rule_category_profexp,PROFEXP,,Professional Expenses,
 lct_hr.hr_salary_rule_category_taxal,TAXAL,,Tax Allowance,
 lct_hr.hr_salary_rule_category_dependents,DEPENDENTS,,Dependents,
 lct_hr.hr_salary_rule_category_pension,PENSION,,Pension or Annuities,
