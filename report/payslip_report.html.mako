@@ -241,9 +241,13 @@
                         </p>
                     </td>
                     <td style="text-align:left;width:2.267cm; " class="ce9">
+                        %if payslip.contract_id and payslip.contract_id.working_hours:
                         <p>
                             ${payslip.contract_id.working_hours.name}
                         </p>
+                        %else:
+                        <p></p>
+                        %endif
                     </td>
                 </tr>
                 <tr class="ro2">
