@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_budget_post_form">
+            <field name="name">account.budget.post.form.inherit</field>
+            <field name="model">account.budget.post</field>
+            <field name="inherit_id" ref="account_budget.view_budget_post_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree[@string='Budget Lines']/field[@name='percentage']" position="replace">
+                    <field name="percentage" widget="progressbar"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
