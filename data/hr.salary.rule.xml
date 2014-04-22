@@ -816,7 +816,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = 1000 * ((categories.GROSS - categories.CNSS - categories.TAXAL - categories.DEPENDENTS - categories.PENSION)//1000)
+result = 1000 * ((categories.GROSS - categories.CNSS - categories.PROFEXP - categories.TAXAL - categories.DEPENDENTS - categories.PENSION)//1000)
             </field>
             <field name="condition_python">
 # Available variables:
@@ -1156,7 +1156,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = 1000 * ((categories.GROSS - categories.TCS - categories.IRPP - categories.PROFEXP - categories.CNSS - categories.OTHER_DED_TOT)//1000)
+result = 1000 * ((categories.GROSS - categories.TCS - categories.IRPP - categories.CNSS - categories.OTHER_DED_TOT)//1000)
             </field>
             <field name="condition_python">
 # Available variables:
