@@ -30,7 +30,7 @@ Finance Module for LCT
 Small modifications to the account and account_budget modules.
     """,
     'author': 'OpenERP SA',
-    'depends': ['account', 'account_budget'],
+    'depends': ['account', 'account_budget', 'account_voucher'],
     'data': [
         'views/crossovered_budget.xml',
         'views/crossovered_budget_line.xml',
