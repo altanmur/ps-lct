@@ -20,7 +20,7 @@
 ##############################################################################
 
 from openerp.osv import fields, osv
-
+from tools.translate import _
 
 
 class hr_evaluation_interview(osv.osv):
