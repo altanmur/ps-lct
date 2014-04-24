@@ -29,6 +29,6 @@ class hr_evaluation_interview(osv.osv):
 
     _columns = {
 			'global_appreciation': fields.selection(
-				(('-1', 'Weak'),('0', 'Good'),('1', 'Excellent')),
+				(('weak', 'Weak'),('good', 'Good'),('excellent', 'Excellent')),
 				'Global Appreciation'),
         }
