@@ -453,3 +453,23 @@ msgstr "Contributions Patronales"
 #: model:hr.salary.rule.category,name:hr_payroll.ALW
 msgid "Allowance"
 msgstr "Indemnités"
+
+#. module: lct_hr
+#: selection:hr.evaluation.interview,global_appreciation:0
+msgid "Weak"
+msgstr "Faible"
+
+#. module: lct_hr
+#: field:hr.evaluation.interview,global_appreciation:0
+msgid "Global appreciation"
+msgstr "Appréciation globale"
+
+#. module: lct_hr
+#: selection:hr.evaluation.interview,global_appreciation:0
+msgid "Good"
+msgstr "Bon"
+
+#. module: lct_hr
+#: selection:hr.evaluation.interview,global_appreciation:0
+msgid "Excellent"
+msgstr "Excellent"
