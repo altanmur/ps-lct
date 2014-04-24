@@ -5,7 +5,7 @@
             <field name="name">crossovered.budget.line.tree</field>
             <field name="model">crossovered.budget.lines</field>
             <field name="arch" type="xml">
-                <tree string="Crossovered Budget Lines">
+                <tree string="Budget Lines">
                     <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
                     <field name="general_budget_id"/>
                     <field name="date_from"/>
@@ -14,7 +14,7 @@
                     <field name="planned_amount" sum="Planned Amount"/>
                     <field name="practical_amount" sum="Practical Amount"/>
                     <field name="theoritical_amount" sum="Theoretical Amount"/>
-                    <field name="percentage"/>
+                    <field name="percentage" widget="progressbar"/>
                 </tree>
             </field>
         </record>
@@ -23,7 +23,7 @@
             <field name="name">crossovered.budget.line.form</field>
             <field name="model">crossovered.budget.lines</field>
             <field name="arch" type="xml">
-                <form string="Crossovered Budget Line">
+                <form string="Budget Line">
                     <group colspan="3">
                         <field name="crossovered_budget_id"/>
                         <field name="general_budget_id"/>
@@ -53,7 +53,7 @@
         </record>
 
         <menuitem id="crossovered_budget_line_menu"
-            name="Crossovered Budget Lines"
+            name="Budget Lines"
             parent="account_budget.next_id_31"
             action="action_crossovered_budget_line_tree_view"/>
     </data>
