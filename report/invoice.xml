@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+	<data>
+		<report id="report_invoice"
+			model="account.invoice" 
+			name="account.invoice.report"
+			file="lct_finance/report/invoice.mako"
+			string="Invoice"
+			report_type="webkit"/>
+	</data>
+</openerp>

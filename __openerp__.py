@@ -36,6 +36,7 @@ Small modifications to the account and account_budget modules.
         'views/crossovered_budget_line.xml',
         'views/account_move.xml',
         'views/account_voucher.xml',
+        'report/invoice.xml',
     ],
     'demo': [],
     'test': [],
