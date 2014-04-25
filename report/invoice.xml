@@ -2,11 +2,12 @@
 
 <openerp>
 	<data>
+		
 		<report id="report_invoice"
 			model="account.invoice" 
 			name="account.invoice.report"
 			file="lct_finance/report/invoice.mako"
-			string="Invoice"
+			string="Invoice File"
 			report_type="webkit"/>
 	</data>
 </openerp>
