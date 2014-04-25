@@ -61,7 +61,11 @@
 				</tr>
 				<tr>
 					<td colspan="5" class="boxed" >
-						REFERENCE : <!-- New field to be added -->
+						
+						REFERENCE : 
+						%if invoice.reference :
+							${invoice.reference}
+						%endif
 					</td>
 				</tr>
 			</table>

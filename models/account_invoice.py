@@ -34,4 +34,5 @@ class account_invoice(orm.Model):
         'account_nbr': fields.char('Account Number', size=64),
         'rib': fields.char('RIB', size=64),
         'customer_nbr': fields.char('Customer Number', size=64),
+        'reference' : fields.text('Reference'),
     }
