@@ -511,7 +511,7 @@ result = rules.NET &gt; categories.NET * 0.10
         </record>
 
         <record id="lct_hr.hr_salary_rule_14" model="hr.salary.rule">
-            <field name="name">Professional Tax</field>
+            <field name="name">Professional Expense</field>
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
             <field name="appears_on_payslip"></field>
@@ -524,7 +524,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="condition_range_min"></field>
             <field name="parent_rule_id"></field>
             <field name="amount_percentage">10</field>
-            <field name="amount_percentage_base">categories.GROSS</field>
+            <field name="amount_percentage_base">categories.GROSS - categories.CNSS</field>
             <field name="amount_python_compute">
 # Available variables:
 #----------------------
