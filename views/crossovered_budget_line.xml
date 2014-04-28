@@ -14,7 +14,8 @@
                     <field name="planned_amount" sum="Planned Amount"/>
                     <field name="practical_amount" sum="Practical Amount"/>
                     <field name="theoritical_amount" sum="Theoretical Amount"/>
-                    <field name="percentage" widget="progressbar"/>
+                    <field name="percentage"/>
+                    <field name="percentage" widget="progressbar" string="Progress"/>
                 </tree>
             </field>
         </record>

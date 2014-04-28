@@ -1,0 +1,183 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* lct_finance
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-04-28 13:02+0000\n"
+"PO-Revision-Date: 2014-04-28 13:02+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lct_finance
+#: field:account.invoice,customer_nbr:0
+msgid "Customer Number"
+msgstr ""
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_account_asset_asset
+msgid "account.asset.asset"
+msgstr ""
+
+#. module: lct_finance
+#: field:account.voucher,internal_transfer:0
+msgid "Internal transfer"
+msgstr ""
+
+#. module: lct_finance
+#: field:account.invoice,bank_code:0
+msgid "Bank Code"
+msgstr ""
+
+#. module: lct_finance
+#: field:auth_signature_position,name:0
+msgid "Name"
+msgstr ""
+
+#. module: lct_finance
+#: model:ir.actions.act_window,name:lct_finance.action_crossovered_budget_line_tree_view
+msgid "Crossovered Budget Lines"
+msgstr ""
+
+#. module: lct_finance
+#: field:account.move,create_date:0
+msgid "Creation Date"
+msgstr ""
+
+#. module: lct_finance
+#: view:account.voucher:0
+msgid "Authorised Signatures"
+msgstr ""
+
+#. module: lct_finance
+#: field:account.voucher,signee1_id:0
+msgid "Signee 1"
+msgstr ""
+
+#. module: lct_finance
+#: view:crossovered.budget.lines:0
+msgid "Planned Amount"
+msgstr ""
+
+#. module: lct_finance
+#: field:account.invoice,rib:0
+msgid "RIB"
+msgstr ""
+
+#. module: lct_finance
+#: field:account.invoice,bank:0
+msgid "Bank"
+msgstr ""
+
+#. module: lct_finance
+#: view:crossovered.budget.lines:0
+msgid "Practical Amount"
+msgstr ""
+
+#. module: lct_finance
+#: field:account.voucher,pos2_id:0
+msgid "Position 2"
+msgstr ""
+
+#. module: lct_finance
+#: field:account.voucher,pos1_id:0
+msgid "Position 1"
+msgstr ""
+
+#. module: lct_finance
+#: field:account.voucher,signee2_id:0
+msgid "Signee 2"
+msgstr ""
+
+#. module: lct_finance
+#: view:crossovered.budget.lines:0
+#: model:ir.ui.menu,name:lct_finance.crossovered_budget_line_menu
+msgid "Budget Lines"
+msgstr ""
+
+#. module: lct_finance
+#: view:crossovered.budget.lines:0
+msgid "Budget Line"
+msgstr ""
+
+#. module: lct_finance
+#: view:crossovered.budget.lines:0
+msgid "Progress"
+msgstr ""
+
+#. module: lct_finance
+#: field:account.invoice,counter_code:0
+msgid "Counter Code"
+msgstr ""
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_account_balance_report
+msgid "Trial Balance Report"
+msgstr ""
+
+#. module: lct_finance
+#: field:account.invoice,iban:0
+msgid "IBAN"
+msgstr ""
+
+#. module: lct_finance
+#: field:account.voucher,origin_bank_id:0
+msgid "Origin bank account"
+msgstr ""
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_auth_signature_position
+msgid "Position"
+msgstr ""
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_account_move
+msgid "Account Entry"
+msgstr ""
+
+#. module: lct_finance
+#: field:account.invoice,account_nbr:0
+msgid "Account Number"
+msgstr ""
+
+#. module: lct_finance
+#: field:account.invoice,swift:0
+msgid "Swift"
+msgstr ""
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_account_voucher
+msgid "Accounting Voucher"
+msgstr ""
+
+#. module: lct_finance
+#: view:crossovered.budget.lines:0
+msgid "Theoretical Amount"
+msgstr ""
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_account_analytic_account
+msgid "Analytic Account"
+msgstr ""
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_account_invoice
+msgid "Invoice"
+msgstr ""
+
+#. module: lct_finance
+#: model:ir.actions.report.xml,name:lct_finance.report_invoice
+msgid "Invoice File"
+msgstr ""
+
+#. module: lct_finance
+#: field:account.voucher,destination_bank_id:0
+msgid "Destination bank account"
+msgstr ""
+

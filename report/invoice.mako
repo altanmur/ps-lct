@@ -2,8 +2,9 @@
 	%for invoice in objects :
 	<head>
 		<style type="text/css">
+			header{margin-top:5em;}
 			h1{text-align:center;text-decoration:underline;}
-			th{text-align:left;width:10em;}
+			th{text-align:left;width:10em;font-weight:normal;}
 			.boxed,table.boxed td{border:1px solid black;}
 			table{border-collapse:collapse;}
 			.data{width:6em; text-align:right;}
@@ -13,7 +14,7 @@
 		</style>
 	</head>
 	
-	<header><h1>INVOICE FILE</h1></header>
+	<header><h1>FICHE D'IMPUTATION</h1></header>
 
 	<body>
 		<div>
@@ -26,17 +27,17 @@
 						%endif
 					</td>
 					<td rowspan="4" style="width:20em;"></td>
-					<th >PIECE Nr : </th>
+					<th >N° PIECE : </th>
 					<td class="data">${invoice.internal_number}</td>
 				</tr>
 				<tr>
 					<td ></td>
 					<td></td>
-					<th>CONTRACT CODE : </th>
-					<td class="data"><!-- To be determined --></td>
+					<th>CODE CONTRAT : </th>
+					<td class="data"></td>
 				</tr>
 				<tr>
-					<th>FISCAL YEAR : </th>
+					<th>EXERCICE : </th>
 					<td class="data">
 						%if invoice.move_id :
 							%if invoice.move_id.period_id :
@@ -56,16 +57,16 @@
 				<tr>
 					<td></td>
 					<td></td>
-					<th>AMOUNT FCFA : </th>
+					<th style="text-decoration:underline;">MONTANT FCFA : </th>
 					<td class="boxed data">${invoice.amount_total}</td>
 				</tr>
 				<tr>
-					<td colspan="5" class="boxed" >
+					<td colspan="5" class="boxed" height="50" style="vertical-align:top;line-height:2;">
+						LIBELLE : 
+						%for i in range(1,200) :
+							.
+						%endfor
 						
-						REFERENCE : 
-						%if invoice.reference :
-							${invoice.reference}
-						%endif
 					</td>
 				</tr>
 			</table>
@@ -74,14 +75,14 @@
 		<div>
 			<table class="boxed centered">
 				<tr>
-					<td  colspan="2"><h2>ACCOUNT Nr</td>
-					<td rowspan="2" style="width:20em;"><h2>TITLE</h2> <!-- ? --></td>
+					<td  colspan="2"><h2>N° COMPTE</td>
+					<td rowspan="2" style="width:20em;"><h2>INTITULE</h2></td>
 					<td rowspan="2" style="width:10em;"><h2>DEBIT</h2></td>
 					<td rowspan="2" style="width:10em;"><h2>CREDIT</h2></td>
 				</tr>
 				<tr>
 					<td style="width:6em;"><h2>G<sup>AL</sup></h2></td>
-					<td style="width:6em;"><h2>THIRD PARTY</h2> <!-- ? --></td>
+					<td style="width:6em;"><h2>TIERS</h2></td>
 				</tr>
 				%for line in invoice.invoice_line :
 					<tr>
@@ -115,7 +116,7 @@
 							${invoice.account_id.code}
 						%endif
 					</td>
-					<td><!-- ? --></td>
+					<td></td>
 					<td>
 							%if invoice.partner_id :
 								${invoice.partner_id.name}
@@ -125,7 +126,7 @@
 					<td>${invoice.amount_total}</td>
 				</tr>
 				<tr>
-					<td colspan="3">TOTAL</td>
+					<td colspan="3">TOTAUX</td>
 					<td>${invoice.amount_total}</td>
 					<td>${invoice.amount_total}</td>
 				</tr>
