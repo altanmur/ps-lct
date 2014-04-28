@@ -98,9 +98,9 @@ class paybook_report(TransientModel):
                 row_data[payslip_id].update({rec['name'].lower(): rec['total']})
 
             xls = Workbook()
-            style_default = easyxf('border: left thin, right thin')
+            style_default = easyxf('border: left thin, right thin', num_format_str='#,##0')
             style_gray = easyxf('pattern: pattern solid, fore_color grey25;'
-                ' border: top thin, bottom thin, left thin, right thin')
+                ' border: top thin, bottom thin, left thin, right thin', num_format_str='#,##0')
             style_bold_center = easyxf('font: bold on; align: horiz center')
             style_bold_center_gray = easyxf('font: bold on; align: horiz center, vert top;'
                 ' pattern: pattern solid, fore_color grey25; border: top thin, bottom thin, left thin, right thin')
