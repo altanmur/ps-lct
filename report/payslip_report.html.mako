@@ -78,7 +78,7 @@
                     </td>
                     <td style="text-align:left;width:3.133cm; " class="ce10">
                         <p>
-                            Periode du
+                            Période du
                         </p>
                     </td>
                     <td colspan="2" style="text-align:left;width:2.267cm; " class="ce12">
@@ -329,7 +329,7 @@
                     </td>
                     <td colspan="2" rowspan="2" style="text-align:left;width:2.267cm; " class="ce1">
                         <p>
-                            Designation
+                            Désignation
                         </p>
                     </td>
                     <td rowspan="2" style="text-align:left;width:2.267cm; " class="ce1">

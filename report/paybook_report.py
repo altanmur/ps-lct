@@ -113,7 +113,7 @@ class paybook_report(TransientModel):
             sheet1.row(4).height = 720
             # add header
             sheet1.write_merge(0, 0, 0, 19, u'ETAT COLLECTIF DES SALAIRES', style_bold_center)
-            sheet1.write_merge(1, 1, 0, 19, u'LIVRE DE PAIE, DE %s A %s' % (dt_start, dt_end), style_center_wrap)
+            sheet1.write_merge(1, 1, 0, 19, u'LIVRE DE PAIE, DU %s AU %s' % (dt_start, dt_end), style_center_wrap)
             sheet1.write_merge(2, 2, 12, 16, u'RETENUES SUR SALAIRES', style_bold_center_gray)
             sheet1.write_merge(2, 3, 17, 19, u'AUTRES RETENUES', style_bold_center_gray)
             sheet1.write_merge(3, 3, 12, 14, u'PART SALARIALE', style_bold_center_gray)
