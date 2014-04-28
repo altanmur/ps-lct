@@ -102,7 +102,7 @@
 
                     </td>
                     <td style="text-align:left;width:2.267cm; " class="ce11" rowspan="5">
-                            <img src="data:image/png;base64,${company.logo}" height="52" width="180"/>
+                            <img src="data:image/png;base64,${company.logo}" style="height: 1cm; width: 3.6cm;"/>
                     </td>
                     <td style="text-align:left;width:3.133cm; " class="ce11">
 
