@@ -423,7 +423,7 @@
                         </td>
                         <td style="text-align:right; width:3.133cm; " class="ce15">
                             <p style="font-weight: bold">
-                                ${int(line.total)}
+                                ${'{0:,.0f}'.format(line.total).replace(',', '.')}
                             </p>
                         </td>
                         <td style="text-align:left;width:2.267cm; " class="ce15">
@@ -448,9 +448,9 @@
                         <td style="text-align:right; width:3.133cm; " class="ce15">
 
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:right;width:2.267cm; " class="ce15">
                             <p style="font-weight: bold">
-                                ${int(line.total)}
+                                ${'{0:,.0f}'.format(line.total).replace(',', '.')}
                             </p>
                         </td>
                         <td style="text-align:left;width:2.937cm; " class="ce15">
@@ -480,27 +480,27 @@
                         <td style="text-align:left;width:3.133cm; " class="ce15">
 
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:right;width:2.267cm; " class="ce15">
                             <p style="font-weight: bold">
-                                ${int(line.total)}
+                                ${'{0:,.0f}'.format(line.total).replace(',', '.')}
                             </p>
                         </td>
                     %elif line.category_id.code in ['CNSS']:
-                        <td style="text-align:left;width:2.267cm; " class="ce3">
+                        <td style="text-align:right;width:2.267cm; " class="ce3">
                             <p>
-                                ${int(line.amount)}
+                                ${'{0:,.0f}'.format(line.amount).replace(',', '.')}
                             </p>
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:right;width:2.267cm; " class="ce15">
                             <p>
                                 ${line.amount_percentage}%
                             </p>
                         </td>
                         <td style="text-align:right; width:3.133cm; " class="ce15">
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:right;width:2.267cm; " class="ce15">
                             <p>
-                                ${int(line.total)}
+                                ${'{0:,.0f}'.format(line.total).replace(',', '.')}
                             </p>
                         </td>
                         <td style="text-align:left;width:2.937cm; " class="ce15">
@@ -518,9 +518,9 @@
                         </td>
                         <td style="text-align:right; width:3.133cm; " class="ce15">
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:right;width:2.267cm; " class="ce15">
                             <p>
-                                ${int(line.total)}
+                                ${'{0:,.0f}'.format(line.total).replace(',', '.')}
                             </p>
                         </td>
                         <td style="text-align:left;width:2.937cm; " class="ce15">
@@ -532,9 +532,9 @@
                         <td style="text-align:left;width:2.267cm; " class="ce15">
                         </td>
                     %elif line.category_id.code in ['EMPLOYER_CONTRIB']:
-                        <td style="text-align:left;width:2.267cm; " class="ce3">
+                        <td style="text-align:right;width:2.267cm; " class="ce3">
                             <p>
-                                ${int(line.amount)}
+                                ${'{0:,.0f}'.format(line.amount).replace(',', '.')}
                             </p>
                         </td>
                         <td style="text-align:left;width:2.267cm; " class="ce15">
@@ -544,7 +544,7 @@
                         </td>
                         <td style="text-align:left;width:2.267cm; " class="ce15">
                         </td>
-                        <td style="text-align:left;width:2.937cm; " class="ce15">
+                        <td style="text-align:right;width:2.937cm; " class="ce15">
                             <p>
                                 ${line.amount_percentage}%
                             </p>
@@ -552,9 +552,9 @@
                         <td style="text-align:left;width:3.133cm; " class="ce15">
 
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:right;width:2.267cm; " class="ce15">
                             <p>
-                                ${int(line.total)}
+                                ${'{0:,.0f}'.format(line.total).replace(',', '.')}
                             </p>
                         </td>
                     % else:
@@ -566,7 +566,7 @@
                         </td>
                         <td style="text-align:right; width:3.133cm; " class="ce15">
                             <p>
-                                ${int(line.total)}
+                                ${'{0:,.0f}'.format(line.total).replace(',', '.')}
                             </p>
                         </td>
                         <td style="text-align:left;width:2.267cm; " class="ce15">
@@ -611,7 +611,7 @@
                     <td colspan="2" style="text-align:right; width:3.133cm; " class="ce9">
                         <p>
                             <!-- 1454000 -->
-                            ${int(context.get('payslips').get(payslip).get('net_salary'))}
+                            ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('net_salary')).replace(',', '.')}
                         </p>
                     </td>
                 </tr>
@@ -660,12 +660,12 @@
                     </td>
                     <td style="text-align:right;width:2.267cm; " class="ce11">
                         <p>
-                            ${int(context.get('payslips').get(payslip).get('gross'))}
+                            ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('gross')).replace(',', '.')}
                         </p>
                     </td>
                     <td style="text-align:right; width:2.267cm; " class="ce13">
                         <p>
-                            ${int(context.get('payslips').get(payslip).get('gross_year'))}
+                            ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('gross_year')).replace(',', '.')}
                         </p>
                     </td>
                     <td colspan="3" style="text-align:left;width:2.267cm; " class="ce7">
@@ -694,12 +694,12 @@
                     </td>
                     <td style="text-align:right;width:2.267cm; " class="ce11">
                         <p>
-                            ${int(context.get('payslips').get(payslip).get('salarial_costs'))}
+                            ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('salarial_costs')).replace(',', '.')}
                         </p>
                     </td>
                     <td style="text-align:right; width:2.267cm; " class="ce13">
                         <p>
-                            ${int(context.get('payslips').get(payslip).get('salarial_costs_year'))}
+                            ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('salarial_costs_year')).replace(',', '.')}
                         </p>
                     </td>
                     <td style="text-align:left;width:2.267cm; " class="ce2">
@@ -733,12 +733,12 @@
                     </td>
                     <td style="text-align:right;width:2.267cm; " class="ce11">
                         <p>
-                            ${int(context.get('payslips').get(payslip).get('patronal_costs'))}
+                            ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('patronal_costs')).replace(',', '.')}
                         </p>
                     </td>
                     <td style="text-align:right; width:2.267cm; " class="ce13">
                         <p>
-                            ${int(context.get('payslips').get(payslip).get('patronal_costs_year'))}
+                            ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('patronal_costs_year')).replace(',', '.')}
                         </p>
                     </td>
                     <td style="text-align:left;width:2.267cm; " class="ce2">
@@ -775,12 +775,12 @@
                     </td>
                     <td style="text-align:right;width:2.267cm; " class="ce11">
                         <p>
-                            ${int(context.get('payslips').get(payslip).get('net_salary'))}
+                            ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('net_salary')).replace(',', '.')}
                         </p>
                     </td>
                     <td style="text-align:right; width:2.267cm; " class="ce13">
                         <p>
-                            ${int(context.get('payslips').get(payslip).get('net_salary_year'))}
+                            ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('net_salary_year')).replace(',', '.')}
                         </p>
                     </td>
                     <td style="text-align:left;width:2.267cm; " class="ce11">
@@ -815,12 +815,12 @@
                     </td>
                     <td style="text-align:right;width:2.267cm; " class="ce11">
                         <p>
-                            ${int(context.get('payslips').get(payslip).get('benefits_in_kind'))}
+                            ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('benefits_in_kind')).replace(',', '.')}
                         </p>
                     </td>
                     <td style="text-align:right; width:2.267cm; " class="ce13">
                         <p>
-                            ${int(context.get('payslips').get(payslip).get('benefits_in_kind_year'))}
+                            ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('benefits_in_kind_year')).replace(',', '.')}
                         </p>
                     </td>
                     <td style="text-align:left;width:2.267cm; " class="ce11">
