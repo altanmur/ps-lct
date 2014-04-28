@@ -22,17 +22,13 @@
 from openerp.osv import fields, orm
 
 
-class account_invoice(orm.Model):
-    _inherit = 'account.invoice'
+class res_partner_bank(orm.Model):
+    _inherit = 'res.partner.bank'
 
     _columns = {
-        'bank': fields.char('Bank', size=64),
-        'bank_bic': fields.char('Swift', size=64),
-        'iban': fields.char('IBAN', size=64),
+        # 'swift': fields.char('Swift', size=64),
+        # 'iban': fields.char('IBAN', size=64),
         'bank_code': fields.char('Bank Code', size=64),
         'counter_code': fields.char('Counter Code', size=64),
-        'acc_number': fields.char('Account Number', size=64),
         'rib': fields.char('RIB', size=64),
-        'customer_nbr': fields.char('Customer Number', size=64),
-        'reference' : fields.text('Reference'),
     }

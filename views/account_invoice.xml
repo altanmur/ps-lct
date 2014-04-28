@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="invoice_supplier_form" model="ir.ui.view">
+            <field name="name">account.invoice.supplier.form</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+                <xpath expr="//group/group/div" position="after">
+                    <field name="bank"/>
+                    <field name="bank_bic"/>
+                    <field name="iban"/>
+                    <field name="acc_number"/>
+                </xpath>
+                <field name="journal_id" position="after">
+                    <field name="customer_nbr"/>
+                    <field name="rib"/>
+                    <field name="bank_code"/>
+                    <field name="counter_code"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

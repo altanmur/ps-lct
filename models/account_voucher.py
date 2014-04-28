@@ -33,3 +33,13 @@ class account_voucher(osv.osv):
         'signee1_id': fields.many2one('res.partner', 'Signee 1'),
         'signee2_id': fields.many2one('res.partner', 'Signee 2'),
     }
+
+    # account.voucher => account.voucher.line => account.move.line => invoice
+    def get_invoice(self, cr, uid, ids, context=None):
+        retval = None
+        if isinstance(ids, list):
+            ids = ids[0]
+        voucher = self.browse(cr, uid, ids, context=context)
+        if voucher and voucher.line_dr_ids:
+            retval = voucher.line_dr_ids[0].move_line_id.invoice
+        return retval

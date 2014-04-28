@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <report id="lct_finance.report_wire_transfer_webkit"
+            name="webkit.wire_transfer_report"
+            auto="False"
+            model="account.voucher"
+            file="lct_finance/report/wire_transfer.html.mako"
+            string="Wire Transfer"
+            report_type="webkit"
+            webkit_header="lct_finance.ir_header_webkit_finance_portrait"
+            header="False" />
+
+    </data>
+</openerp>
