@@ -78,7 +78,7 @@
                     </td>
                     <td style="text-align:left;width:3.133cm; " class="ce10">
                         <p>
-                            Période du
+                            Période:
                         </p>
                     </td>
                     <td colspan="2" style="text-align:left;width:2.267cm; " class="ce12">
