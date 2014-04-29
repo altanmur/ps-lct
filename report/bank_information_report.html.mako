@@ -55,12 +55,12 @@
                 <td>${payslip.employee_id.name}</td>
                 <td>${payslip.employee_id.bank_name}</td>
                 <td class="numeric">${payslip.employee_id.acc_number}</td>
-                <td class="numeric">${int(context.get('payslips').get(payslip).get('net_salary'))}</td>
+                <td class="numeric">${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('net_salary')).replace(',', '.')}</td>
             </tr>
             %endfor
             <tr>
                 <td colspan="4" style="text-align: center;">Montant Total à virer</td>
-                <td class="numeric">${int(context.get('total_net'))}</td>
+                <td class="numeric">${'{0:,.0f}'.format(context.get('total_net')).replace(',', '.')}</td>
             </tr>
         </table>
     </body>
