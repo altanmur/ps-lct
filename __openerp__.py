@@ -38,6 +38,7 @@ Small modifications to the account and account_budget modules.
         'views/account_voucher.xml',
         'data/ir.header_webkit.xml',
         'report/invoice.xml',      
+        'wizard/balance_sheet_view.xml',
     ],
     'demo': [],
     'test': [],
