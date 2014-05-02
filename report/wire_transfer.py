@@ -44,17 +44,23 @@ class wire_transfer_report(report_sxw.rml_parse):
         for voucher in vouchers:
             currency_obj = self.pool.get('res.currency')
             voucher_curr_id = voucher.currency_id.id
-            cfa_curr_id = currency_obj.search(cr, uid, [('name', '=', 'XOF')])[0]
-            amount_cfa = currency_obj.compute(cr, uid, voucher_curr_id, cfa_curr_id,
+            company_obj = self.pool.get('res.company')
+            user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
+            company = company_obj.browse(cr, uid, user.company_id.id)
+            default_curr_id = company.currency_id.id
+            default_currency = currency_obj.browse(cr, uid, default_curr_id, context=context).symbol
+            amount_default = currency_obj.compute(cr, uid, voucher_curr_id, default_curr_id,
                 voucher.amount)
             retval[voucher] = {
                 # Yup, hardcpoding lang for this one. It's only gonna be used
                 # in French.
                 'amount_text': amount_to_text(voucher.amount, lang='fr',
                     currency=voucher.currency_id.symbol),
-                'amount_cfa': amount_cfa,
-                'amount_text_cfa': amount_to_text(amount_cfa, lang='fr',
-                    currency='CFA'),
+                'amount_default': amount_default,
+                'amount_text_default': amount_to_text(amount_default, lang='fr',
+                    currency=default_currency),
+                'default_currency': default_currency,
+                'diff_currencies': voucher_curr_id != default_curr_id,
 
             }
         return retval

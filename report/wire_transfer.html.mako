@@ -39,8 +39,8 @@
         Messieurs,<br/>
         <br/>
         Par le débit de notre compte <span class="bold">N° ${voucher.origin_bank_id.acc_number}</span> dans vos livres, nous vous remercions de transférer la somme de <span class="bold">${voucher.currency_id.name} ${voucher.amount}</span> (${context.get('vouchers').get(voucher).get('amount_text')})
-        %if voucher.internal_transfer:
-        équivalent à F CFA ${context.get('vouchers').get(voucher).get('amount_cfa')} (${context.get('vouchers').get(voucher).get('amount_text_cfa')}) vers notre compte CFA ouvert dans vos livres aux références suivantes:
+        %if voucher.internal_transfer and context.get('vouchers').get(voucher).get('diff_currencies'):
+        équivalent à F {context.get('vouchers').get(voucher).get('default_currency') ${context.get('vouchers').get(voucher).get('amount_default')} (${context.get('vouchers').get(voucher).get('amount_text_default')}) vers notre compte {context.get('vouchers').get(voucher).get('default_currency') ouvert dans vos livres aux références suivantes:
         %else:
         vers le compte aux références suivantes:
         %endif
