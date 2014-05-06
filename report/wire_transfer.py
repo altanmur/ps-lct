@@ -69,5 +69,5 @@ class wire_transfer_report(report_sxw.rml_parse):
 
 report_sxw.report_sxw('report.webkit.wire_transfer_report',
                       'account.voucher',
-                      'lct_finance/report/wire_transfer_report.html.mako',
+                      'lct_finance/report/wire_transfer.html.mako',
                       parser=wire_transfer_report)
