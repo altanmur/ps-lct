@@ -68,6 +68,6 @@ class wire_transfer_report(report_sxw.rml_parse):
 
 
 report_sxw.report_sxw('report.webkit.wire_transfer_report',
-                      'hr.payslip',
-                      'lct_hr/report/wire_transfer_report.html.mako',
+                      'account.voucher',
+                      'lct_finance/report/wire_transfer_report.html.mako',
                       parser=wire_transfer_report)
