@@ -1,4 +1,3 @@
-<?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -117,13 +116,12 @@
                 </tr>
                 <tr>
                     <td>${voucher.signee1_id.name}<br/></td>
-                    <td>${voucher.signee2_id.name}<br/>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <br/>
-    %endfor
+                    <td>${voucher.signee2_id.name}<br/></td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        %endfor
 
-</body>
+    </body>
 </html>
