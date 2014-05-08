@@ -20,7 +20,6 @@
 ##############################################################################
 
 import account_analytic_account
-import account_asset_asset
 import account_invoice
 import account_move
 import account_voucher
