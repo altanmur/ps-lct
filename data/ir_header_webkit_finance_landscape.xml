@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="lct_finance.ir_header_webkit_finance_landscape" model="ir.header_webkit">
+            <field name="name">Finance Landscape</field>
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+        </record>
+    </data>
+</openerp>

@@ -1,8 +1,8 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-TODAY OpenERP S.A. <http://www.openerp.com>
+#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,8 +19,26 @@
 #
 ##############################################################################
 
-import balance_sheet
-import balance_sheet_download
-import profit_loss
-import profit_loss_download
-import account_balance_report
+from openerp.osv import fields, osv
+
+class account_balance_report(osv.osv_memory):
+    _inherit = "account.common.account.report"
+    _name = 'lct_finance.balance.report'
+    _description = 'Trial Balance Report'
+
+    _columns = {
+        'journal_ids': fields.many2many('account.journal', 'account_balance_report_journal_rel', 'account_id', 'journal_id', 'Journals', required=True),
+    }
+
+    _defaults = {
+        'journal_ids': [],
+    }
+
+    def _print_report(self, cr, uid, ids, data, context=None):
+        data = self.pre_print_report(cr, uid, ids, data, context=context)
+        return {'type': 'ir.actions.report.xml', 'report_name': 'webkit.account_balance_report', 'datas': data}
+
+
+account_balance_report()
+
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

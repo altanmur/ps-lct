@@ -20,6 +20,19 @@
             report_type="webkit"
             webkit_header="lct_finance.ir_header_webkit_finance_portrait"
             header="False" />
+        <!-- First, let's delete the old ones -->
+        <!-- <delete model="ir.actions.report.xml" id="account.account_account_balance"/> -->
+        <!-- And now, we define our own. -->
+        <report id="lct_finance.report_account_balance_webkit"
+            name="webkit.account_balance_report"
+            auto="False"
+            model="account.account"
+            file="lct_finance/report/account_balance.html.mako"
+            string="Trial Balance 2"
+            report_type="webkit"
+            webkit_header="lct_finance.ir_header_webkit_finance_landscape"
+            header="False"/>
+
 
     </data>
 </openerp>
