@@ -34,7 +34,6 @@ class balance_sheet(osv.osv_memory):
 
     _inherit = "accounting.report"
     _name = "balance.sheet"
-
     def _getOutCell(self,outSheet, colIndex, rowIndex):
         row = outSheet._Worksheet__rows.get(rowIndex)
         if not row: return None
@@ -100,8 +99,6 @@ class balance_sheet(osv.osv_memory):
             balance = accounts[rows.index(row)].balance
             if balance !=0 : self._setOutCell(rs, col, row, balance)
             else : self._setOutCell(rs, col, row, "")
-
-
         return report
 
 
