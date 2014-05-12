@@ -19,7 +19,31 @@
 #
 ##############################################################################
 
-import balance_sheet
-import balance_sheet_download
-import profit_loss
-import profit_loss_download
+from osv import fields, osv
+from tools.translate import _
+import xlwt
+import StringIO
+import base64
+
+
+class balance_sheet_dl(osv.osv_memory):
+
+    _name = "profit.loss.download"
+
+    _columns = {
+            'file_name' : fields.char('File Name'),
+            'xls_report' : fields.binary('Profit & Loss',filters='*.xls',readonly=False)
+        }
+
+    _defaults = {
+        'file_name' : 'Profit & Loss.xls'
+    }
+
+
+
+
+
+
+
+
+balance_sheet_dl()

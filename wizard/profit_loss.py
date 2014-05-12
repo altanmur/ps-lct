@@ -33,7 +33,7 @@ from tempfile import TemporaryFile
 class balance_sheet(osv.osv_memory):
 
     _inherit = "accounting.report"
-    _name = "balance.sheet"
+    _name = "profit.loss"
 
     def _getOutCell(self,outSheet, colIndex, rowIndex):
         row = outSheet._Worksheet__rows.get(rowIndex)
@@ -54,7 +54,7 @@ class balance_sheet(osv.osv_memory):
 
 
     def _write_report(self, cr, uid, ids, context=None):
-        template = open_workbook('togo/lct_finance/data/balancesheet.xls',formatting_info=True)
+        template = open_workbook('togo/lct_finance/data/profitloss.xls',formatting_info=True)
         report = copy(template)
         ts = template.sheet_by_index(0)
         rs = report.get_sheet(0)
@@ -97,7 +97,7 @@ class balance_sheet(osv.osv_memory):
         accounts = self.pool.get('account.account').browse(cr,uid,acc_ids,context=context)
         for row in rows :
             col = 3
-            balance = accounts[rows.index(row)].balance
+            balance = -accounts[rows.index(row)].balance
             if balance !=0 : self._setOutCell(rs, col, row, balance)
             else : self._setOutCell(rs, col, row, "")
 
@@ -113,12 +113,12 @@ class balance_sheet(osv.osv_memory):
         f = StringIO.StringIO()
         report.save(f)
         xls_file = base64.b64encode(f.getvalue())
-        dlwizard = self.pool.get('balance.sheet.download').create(cr, uid, {'xls_report' : xls_file}, context=dict(context, active_ids=ids))
+        dlwizard = self.pool.get('profit.loss.download').create(cr, uid, {'xls_report' : xls_file}, context=dict(context, active_ids=ids))
         return {
             'view_mode': 'form',
             'view_id': False,
             'view_type': 'form',
-            'res_model': 'balance.sheet.download',
+            'res_model': 'profit.loss.download',
             'res_id': dlwizard,
             'type': 'ir.actions.act_window',
             'nodestroy': True,
