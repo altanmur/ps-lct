@@ -27,23 +27,23 @@ import base64
 
 
 class balance_sheet_dl(osv.osv_memory):
-    
+
     _name = "balance.sheet.download"
-    
+
     _columns = {
             'file_name' : fields.char('File Name'),
             'xls_report' : fields.binary('Balance Sheet',filters='*.xls',readonly=False)
         }
-        
+
     _defaults = {
         'file_name' : 'Balance Sheet.xls'
     }
-    
-    
-        
-    
-        
-    
-        
+
+
+
+
+
+
+
 
 balance_sheet_dl()

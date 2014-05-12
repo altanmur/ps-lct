@@ -31,10 +31,10 @@ from datetime import date, timedelta
 from tempfile import TemporaryFile
 
 class balance_sheet(osv.osv_memory):
-    
+
     _inherit = "accounting.report"
     _name = "balance.sheet"
-    
+
     def _getOutCell(self,outSheet, colIndex, rowIndex):
         row = outSheet._Worksheet__rows.get(rowIndex)
         if not row: return None
@@ -43,55 +43,73 @@ class balance_sheet(osv.osv_memory):
         return cell
 
     def _setOutCell(self,outSheet, col, row, value):
-        
+
         previousCell = self._getOutCell(outSheet, col, row)
         outSheet.write(row, col, value)
-        
+
         if previousCell:
             newCell = self._getOutCell(outSheet, col, row)
             if newCell:
                 newCell.xf_idx = previousCell.xf_idx
-    
- 
+
+
     def _write_report(self, cr, uid, ids, context=None):
-        template= open_workbook('togo/lct_finance/data/template.xls',formatting_info=True)
+        template = open_workbook('togo/lct_finance/data/template.xls',formatting_info=True)
         report = copy(template)
         ts = template.sheet_by_index(0)
         rs = report.get_sheet(0)
         acc_ids = []
         rows = []
         for row in range(10,ts.nrows) :
-            if ts.cell(row,1).ctype != XL_CELL_BLANK : 
+            if ts.cell(row,1).ctype != XL_CELL_BLANK :
                 domain = [('code','ilike',str(ts.cell(row,1).value))]
                 if not self.pool.get('account.account').search(cr, uid, domain,context=context) :
                     continue
                 acc_id = self.pool.get('account.account').search(cr, uid, domain,context=context)[0]
                 acc_ids.append(acc_id)
                 rows.append(row)
-                
+
         browser = self.browse(cr,uid,ids,context=context)[0]
+        date1 = None
+        date2 = None
         if browser.date_from and browser.date_to :
-            context['date_from'] = browser.date_from
-            context['date_to'] = browser.date_to
-        elif browser.period_from and browser.period_to : 
-            context['date_from'] = browser.period_from.date_start
-            context['date_to'] = browser.period_from.date_end
-        
+            date1 = browser.date_from
+            date2 = browser.date_to
+        elif browser.period_from and browser.period_to :
+            date1 = browser.period_from.date_start
+            date2 = browser.period_to.date_stop
+        else :
+            today_s = datetime.today().strftime("%d-%m-%Y")
+            self._setOutCell(rs, 1, 7, "Date of report :")
+            self._setOutCell(rs, 2, 7, today_s)
+
+        if date1 and date2 :
+            context['date_from'] = date1
+            context['date_to'] = date2
+            self._setOutCell(rs, 1, 7, "Start date :")
+            self._setOutCell(rs, 1, 8, "End date :")
+            self._setOutCell(rs, 2, 7, datetime.strptime(date1,"%Y-%m-%d").strftime("%d-%m-%Y"))
+            self._setOutCell(rs, 2, 8, datetime.strptime(date2,"%Y-%m-%d").strftime("%d-%m-%Y"))
+            today_s = datetime.today().strftime("%d-%m-%Y")
+            self._setOutCell(rs, 1, 6, "Date of report :")
+            self._setOutCell(rs, 2, 6, today_s)
+
         accounts = self.pool.get('account.account').browse(cr,uid,acc_ids,context=context)
         for row in rows :
             col = 3
             balance = accounts[rows.index(row)].balance
             if balance !=0 : self._setOutCell(rs, col, row, balance)
             else : self._setOutCell(rs, col, row, "")
-        
+
+
         return report
-        
-    
+
+
     def print_report(self, cr, uid, ids, name, context=None):
         if context is None:
             context = {}
         report = self._write_report(cr,uid,ids,context=context)
-        
+
         f = StringIO.StringIO()
         report.save(f)
         xls_file = base64.b64encode(f.getvalue())
@@ -108,4 +126,4 @@ class balance_sheet(osv.osv_memory):
             'domain': '[]',
             'context': dict(context, active_ids=ids)
         }
-        
+
