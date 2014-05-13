@@ -19,16 +19,12 @@
 #
 ##############################################################################
 
-from osv import fields, osv
-from tools.translate import _
-from xlwt import Workbook,easyxf
+from osv import osv
 from xlrd import open_workbook,XL_CELL_BLANK
 from xlutils.copy import copy
 import StringIO
 import base64
 from datetime import datetime
-from datetime import date, timedelta
-from tempfile import TemporaryFile
 
 class balance_sheet(osv.osv_memory):
 
