@@ -17,11 +17,11 @@
                 <th colspan="2">
                     ${context.get('company_name')}
                 </th>
-                <th colspan="4" style="text-align: center;">
+                <th colspan="2" style="text-align: center;">
                     <h1>Balance des comptes</h1>
                     <b>${context.get('display_account')}</b>
                 </th>
-                <th colspan="2">
+                <th colspan="4">
                     <table style="text-align: left; width: 100%;" border="0" cellpadding="0" cellspacing="0">
                         <tr><td>Période du</td><td>${context.get('start_date')}</td></tr>
                         <tr><td>au</td><td>${context.get('end_date')}</td></tr>
