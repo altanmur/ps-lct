@@ -62,7 +62,7 @@ class account_balance_report(report_sxw.rml_parse):
             'display_account': display_account,
             'start_date': curr_fy.date_start,
             'end_date': curr_fy.date_stop,
-            'prev_period_end': prev_fy.date_stop,
+            'prev_period_end': prev_fy.id and prev_fy.date_stop or '---',
             'total_prev_debit': 0.0,
             'total_prev_credit': 0.0,
             'total_debit': total_debit,

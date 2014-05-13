@@ -108,7 +108,7 @@ class account_account(osv.osv):
                     if ctx.get('fiscalyear') == context.get('fiscalyear'):
                         accounts[row['id']] = row
                         accounts[row['id']].update({'prev_balance': 0.0})
-                    else:
+                    elif ctx.get('fiscalyear'):
                         accounts[row['id']].update({'prev_balance': row['balance']})
 
             # consolidate accounts with direct children
