@@ -2,18 +2,16 @@
 <openerp>
     <data>
 
-<!--
-         <record id="balance_sheet_download" model="ir.ui.view">
-            <field name="name">Balance Sheet</field>
-            <field name="model">balance.sheet.download</field>
+        <record id="cash_flow_download" model="ir.ui.view">
+            <field name="name">Cash Flow</field>
+            <field name="model">cash.flow.download</field>
             <field name="arch" type="xml">
-                <form string="Balance Sheet">
+                <form string="Cash Flow">
                     <field name="file_name" invisible="1"/>
                     <field name="xls_report" filename="file_name" readonly="1"/>
                 </form>
             </field>
         </record>
--->
 
         <record id="cash_flow_view_togo" model="ir.ui.view">
             <field name="name">Cash Flow Report</field>
@@ -21,6 +19,7 @@
             <field name="arch" type="xml">
                 <form string="Report Options" version="7.0">
                     <group col="4">
+                        <field name="company_id" invisible="1"/>
                        <field name="fiscalyear_id" domain="[('company_id','=',company_id)]"/>
                     </group>
                     <notebook tabpos="up" colspan="4">

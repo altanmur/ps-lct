@@ -76,12 +76,41 @@ class balance_sheet(osv.osv_memory):
         return res
 
 
+    def _set_dates(self, cr, uid, ids, context=None, sheet=None):
+        if not sheet : return
+        browser = self.browse(cr,uid,ids,context=context)[0]
+        today_s = datetime.today().strftime("%d-%m-%Y")
+        date1 = None
+        date2 = None
+        if browser.date_from and browser.date_to :
+            date1 = browser.date_from
+            date2 = browser.date_to
+        elif browser.period_from and browser.period_to :
+            date1 = browser.period_from.date_start
+            date2 = browser.period_to.date_stop
+        else :
+            self._setOutCell(sheet, 1, 5, "Date of report :")
+            self._setOutCell(sheet, 2, 5, today_s)
+
+        if date1 and date2 :
+            context['date_from'] = date1
+            context['date_to'] = date2
+            self._setOutCell(sheet, 1, 5, "Start date :")
+            self._setOutCell(sheet, 1, 6, "End date :")
+            self._setOutCell(sheet, 2, 5, datetime.strptime(date1,"%Y-%m-%d").strftime("%d-%m-%Y"))
+            self._setOutCell(sheet, 2, 6, datetime.strptime(date2,"%Y-%m-%d").strftime("%d-%m-%Y"))
+            self._setOutCell(sheet, 1, 4, "Date of report :")
+            self._setOutCell(sheet, 2, 4, today_s)
+
     def _write_report(self, cr, uid, ids, context=None):
         template = open_workbook('togo/lct_finance/data/cashflow.xls',formatting_info=True)
         report = copy(template)
         rs = report.get_sheet(0)
-        balances = [0.0] * 22
 
+        self._set_dates(cr, uid, ids, context=context, sheet=rs)
+
+
+        balances = [0.0] * 22
 
         # Income before Tax, Depreciation, & Amortization
         pos_codes = (
@@ -251,12 +280,12 @@ class balance_sheet(osv.osv_memory):
         f = StringIO.StringIO()
         report.save(f)
         xls_file = base64.b64encode(f.getvalue())
-        dlwizard = self.pool.get('balance.sheet.download').create(cr, uid, {'xls_report' : xls_file}, context=dict(context, active_ids=ids))
+        dlwizard = self.pool.get('cash.flow.download').create(cr, uid, {'xls_report' : xls_file}, context=dict(context, active_ids=ids))
         return {
             'view_mode': 'form',
             'view_id': False,
             'view_type': 'form',
-            'res_model': 'balance.sheet.download',
+            'res_model': 'cash.flow.download',
             'res_id': dlwizard,
             'type': 'ir.actions.act_window',
             'nodestroy': True,
