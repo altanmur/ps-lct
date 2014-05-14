@@ -103,7 +103,8 @@ class balance_sheet(osv.osv_memory):
             self._setOutCell(sheet, 2, 4, today_s)
 
     def _write_report(self, cr, uid, ids, context=None):
-        template = open_workbook('togo/lct_finance/data/cashflow.xls',formatting_info=True)
+        module_path = __file__.split('wizard')[0]
+        template = open_workbook(module_path + 'data/balancesheet.xls',formatting_info=True)
         report = copy(template)
         rs = report.get_sheet(0)
 
