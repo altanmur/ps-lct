@@ -26,3 +26,5 @@ import profit_loss_download
 import account_balance_report
 import cash_flow
 import cash_flow_download
+import depreciation_table
+import depreciation_table_download
