@@ -104,7 +104,7 @@ class balance_sheet(osv.osv_memory):
 
     def _write_report(self, cr, uid, ids, context=None):
         module_path = __file__.split('wizard')[0]
-        template = open_workbook(module_path + 'data/balancesheet.xls',formatting_info=True)
+        template = open_workbook(module_path + 'data/cashflow.xls',formatting_info=True)
         report = copy(template)
         rs = report.get_sheet(0)
 
