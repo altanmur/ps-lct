@@ -30,6 +30,7 @@ from datetime import datetime
 from datetime import date, timedelta
 from tempfile import TemporaryFile
 
+
 class balance_sheet(osv.osv_memory):
 
     _inherit = "account.common.account.report"
