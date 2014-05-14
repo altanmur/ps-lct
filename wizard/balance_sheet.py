@@ -33,15 +33,12 @@ class balance_sheet(osv.osv_memory):
     def _getOutCell(self,outSheet, colIndex, rowIndex):
         row = outSheet._Worksheet__rows.get(rowIndex)
         if not row: return None
-
         cell = row._Row__cells.get(colIndex)
         return cell
 
     def _setOutCell(self,outSheet, col, row, value):
-
         previousCell = self._getOutCell(outSheet, col, row)
         outSheet.write(row, col, value)
-
         if previousCell:
             newCell = self._getOutCell(outSheet, col, row)
             if newCell:
@@ -65,8 +62,10 @@ class balance_sheet(osv.osv_memory):
                 rows.append(row)
 
         browser = self.browse(cr,uid,ids,context=context)[0]
+        today_s = datetime.today().strftime("%d-%m-%Y")
         date1 = None
         date2 = None
+
         if browser.date_from and browser.date_to :
             date1 = browser.date_from
             date2 = browser.date_to
@@ -74,7 +73,6 @@ class balance_sheet(osv.osv_memory):
             date1 = browser.period_from.date_start
             date2 = browser.period_to.date_stop
         else :
-            today_s = datetime.today().strftime("%d-%m-%Y")
             self._setOutCell(rs, 1, 7, "Date of report :")
             self._setOutCell(rs, 2, 7, today_s)
 
@@ -85,7 +83,6 @@ class balance_sheet(osv.osv_memory):
             self._setOutCell(rs, 1, 8, "End date :")
             self._setOutCell(rs, 2, 7, datetime.strptime(date1,"%Y-%m-%d").strftime("%d-%m-%Y"))
             self._setOutCell(rs, 2, 8, datetime.strptime(date2,"%Y-%m-%d").strftime("%d-%m-%Y"))
-            today_s = datetime.today().strftime("%d-%m-%Y")
             self._setOutCell(rs, 1, 6, "Date of report :")
             self._setOutCell(rs, 2, 6, today_s)
 

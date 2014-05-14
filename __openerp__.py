@@ -45,6 +45,7 @@ Small modifications to the account and account_budget modules.
         'data/ir_header_webkit_finance_landscape.xml',
         'report/reports.xml',
         'wizard/account_balance_report.xml',
+        'wizard/cash_flow_report.xml',
     ],
     'demo': [],
     'test': [],
