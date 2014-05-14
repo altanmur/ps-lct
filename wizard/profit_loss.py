@@ -54,7 +54,8 @@ class balance_sheet(osv.osv_memory):
 
 
     def _write_report(self, cr, uid, ids, context=None):
-        template = open_workbook('togo/lct_finance/data/profitloss.xls',formatting_info=True)
+        module_path = __file__.split('wizard')[0]
+        template = open_workbook(module_path + 'data/profitloss.xls',formatting_info=True)
         report = copy(template)
         ts = template.sheet_by_index(0)
         rs = report.get_sheet(0)
