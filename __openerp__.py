@@ -28,7 +28,7 @@ HR Module for LCT
 =================
     """,
     'author': 'OpenERP SA',
-    'depends': ['hr_contract','hr_payroll', 'web_filedownload', 'report_webkit','hr_evaluation'],
+    'depends': ['hr_contract','hr_payroll', 'web_filedownload', 'report_webkit','hr_evaluation','hr_recruitment'],
     'data': [
         'data/hr.salary.rule.category.csv',
         'data/hr.salary.rule.xml',
