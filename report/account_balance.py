@@ -23,6 +23,9 @@ from report import report_sxw
 from openerp.tools.amount_to_text import amount_to_text
 from datetime import datetime
 
+def transform_date(iso_format):
+    return '/'.join([iso_format[8:], iso_format[5:7], iso_format[:4]])
+
 
 class account_balance_report(report_sxw.rml_parse):
     _name = 'account_balance_report'
@@ -60,9 +63,9 @@ class account_balance_report(report_sxw.rml_parse):
             'current_date': now.strftime('%d/%m/%Y'),
             'current_time': now.strftime('%H:%M:%S'),
             'display_account': display_account,
-            'start_date': curr_fy.date_start,
-            'end_date': curr_fy.date_stop,
-            'prev_period_end': prev_fy.id and prev_fy.date_stop or '---',
+            'start_date': transform_date(curr_fy.date_start),
+            'end_date': transform_date(curr_fy.date_stop),
+            'prev_period_end': prev_fy.id and transform_date(prev_fy.date_stop) or '---',
             'total_prev_debit': 0.0,
             'total_prev_credit': 0.0,
             'total_debit': total_debit,

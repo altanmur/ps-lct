@@ -30,7 +30,7 @@
                 </th>
             </tr>
             <tr>
-                <td colspan="8">Date de tirage ${context.get('current_date')} à ${context.get('current_time')}</td>
+                <td colspan="8">Date de tirage: ${context.get('current_date')} à ${context.get('current_time')}</td>
             </tr>
             <tr style="text-align: center;">
                 <th rowspan="2">Numéro de compte</th>
@@ -57,30 +57,30 @@
                 <td>${line.get('name')}</td>
                 <td class="numeric">
                     %if line.get('prev_balance') < 0:
-                    ${-1 * line.get('prev_balance')}
+                    ${'{0:,.0f}'.format((-1 * line.get('prev_balance'))).replace(',', '.')}
                     %else:
                     <!-- -->
                     %endif
                 </td>
                 <td class="numeric">
                     %if line.get('prev_balance') >= 0:
-                    ${line.get('prev_balance')}
+                    ${'{0:,.0f}'.format(line.get('prev_balance')).replace(',', '.')}
                     %else:
                     <!-- -->
                     %endif
                 </td>
-                <td class="numeric">${line.get('debit')}</td>
-                <td class="numeric">${line.get('credit')}</td>
+                <td class="numeric">${'{0:,.0f}'.format(line.get('debit'))}</td>
+                <td class="numeric">${'{0:,.0f}'.format(line.get('credit'))}</td>
                 <td class="numeric">
                     %if line.get('balance') < 0:
-                    ${-1 * line.get('balance')}
+                    ${'{0:,.0f}'.format((-1 * line.get('balance'))).replace(',', '.')}
                     %else:
                     <!-- -->
                     %endif
                 </td>
                 <td class="numeric">
                     %if line.get('balance') >= 0:
-                    ${line.get('balance')}
+                    ${'{0:,.0f}'.format(line.get('balance')).replace(',', '.')}
                     %else:
                     <!-- -->
                     %endif
@@ -91,20 +91,20 @@
                 <td colspan="2">
                     A reporter
                 </td>
-                <td class="numeric">${context.get('total_prev_debit')}</td>
-                <td class="numeric">${context.get('total_prev_credit')}</td>
-                <td class="numeric">${context.get('total_debit')}</td>
-                <td class="numeric">${context.get('total_credit')}</td>
+                <td class="numeric">${'{0:,.0f}'.format(context.get('total_prev_debit')).replace(',', '.')}</td>
+                <td class="numeric">${'{0:,.0f}'.format(context.get('total_prev_credit')).replace(',', '.')}</td>
+                <td class="numeric">${'{0:,.0f}'.format(context.get('total_debit')).replace(',', '.')}</td>
+                <td class="numeric">${'{0:,.0f}'.format(context.get('total_credit')).replace(',', '.')}</td>
                 <td class="numeric">
                     %if context.get('total_balance') < 0:
-                    ${-1 * context.get('total_balance')}
+                    ${'{0:,.0f}'.format(-1 * context.get('total_balance')).replace(',', '.')}
                     %else:
                     <!-- -->
                     %endif
                 </td>
                 <td class="numeric">
                     %if context.get('total_balance') >= 0:
-                    ${context.get('total_balance')}
+                    ${'{0:,.0f}'.format(context.get('total_balance')).replace(',', '.')}
                     %else:
                     <!-- -->
                     %endif
