@@ -44,14 +44,22 @@ class account_balance_report(report_sxw.rml_parse):
         company = company_obj.browse(cr, uid, user.company_id.id)
         total_debit = total_credit = total_balance = \
             total_prev_debit = total_prev_credit = 0.0
-        lines = self.lines(context['form'], context.get('active_ids'))
+        fisc_obj = self.pool.get('account.fiscalyear')
+        curr_fy = fisc_obj.browse(cr, uid, context['form']['fiscalyear_id'])
+        prev_fy = fisc_obj.browse(cr, uid, context['form']['prev_fiscalyear_id'])
+        period_obj = self.pool.get('account.period')
+        if context.get('form').get('period_from') and context.get('form').get('period_to'):
+            context.update({
+                    'period_start_date': period_obj.browse(cr, uid, context['form']['period_from'], context=context).date_start,
+                    'period_end_date': period_obj.browse(cr, uid, context['form']['period_to'], context=context).date_stop,
+                })
+        date_start = context.get('date_from') or context.get('period_start_date') or curr_fy.date_start
+        date_stop = context.get('date_to') or context.get('period_end_date') or curr_fy.date_stop
+        lines = self.lines(context['form'], [context['form'].get('chart_account_id')])
         for line in lines:
             total_debit += line.get('debit')
             total_credit += line.get('credit')
             total_balance += line.get('balance')
-        fisc_obj = self.pool.get('account.fiscalyear')
-        curr_fy = fisc_obj.browse(cr, uid, context['form']['fiscalyear_id'])
-        prev_fy = fisc_obj.browse(cr, uid, context['form']['prev_fiscalyear_id'])
         now = datetime.now()
         display_account = disp_acc_raw = context['form']['display_account']
         for val in self.pool.get('lct_finance.balance.report')._columns['display_account'].selection:
@@ -63,8 +71,8 @@ class account_balance_report(report_sxw.rml_parse):
             'current_date': now.strftime('%d/%m/%Y'),
             'current_time': now.strftime('%H:%M:%S'),
             'display_account': display_account,
-            'start_date': transform_date(curr_fy.date_start),
-            'end_date': transform_date(curr_fy.date_stop),
+            'start_date': transform_date(date_start),
+            'end_date': transform_date(date_stop),
             'prev_period_end': prev_fy.id and transform_date(prev_fy.date_stop) or '---',
             'total_prev_debit': 0.0,
             'total_prev_credit': 0.0,
