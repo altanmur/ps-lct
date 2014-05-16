@@ -52,15 +52,32 @@ class depreciation_table(osv.osv_memory):
         return acc_id and acc_obj.browse(cr,uid,acc_id,context=context)
 
     def _write_account(self, cr, uid,ids, code, context=None):
+        f_black_line = self._cell_format((
+            "vert-center",
+            "wrap",
+            "text-white",
+            "background-black",
+        ))
+        f_blue_line = self._cell_format((
+            "vert-center",
+            "wrap",
+            "text-white",
+            "background-blue",
+        ))
         acc = self._get_account(cr, uid, ids, code, context=context)
         if acc :
             sheet = self.sheet
             i = self.current_line
             sheet.write(i,1,acc.name)
             sheet.write(i,3,acc.balance)
+            sheet.write(i,27,acc.balance)
             sheet.write(i,4,'=+D' + str(i+1))
             sheet.write(i,7,"=+D"+ str(i+1) + "+F" + str(i+1) + "-G" + str(i+1))
             sheet.write(i,9,"=+D" + str(i+1) + "+F" + str(i+1) + "-G" + str(i+1))
+            for j in (12,13):
+                sheet.write(i,j,"",f_black_line)
+            for j in range(14,26):
+                sheet.write(i,j,"",f_blue_line)
             self.current_line += 1
 
 
@@ -77,6 +94,29 @@ class depreciation_table(osv.osv_memory):
         return assets
 
     def _write_lines(self, cr, uid, ids, category_names, context=None) :
+        f_blue_line = self._cell_format((
+            "vert-center",
+            "wrap",
+            "text-white",
+            "background-blue",
+        ))
+        f_black_line = self._cell_format((
+            "vert-center",
+            "wrap",
+            "text-white",
+            "background-black",
+        ))
+        f_black_red_line = self._cell_format((
+            "vert-center",
+            "wrap",
+            "text-red",
+            "background-black",
+        ))
+        f_line = self._cell_format((
+            "vert-center",
+            "hor-right",
+            "wrap",
+        ))
         i = self.current_line
         sheet = self.sheet
         today = self.today
@@ -90,15 +130,15 @@ class depreciation_table(osv.osv_memory):
         for asset in assets :
             sheet.write(i,1,asset.name)
             purchase_date = datetime.strptime(asset.purchase_date_2,'%Y-%m-%d')
-            sheet.write(i,2,purchase_date.strftime('%d/%m/%Y'))
+            sheet.write(i,2,purchase_date.strftime('%d/%m/%Y'),f_line)
             if year<=2014 and purchase_date <= datetime(2014,1,1):
-                sheet.write(i,3,float(asset.x_purchase_value))
+                sheet.write(i,3,float(asset.x_purchase_value),f_line)
             elif purchase_date < datetime(year,1,1):
-                sheet.write(i,3,float(asset.purchase_value))
-            sheet.write(i,4,"=D" + str(i+1))
-            sheet.write(i,7,"=D" + str(i+1) + "+F" + str(i+1) + "-G" + str(i+1))
-            sheet.write(i,9,"=D" + str(i+1) + "+F" + str(i+1) + "-G" + str(i+1))
-            sheet.write(i,10,str(int(100.0/(asset.category_id.method_number/12.0))) + "%")
+                sheet.write(i,3,float(asset.purchase_value),f_line)
+            sheet.write(i,4,"=D" + str(i+1),f_line)
+            sheet.write(i,7,"=D" + str(i+1) + "+F" + str(i+1) + "-G" + str(i+1),f_line)
+            sheet.write(i,9,"=D" + str(i+1) + "+F" + str(i+1) + "-G" + str(i+1),f_line)
+            sheet.write(i,10,str(int(100.0/(asset.category_id.method_number/12.0))) + "%",f_line)
             totpre = totcurr = 0.0
             m_deprec = [0.0 for j in range(0,12)]
             an_dot = None
@@ -111,21 +151,17 @@ class depreciation_table(osv.osv_memory):
                     elif deprec_date < datetime(year,month,day) :
                         m_deprec[deprec_date.month-1] = line.amount
                         totcurr += line.amount
-            sheet.write(i,11,totpre)
-            sheet.write(i,12,an_dot)
-            sheet.write(i,13,totcurr)
+            sheet.write(i,11,totpre,f_line)
+            sheet.write(i,12,an_dot,f_black_line)
+            sheet.write(i,13,totcurr,f_black_red_line)
             for j in range(0,12) :
-                sheet.write(i,14+j,m_deprec[j])
-
-            sum_s1 = "="
-            sum_s2 = "=+J" + str(i+1) + "-L" + str(i+1)
+                sheet.write(i,14+j,m_deprec[j],f_blue_line)
+            sum_s = "="
             for j in range(ord('O'),ord('Y')+1) :
-                sum_s1 += "+" + chr(j) + str(i+1)
-                sum_s2 += "-" + chr(j) + str(i+1)
-            sheet.write(i,26,sum_s1)
-            sheet.write(i,27,sum_s2)
+                sum_s += "+" + chr(j) + str(i+1)
+            sheet.write(i,26,sum_s,f_line)
+            sheet.write(i,27,asset.value_residual)
             i += 1
-
         self.current_line = i
 
 
@@ -133,9 +169,11 @@ class depreciation_table(osv.osv_memory):
         return {
             "bold" : 'font: bold 1;',
             "hor-center" : 'alignment: horizontal center;',
+            "hor-right" : 'alignment: horizontal right;',
             "vert-center" : 'alignment: vertical center;',
             "italic" : 'font: italic 1;',
             "text-white" : 'font: color white;',
+            "text-red" : 'font: color red;',
             "text-12" : 'font: height 240;',
             "text-14" : 'font: height 280;',
             "background-green" : 'pattern: pattern solid, fore_color green;',
@@ -145,7 +183,8 @@ class depreciation_table(osv.osv_memory):
             "border-r" : 'border : right medium;',
             "border-b" : 'border : bottom medium;',
             "border-t" : 'border : top medium;',
-            "background-blue" : 'pattern: pattern solid, fore_color blue;'
+            "background-blue" : 'pattern: pattern solid, fore_color blue;',
+            "background-black" : 'pattern: pattern solid, fore_color black;',
         }[f]
 
 
@@ -158,7 +197,6 @@ class depreciation_table(osv.osv_memory):
     def _write_total(self,title,i1,i2):
         f_total_left = self._cell_format((
             "bold",
-            "italic",
             "hor-center",
             "vert-center",
             "border-t",
@@ -166,12 +204,53 @@ class depreciation_table(osv.osv_memory):
             "border-b",
             "wrap",
         ))
+        f_total_center = self._cell_format((
+            "bold",
+            "hor-center",
+            "vert-center",
+            "border-t",
+            "border-b",
+        ))
+        f_total_blue = self._cell_format((
+            "bold",
+            "vert-center",
+            "hor-center",
+            "border-t",
+            "border-b",
+            "text-white",
+            "background-blue",
+        ))
+        f_total_black = self._cell_format((
+            "bold",
+            "vert-center",
+            "hor-center",
+            "border-t",
+            "border-b",
+            "text-white",
+            "background-black",
+        ))
+        f_total_black_red = self._cell_format((
+            "bold",
+            "vert-center",
+            "hor-center",
+            "border-t",
+            "border-b",
+            "text-red",
+            "background-black",
+        ))
         sheet = self.sheet
-        sheet.row(self.current_line).height = 256*2
+        sheet.row(self.current_line).height = 256*3
         sheet.write(self.current_line,1,title,f_total_left)
         if i1<=i2 :
-            sheet.write(self.current_line,3,"=SUM(D" + str(i1) + ":D" + str(i2) + ")")
-            sheet.write(self.current_line,4,"=SUM(E" + str(i1) + ":E" + str(i2) + ")")
+            for j in (3,4,5,6,7,9,11) :
+                char = chr(ord('A')+j)
+                sheet.write(self.current_line,j,"=SUM(" + char + str(i1) + ":" + char + str(i2) + ")",f_total_center)
+
+            sheet.write(self.current_line,12,"=SUM(M" +  str(i1) + ":M" + str(i2) + ")",f_total_black)
+            sheet.write(self.current_line,13,"=SUM(N" +  str(i1) + ":N" + str(i2) + ")",f_total_black_red)
+            for j in range(14,26) :
+                char = chr(ord('A')+j)
+                sheet.write(self.current_line,j,"=SUM(" + char + str(i1) + ":" + char + str(i2) + ")",f_total_blue)
         self.current_line += 1
 
 
@@ -180,7 +259,6 @@ class depreciation_table(osv.osv_memory):
 
         sheet = self.sheet
         self.current_line = 0
-
 
         # Date
         today = self.today
@@ -238,6 +316,28 @@ class depreciation_table(osv.osv_memory):
             "border-b",
             "wrap",
             ))
+        f_label_black = self._cell_format((
+            "bold",
+            "italic",
+            "vert-center",
+            "hor-center",
+            "border-t",
+            "border-b",
+            "wrap",
+            "background-black",
+            "text-white",
+            ))
+        f_label_black_red = self._cell_format((
+            "bold",
+            "italic",
+            "vert-center",
+            "hor-center",
+            "border-t",
+            "border-b",
+            "wrap",
+            "background-black",
+            "text-red",
+            ))
         f_label_month = self._cell_format((
             "bold",
             "italic",
@@ -256,14 +356,26 @@ class depreciation_table(osv.osv_memory):
             "vert-center",
             "wrap",
         ))
-
+        f_black_line = self._cell_format((
+            "vert-center",
+            "wrap",
+            "text-white",
+            "background-black",
+        ))
+        f_blue_line = self._cell_format((
+            "vert-center",
+            "wrap",
+            "text-white",
+            "background-blue",
+        ))
 
         # Column width + row height
         sheet.row(0).height = 50
         sheet.col(0).width = 50
         sheet.col(1).width = 10000
-        for j in range(2,28) :
-            sheet.col(j).width = 3000
+        sheet.col(2).width = 3000
+        for j in range(3,8) :
+            sheet.col(j).width = 6000
 
         # Titles
         sheet.write_merge(1,1,1,10,'LCT SA',f_title1)
@@ -291,8 +403,8 @@ class depreciation_table(osv.osv_memory):
         sheet.write(6,7,"VALEURS AU " + tydec31.strftime("%d/%m/%Y"),f_label_center)
         sheet.write(6,9,"VALEURS AU " + monthlast.strftime("%d/%m/%Y"),f_label_center)
         sheet.write(6,11,u"Amortissements cumulés au " + lydec31.strftime("%d/%m/%Y"),f_label_center)
-        sheet.write(6,12,"Dotations annuelles",f_label_center)
-        sheet.write(6,13,"Dotations annuelles au prorata",f_label_center)
+        sheet.write(6,12,"Dotations annuelles",f_label_black)
+        sheet.write(6,13,"Dotations annuelles au prorata",f_label_black_red)
         sheet.write(6,14,"Janvier",f_label_month)
         sheet.write(6,15,u"Février",f_label_month)
         sheet.write(6,16,"Mars",f_label_month)
@@ -305,7 +417,6 @@ class depreciation_table(osv.osv_memory):
         sheet.write(6,23,"Octobre",f_label_month)
         sheet.write(6,24,"Novembre",f_label_month)
         sheet.write(6,25,u"Décembre",f_label_month)
-
 
         # Charges immobilisées
         sheet.write(8,1,u"Charges immobilisées",f_as_name)
@@ -338,6 +449,10 @@ class depreciation_table(osv.osv_memory):
             sheet.write(j,7,"=+D"+ str(j+1) + "+F" + str(j+1) + "-G" + str(j+1))
             sheet.write(j,9,"=+D" + str(j+1) + "+F" + str(j+1) + "-G" + str(j+1))
             self.current_line += 1
+            for k in (12,13):
+                sheet.write(j,k,"",f_black_line)
+            for k in range(14,26):
+                sheet.write(j,k,"",f_blue_line)
         acc = self._get_account(cr, uid, ids, '23910000', context=context)
         if acc :
             j = self.current_line
@@ -347,6 +462,10 @@ class depreciation_table(osv.osv_memory):
             sheet.write(j,7,"=+D"+ str(j+1) + "+F" + str(j+1) + "-G" + str(j+1))
             sheet.write(j,9,"=+D" + str(j+1) + "+F" + str(j+1) + "-G" + str(j+1))
             self.current_line += 1
+            for k in (12,13):
+                sheet.write(j,k,"",f_black_line)
+            for k in range(14,26):
+                sheet.write(j,k,"",f_blue_line)
         acc = self._get_account(cr, uid, ids, '23400000', context=context)
         if acc :
             j = self.current_line
@@ -356,7 +475,10 @@ class depreciation_table(osv.osv_memory):
             sheet.write(j,7,"=+D"+ str(j+1) + "+F" + str(j+1) + "-G" + str(j+1))
             sheet.write(j,9,"=+D" + str(j+1) + "+F" + str(j+1) + "-G" + str(j+1))
             self.current_line += 1
-
+            for k in (12,13):
+                sheet.write(j,k,"",f_black_line)
+            for k in range(14,26):
+                sheet.write(j,k,"",f_blue_line)
         self._write_total(u"Total Bâtiments, Installation techn. Agencements",i+1,self.current_line)
 
 
@@ -379,8 +501,8 @@ class depreciation_table(osv.osv_memory):
         if context is None:
             context = {}
 
-        self.today = self.browse(cr,uid,ids,context=context)[0].report_date
-        self.today = date.today().strftime('%Y-%m-%d')
+        self.today = datetime.strptime(self.browse(cr,uid,ids,context=context)[0].report_date,'%Y-%m-%d')
+
         report = Workbook()
         self.sheet = report.add_sheet('Sheet 1')
         self._write_report(cr,uid,ids,context=context)
