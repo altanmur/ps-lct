@@ -4,7 +4,7 @@
     <data>
 
         <record id="account_report_balance_view" model="ir.ui.view">
-            <field name="name">Trial Balance 2</field>
+            <field name="name">Trial Balance</field>
             <field name="model">lct_finance.balance.report</field>
             <field name="arch" type="xml">
                 <form string="Report Options" version="7.0">
@@ -41,8 +41,9 @@
             </field>
         </record>
 
+        <delete model="ir.ui.menu" id="account.action_account_balance_menu"/>
         <record id="action_account_balance_menu" model="ir.actions.act_window">
-            <field name="name">Trial Balance 2</field>
+            <field name="name">Trial Balance</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">lct_finance.balance.report</field>
             <field name="view_type">form</field>
@@ -53,7 +54,7 @@
 
         <menuitem
             icon="STOCK_PRINT"
-            name="Trial Balance 2"
+            name="Trial Balance"
             parent="account.final_accounting_reports"
             action="action_account_balance_menu"
             id="menu_general_Balance_report"
@@ -61,7 +62,7 @@
 
         <record model="ir.values" id="action_account_balance_report_values1">
             <field name="model_id" ref="account.model_account_account" />
-            <field name="name">Trial Balance 2</field>
+            <field name="name">Trial Balance</field>
             <field name="key2">client_print_multi</field>
             <field name="value" eval="'ir.actions.act_window,' +str(ref('action_account_balance_menu'))" />
             <field name="key">action</field>
