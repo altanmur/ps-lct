@@ -166,8 +166,9 @@ class depreciation_table(osv.osv_memory):
             sheet.write(i,11,totpre,f_line)
             sheet.write(i,12,an_dot,f_black_line)
             sheet.write(i,13,totcurr,f_black_red_line)
-            for j in range(0,12) :
+            for j in range(0,11) :
                 sheet.write(i,14+j,m_deprec[j],f_blue_line)
+            sheet.write(i,14+11,m_deprec[11],f_blue_red_line)
             sum_s = "="
             for j in range(ord('O'),ord('Y')+1) :
                 sum_s += "+" + chr(j) + str(i+1)
