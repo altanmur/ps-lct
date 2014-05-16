@@ -69,8 +69,8 @@
                     <!-- -->
                     %endif
                 </td>
-                <td class="numeric">${'{0:,.0f}'.format(line.get('debit'))}</td>
-                <td class="numeric">${'{0:,.0f}'.format(line.get('credit'))}</td>
+                <td class="numeric">${'{0:,.0f}'.format(line.get('debit')).replace(',', '.')}</td>
+                <td class="numeric">${'{0:,.0f}'.format(line.get('credit')).replace(',', '.')}</td>
                 <td class="numeric">
                     %if line.get('balance') < 0:
                     ${'{0:,.0f}'.format((-1 * line.get('balance'))).replace(',', '.')}
