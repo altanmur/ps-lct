@@ -39,7 +39,29 @@
          <field name="context" eval="{'default_account_report_id':ref('account.account_financial_report_profitandloss0')}"/>
     </record>
 
-    <menuitem icon="STOCK_PRINT" name="Profit And Loss" action="action_account_report_pl" id="menu_account_report_pl" parent="account.final_accounting_reports"/>
+    <delete model="ir.ui.menu" id="account.menu_account_report_pl"/>
+    <menuitem
+        icon="STOCK_PRINT"
+        name="IFRS Reports"
+        id="menu_ifrs_reports"
+        parent="account.final_accounting_reports"
+        sequence="2"
+        />
+    <menuitem
+        icon="STOCK_PRINT"
+        name="Profit And Loss"
+        action="action_account_report_pl"
+        id="menu_account_report_pl"
+        parent="menu_ifrs_reports"
+        />
+    <delete model="ir.ui.menu" id="account.menu_account_report_bs"/>
+    <menuitem
+        icon="STOCK_PRINT"
+        name="Balance Sheet"
+        action="account.action_account_report_bs"
+        id="menu_account_report_bs"
+        parent="menu_ifrs_reports"
+        />
 
     </data>
 </openerp>

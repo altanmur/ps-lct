@@ -41,7 +41,7 @@
             </field>
         </record>
 
-        <delete model="ir.ui.menu" id="account.action_account_balance_menu"/>
+        <delete model="ir.ui.menu" id="account.menu_general_Balance_report"/>
         <record id="action_account_balance_menu" model="ir.actions.act_window">
             <field name="name">Trial Balance</field>
             <field name="type">ir.actions.act_window</field>
@@ -53,9 +53,25 @@
         </record>
 
         <menuitem
+            name="Syscohada Reports"
+            icon="STOCK_PRINT"
+            parent="account.final_accounting_reports"
+            id="menu_syscohada_reports"
+            sequence="1"
+            />
+        <delete model="ir.ui.menu" id="account.menu_general_ledger"/>
+        <menuitem
+            icon="STOCK_PRINT"
+            name="General Ledger"
+            parent="menu_syscohada_reports"
+            action="account.action_account_general_ledger_menu"
+            groups="account.group_account_manager,account.group_account_user"
+            id="menu_general_ledger"
+           />
+        <menuitem
             icon="STOCK_PRINT"
             name="Trial Balance"
-            parent="account.final_accounting_reports"
+            parent="menu_syscohada_reports"
             action="action_account_balance_menu"
             id="menu_general_Balance_report"
             />

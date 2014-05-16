@@ -58,7 +58,12 @@
              <field name="target">new</field>
         </record>
 
-        <menuitem name="Cash Flow" action="action_account_report_cf" id="menu_account_report_cf" parent="account.final_accounting_reports"/>
+        <menuitem
+            name="Cash Flow Statement"
+            action="action_account_report_cf"
+            id="menu_account_report_cf"
+            parent="menu_ifrs_reports"
+            />
 
     </data>
 </openerp>

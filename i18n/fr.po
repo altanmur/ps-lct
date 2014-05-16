@@ -106,8 +106,8 @@ msgstr "Virement bancaire"
 #: view:cash.flow.download:0
 #: field:cash.flow.download,xls_report:0
 #: model:ir.ui.menu,name:lct_finance.menu_account_report_cf
-msgid "Cash Flow"
-msgstr "Cash Flow"
+msgid "Cash Flow Statement"
+msgstr "Cash Flow Statement"
 
 #. module: lct_finance
 #: field:account.invoice,acc_number:0
