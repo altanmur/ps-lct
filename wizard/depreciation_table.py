@@ -70,14 +70,15 @@ class depreciation_table(osv.osv_memory):
             i = self.current_line
             sheet.write(i,1,acc.name)
             sheet.write(i,3,acc.balance)
-            sheet.write(i,27,acc.balance)
             sheet.write(i,4,'=+D' + str(i+1))
             sheet.write(i,7,"=+D"+ str(i+1) + "+F" + str(i+1) + "-G" + str(i+1))
             sheet.write(i,9,"=+D" + str(i+1) + "+F" + str(i+1) + "-G" + str(i+1))
             for j in (12,13):
                 sheet.write(i,j,"",f_black_line)
-            for j in range(14,26):
+            for j in range(14,27):
                 sheet.write(i,j,"",f_blue_line)
+            sheet.write(i,27,acc.balance)
+
             self.current_line += 1
 
 
@@ -98,6 +99,12 @@ class depreciation_table(osv.osv_memory):
             "vert-center",
             "wrap",
             "text-white",
+            "background-blue",
+        ))
+        f_blue_red_line = self._cell_format((
+            "vert-center",
+            "wrap",
+            "text-red",
             "background-blue",
         ))
         f_black_line = self._cell_format((
@@ -123,6 +130,11 @@ class depreciation_table(osv.osv_memory):
         year = today.year
         month = today.month
         day = today.day
+        sheet.row(i).height = 256/2*3
+        for j in (12,13):
+            sheet.write(i-1,j,"",f_black_line)
+        for j in range(14,27):
+            sheet.write(i-1,j,"",f_blue_line)
         assets = self._get_assets(cr, uid, ids, category_names=category_names, context=context)
         if not assets or len(assets)<=0:
             self.current_line += 1
@@ -159,7 +171,7 @@ class depreciation_table(osv.osv_memory):
             sum_s = "="
             for j in range(ord('O'),ord('Y')+1) :
                 sum_s += "+" + chr(j) + str(i+1)
-            sheet.write(i,26,sum_s,f_line)
+            sheet.write(i,26,sum_s,f_blue_red_line)
             sheet.write(i,27,asset.value_residual)
             i += 1
         self.current_line = i
@@ -211,6 +223,15 @@ class depreciation_table(osv.osv_memory):
             "border-t",
             "border-b",
         ))
+        f_total_right = self._cell_format((
+            "bold",
+            "hor-center",
+            "vert-center",
+            "border-t",
+            "border-r",
+            "border-b",
+            "wrap",
+        ))
         f_total_blue = self._cell_format((
             "bold",
             "vert-center",
@@ -218,6 +239,15 @@ class depreciation_table(osv.osv_memory):
             "border-t",
             "border-b",
             "text-white",
+            "background-blue",
+        ))
+        f_total_blue_red = self._cell_format((
+            "bold",
+            "vert-center",
+            "hor-center",
+            "border-t",
+            "border-b",
+            "text-red",
             "background-blue",
         ))
         f_total_black = self._cell_format((
@@ -238,9 +268,31 @@ class depreciation_table(osv.osv_memory):
             "text-red",
             "background-black",
         ))
+        f_blue_line = self._cell_format((
+            "vert-center",
+            "wrap",
+            "text-white",
+            "background-blue",
+        ))
+        f_black_line = self._cell_format((
+            "vert-center",
+            "wrap",
+            "text-white",
+            "background-black",
+        ))
+
+        self.current_line += 1
+        i = self.current_line
         sheet = self.sheet
+        for j in (12,13):
+            sheet.write(i-1,j,"",f_black_line)
+        for j in range(14,27):
+            sheet.write(i-1,j,"",f_blue_line)
+        self.total_lines.append(self.current_line)
         sheet.row(self.current_line).height = 256*3
         sheet.write(self.current_line,1,title,f_total_left)
+        for j in (2,8,10) :
+            sheet.write(self.current_line,j,"",f_total_center)
         if i1<=i2 :
             for j in (3,4,5,6,7,9,11) :
                 char = chr(ord('A')+j)
@@ -248,17 +300,147 @@ class depreciation_table(osv.osv_memory):
 
             sheet.write(self.current_line,12,"=SUM(M" +  str(i1) + ":M" + str(i2) + ")",f_total_black)
             sheet.write(self.current_line,13,"=SUM(N" +  str(i1) + ":N" + str(i2) + ")",f_total_black_red)
-            for j in range(14,26) :
+            for j in range(14,25) :
                 char = chr(ord('A')+j)
                 sheet.write(self.current_line,j,"=SUM(" + char + str(i1) + ":" + char + str(i2) + ")",f_total_blue)
+            char = 'Z'
+            sheet.write(self.current_line,25,"=SUM(" + char + str(i1) + ":" + char + str(i2) + ")",f_total_blue_red)
+            char = 'AA'
+            sheet.write(self.current_line,26,"=SUM(" + char + str(i1) + ":" + char + str(i2) + ")",f_total_blue_red)
+            char = 'AB'
+            sheet.write(self.current_line,27,"=SUM(" + char + str(i1) + ":" + char + str(i2) + ")",f_total_right)
         self.current_line += 1
 
+    def _write_total_total(self,title):
+        f_total_left = self._cell_format((
+            "bold",
+            "hor-center",
+            "vert-center",
+            "border-t",
+            "border-l",
+            "border-b",
+            "wrap",
+        ))
+        f_total_center = self._cell_format((
+            "bold",
+            "hor-center",
+            "vert-center",
+            "border-t",
+            "border-b",
+        ))
+        f_total_right = self._cell_format((
+            "bold",
+            "hor-center",
+            "vert-center",
+            "border-t",
+            "border-r",
+            "border-b",
+            "wrap",
+        ))
+        f_total_blue = self._cell_format((
+            "bold",
+            "vert-center",
+            "hor-center",
+            "border-t",
+            "border-b",
+            "text-white",
+            "background-blue",
+        ))
+        f_total_blue_red = self._cell_format((
+            "bold",
+            "vert-center",
+            "hor-center",
+            "border-t",
+            "border-b",
+            "text-red",
+            "background-blue",
+        ))
+        f_total_black = self._cell_format((
+            "bold",
+            "vert-center",
+            "hor-center",
+            "border-t",
+            "border-b",
+            "text-white",
+            "background-black",
+        ))
+        f_total_black_red = self._cell_format((
+            "bold",
+            "vert-center",
+            "hor-center",
+            "border-t",
+            "border-b",
+            "text-red",
+            "background-black",
+        ))
+        f_blue_line = self._cell_format((
+            "vert-center",
+            "wrap",
+            "text-white",
+            "background-blue",
+        ))
+        f_black_line = self._cell_format((
+            "vert-center",
+            "wrap",
+            "text-white",
+            "background-black",
+        ))
+        self.current_line += 1
+        sheet = self.sheet
+        sheet.row(self.current_line).height = 256*3
+        sheet.write(self.current_line,1,title,f_total_left)
+        i = self.current_line
+        for j in (12,13):
+            sheet.write(i-1,j,"",f_black_line)
+        for j in range(14,27):
+            sheet.write(i-1,j,"",f_blue_line)
+        for j in (2,8,10) :
+            sheet.write(self.current_line,j,"",f_total_center)
+        for j in (3,4,5,6,7,9,11) :
+            sum_s = "="
+            char = chr(ord('A')+j)
+            for k in self.total_lines :
+                sum_s += "+" + char + str(k+1)
+            sheet.write(self.current_line,j,sum_s,f_total_center)
+        sum_s = "="
+        char = chr(ord('A')+12)
+        for k in self.total_lines :
+            sum_s += "+" + char + str(k+1)
+        sheet.write(self.current_line,12,sum_s,f_total_black)
+        sum_s = "="
+        char = chr(ord('A')+13)
+        for k in self.total_lines :
+            sum_s += "+" + char + str(k+1)
+        sheet.write(self.current_line,13,sum_s,f_total_black_red)
+        for j in range(14,25) :
+            sum_s = "="
+            char = chr(ord('A')+j)
+            for k in self.total_lines :
+                sum_s += "+" + char + str(k+1)
+            sheet.write(self.current_line,j,sum_s,f_total_blue)
+        sum_s = "="
+        char = 'Z'
+        for k in self.total_lines :
+            sum_s += "+" + char + str(k+1)
+        sheet.write(self.current_line,25,sum_s,f_total_blue_red)
+        sum_s = "="
+        char = 'AA'
+        for k in self.total_lines :
+            sum_s += "+" + char + str(k+1)
+        sheet.write(self.current_line,26,sum_s,f_total_blue_red)
+        sum_s = "="
+        char = 'AB'
+        for k in self.total_lines :
+            sum_s += "+" + char + str(k+1)
+        sheet.write(self.current_line,27,sum_s,f_total_right)
+        self.current_line += 1
 
 
     def _write_report(self, cr, uid, ids, context=None):
 
         sheet = self.sheet
         self.current_line = 0
+        self.total_lines = []
 
         # Date
         today = self.today
@@ -349,6 +531,17 @@ class depreciation_table(osv.osv_memory):
             "background-blue",
             "text-white",
             ))
+        f_label_blue_red = self._cell_format((
+            "bold",
+            "italic",
+            "vert-center",
+            "hor-center",
+            "border-t",
+            "border-b",
+            "wrap",
+            "background-blue",
+            "text-red",
+        ))
         f_as_name = self._cell_format((
             "bold",
             "italic",
@@ -367,6 +560,15 @@ class depreciation_table(osv.osv_memory):
             "wrap",
             "text-white",
             "background-blue",
+        ))
+        f_total_left = self._cell_format((
+            "bold",
+            "hor-center",
+            "vert-center",
+            "border-t",
+            "border-l",
+            "border-b",
+            "wrap",
         ))
 
         # Column width + row height
@@ -401,6 +603,7 @@ class depreciation_table(osv.osv_memory):
         sheet.write(6,5,"AQUISITIONS",f_label_center)
         sheet.write(6,6,"SORTIES OU TRANSFERTS",f_label_center)
         sheet.write(6,7,"VALEURS AU " + tydec31.strftime("%d/%m/%Y"),f_label_center)
+        sheet.write(6,8,"",f_label_center)
         sheet.write(6,9,"VALEURS AU " + monthlast.strftime("%d/%m/%Y"),f_label_center)
         sheet.write(6,11,u"Amortissements cumulés au " + lydec31.strftime("%d/%m/%Y"),f_label_center)
         sheet.write(6,12,"Dotations annuelles",f_label_black)
@@ -416,30 +619,47 @@ class depreciation_table(osv.osv_memory):
         sheet.write(6,22,"Septembre",f_label_month)
         sheet.write(6,23,"Octobre",f_label_month)
         sheet.write(6,24,"Novembre",f_label_month)
-        sheet.write(6,25,u"Décembre",f_label_month)
+        sheet.write(6,25,u"Décembre",f_label_blue_red)
+        sheet.write(6,26,"",f_label_blue_red)
 
         # Charges immobilisées
+        i = 8
+        for j in (12,13):
+            sheet.write(i-1,j,"",f_black_line)
+        for j in range(14,27):
+            sheet.write(i-1,j,"",f_blue_line)
+        sheet.row(self.current_line).height = 256/2*3
         sheet.write(8,1,u"Charges immobilisées",f_as_name)
         self.current_line = 9
         i = self.current_line
+        for j in (12,13):
+            sheet.write(i-1,j,"",f_black_line)
+        for j in range(14,27):
+            sheet.write(i-1,j,"",f_blue_line)
         self._write_account(cr, uid, ids, '20110000', context=context)
-        self._write_account(cr, uid, ids, '20280000', context=context)
         self._write_account(cr, uid, ids, '20140000', context=context)
+        self._write_account(cr, uid, ids, '20280000', context=context)
         self._write_total(u"Total Charges immobilisées",i+1,self.current_line)
 
 
-        self.current_line = 13
+        self.current_line = 14
         # Licences et Logiciels
+        sheet.row(self.current_line).height = 256/2*3
         sheet.write(self.current_line,1,"Licences et Logiciels",f_as_name)
         self.current_line += 1
         i = self.current_line
         self._write_lines(cr, uid, ids, ("Licences", "Logiciels"), context=None)
-        self._write_total(u"Total Logiciels",i+1,self.current_line)
+        self._write_total(u"Total logiciels",i+1,self.current_line)
 
         # Bâtiments, Installation techn. Agencements
+        sheet.row(self.current_line).height = 256/2*3
         sheet.write(self.current_line,1,u"Bâtiments, Installation techn. Agencements",f_as_name)
         self.current_line += 1
         i = self.current_line
+        for j in (12,13):
+            sheet.write(i-1,j,"",f_black_line)
+        for j in range(14,27):
+            sheet.write(i-1,j,"",f_blue_line)
         acc = self._get_account(cr, uid, ids, '23940000', context=context)
         if acc :
             j = self.current_line
@@ -451,8 +671,9 @@ class depreciation_table(osv.osv_memory):
             self.current_line += 1
             for k in (12,13):
                 sheet.write(j,k,"",f_black_line)
-            for k in range(14,26):
+            for k in range(14,27):
                 sheet.write(j,k,"",f_blue_line)
+            sheet.write(j,27,acc.balance)
         acc = self._get_account(cr, uid, ids, '23910000', context=context)
         if acc :
             j = self.current_line
@@ -464,8 +685,9 @@ class depreciation_table(osv.osv_memory):
             self.current_line += 1
             for k in (12,13):
                 sheet.write(j,k,"",f_black_line)
-            for k in range(14,26):
+            for k in range(14,27):
                 sheet.write(j,k,"",f_blue_line)
+            sheet.write(j,27,acc.balance)
         acc = self._get_account(cr, uid, ids, '23400000', context=context)
         if acc :
             j = self.current_line
@@ -477,12 +699,14 @@ class depreciation_table(osv.osv_memory):
             self.current_line += 1
             for k in (12,13):
                 sheet.write(j,k,"",f_black_line)
-            for k in range(14,26):
+            for k in range(14,27):
                 sheet.write(j,k,"",f_blue_line)
-        self._write_total(u"Total Bâtiments, Installation techn. Agencements",i+1,self.current_line)
+            sheet.write(j,27,acc.balance)
+        self._write_total(u"Bâtiments, Installation techn. Agencements",i+1,self.current_line)
 
 
         # Mobilier de bureau
+        sheet.row(self.current_line).height = 256/2*3
         sheet.write(self.current_line,1,"Mobiler de bureau",f_as_name)
         self.current_line += 1
         i = self.current_line
@@ -490,19 +714,55 @@ class depreciation_table(osv.osv_memory):
         self._write_total(u"Total mobilier de bureau",i+1,self.current_line)
 
         # Matériel de bureau
+        sheet.row(self.current_line).height = 256/2*3
         sheet.write(self.current_line,1,u"Matériel de bureau",f_as_name)
         self.current_line += 1
         i = self.current_line
         self._write_lines(cr, uid, ids, ("Matériel de bureau",), context=None)
         self._write_total(u"Total matériel de bureau",i+1,self.current_line)
 
+        # Matériel de bureau
+        sheet.row(self.current_line).height = 256/2*3
+        sheet.write(self.current_line,1,u"Matériel de transport",f_as_name)
+        self.current_line += 1
+        i = self.current_line
+        self._write_lines(cr, uid, ids, ("Matériel de transport (25%)","Matériel de transport (33%)",), context=None)
+        self._write_total(u"Total matériel de transport",i+1,self.current_line)
+
+        # Matériel informatique
+        sheet.row(self.current_line).height = 256/2*3
+        sheet.write(self.current_line,1,u"Matériel informatique",f_as_name)
+        self.current_line += 1
+        i = self.current_line
+        self._write_lines(cr, uid, ids, ("Matériel informatique",), context=None)
+        self._write_total(u"Total matériel informatique",i+1,self.current_line)
+
+        # Matériel et mobilier des logements du personnel
+        sheet.row(self.current_line).height = 256/2*3
+        sheet.write(self.current_line,1,u"Matériel et mobilier des logements du personnel",f_as_name)
+        self.current_line += 1
+        i = self.current_line
+        self._write_lines(cr, uid, ids, ("Matériel et mobilier des logements du personnel",), context=None)
+        self._write_total(u"Total matériel et mobilier des logements du personnel",i+1,self.current_line)
+
+        # Matériel en cours
+        sheet.row(self.current_line).height = 256/2*3
+        sheet.write(self.current_line,1,u"Matériels en cours",f_as_name)
+        for i in range(self.current_line,self.current_line+15):
+            for k in (12,13):
+                sheet.write(i,k,"",f_black_line)
+            for k in range(14,27):
+                sheet.write(i,k,"",f_blue_line)
+        self.current_line += 15
+        self._write_total(u"Total matériels en cours",self.current_line-13,self.current_line)
+
+        # Total
+        self._write_total_total(u"Total immobilisations")
 
     def print_report(self, cr, uid, ids, name, context=None):
         if context is None:
             context = {}
-
         self.today = datetime.strptime(self.browse(cr,uid,ids,context=context)[0].report_date,'%Y-%m-%d')
-
         report = Workbook()
         self.sheet = report.add_sheet('Sheet 1')
         self._write_report(cr,uid,ids,context=context)
