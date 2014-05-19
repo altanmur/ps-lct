@@ -14,19 +14,21 @@
         ${context}
         <table style="text-align: left; width: 100%;" border="0" cellpadding="5px;" cellspacing="0">
             <tr>
-                <th colspan="2">
+                <th colspan="5">
                     ${context.get('company_name')}
                 </th>
-                <th colspan="2" style="text-align: center;">
-                    <h1>Balance des comptes</h1>
-                    <b>${context.get('display_account')}</b>
-                </th>
-                <th colspan="4">
+                <th colspan="3">
                     <table style="text-align: left; width: 100%;" border="0" cellpadding="0" cellspacing="0">
                         <tr><td>Période du</td><td>${context.get('start_date')}</td></tr>
                         <tr><td>au</td><td>${context.get('end_date')}</td></tr>
                         <tr><td colspan="2">&nbsp;</td></tr>
                     </table>
+                </th>
+            </tr>
+            <tr>
+                <th colspan="8" style="text-align: center;">
+                    <h1>Balance des comptes</h1>
+                    <b>${context.get('display_account')}</b>
                 </th>
             </tr>
             <tr>
@@ -72,15 +74,15 @@
                 <td class="numeric">${'{0:,.0f}'.format(line.get('debit')).replace(',', '.')}</td>
                 <td class="numeric">${'{0:,.0f}'.format(line.get('credit')).replace(',', '.')}</td>
                 <td class="numeric">
-                    %if line.get('balance') < 0:
-                    ${'{0:,.0f}'.format((-1 * line.get('balance'))).replace(',', '.')}
+                    %if line.get('balance') >= 0:
+                    ${'{0:,.0f}'.format(line.get('balance')).replace(',', '.')}
                     %else:
                     <!-- -->
                     %endif
                 </td>
                 <td class="numeric">
-                    %if line.get('balance') >= 0:
-                    ${'{0:,.0f}'.format(line.get('balance')).replace(',', '.')}
+                    %if line.get('balance') < 0:
+                    ${'{0:,.0f}'.format((-1 * line.get('balance'))).replace(',', '.')}
                     %else:
                     <!-- -->
                     %endif
