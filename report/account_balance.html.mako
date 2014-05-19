@@ -58,15 +58,15 @@
                 <td>${line.get('code')}</td>
                 <td>${line.get('name')}</td>
                 <td class="numeric">
-                    %if line.get('prev_balance') < 0:
-                    ${'{0:,.0f}'.format((-1 * line.get('prev_balance'))).replace(',', '.')}
+                    %if line.get('prev_balance') > 0:
+                    ${'{0:,.0f}'.format(line.get('prev_balance')).replace(',', '.')}
                     %else:
                     <!-- -->
                     %endif
                 </td>
                 <td class="numeric">
-                    %if line.get('prev_balance') >= 0:
-                    ${'{0:,.0f}'.format(line.get('prev_balance')).replace(',', '.')}
+                    %if line.get('prev_balance') <= 0:
+                    ${'{0:,.0f}'.format((abs(line.get('prev_balance')))).replace(',', '.')}
                     %else:
                     <!-- -->
                     %endif
@@ -74,15 +74,15 @@
                 <td class="numeric">${'{0:,.0f}'.format(line.get('debit')).replace(',', '.')}</td>
                 <td class="numeric">${'{0:,.0f}'.format(line.get('credit')).replace(',', '.')}</td>
                 <td class="numeric">
-                    %if line.get('balance') >= 0:
+                    %if line.get('balance') > 0:
                     ${'{0:,.0f}'.format(line.get('balance')).replace(',', '.')}
                     %else:
                     <!-- -->
                     %endif
                 </td>
                 <td class="numeric">
-                    %if line.get('balance') < 0:
-                    ${'{0:,.0f}'.format((-1 * line.get('balance'))).replace(',', '.')}
+                    %if line.get('balance') <= 0:
+                    ${'{0:,.0f}'.format((abs(line.get('balance')))).replace(',', '.')}
                     %else:
                     <!-- -->
                     %endif
@@ -98,15 +98,15 @@
                 <td class="numeric">${'{0:,.0f}'.format(context.get('total_debit')).replace(',', '.')}</td>
                 <td class="numeric">${'{0:,.0f}'.format(context.get('total_credit')).replace(',', '.')}</td>
                 <td class="numeric">
-                    %if context.get('total_balance') < 0:
-                    ${'{0:,.0f}'.format(-1 * context.get('total_balance')).replace(',', '.')}
+                    %if context.get('total_balance') > 0:
+                    ${'{0:,.0f}'.format(context.get('total_balance')).replace(',', '.')}
                     %else:
                     <!-- -->
                     %endif
                 </td>
                 <td class="numeric">
-                    %if context.get('total_balance') >= 0:
-                    ${'{0:,.0f}'.format(context.get('total_balance')).replace(',', '.')}
+                    %if context.get('total_balance') <= 0:
+                    ${'{0:,.0f}'.format(abs(context.get('total_balance'))).replace(',', '.')}
                     %else:
                     <!-- -->
                     %endif
