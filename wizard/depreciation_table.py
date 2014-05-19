@@ -117,7 +117,7 @@ class depreciation_table(osv.osv_memory):
                     deprec_date = datetime.strptime(line.depreciation_date,'%Y-%m-%d')
                     if  deprec_date < datetime(year,1,1) :
                         totpre += line.amount
-                    elif deprec_date < datetime(year,month,day) :
+                    elif deprec_date.year == year :
                         m_deprec[deprec_date.month-1] = line.amount
                         totcurr += line.amount
             sheet.write(i,11,totpre,xl_module.line)
