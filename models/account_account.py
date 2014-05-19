@@ -45,6 +45,10 @@ class account_account(osv.osv):
             digits_compute=dp.get_precision('Account'), string='Unrealized Gain or Loss', multi='balance',
             help="Value of Loss or Gain due to changes in exchange rate when doing multi-currency transactions."),
         # Added
+        'prev_credit': fields.function(lambda self, *args, **kwargs: self.__compute(*args, **kwargs),
+            digits_compute=dp.get_precision('Account'), string='Previous Credit', multi='balance'),
+        'prev_debit': fields.function(lambda self, *args, **kwargs: self.__compute(*args, **kwargs),
+            digits_compute=dp.get_precision('Account'), string='Previous Debit', multi='balance'),
         'prev_balance': fields.function(lambda self, *args, **kwargs: self.__compute(*args, **kwargs),
             digits_compute=dp.get_precision('Account'), string='Previous Balance', multi='balance'),
     }
@@ -109,7 +113,13 @@ class account_account(osv.osv):
                         accounts[row['id']] = row
                         accounts[row['id']].update({'prev_balance': 0.0})
                     elif ctx.get('fiscalyear'):
-                        accounts[row['id']].update({'prev_balance': row['balance']})
+                        accounts[row['id']].update(
+                            {
+                                'prev_credit': row['credit'],
+                                'prev_debit': row['debit'],
+                                'prev_balance': row['balance'],
+                            }
+                        )
 
             # consolidate accounts with direct children
             children_and_consolidated.reverse()

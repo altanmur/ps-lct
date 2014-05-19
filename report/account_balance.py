@@ -20,8 +20,8 @@
 ##############################################################################
 
 from report import report_sxw
-from openerp.tools.amount_to_text import amount_to_text
 from datetime import datetime
+from openerp.tools.translate import _
 
 def transform_date(iso_format):
     return '/'.join([iso_format[8:], iso_format[5:7], iso_format[:4]])
@@ -60,11 +60,13 @@ class account_balance_report(report_sxw.rml_parse):
             total_debit += line.get('debit')
             total_credit += line.get('credit')
             total_balance += line.get('balance')
+            total_prev_debit += line.get('prev_debit')
+            total_prev_credit += line.get('prev_credit')
         now = datetime.now()
         display_account = disp_acc_raw = context['form']['display_account']
         for val in self.pool.get('lct_finance.balance.report')._columns['display_account'].selection:
             if val[0] == disp_acc_raw:
-                display_account = val[1]
+                display_account = _(val[1])
         self.localcontext.update({
             # FIXME: these come from the wizard.
             'company_name': company.name,
@@ -74,8 +76,8 @@ class account_balance_report(report_sxw.rml_parse):
             'start_date': transform_date(date_start),
             'end_date': transform_date(date_stop),
             'prev_period_end': prev_fy.id and transform_date(prev_fy.date_stop) or '---',
-            'total_prev_debit': 0.0,
-            'total_prev_credit': 0.0,
+            'total_prev_debit': total_prev_debit,
+            'total_prev_credit': total_prev_credit,
             'total_debit': total_debit,
             'total_credit': total_credit,
             'total_balance': total_balance,
@@ -97,6 +99,8 @@ class account_balance_report(report_sxw.rml_parse):
                     'debit': account_rec['debit'],
                     'credit': account_rec['credit'],
                     'balance': account_rec['balance'],
+                    'prev_debit': account_rec['prev_debit'],
+                    'prev_credit': account_rec['prev_credit'],
                     'prev_balance': account_rec['prev_balance'],
                     'parent_id': account_rec['parent_id'],
                     'bal_type': '',
@@ -140,7 +144,12 @@ class account_balance_report(report_sxw.rml_parse):
         child_ids = obj_account._get_children_and_consol(self.cr, self.uid, ids, ctx)
         if child_ids:
             ids = child_ids
-        accounts = obj_account.read(self.cr, self.uid, ids, ['type','code','name','debit','credit','balance','prev_balance','parent_id','level','child_id'], ctx)
+        accounts = obj_account.read(self.cr, self.uid, ids,
+            ['type', 'code', 'name',
+             'debit', 'credit', 'balance',
+             'prev_debit', 'prev_credit', 'prev_balance',
+             'parent_id', 'level', 'child_id'],
+            ctx)
 
         for parent in parents:
                 if parent in done:
