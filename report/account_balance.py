@@ -21,7 +21,6 @@
 
 from report import report_sxw
 from datetime import datetime
-from openerp.tools.translate import _
 
 def transform_date(iso_format):
     return '/'.join([iso_format[8:], iso_format[5:7], iso_format[:4]])
@@ -63,10 +62,11 @@ class account_balance_report(report_sxw.rml_parse):
             total_prev_debit += line.get('prev_debit')
             total_prev_credit += line.get('prev_credit')
         now = datetime.now()
-        display_account = disp_acc_raw = context['form']['display_account']
-        for val in self.pool.get('lct_finance.balance.report')._columns['display_account'].selection:
-            if val[0] == disp_acc_raw:
-                display_account = _(val[1])
+        disp_acc_raw = context['form']['display_account']
+        wiz_obj = self.pool.get('lct_finance.balance.report')
+        display_account = dict(wiz_obj.\
+            fields_get(cr, uid, ['display_account'], context=context)\
+            ['display_account']['selection'])[disp_acc_raw]
         self.localcontext.update({
             # FIXME: these come from the wizard.
             'company_name': company.name,
