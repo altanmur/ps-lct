@@ -84,6 +84,7 @@
             <field name="key">action</field>
             <field name="model">account.account</field>
         </record>
+        <delete model="ir.ui.menu" id="account.menu_account_report"/>
 
     </data>
 </openerp>
