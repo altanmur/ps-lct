@@ -62,6 +62,7 @@ class account_balance_report(report_sxw.rml_parse):
             total_prev_debit += line.get('prev_debit')
             total_prev_credit += line.get('prev_credit')
         now = datetime.now()
+        then = datetime(now.year -1, 12, 31)
         disp_acc_raw = context['form']['display_account']
         wiz_obj = self.pool.get('lct_finance.balance.report')
         display_account = dict(wiz_obj.\
@@ -75,7 +76,8 @@ class account_balance_report(report_sxw.rml_parse):
             'display_account': display_account,
             'start_date': transform_date(date_start),
             'end_date': transform_date(date_stop),
-            'prev_period_end': prev_fy.id and transform_date(prev_fy.date_stop) or '---',
+            'prev_period_end': prev_fy.id and transform_date(prev_fy.date_stop) \
+                                or then.strftime('%d/%m/%Y'),
             'total_prev_debit': total_prev_debit,
             'total_prev_credit': total_prev_credit,
             'total_debit': total_debit,
