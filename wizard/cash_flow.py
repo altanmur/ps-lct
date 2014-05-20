@@ -264,7 +264,7 @@ class balance_sheet(osv.osv_memory):
         # Cash and cash equivalents
         balances[21] = balances[17]
         self._setOutCell(rs, 3, 38, balances[21])
-
+        
 
 
 
