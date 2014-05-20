@@ -159,6 +159,7 @@ class hr_contract(osv.osv):
                     'date_next_promotion': (date.today() + relativedelta(years=2)).strftime('%Y-%m-%d')})
             # Then update seniority, if applicable
             employee_start = datetime.strptime(employee.start_date, '%Y-%m-%d').date()
+            seniority_pay = employee.seniority_pay
             if relativedelta(date.today(), employee_start).years > employee.active_years:
                 active_years = employee.active_years + 1
                 if active_years == 2:
