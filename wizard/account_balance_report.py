@@ -39,7 +39,7 @@ class account_balance_report(osv.osv_memory):
         retval = {}
         if fiscalyear_id:
             fy_obj = self.pool.get('account.fiscalyear')
-            curr_year = fy_obj.browse(cr, uid, [fiscalyear_id], context=context)[0]
+            curr_year = fy_obj.browse(cr, uid, fiscalyear_id, context=context)
             prev_year_ids = fy_obj.search(cr, uid,
                 [('date_stop', '<', curr_year.date_start)],
                 order='date_stop DESC', limit=1)
