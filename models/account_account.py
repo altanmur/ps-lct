@@ -51,6 +51,7 @@ class account_account(osv.osv):
             digits_compute=dp.get_precision('Account'), string='Previous Debit', multi='balance'),
         'prev_balance': fields.function(lambda self, *args, **kwargs: self.__compute(*args, **kwargs),
             digits_compute=dp.get_precision('Account'), string='Previous Balance', multi='balance'),
+        'start_balance': fields.float('Starting Balance', digits=(16, 2)),
     }
 
     def __compute(self, cr, uid, ids, field_names, arg=None, context=None,
@@ -77,10 +78,22 @@ class account_account(osv.osv):
         #get all the necessary accounts
         children_and_consolidated = self._get_children_and_consol(cr, uid, ids, context=context)
         #compute for each account the balance/debit/credit from the move lines
-        accounts = {}
-        res = {}
         null_result = dict((fn, 0.0) for fn in field_names)
+        accounts = dict([(x, null_result.copy()) for x in children_and_consolidated])
+        res = {}
         if children_and_consolidated:
+            # First get the initial balance for the very first year
+            fy_obj = self.pool.get('account.fiscalyear')
+            curr_fy = fy_obj.browse(cr, uid, context.get('fiscalyear'))
+            is_first_year = not len(fy_obj.search(cr, uid, [('date_stop', '<', curr_fy.date_start)], context=context))
+            if is_first_year:
+                request = "SELECT id, COALESCE(start_balance, 0) AS prev_balance "\
+                          " FROM account_account WHERE id IN %s"
+                params = (tuple(children_and_consolidated),)
+                cr.execute(request, params)
+                for row in cr.dictfetchall():
+                    accounts[row['id']].update(row)
+            # Then update with rest of fields
             for fiscalyear in [context.get('fiscalyear'), context.get('prev_fiscalyear')]:
                 ctx = context.copy()
                 ctx.update({'fiscalyear': fiscalyear})
@@ -110,8 +123,7 @@ class account_account(osv.osv):
 
                 for row in cr.dictfetchall():
                     if ctx.get('fiscalyear') == context.get('fiscalyear'):
-                        accounts[row['id']] = row
-                        accounts[row['id']].update({'prev_balance': 0.0})
+                        accounts[row['id']].update(row)
                     elif ctx.get('fiscalyear'):
                         accounts[row['id']].update(
                             {
