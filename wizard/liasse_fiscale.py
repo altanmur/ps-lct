@@ -30,6 +30,7 @@ from datetime import datetime
 from datetime import date, timedelta
 from tempfile import TemporaryFile
 from xl_tools import *
+import timeit
 
 class liasse_fiscale(osv.osv_memory):
 
@@ -44,105 +45,103 @@ class liasse_fiscale(osv.osv_memory):
     }
 
     def __get_curr_fy(self, cr, uid, context=None):
-        return None
         fy_obj = self.pool.get('account.fiscalyear')
         domain = [('date_start','<=',fields.date.today()),('date_stop','>=',fields.date.today())]
         fy_ids = fy_obj.search(cr, uid, domain, context=context)
         return fy_ids and fy_ids[0] or None
 
+    def _get_children_account_ids(self, cr, uid, account_id, context=None):
+        children_ids = [account_id]
+        ids_to_check = [account_id]
+        obj = self.pool.get('account.account')
+        while len(ids_to_check) > 0 :
+            ids_to_check_next = obj.search(cr, uid, [('parent_id','in',ids_to_check)], context=context) or []
+            children_ids.extend(ids_to_check_next)
+            ids_to_check = ids_to_check_next
+        return children_ids
 
-
-    def _read_accounts(self, cr, uid, sheet, rows, col, acc_rows, accounts, context=None):
-        acc_obj = self.pool.get('account.account')
-        acc_ids = []
+    def _read_accounts(self, cr, uid, sheet, rows, col, acc_rows, acc_ids, suffix='', context=None):
+        obj = self.pool.get('account.account')
         for i in range(0,len(rows)):
-            if sheet.cell(rows[i],1).ctype != XL_CELL_BLANK :
-                shortcode = str(int(sheet.cell(rows[i],1).value))
-                code =  shortcode+ (8-len(shortcode))*'0'
-                domain = [('code','ilike',code)]
-                id_list = acc_obj.search(cr, uid, domain, context=context)
-                if not id_list :
-                    continue
-                acc_id = id_list[0]
+            if sheet.cell(rows[i],col).ctype != XL_CELL_BLANK :
+                ids = obj.search(cr, uid, [('code','ilike',str(int(sheet.cell(rows[i],col).value)) + suffix)], context=context)
+                acc_id = ids and ids[0] or False
                 if acc_id :
                     acc_ids.append(acc_id)
                     acc_rows.append(rows[i])
-        accounts.extend(acc_obj.browse(cr, uid, acc_ids, context=context))
 
+    def _get_accounts_info(self, cr, uid, sheet, col, rows, suffix='', context=None):
+        acc_obj = self.pool.get('account.account')
+        acc_info = {
+            'rows' : [],
+            'ids' : [],
+            'move_debit' : [],
+            'move_credit' : [],
+            'prev_debit' : [],
+            'prev_credit' : [],
+        }
+        self._read_accounts(cr, uid, sheet, rows, col, acc_info['rows'], acc_info['ids'], suffix=suffix, context=context)
+        period_ids = self.pool.get('account.period').search(cr, uid, [('fiscalyear_id','=',context.get('fiscalyear'))], context=context)
+        ml_obj = self.pool.get('account.move.line')
+        for i in range(0,len(acc_info['rows'])):
+            account = acc_obj.browse(cr, uid, acc_info['ids'][i], context=context)
+            acc_info['prev_debit'].append(account.prev_debit)
+            acc_info['prev_credit'].append(account.prev_credit)
+            acc_and_children_ids = self._get_children_account_ids(cr, uid, acc_info['ids'][i], context=context)
+            domain = [('period_id','in',period_ids),('account_id','in',acc_and_children_ids)]
+            ml_obj.browse(cr, uid, ml_obj.search(cr, uid, domain, context=context))
+            move_lines = ml_obj.browse(cr, uid, ml_obj.search(cr, uid, domain, context=context))
+            acc_info['move_debit'].append(0)
+            acc_info['move_credit'].append(0)
+            for ml in move_lines :
+                acc_info['move_debit'][i] += ml.debit
+                acc_info['move_credit'][i] += ml.credit
+        return acc_info
 
     def _write_calc(self, cr, uid, ids, context=None):
-
         module_path = __file__.split('wizard')[0]
         template = open_workbook(module_path + 'data/calc_liasse.xls',formatting_info=True)
-        self.report = copy(template)
-        report = self.report
-
-        fy_obj = self.pool.get('account.fiscalyear')
+        report = copy(template)
+        acc_obj = self.pool.get('account.account')
 
         # Classe 1
-        ts = template.sheet_by_index(2)
-        rs = report.get_sheet(2)
+        template_sheet = template.sheet_by_index(2)
+        work_sheet = report.get_sheet(2)
 
-        #~ ## Debit
-        #~ rows = [15,21]
+        ## Credit
+        rows = [9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,
+                29,30,31,32,33,34,36,37,38,39,40,41,42,43,68,71,72,73,74,
+                92,93,94,95,96,97,98,99]
+        acc_info = self._get_accounts_info(cr, uid, template_sheet, 1, rows, '00000', context=context)
+
+        for i in range(0,len(acc_info['rows'])) :
+            account =  acc_obj.browse(cr, uid, acc_info['ids'][i], context=context)
+            if acc_info['prev_credit'][i] != 0.0 or acc_info['prev_debit'][i] != 0 :
+                if acc_info['prev_credit'][i] != 0.0 :
+                    setOutCell(work_sheet, 4, acc_rows[i], acc_info['prev_credit'][i])
+                else :
+                    setOutCell(rs, 3, acc_info['rows'][i], acc_info['prev_debit'][i])
+            setOutCell(work_sheet, 5, acc_info['rows'][i], acc_info['move_credit'][i])
+            setOutCell(work_sheet, 6, acc_info['rows'][i], acc_info['move_debit'][i])
+
         #~ accounts = []
         #~ acc_rows = []
         #~ self._read_accounts(cr, uid, ts, rows, 1, acc_rows, accounts, context=context)
-        #~ for i in range(0,len(acc_rows)) :
-            #~ setOutCell(rs,3,acc_rows[i],accounts[i].prev_debit)
-        #~ ctx = dict(context)
-        #~ ctx['date_start'] = context['fiscalyear']
+        #~ move_credits = []
+        #~ move_debits = []
+        #~ self._get_move(cr, uid, accounts, move_credits, move_debits, context=context)
 
-        ## Credit
-        rows = []
-        rows.extend(range(9,21))
-        #~ rows.extend(range(16,21))
-        rows.extend(range(22,35))
-        rows.extend(range(36,44))
-        rows.extend(range(45,49))
-        rows.append(50)
-        rows.append(52)
-        rows.append(54)
-        rows.append(56)
-        rows.extend(range(58,65))
-        rows.append(66)
-        rows.append(68)
-        rows.extend(range(71,75))
-        rows.append(68)
-        rows.append(76)
-        rows.append(78)
-        rows.append(80)
-        rows.append(82)
-        rows.append(84)
-        rows.append(86)
-        rows.append(88)
-        rows.append(90)
-        rows.extend(range(92,100))
-        accounts = []
-        acc_rows = []
-        self._read_accounts(cr, uid, ts, rows, 1, acc_rows, accounts, context=context)
-        for i in range(0,len(acc_rows)) :
-            if accounts[i].prev_credit == 0.0 and accounts[i].prev_debit == 0 :
-                continue
-            elif accounts[i].prev_debit == 0.0 :
-                setOutCell(rs,4,acc_rows[i],accounts[i].prev_credit)
-            else :
-                setOutCell(rs,3,acc_rows[i],accounts[i].prev_debit)
-
-
-
-
+        return report
 
     def print_report(self, cr, uid, ids, name, context=None):
         if context is None:
             context = {}
-        #context['fiscalyear'] = self.browse(cr, uid, ids, context=context)[0].fiscalyear_id
-        #if not context['fiscalyear'] :
-        #    raise osv.except_osv('UserError','Please select a fiscal year')
-        self._write_calc(cr,uid,ids,context=context)
+        fiscalyear = self.browse(cr, uid, ids, context=context)[0].fiscalyear_id
+        context['fiscalyear']= fiscalyear and fiscalyear.id
+        report = self._write_calc(cr,uid,ids,context=context)
 
         f = StringIO.StringIO()
-        self.report.save(f)
+        report.save(f)
         xls_file = base64.b64encode(f.getvalue())
         dlwizard = self.pool.get('cash.flow.download').create(cr, uid, {'xls_report' : xls_file}, context=dict(context, active_ids=ids))
         return {
