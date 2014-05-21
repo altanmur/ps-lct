@@ -32,28 +32,113 @@ from tempfile import TemporaryFile
 from xl_tools import *
 
 class liasse_fiscale(osv.osv_memory):
-    
+
     _name = "lct_finance.liasse.fiscale"
-           
-    
-    
+
+    _columns = {
+        "fiscalyear_id" : fields.many2one('account.fiscalyear',  required=True, string="Fiscal Year"),
+    }
+
+    _defaults = {
+        "fiscalyear_id" : lambda self, cr, uid, context: self._get_curr_fy(cr, uid, context=None)
+    }
+
+    def _get_curr_fy(self, cr, uid, context=None):
+        fy_obj = self.pool.get('account.fiscalyear')
+        domain = [('date_start','<=',fields.date.today()),('date_stop','>=',fields.date.today())]
+        fy_ids = fy_obj.search(cr, uid, domain, context=context)
+        return None
+        return fy_ids and fy_ids[0] or None
+
+
+    def _read_accounts(self, cr, uid, sheet, rows, col, acc_rows, accounts, context=None):
+        acc_obj = self.pool.get('account.account')
+        acc_ids = []
+        for i in range(0,len(rows)):
+            if sheet.cell(rows[i],1).ctype != XL_CELL_BLANK :
+                shortcode = str(int(sheet.cell(rows[i],1).value))
+                code =  shortcode+ (8-len(shortcode))*'0'
+                domain = [('code','ilike',code)]
+                id_list = acc_obj.search(cr, uid, domain, context=context)
+                if not id_list :
+                    continue
+                acc_id = id_list[0]
+                if acc_id :
+                    acc_ids.append(acc_id)
+                    acc_rows.append(rows[i])
+        accounts.extend(acc_obj.browse(cr, uid, acc_ids, context=context))
+
+
     def _write_calc(self, cr, uid, ids, context=None):
         module_path = __file__.split('wizard')[0]
         template = open_workbook(module_path + 'data/calc_liasse.xls',formatting_info=True)
-        report = copy(template)
-        
+        self.report = copy(template)
+        report = self.report
+
+        fy_obj = self.pool.get('account.fiscalyear')
+
+        # Classe 1
+        ts = template.sheet_by_index(2)
+        rs = report.get_sheet(2)
+
+        ## Debit
+        rows = [15,21]
+        accounts = []
+        acc_rows = []
+        self._read_accounts(cr, uid, ts, rows, 1, acc_rows, accounts, context=context)
+        for i in range(0,len(acc_rows)) :
+            setOutCell(rs,3,acc_rows[i],accounts[i].prev_debit)
+        ctx = dict(context)
+        ctx['date_start'] = context['fiscalyear']
+
+        ## Credit
+        rows = []
+        rows.extend(range(9,15))
+        rows.extend(range(16,21))
+        rows.extend(range(22,35))
+        rows.extend(range(36,44))
+        rows.extend(range(45,49))
+        rows.append(50)
+        rows.append(52)
+        rows.append(54)
+        rows.append(56)
+        rows.extend(range(58,65))
+        rows.append(66)
+        rows.append(68)
+        rows.extend(range(71,75))
+        rows.append(68)
+        rows.append(76)
+        rows.append(78)
+        rows.append(80)
+        rows.append(82)
+        rows.append(84)
+        rows.append(86)
+        rows.append(88)
+        rows.append(90)
+        rows.extend(range(92,100))
+        accounts = []
+        acc_rows = []
+        self._read_accounts(cr, uid, ts, rows, 1, acc_rows, accounts, context=context)
+        for i in range(0,len(acc_rows)) :
+            setOutCell(rs,4,acc_rows[i],accounts[i].prev_credit)
+
+        #
 
 
-        return report
+
+
 
 
     def print_report(self, cr, uid, ids, name, context=None):
         if context is None:
             context = {}
-        report = self._write_calc(cr,uid,ids,context=context)
-        
+        context['fiscalyear'] = self.browse(cr, uid, ids, context=context)[0].fiscalyear_id
+        if not context['fiscalyear'] :
+            raise osv.except_osv('UserError','Please select a fiscal year')
+        self._write_calc(cr,uid,ids,context=context)
+
         f = StringIO.StringIO()
-        report.save(f)
+        self.report.save(f)
         xls_file = base64.b64encode(f.getvalue())
         dlwizard = self.pool.get('cash.flow.download').create(cr, uid, {'xls_report' : xls_file}, context=dict(context, active_ids=ids))
         return {

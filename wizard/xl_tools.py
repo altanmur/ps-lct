@@ -1,4 +1,3 @@
-
 import xlwt,xlrd
 
 
@@ -9,12 +8,12 @@ def getOutCell(outSheet, colIndex, rowIndex):
     cell = row._Row__cells.get(colIndex)
     return cell
 
-def writeToCell(outSheet, col, row, value):
-    previousCell = self._getOutCell(outSheet, col, row)
+def setOutCell(outSheet, col, row, value):
+    previousCell = getOutCell(outSheet, col, row)
     outSheet.write(row, col, value)
     if previousCell:
-        newCell = self._getOutCell(outSheet, col, row)
+        newCell = getOutCell(outSheet, col, row)
         if newCell:
             newCell.xf_idx = previousCell.xf_idx
 
-   
+
