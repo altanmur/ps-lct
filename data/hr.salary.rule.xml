@@ -74,9 +74,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-wage = contract.wage if contract.wage else 0.0
-sen_rate = payslip.seniority_rate if payslip.seniority_rate else 0.0
-result = wage * sen_rate
+result = employee.seniority_pay if employee.seniority_pay else 0.0
             </field>
             <field name="condition_python">
 # Available variables:
