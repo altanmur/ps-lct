@@ -40,15 +40,16 @@ class liasse_fiscale(osv.osv_memory):
     }
 
     _defaults = {
-        "fiscalyear_id" : lambda self, cr, uid, context: self._get_curr_fy(cr, uid, context=None)
+        "fiscalyear_id" : lambda self, cr, uid, context: self.__get_curr_fy(cr, uid, context=None)
     }
 
-    def _get_curr_fy(self, cr, uid, context=None):
+    def __get_curr_fy(self, cr, uid, context=None):
+        return None
         fy_obj = self.pool.get('account.fiscalyear')
         domain = [('date_start','<=',fields.date.today()),('date_stop','>=',fields.date.today())]
         fy_ids = fy_obj.search(cr, uid, domain, context=context)
-        return None
         return fy_ids and fy_ids[0] or None
+
 
 
     def _read_accounts(self, cr, uid, sheet, rows, col, acc_rows, accounts, context=None):
@@ -70,6 +71,7 @@ class liasse_fiscale(osv.osv_memory):
 
 
     def _write_calc(self, cr, uid, ids, context=None):
+
         module_path = __file__.split('wizard')[0]
         template = open_workbook(module_path + 'data/calc_liasse.xls',formatting_info=True)
         self.report = copy(template)
@@ -81,20 +83,20 @@ class liasse_fiscale(osv.osv_memory):
         ts = template.sheet_by_index(2)
         rs = report.get_sheet(2)
 
-        ## Debit
-        rows = [15,21]
-        accounts = []
-        acc_rows = []
-        self._read_accounts(cr, uid, ts, rows, 1, acc_rows, accounts, context=context)
-        for i in range(0,len(acc_rows)) :
-            setOutCell(rs,3,acc_rows[i],accounts[i].prev_debit)
-        ctx = dict(context)
-        ctx['date_start'] = context['fiscalyear']
+        #~ ## Debit
+        #~ rows = [15,21]
+        #~ accounts = []
+        #~ acc_rows = []
+        #~ self._read_accounts(cr, uid, ts, rows, 1, acc_rows, accounts, context=context)
+        #~ for i in range(0,len(acc_rows)) :
+            #~ setOutCell(rs,3,acc_rows[i],accounts[i].prev_debit)
+        #~ ctx = dict(context)
+        #~ ctx['date_start'] = context['fiscalyear']
 
         ## Credit
         rows = []
-        rows.extend(range(9,15))
-        rows.extend(range(16,21))
+        rows.extend(range(9,21))
+        #~ rows.extend(range(16,21))
         rows.extend(range(22,35))
         rows.extend(range(36,44))
         rows.extend(range(45,49))
@@ -120,10 +122,12 @@ class liasse_fiscale(osv.osv_memory):
         acc_rows = []
         self._read_accounts(cr, uid, ts, rows, 1, acc_rows, accounts, context=context)
         for i in range(0,len(acc_rows)) :
-            setOutCell(rs,4,acc_rows[i],accounts[i].prev_credit)
-
-        #
-
+            if accounts[i].prev_credit == 0.0 and accounts[i].prev_debit == 0 :
+                continue
+            elif accounts[i].prev_debit == 0.0 :
+                setOutCell(rs,4,acc_rows[i],accounts[i].prev_credit)
+            else :
+                setOutCell(rs,3,acc_rows[i],accounts[i].prev_debit)
 
 
 
@@ -132,9 +136,9 @@ class liasse_fiscale(osv.osv_memory):
     def print_report(self, cr, uid, ids, name, context=None):
         if context is None:
             context = {}
-        context['fiscalyear'] = self.browse(cr, uid, ids, context=context)[0].fiscalyear_id
-        if not context['fiscalyear'] :
-            raise osv.except_osv('UserError','Please select a fiscal year')
+        #context['fiscalyear'] = self.browse(cr, uid, ids, context=context)[0].fiscalyear_id
+        #if not context['fiscalyear'] :
+        #    raise osv.except_osv('UserError','Please select a fiscal year')
         self._write_calc(cr,uid,ids,context=context)
 
         f = StringIO.StringIO()
