@@ -6,9 +6,9 @@
             <field name="name">Liasse fiscale</field>
             <field name="model">lct_finance.liasse.fiscale.download</field>
             <field name="arch" type="xml">
-                <form string="Liass">
+                <form string="Liasse Fiscale">
                     <field name="file_name" invisible="1"/>
-                    <field name="xls_report" filename="file_name" readonly="1"/>
+                    <field name="zip_file" filename="file_name" readonly="1"/>
                 </form>
             </field>
         </record>

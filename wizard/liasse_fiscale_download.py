@@ -29,11 +29,8 @@ class liasse_fiscale_dl(osv.osv_memory):
     _name = "lct_finance.liasse.fiscale.download"
 
     _columns = {
-            'file_name' : fields.char('File Name'),
-            'xls_report' : fields.binary('Liasse Fiscale',filters='*.xls',readonly=False)
+            'file_name' : fields.char('File Name',required=True),
+            'zip_file' : fields.binary('Liasse Fiscale',filters='*.zip',readonly=False, required=True)
         }
 
-    _defaults = {
-        'file_name' : 'Liasse fiscale.xls'
-    }
 

@@ -31,6 +31,7 @@ from datetime import date, timedelta
 from tempfile import TemporaryFile
 from xl_module import *
 import timeit
+import zipfile
 
 class liasse_fiscale(osv.osv_memory):
 
@@ -101,18 +102,15 @@ class liasse_fiscale(osv.osv_memory):
 
         return acc_infos
 
-    def _write_calc(self, cr, uid, ids, context=None):
-        module_path = __file__.split('wizard')[0]
-        template = open_workbook(module_path + 'data/calc_liasse.xls',formatting_info=True)
-        report = copy(template)
+    def _write_calc(self, cr, uid, ids, template, report, context=None):
         acc_obj = self.pool.get('account.account')
         fy_obj = self.pool.get('account.fiscalyear')
         fy_code = fy_obj.browse(cr, uid, context.get('fiscalyear'), context=context).code
         prev_fy_code = fy_obj.browse(cr, uid, context.get('prev_fiscalyear'), context=context).code
 
         # Classe 1
-        template_sheet = template.sheet_by_index(2)
-        work_sheet = report.get_sheet(2)
+        template_sheet = template.sheet_by_index(1)
+        work_sheet = report.get_sheet(1)
         setOutCell(work_sheet, 3, 6, prev_fy_code)
         setOutCell(work_sheet, 5, 6, fy_code)
         acc_infos = []
@@ -162,8 +160,8 @@ class liasse_fiscale(osv.osv_memory):
             setOutCell(work_sheet, 7, i, list_sum([[i,3,+1],[i,5,+1],[i,4,-1],[i,6,-1]]))
 
         # Classe 2
-        template_sheet = template.sheet_by_index(3)
-        work_sheet = report.get_sheet(3)
+        template_sheet = template.sheet_by_index(2)
+        work_sheet = report.get_sheet(2)
         setOutCell(work_sheet, 3, 5, prev_fy_code)
         setOutCell(work_sheet, 4, 5, fy_code)
         acc_infos = []
@@ -220,8 +218,8 @@ class liasse_fiscale(osv.osv_memory):
             setOutCell(work_sheet, 11, i, list_sum([[i,3,+1],[i,4,+1],[i,8,-1],[i,10,-1]]))
 
         # Classe 3
-        template_sheet = template.sheet_by_index(4)
-        work_sheet = report.get_sheet(4)
+        template_sheet = template.sheet_by_index(3)
+        work_sheet = report.get_sheet(3)
         setOutCell(work_sheet, 3, 4, prev_fy_code)
         setOutCell(work_sheet, 4, 4, fy_code)
         acc_infos = []
@@ -253,8 +251,8 @@ class liasse_fiscale(osv.osv_memory):
             setOutCell(work_sheet, 6, i, list_sum([[i,3,+1],[i,4,+1],[i,5,-1]]))
 
         # Classe 4
-        template_sheet = template.sheet_by_index(5)
-        work_sheet = report.get_sheet(5)
+        template_sheet = template.sheet_by_index(4)
+        work_sheet = report.get_sheet(4)
         setOutCell(work_sheet, 3, 4, prev_fy_code)
         setOutCell(work_sheet, 4, 4, fy_code)
         acc_infos = []
@@ -307,8 +305,8 @@ class liasse_fiscale(osv.osv_memory):
             setOutCell(work_sheet, i, 97, list_sum([[j,i,+1] for j in rows]))
 
         # Classe 5
-        template_sheet = template.sheet_by_index(6)
-        work_sheet = report.get_sheet(6)
+        template_sheet = template.sheet_by_index(5)
+        work_sheet = report.get_sheet(5)
         setOutCell(work_sheet, 3, 4, prev_fy_code)
         setOutCell(work_sheet, 5, 4, fy_code)
         acc_infos = []
@@ -347,8 +345,8 @@ class liasse_fiscale(osv.osv_memory):
             setOutCell(work_sheet, i, 67, list_sum([[j,i,+1] for j in rows]))
 
         # Classe 6
-        template_sheet = template.sheet_by_index(7)
-        work_sheet = report.get_sheet(7)
+        template_sheet = template.sheet_by_index(6)
+        work_sheet = report.get_sheet(6)
         setOutCell(work_sheet, 3, 4, prev_fy_code)
         setOutCell(work_sheet, 4, 4, fy_code)
         acc_infos = []
@@ -461,8 +459,8 @@ class liasse_fiscale(osv.osv_memory):
         setOutCell(work_sheet, 5, 267, list_sum([[j,5,+1] for j in [6,46,55,101,135,159,179,217,249,257]]))
 
         # Classe 7
-        template_sheet = template.sheet_by_index(8)
-        work_sheet = report.get_sheet(8)
+        template_sheet = template.sheet_by_index(7)
+        work_sheet = report.get_sheet(7)
         setOutCell(work_sheet, 3, 4, prev_fy_code)
         setOutCell(work_sheet, 4, 4, fy_code)
         acc_infos = []
@@ -560,8 +558,8 @@ class liasse_fiscale(osv.osv_memory):
         setOutCell(work_sheet, 5, 124, list_sum([[j,5,+1] for j in [6,46,54,58,70,86,107,112]]))
 
         # Classe 8
-        template_sheet = template.sheet_by_index(9)
-        work_sheet = report.get_sheet(9)
+        template_sheet = template.sheet_by_index(8)
+        work_sheet = report.get_sheet(8)
         setOutCell(work_sheet, 3, 4, prev_fy_code)
         setOutCell(work_sheet, 4, 4, fy_code)
         acc_infos = []
@@ -603,20 +601,6 @@ class liasse_fiscale(osv.osv_memory):
         setOutCell(work_sheet, 5, 60, range_sum(61,4,62,4))
         setOutCell(work_sheet, 5, 64, list_sum([[j,5,+1] for j in [6,10,14,24,34,40,47,51,56]]))
 
-        #~ # Actif
-        #~ template_sheet = template.sheet_by_index(11)
-        #~ work_sheet = report.get_sheet(11)
-        #~ setOutCell(work_sheet, 6, 10, fy_code)
-        #~ setOutCell(work_sheet, 9, 10, prev_fy_code)
-        #~ rows = [14,15,18,19,20,21,24,25,26,27,28,29,32,33,37,39,40,41,42,
-            #~ 44,45,46,49,50,51,53]
-        #~ rows = [14]
-        #~ for i in rows:
-            #~ setOutCell(work_sheet, 6, i, '=' + str(template_sheet.cell(i,6).value))
-
-
-        return report
-
     def print_report(self, cr, uid, ids, name, context=None):
         if context is None:
             context = {}
@@ -631,14 +615,27 @@ class liasse_fiscale(osv.osv_memory):
                 if fy.date_stop > prev_fy.date_stop:
                     prev_fy = fy
             context['prev_fiscalyear'] = prev_fy.id
-        start = timeit.default_timer()
-        report = self._write_calc(cr,uid,ids,context=context)
-        stop = timeit.default_timer()
-        print stop - start
-        f = StringIO.StringIO()
-        report.save(f)
-        xls_file = base64.b64encode(f.getvalue())
-        dlwizard = self.pool.get('lct_finance.liasse.fiscale.download').create(cr, uid, {'xls_report' : xls_file}, context=dict(context, active_ids=ids))
+        module_path = __file__.split('wizard')[0]
+        template = open_workbook(module_path + 'data/calc_liasse_data.xls',formatting_info=True)
+        workbook = copy(template)
+        self._write_calc(cr,uid,ids,template,workbook,context=context)
+
+
+        data_xls_sIO = StringIO.StringIO()
+        workbook.save(data_xls_sIO)
+
+        zip_sIO = StringIO.StringIO()
+        zip_file = zipfile.ZipFile(zip_sIO, 'w')
+
+        data_content = data_xls_sIO.getvalue()
+        zip_file.writestr('Calcul Liasse/calc_liasse_data.xls',data_xls_sIO.getvalue())
+        zip_file.write(module_path + 'data/calc_liasse_calc.xls', arcname='Calcul Liasse/calc_liasse_calc.xls')
+        zip_file.close()
+
+        zip_b64 = base64.b64encode(zip_sIO.getvalue())
+        data_xls_b64 = base64.b64encode(data_xls_sIO.getvalue())
+
+        dlwizard = self.pool.get('lct_finance.liasse.fiscale.download').create(cr, uid, {'zip_file' : zip_b64, 'file_name' : 'liasse.zip'}, context=dict(context, active_ids=ids))
         return {
             'view_mode': 'form',
             'view_id': False,
