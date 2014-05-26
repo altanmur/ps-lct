@@ -27,6 +27,20 @@ from xlutils.copy import copy
 
 # Formats
 
+def getOutCell(outSheet, colIndex, rowIndex):
+    row = outSheet._Worksheet__rows.get(rowIndex)
+    if not row: return None
+    cell = row._Row__cells.get(colIndex)
+    return cell
+
+def setOutCell(outSheet, col, row, value):
+    previousCell = getOutCell(outSheet, col, row)
+    outSheet.write(row, col, value)
+    if previousCell:
+        newCell = getOutCell(outSheet, col, row)
+        if newCell:
+            newCell.xf_idx = previousCell.xf_idx
+
 def get_char(i) :
     if i<26:
         return chr(ord("A")+i)
@@ -36,16 +50,21 @@ def get_char(i) :
 def range_sum(i1, j1, i2, j2) :
     return Formula("SUM(" + get_char(j1) + str(i1+1) + ":" + get_char(j2) + str(i2+1) + ")")
 
-def list_sum(indices) :
+def list_sum(indices, text=False) :
     form = ""
-    for i in indices :
+    for i in indices:
         if i[2]>0 :
             form += "+" + get_char(i[1]) + str(i[0]+1)
         elif i[2]<0 :
             form += "-" + get_char(i[1]) + str(i[0]+1)
-    if form[0] == "+" :
+    if form[0] == "+":
         form = form[1:]
-    return Formula(form)
+    if text:
+        return form
+    else:
+        return Formula(form)
+
+
 
 
 def xl_format(f=""):
