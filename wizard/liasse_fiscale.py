@@ -22,7 +22,7 @@
 from osv import fields, osv
 from tools.translate import _
 from xlwt import Workbook,easyxf
-from xlrd import open_workbook,XL_CELL_BLANK
+from xlrd import open_workbook,XL_CELL_BLANK,XL_CELL_TEXT,XL_CELL_NUMBER
 from xlutils.copy import copy
 import StringIO
 import base64
@@ -30,8 +30,9 @@ from datetime import datetime
 from datetime import date, timedelta
 from tempfile import TemporaryFile
 from xl_module import *
-import timeit
 import zipfile
+from odslib import ODS
+
 
 class liasse_fiscale(osv.osv_memory):
 
@@ -285,8 +286,8 @@ class liasse_fiscale(osv.osv_memory):
             setOutCell(work_sheet, 5, acc_info['row'], acc_info['move_debit'] if acc_info['move_debit']!=0 else "")
             setOutCell(work_sheet, 6, acc_info['row'], acc_info['move_credit'] if acc_info['move_credit']!=0 else "")
             bal = list_sum([[acc_info['row'],3,+1],[acc_info['row'],4,-1],[acc_info['row'],5,+1],[acc_info['row'],6,-1]],text=True)
-            setOutCell(work_sheet, 7, acc_info['row'], Formula('IF(' + bal + '>0;' + bal + ';"")'))
-            setOutCell(work_sheet, 8, acc_info['row'], Formula('IF(' + bal + '<0;-(' + bal + ');"")'))
+            setOutCell(work_sheet, 7, acc_info['row'], Formula('IF(' + bal + '>0;' + bal + ';0)'))
+            setOutCell(work_sheet, 8, acc_info['row'], Formula('IF(' + bal + '<0;-(' + bal + ');0)'))
         for i in [3,4,5,6,7,8]:
             setOutCell(work_sheet, i, 11, range_sum(7,i,10,i))
             setOutCell(work_sheet, i, 19, range_sum(12,i,18,i))
@@ -619,22 +620,16 @@ class liasse_fiscale(osv.osv_memory):
         template = open_workbook(module_path + 'data/calc_liasse_data.xls',formatting_info=True)
         workbook = copy(template)
         self._write_calc(cr,uid,ids,template,workbook,context=context)
-
-
         data_xls_sIO = StringIO.StringIO()
         workbook.save(data_xls_sIO)
-
         zip_sIO = StringIO.StringIO()
         zip_file = zipfile.ZipFile(zip_sIO, 'w')
-
-        data_content = data_xls_sIO.getvalue()
         zip_file.writestr('Calcul Liasse/calc_liasse_data.xls',data_xls_sIO.getvalue())
         zip_file.write(module_path + 'data/calc_liasse_calc.xls', arcname='Calcul Liasse/calc_liasse_calc.xls')
+        zip_file.write(module_path + 'data/liasse1.xls', arcname='Calcul Liasse/liasse1.xls')
         zip_file.close()
-
         zip_b64 = base64.b64encode(zip_sIO.getvalue())
         data_xls_b64 = base64.b64encode(data_xls_sIO.getvalue())
-
         dlwizard = self.pool.get('lct_finance.liasse.fiscale.download').create(cr, uid, {'zip_file' : zip_b64, 'file_name' : 'liasse.zip'}, context=dict(context, active_ids=ids))
         return {
             'view_mode': 'form',
