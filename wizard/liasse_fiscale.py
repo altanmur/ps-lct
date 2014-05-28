@@ -626,20 +626,20 @@ class liasse_fiscale(osv.osv_memory):
                     prev_fy = fy
             context['prev_fiscalyear'] = prev_fy.id
         module_path = __file__.split('wizard')[0]
-        template = open_workbook(module_path + 'data/calc_liasse_data.xls',formatting_info=True)
+        template = open_workbook(module_path + 'data/Donnees liasse fiscale.xls',formatting_info=True)
         workbook = copy(template)
         self._write_calc(cr,uid,ids,template,workbook,context=context)
         data_xls_sIO = StringIO.StringIO()
         workbook.save(data_xls_sIO)
         zip_sIO = StringIO.StringIO()
         zip_file = zipfile.ZipFile(zip_sIO, 'w')
-        zip_file.writestr('Liasse fiscale/calc_liasse_data.xls',data_xls_sIO.getvalue())
-        zip_file.write(module_path + 'data/calc_liasse_calc.xls', arcname='Liasse fiscale/calc_liasse_calc.xls')
+        zip_file.writestr('Liasse fiscale/Donnees liasse fiscale.xls',data_xls_sIO.getvalue())
+        zip_file.write(module_path + 'data/Calculs liasse fiscale.xls', arcname='Liasse fiscale/Calculs liasse fiscale.xls')
         zip_file.write(module_path + 'data/Liasse fiscale.xls', arcname='Liasse fiscale/Liasse fiscale.xls')
         zip_file.close()
         zip_b64 = base64.b64encode(zip_sIO.getvalue())
         data_xls_b64 = base64.b64encode(data_xls_sIO.getvalue())
-        dlwizard = self.pool.get('lct_finance.liasse.fiscale.download').create(cr, uid, {'zip_file' : zip_b64, 'file_name' : 'liasse.zip'}, context=dict(context, active_ids=ids))
+        dlwizard = self.pool.get('lct_finance.liasse.fiscale.download').create(cr, uid, {'zip_file' : zip_b64, 'file_name' : 'Liasse fiscale.zip'}, context=dict(context, active_ids=ids))
         return {
             'view_mode': 'form',
             'view_id': False,
