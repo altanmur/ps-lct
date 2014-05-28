@@ -31,7 +31,7 @@ from datetime import date, timedelta
 from tempfile import TemporaryFile
 from xl_module import *
 import zipfile
-from odslib import ODS
+
 
 
 class liasse_fiscale(osv.osv_memory):
@@ -108,6 +108,15 @@ class liasse_fiscale(osv.osv_memory):
         fy_obj = self.pool.get('account.fiscalyear')
         fy_code = fy_obj.browse(cr, uid, context.get('fiscalyear'), context=context).code
         prev_fy_code = fy_obj.browse(cr, uid, context.get('prev_fiscalyear'), context=context).code
+
+        # Info complémentaires
+        template_sheet = template.sheet_by_index(0)
+        work_sheet = report.get_sheet(0)
+        setOutCell(work_sheet, 3, 2, fy_code)
+        setOutCell(work_sheet, 3, 9, fy_code)
+        setOutCell(work_sheet, 4, 9, prev_fy_code)
+        setOutCell(work_sheet, 2, 3, prev_fy_code)
+        setOutCell(work_sheet, 2, 4, prev_fy_code)
 
         # Classe 1
         template_sheet = template.sheet_by_index(1)
