@@ -25,6 +25,7 @@ from xlutils.copy import copy
 import StringIO
 import base64
 from datetime import datetime
+import os
 
 class balance_sheet(osv.osv_memory):
 
@@ -47,7 +48,8 @@ class balance_sheet(osv.osv_memory):
 
     def _write_report(self, cr, uid, ids, context=None):
         module_path = __file__.split('wizard')[0]
-        template = open_workbook(module_path + 'data/balancesheet.xls',formatting_info=True)
+        xls_file = os.join(module_path, 'data', 'balancesheet.xls')
+        template = open_workbook(xls_file, formatting_info=True)
         report = copy(template)
         ts = template.sheet_by_index(0)
         rs = report.get_sheet(0)
