@@ -48,7 +48,7 @@ Small modifications to the account and account_budget modules.
         'wizard/liasse_fiscale.xml',
         'wizard/balance_sheet.xml',
         'wizard/profit_loss.xml',
-        # 'wizard/account_balance_report.xml',
+        'wizard/account_balance_report.xml',
     ],
     'demo': [],
     'test': [],
