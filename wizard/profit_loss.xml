@@ -38,7 +38,7 @@
          <field name="target">new</field>
          <field name="context" eval="{'default_account_report_id':ref('account.account_financial_report_profitandloss0')}"/>
     </record>
-<!--
+
     <menuitem
         icon="STOCK_PRINT"
         name="Profit And Loss"
@@ -47,13 +47,5 @@
         parent="menu_ifrs_reports"
         />
 
-    <menuitem
-        icon="STOCK_PRINT"
-        name="Balance Sheet"
-        action="action_account_report_bs"
-        id="menu_account_report_bs"
-        parent="menu_ifrs_reports"
-        />
- -->
     </data>
 </openerp>
