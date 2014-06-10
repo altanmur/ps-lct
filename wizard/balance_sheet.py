@@ -48,7 +48,7 @@ class balance_sheet(osv.osv_memory):
 
     def _write_report(self, cr, uid, ids, context=None):
         module_path = __file__.split('wizard')[0]
-        xls_file = os.join(module_path, 'data', 'balancesheet.xls')
+        xls_file = os.path.join(module_path, 'data', 'balancesheet.xls')
         template = open_workbook(xls_file, formatting_info=True)
         report = copy(template)
         ts = template.sheet_by_index(0)

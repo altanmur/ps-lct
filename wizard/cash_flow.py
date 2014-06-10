@@ -29,7 +29,7 @@ import base64
 from datetime import datetime
 from datetime import date, timedelta
 from tempfile import TemporaryFile
-
+import os
 
 class balance_sheet(osv.osv_memory):
 
@@ -75,7 +75,6 @@ class balance_sheet(osv.osv_memory):
                 res += acc.prev_balance - acc.balance
         return res
 
-
     def _set_dates(self, cr, uid, ids, context=None, sheet=None):
         if not sheet : return
         browser = self.browse(cr,uid,ids,context=context)[0]
@@ -104,7 +103,8 @@ class balance_sheet(osv.osv_memory):
 
     def _write_report(self, cr, uid, ids, context=None):
         module_path = __file__.split('wizard')[0]
-        template = open_workbook(module_path + 'data/cashflow.xls',formatting_info=True)
+        xls_file = os.path.join(module_path, 'data', 'cashflow.xls')
+        template = open_workbook(xls_file, formatting_info=True)
         report = copy(template)
         rs = report.get_sheet(0)
 
@@ -264,7 +264,7 @@ class balance_sheet(osv.osv_memory):
         # Cash and cash equivalents
         balances[21] = balances[17]
         self._setOutCell(rs, 3, 38, balances[21])
-        
+
 
 
 

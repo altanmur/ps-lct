@@ -31,7 +31,7 @@ from datetime import date, timedelta
 from tempfile import TemporaryFile
 from xl_module import *
 import zipfile
-
+import os
 
 
 class liasse_fiscale(osv.osv_memory):
@@ -626,7 +626,8 @@ class liasse_fiscale(osv.osv_memory):
                     prev_fy = fy
             context['prev_fiscalyear'] = prev_fy.id
         module_path = __file__.split('wizard')[0]
-        template = open_workbook(module_path + 'data/Donnees liasse fiscale.xls',formatting_info=True)
+        xls_path = os.path.join(module_path, 'data', 'Donnees liasse fiscale.xls')
+        template = open_workbook(xls_path, formatting_info=True)
         workbook = copy(template)
         self._write_calc(cr,uid,ids,template,workbook,context=context)
         data_xls_sIO = StringIO.StringIO()
@@ -634,8 +635,10 @@ class liasse_fiscale(osv.osv_memory):
         zip_sIO = StringIO.StringIO()
         zip_file = zipfile.ZipFile(zip_sIO, 'w')
         zip_file.writestr('Liasse fiscale/Donnees liasse fiscale.xls',data_xls_sIO.getvalue())
-        zip_file.write(module_path + 'data/Calculs liasse fiscale.xls', arcname='Liasse fiscale/Calculs liasse fiscale.xls')
-        zip_file.write(module_path + 'data/Liasse fiscale.xls', arcname='Liasse fiscale/Liasse fiscale.xls')
+        xls_path = os.path.join(module_path, 'data', 'Calculs liasse fiscale.xls')
+        zip_file.write(xls_path, arcname='Liasse fiscale/Calculs liasse fiscale.xls')
+        xls_path = os.path.join(module_path, 'data', 'Liasse fiscale.xls')
+        zip_file.write(xls_path, arcname='Liasse fiscale/Liasse fiscale.xls')
         zip_file.close()
         zip_b64 = base64.b64encode(zip_sIO.getvalue())
         data_xls_b64 = base64.b64encode(data_xls_sIO.getvalue())
