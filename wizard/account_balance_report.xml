@@ -41,7 +41,6 @@
             </field>
         </record>
 
-        <delete model="ir.ui.menu" id="account.menu_general_Balance_report"/>
         <record id="action_account_balance_menu" model="ir.actions.act_window">
             <field name="name">Trial Balance</field>
             <field name="type">ir.actions.act_window</field>
@@ -52,30 +51,6 @@
             <field name="target">new</field>
         </record>
 
-        <menuitem
-            name="Syscohada Reports"
-            icon="STOCK_PRINT"
-            parent="account.final_accounting_reports"
-            id="menu_syscohada_reports"
-            sequence="1"
-            />
-        <delete model="ir.ui.menu" id="account.menu_general_ledger"/>
-        <menuitem
-            icon="STOCK_PRINT"
-            name="General Ledger"
-            parent="menu_syscohada_reports"
-            action="account.action_account_general_ledger_menu"
-            groups="account.group_account_manager,account.group_account_user"
-            id="menu_general_ledger"
-           />
-        <menuitem
-            icon="STOCK_PRINT"
-            name="Trial Balance"
-            parent="menu_syscohada_reports"
-            action="action_account_balance_menu"
-            id="menu_general_Balance_report"
-            />
-
         <record model="ir.values" id="action_account_balance_report_values1">
             <field name="model_id" ref="account.model_account_account" />
             <field name="name">Trial Balance</field>
@@ -84,7 +59,14 @@
             <field name="key">action</field>
             <field name="model">account.account</field>
         </record>
-        <delete model="ir.ui.menu" id="account.menu_account_report"/>
+
+        <menuitem
+            icon="STOCK_PRINT"
+            name="Trial Balance"
+            parent="menu_syscohada_reports"
+            action="action_account_balance_menu"
+            id="menu_general_Balance_report"
+            />
 
     </data>
 </openerp>

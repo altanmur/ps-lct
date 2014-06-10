@@ -38,8 +38,8 @@
              <field name="view_mode">form</field>
              <field name="target">new</field>
         </record>
-
+<!--
         <menuitem name="Depreciation Table" action="action_account_report_dt" id="menu_account_report_dt" parent="account.final_accounting_reports"/>
-
+ -->
     </data>
 </openerp>

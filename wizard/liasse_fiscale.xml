@@ -39,7 +39,7 @@
              <field name="target">new</field>
         </record>
 
-        <menuitem name="Liasse fiscale" action="action_account_report_lf" id="menu_account_report_lf" parent="menu_syscohada_reports"/>
+        <!-- <menuitem name="Liasse fiscale" action="action_account_report_lf" id="menu_account_report_lf" parent="menu_syscohada_reports"/> -->
 
     </data>
 </openerp>

@@ -62,7 +62,7 @@
         </record>
 
 
-        <menuitem icon="STOCK_PRINT" name="Balance Sheet" action="action_account_report_bs" id="account.menu_account_report_bs" parent="account.final_accounting_reports"/>
+        <!-- <menuitem icon="STOCK_PRINT" name="Balance Sheet" action="action_account_report_bs" id="account.menu_account_report_bs" parent="account.final_accounting_reports"/> -->
 
 
     </data>
