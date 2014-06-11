@@ -2,17 +2,6 @@
 <openerp>
     <data>
 
-        <record id="profit_loss_download" model="ir.ui.view">
-            <field name="name">Profit and Loss</field>
-            <field name="model">profit.loss.download</field>
-            <field name="arch" type="xml">
-                <form string="Profit and Loss">
-                    <field name="file_name" invisible="1"/>
-                    <field name="xls_report" filename="file_name" readonly="1"/>
-                </form>
-            </field>
-        </record>
-
         <record id="accounting_report_view_pl_togo" model="ir.ui.view">
             <field name="name">Profit and Loss</field>
             <field name="model">profit.loss</field>
