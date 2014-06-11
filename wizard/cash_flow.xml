@@ -2,17 +2,6 @@
 <openerp>
     <data>
 
-        <record id="cash_flow_download" model="ir.ui.view">
-            <field name="name">Cash Flow</field>
-            <field name="model">cash.flow.download</field>
-            <field name="arch" type="xml">
-                <form string="Cash Flow">
-                    <field name="file_name" invisible="1"/>
-                    <field name="xls_report" filename="file_name" readonly="1"/>
-                </form>
-            </field>
-        </record>
-
         <record id="cash_flow_view_togo" model="ir.ui.view">
             <field name="name">Cash Flow Report</field>
             <field name="model">lct_finance.cash.flow.report</field>

@@ -24,16 +24,11 @@ from tools.translate import _
 
 
 
-class liasse_fiscale_dl(osv.osv_memory):
+class file_download(osv.osv_memory):
 
-    _name = "lct_finance.liasse.fiscale.download"
+    _name = "file.download"
 
     _columns = {
-            'file_name' : fields.char('File Name'),
-            'xls_report' : fields.binary('Liasse Fiscale',filters='*.xls',readonly=False)
+            'file_name' : fields.char('File Name', size=256),
+            'file' : fields.binary(string='Your file', readonly=True)
         }
-
-    _defaults = {
-        'file_name' : 'Liasse fiscale.xls'
-    }
-

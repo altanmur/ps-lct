@@ -20,13 +20,9 @@
 ##############################################################################
 
 import balance_sheet
-import balance_sheet_download
 import profit_loss
-import profit_loss_download
 import account_balance_report
 import cash_flow
-import cash_flow_download
 import depreciation_table
-import depreciation_table_download
 import liasse_fiscale
-import liasse_fiscale_download
+import file_download

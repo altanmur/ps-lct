@@ -2,17 +2,6 @@
 <openerp>
     <data>
 
-        <record id="liasse_fiscale_download" model="ir.ui.view">
-            <field name="name">Liasse fiscale</field>
-            <field name="model">lct_finance.liasse.fiscale.download</field>
-            <field name="arch" type="xml">
-                <form string="Liasse Fiscale">
-                    <field name="file_name" invisible="1"/>
-                    <field name="zip_file" filename="file_name" readonly="1"/>
-                </form>
-            </field>
-        </record>
-
         <record id="liasse_fiscale_view_togo" model="ir.ui.view">
             <field name="name">Liasse fiscale</field>
             <field name="model">lct_finance.liasse.fiscale</field>

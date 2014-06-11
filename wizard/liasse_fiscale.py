@@ -641,13 +641,13 @@ class liasse_fiscale(osv.osv_memory):
         zip_file.write(xls_path, arcname='Liasse fiscale/Liasse fiscale.xls')
         zip_file.close()
         zip_b64 = base64.b64encode(zip_sIO.getvalue())
-        data_xls_b64 = base64.b64encode(data_xls_sIO.getvalue())
-        dlwizard = self.pool.get('lct_finance.liasse.fiscale.download').create(cr, uid, {'zip_file' : zip_b64, 'file_name' : 'Liasse fiscale.zip'}, context=dict(context, active_ids=ids))
+        # data_xls_b64 = base64.b64encode(data_xls_sIO.getvalue())
+        dlwizard = self.pool.get('file.download').create(cr, uid, {'file' : zip_b64, 'file_name' : 'Liasse fiscale.zip'}, context=dict(context, active_ids=ids))
         return {
             'view_mode': 'form',
             'view_id': False,
             'view_type': 'form',
-            'res_model': 'lct_finance.liasse.fiscale.download',
+            'res_model': 'file.download',
             'res_id': dlwizard,
             'type': 'ir.actions.act_window',
             'nodestroy': True,
@@ -655,4 +655,3 @@ class liasse_fiscale(osv.osv_memory):
             'domain': '[]',
             'context': dict(context, active_ids=ids)
         }
-

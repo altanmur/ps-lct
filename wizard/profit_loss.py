@@ -116,12 +116,12 @@ class balance_sheet(osv.osv_memory):
         f = StringIO.StringIO()
         report.save(f)
         xls_file = base64.b64encode(f.getvalue())
-        dlwizard = self.pool.get('profit.loss.download').create(cr, uid, {'xls_report' : xls_file}, context=dict(context, active_ids=ids))
+        dlwizard = self.pool.get('file.download').create(cr, uid, {'file' : xls_file, 'file_name' : 'Profit and Loss.xls'}, context=dict(context, active_ids=ids))
         return {
             'view_mode': 'form',
             'view_id': False,
             'view_type': 'form',
-            'res_model': 'profit.loss.download',
+            'res_model': 'file.download',
             'res_id': dlwizard,
             'type': 'ir.actions.act_window',
             'nodestroy': True,
