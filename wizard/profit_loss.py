@@ -31,7 +31,7 @@ from datetime import date, timedelta
 from tempfile import TemporaryFile
 import os
 
-class balance_sheet(osv.osv_memory):
+class profit_loss(osv.osv_memory):
 
     _inherit = "accounting.report"
     _name = "profit.loss"
