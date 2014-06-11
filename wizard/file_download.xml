@@ -4,7 +4,7 @@
 
         <record id="file_download" model="ir.ui.view">
             <field name="name">Your file</field>
-            <field name="model">file.download</field>
+            <field name="model">lct_finance.file.download</field>
             <field name="arch" type="xml">
                 <form string="Your file">
                     <field name="file_name" invisible="1"/>

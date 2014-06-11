@@ -458,12 +458,12 @@ class depreciation_table(osv.osv_memory):
         f = StringIO.StringIO()
         report.save(f)
         xls_file = base64.b64encode(f.getvalue())
-        dlwizard = self.pool.get('file.download').create(cr, uid, {'file' : xls_file, 'file_name' : 'Depreciation table.xls'}, context=dict(context, active_ids=ids))
+        dlwizard = self.pool.get('lct_finance.file.download').create(cr, uid, {'file' : xls_file, 'file_name' : 'Depreciation table.xls'}, context=dict(context, active_ids=ids))
         return {
             'view_mode': 'form',
             'view_id': False,
             'view_type': 'form',
-            'res_model': 'file.download',
+            'res_model': 'lct_finance.file.download',
             'res_id': dlwizard,
             'type': 'ir.actions.act_window',
             'nodestroy': True,

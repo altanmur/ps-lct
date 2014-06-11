@@ -34,7 +34,7 @@ import os
 class profit_loss(osv.osv_memory):
 
     _inherit = "accounting.report"
-    _name = "profit.loss"
+    _name = "lct_finance.profit.loss"
 
     def _getOutCell(self,outSheet, colIndex, rowIndex):
         row = outSheet._Worksheet__rows.get(rowIndex)
@@ -116,12 +116,12 @@ class profit_loss(osv.osv_memory):
         f = StringIO.StringIO()
         report.save(f)
         xls_file = base64.b64encode(f.getvalue())
-        dlwizard = self.pool.get('file.download').create(cr, uid, {'file' : xls_file, 'file_name' : 'Profit and Loss.xls'}, context=dict(context, active_ids=ids))
+        dlwizard = self.pool.get('lct_finance.file.download').create(cr, uid, {'file' : xls_file, 'file_name' : 'Profit and Loss.xls'}, context=dict(context, active_ids=ids))
         return {
             'view_mode': 'form',
             'view_id': False,
             'view_type': 'form',
-            'res_model': 'file.download',
+            'res_model': 'lct_finance.file.download',
             'res_id': dlwizard,
             'type': 'ir.actions.act_window',
             'nodestroy': True,

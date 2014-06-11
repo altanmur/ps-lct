@@ -26,7 +26,7 @@ from tools.translate import _
 
 class file_download(osv.osv_memory):
 
-    _name = "file.download"
+    _name = "lct_finance.file.download"
 
     _columns = {
             'file_name' : fields.char('File Name', size=256),

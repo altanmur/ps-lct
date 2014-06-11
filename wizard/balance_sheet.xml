@@ -4,7 +4,7 @@
 
         <record id="balance_sheet_view_togo" model="ir.ui.view">
             <field name="name">Balance Sheet</field>
-            <field name="model">balance.sheet</field>
+            <field name="model">lct_finance.balance.sheet</field>
             <field name="arch" type="xml">
                 <form string="Report Options" version="7.0">
                     <label string=""/>  <!-- binding for inherited views -->
@@ -41,7 +41,7 @@
 
          <record id="action_account_report_bs" model="ir.actions.act_window">
              <field name="name">Balance Sheet</field>
-             <field name="res_model">balance.sheet</field>
+             <field name="res_model">lct_finance.balance.sheet</field>
              <field name="type">ir.actions.act_window</field>
              <field name="view_type">form</field>
              <field name="view_mode">form</field>
