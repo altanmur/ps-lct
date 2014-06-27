@@ -26,4 +26,5 @@ class account_asset_asset(osv.osv):
 
     _columns = {
         'allocation' : fields.char('Allocation'),
+        'dep_2013' : fields.float('Sum of depreciations until 31/12/2013')
     }
