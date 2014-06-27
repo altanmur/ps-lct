@@ -19,11 +19,11 @@
 #
 ##############################################################################
 
-import account_analytic_account
-import account_invoice
-import account_move
-import account_voucher
-import auth_signature_position
-import res_partner_bank
-import account_account
-import account_asset
+from openerp.osv import fields, osv
+
+class account_asset_asset(osv.osv):
+    _inherit = 'account.asset.asset'
+
+    _columns = {
+        'allocation' : fields.char('Allocation'),
+    }
