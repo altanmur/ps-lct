@@ -68,6 +68,7 @@ class depreciation_table(osv.osv_memory):
             sheet = self.sheet
             i = self.current_line
             sheet.write(i,1,acc.name,xl_module.line_left)
+            sheet.write(i,2,acc.code)
             sheet.write(i,6,acc.balance)
             sheet.write(i,10,xl_module.list_sum([[i,6,+1],[i,7,+1],[i,8,-1]]),xl_module.line)
             for j in (13,14):
@@ -97,21 +98,25 @@ class depreciation_table(osv.osv_memory):
             return
         for asset in assets :
             sheet.write(i,1,asset.name,xl_module.line_left)
+            sheet.write(i,2,asset.code if asset.code else "")
+            sheet.write(i,3,asset.allocation if asset.allocation else "")
             purchase_date = datetime.strptime(asset.purchase_date_2,'%Y-%m-%d')
             sheet.write(i,4,purchase_date.strftime('%d/%m/%Y'),xl_module.line)
-            if year<=2014 and purchase_date <= datetime(2014,1,1):
-                sheet.write(i,6,float(asset.x_purchase_value),xl_module.line)
-            elif purchase_date < datetime(year,1,1):
-                sheet.write(i,6,asset.purchase_value,xl_module.line)
+            if purchase_date < datetime(2014,1,1):
+                sheet.write(i,5,float(asset.x_purchase_value),xl_module.line)
+            else:
+                sheet.write(i,5,asset.purchase_value,xl_module.line)
+            sheet.write(i,6,xl_module.list_sum([[i,5,+1],[i,12,-1]] if datetime.strptime(asset.purchase_date,'%Y-%m-%d') > datetime(year,1,1) else 0))
             sheet.write(i,10,xl_module.list_sum([[i,6,+1],[i,7,+1],[i,8,-1]]),xl_module.line)
             sheet.write(i,11,str(int(100.0/(asset.category_id.method_number/12.0))) + "%",xl_module.line)
-            totpre = totcurr = an_dot = 0.0
+            totcurr = an_dot = 0.0
+            totpre = asset.dep_2013 or 0.0
             m_deprec = [0.0]*12
             if len(asset.depreciation_line_ids)>0:
                 an_dot = asset.depreciation_line_ids[0].amount *12.0
                 for line in asset.depreciation_line_ids :
                     deprec_date = datetime.strptime(line.depreciation_date,'%Y-%m-%d')
-                    if  deprec_date < datetime(year,1,1) :
+                    if deprec_date.year > 2013 and deprec_date.year < year:
                         totpre += line.amount
                     elif deprec_date.year == year :
                         m_deprec[deprec_date.month-1] = line.amount
@@ -142,10 +147,10 @@ class depreciation_table(osv.osv_memory):
         sheet.row(self.current_line).height_mismatch = True
         sheet.row(self.current_line).height = 256*3
         sheet.write(self.current_line,1,title,xl_module.total_left)
-        for j in (2,9,11) :
+        for j in (2,3,4,9,11) :
             sheet.write(self.current_line,j,"",xl_module.total_center)
         if i1<=i2 :
-            for j in (6,7,8,10,12) :
+            for j in (5,6,7,8,10,12) :
                 sheet.write(self.current_line,j,xl_module.range_sum(i1,j,i2,j),xl_module.total_center)
             sheet.write(self.current_line,13,xl_module.range_sum(i1,13,i2,13),xl_module.total_black)
             sheet.write(self.current_line,14,xl_module.range_sum(i1,14,i2,14),xl_module.total_black_red)
@@ -245,23 +250,27 @@ class depreciation_table(osv.osv_memory):
         sheet.row(5).height_mismatch = True
         sheet.row(5).height = 256*4
         sheet.write(5,1,u"Désignation de l'immobilisation",xl_module.label_left)
-        sheet.write(5,2,"Date d'aquisition",xl_module.label_center)
-        sheet.write_merge(5,5,3,7,'Valeur brute',xl_module.label_center)
-        sheet.write_merge(5,5,8,9,"",xl_module.label_center)
-        sheet.write(5,10,"Taux d'amortissement",xl_module.label_center)
-        sheet.write_merge(5,5,11,15,'Amortissements',xl_module.label_center)
-        sheet.write_merge(5,5,16,26,"",xl_module.label_center)
-        sheet.write(5,27,"Valeur comptable nette au " + today_s,xl_module.label_right)
+        sheet.write(5,2,"Code",xl_module.label_center)
+        sheet.write(5,3,"Allocation",xl_module.label_center)
+        sheet.write(5,4,"Date d'aquisition",xl_module.label_center)
+        sheet.write(5,5,"Purchase Value",xl_module.label_center)
+        sheet.write_merge(5,5,6,8,'Valeur brute',xl_module.label_center)
+        sheet.write_merge(5,5,9,10,"",xl_module.label_center)
+        sheet.write(5,11,"Taux d'amortissement",xl_module.label_center)
+        sheet.write_merge(5,5,12,16,'Amortissements',xl_module.label_center)
+        sheet.write_merge(5,5,17,27,"",xl_module.label_center)
+        sheet.write(5,28,"Valeur comptable nette au " + today_s,xl_module.label_right)
 
         # Column labels level 2
         sheet.row(6).height_mismatch = True
         sheet.row(6).height = 256*3
         sheet.write(6,1,"",xl_module.line_left)
+        sheet.write(6,6,"VALEURS AU " + jan1.strftime("%d/%m/%Y"),xl_module.label_center)
         sheet.write(6,7,"AQUISITIONS",xl_module.label_center)
         sheet.write(6,8,"SORTIES OU TRANSFERTS",xl_module.label_center)
         sheet.write(6,9,"",xl_module.label_center)
         sheet.write(6,10,"VALEURS AU " + monthlast.strftime("%d/%m/%Y"),xl_module.label_center)
-        sheet.write(6,12,u"Amortissements cumulés au " + lydec31.strftime("%d/%m/%Y"),xl_module.label_center)
+        sheet.write(6,12,u"Amortissements cumulés au " + jan1.strftime("%d/%m/%Y"),xl_module.label_center)
         sheet.write(6,13,"Dotations annuelles",xl_module.label_black)
         sheet.write(6,14,"Dotations annuelles au prorata",xl_module.label_black_red)
         sheet.write(6,15,"Janvier",xl_module.label_month)
@@ -420,11 +429,10 @@ class depreciation_table(osv.osv_memory):
         for i in range(self.current_line+1,self.current_line+15):
             sheet.write(i,1,"",xl_module.line_left)
         for i in range(self.current_line,self.current_line+15):
-
-            sheet.write(i,27,"",xl_module.line_right)
-            for k in (12,13):
+            sheet.write(i,28,"",xl_module.line_right)
+            for k in (13,14):
                 sheet.write(i,k,"",xl_module.black_line)
-            for k in range(14,27):
+            for k in range(15,28):
                 sheet.write(i,k,"",xl_module.blue_line)
         self.current_line += 15
         self._write_total(u"Total matériels en cours",self.current_line-14,self.current_line-1)
