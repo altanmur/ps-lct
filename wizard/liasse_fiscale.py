@@ -36,16 +36,29 @@ import os
 
 class liasse_fiscale(osv.osv_memory):
 
-    _inherit = "account.common.account.report"
     _name = "lct_finance.liasse.fiscale"
 
     _columns = {
         "fiscalyear_id" : fields.many2one('account.fiscalyear',  required=True, string="Fiscal Year"),
+        "date_of_report" : fields.date("Date of Report", required=True),
     }
 
     _defaults = {
         "fiscalyear_id" : lambda self, cr, uid, context: self.__get_curr_fy(cr, uid, context=None),
+        "date_of_report" : date.today().strftime('%Y-%m-%d'),
     }
+
+    def _check_date(self, cr, uid, ids, context=None):
+        fiscalyear = self.browse(cr, uid, ids[0], context=context).fiscalyear_id
+        date_start = datetime.strptime(fiscalyear.date_start,'%Y-%m-%d')
+        date_stop = datetime.strptime(fiscalyear.date_stop,'%Y-%m-%d')
+        date_report = datetime.strptime(self.browse(cr, uid, ids[0], context=context).date_of_report,'%Y-%m-%d')
+        return date_report <= date_stop and date_report >= date_start or False
+
+    _constraints = [
+        (_check_date,'The date of report must be in fiscal year.', ['date_of_report','fiscalyear_id']),
+    ]
+
 
     def __get_curr_fy(self, cr, uid, context=None):
         fy_obj = self.pool.get('account.fiscalyear')
@@ -615,16 +628,9 @@ class liasse_fiscale(osv.osv_memory):
     def print_report(self, cr, uid, ids, name, context=None):
         if context is None:
             context = {}
-        browse_rec = self.browse(cr, uid, ids, context=context)[0]
         fy_obj = self.pool.get('account.fiscalyear')
-        fiscalyear = browse_rec.fiscalyear_id
+        fiscalyear = self.browse(cr, uid, ids, context=context)[0].fiscalyear_id
         context['fiscalyear']= fiscalyear and fiscalyear.id
-        if browse_rec.filter == 'filter_date':
-            context['date_from'] = browse_rec.date_from
-            context['date_to'] = browse_rec.date_to
-        elif browse_rec.filter == 'filter_period' :
-            context['period_from'] = browse_rec.period_from
-            context['preiod_to'] = browse_rec.period_to
         date = fy_obj.browse(cr, uid, context.get('fiscalyear'), context=context).date_start
         fys = fy_obj.browse(cr, uid, fy_obj.search(cr, uid, [('date_stop','<=',date)], context=context), context=context)
         if fys and len(fys)>0:
@@ -633,6 +639,8 @@ class liasse_fiscale(osv.osv_memory):
                 if fy.date_stop > prev_fy.date_stop:
                     prev_fy = fy
             context['prev_fiscalyear'] = prev_fy.id
+        context['date_from'] = '1000-01-01'
+        context['date_to'] = self.browse(cr, uid, ids[0], context=context).date_of_report
         module_path = __file__.split('wizard')[0]
         xls_path = os.path.join(module_path, 'data', 'Donnees liasse fiscale.xls')
         template = open_workbook(xls_path, formatting_info=True)
