@@ -19,14 +19,16 @@
 #
 ##############################################################################
 
-from openerp.osv import fields, osv, orm
+from openerp.osv import fields, osv
 from openerp.tools.translate import _
 from openerp import netsvc
 import csv
 import base64
 from cStringIO import StringIO
 import datetime
+import os
 
+default_domain = [('type', '=', 'in_invoice'), ('state', '=', 'draft'), ('synchronized', '=', False)]
 class res_partner(osv.osv):
     _name = "res.partner"
     _inherit = "res.partner"
@@ -131,8 +133,6 @@ class account_invoice(osv.osv):
 
             invoice_line_reg = self.pool.get('account.invoice.line')
             invoice_tax_reg = self.pool.get('account.invoice.tax')
-            move_reg = self.pool.get('account.move')
-            wf_service = netsvc.LocalService("workflow")
 
             if to_synch_ids:
                 invoice_line_ids = invoice_line_reg.search(cr, uid, [('invoice_id', 'in', to_synch_ids)], context=context)
@@ -191,22 +191,54 @@ class account_export(osv.osv_memory):
     _name = "account.export"
 
     def export(self, cr, uid, ids, context=None):
-        invoice_reg = self.pool.get("account.invoice")
-        wiz = self.browse(cr, uid, ids, context=context)[0]
-        wf_service = netsvc.LocalService("workflow")
-
-        if len(wiz.invoice_ids)==0:
-            return True
         invoice_reg = self.pool.get('account.invoice')
-        for inv in wiz.invoice_ids:
-            invoice_reg.action_date_assign(cr, uid, [inv.id])
-            invoice_reg.action_move_create(cr, uid, [inv.id])
-            invoice_reg.action_number(cr, uid, [inv.id])
-            invoice_reg.write(cr, uid, [inv.id], {'state': 'sent'}, context=context)
+        wiz = self.browse(cr, uid, ids, context=context)[0]
+
+        invoice_ids = wiz.use_criteria and wiz.invoice_with_criteria_ids or wiz.invoice_ids
+        if len(invoice_ids)==0:
+            return True
+
+        data = self.get_export_data(cr, uid, invoice_ids, context=context)
+        encode_text = base64.encodestring(data)
+        self.write(cr, uid, ids, {
+            'file': encode_text,
+            'state': 'saved',
+            'datas_fname': 'supplier_invoice_' + str(datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')) + '.csv'
+            }, context=context)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Export Invoice to CMMS',
+            'res_model': 'account.export',
+            'res_id': ids[0],
+            'view_mode': 'form',
+            'view_type': 'form',
+            'target': 'new',
+            'context': context,
+        }
+
+
+    def auto_export(self, cr, uid, force_run=False):
+        base_path = self.pool.get('ir.config_parameter').get_param(cr, uid, 'LCT_supplier_invoice.base_path_export', default='/tmp')
+        invoice_reg = self.pool.get('account.invoice')
+        inv_ids = invoice_reg.search(cr, uid, default_domain)
+        invoices = invoice_reg.browse(cr, uid, inv_ids)
+        filename = os.path.join(base_path, "invoice_cmms_%s.csv" % (datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d_%H:%M:%S'), ))
+        data = self.get_export_data(cr, uid, invoices)
+        with open(filename, 'wb') as ondisk:
+            ondisk.write(data)
+
+    def get_export_data(self, cr, uid, invoice_ids, context=None):
+        invoice_reg = self.pool.get('account.invoice')
+        for inv in invoice_ids:
+            if inv.state == 'draft' and not inv.synchronized and inv.type == 'in_invoice':
+                invoice_reg.action_date_assign(cr, uid, [inv.id])
+                invoice_reg.action_move_create(cr, uid, [inv.id])
+                invoice_reg.action_number(cr, uid, [inv.id])
+                invoice_reg.write(cr, uid, [inv.id], {'state': 'sent'}, context=context)
 
         # the export
         fields = ['id', 'partner_id', 'currency_id', 'date_invoice', 'date_due', 'invoice_line/price_subtotal', 'invoice_line/invoice_line_tax_id', 'amount_total', 'internal_number', 'po_number']
-        rows = invoice_reg.export_data(cr, uid, [inv.id for inv in wiz.invoice_ids], fields, context=context)
+        rows = invoice_reg.export_data(cr, uid, [inv.id for inv in invoice_ids], fields, context=context)
         fp = StringIO()
         writer = csv.writer(fp, quoting=csv.QUOTE_ALL, delimiter=';')
 
@@ -228,34 +260,20 @@ class account_export(osv.osv_memory):
         fp.seek(0)
         data = fp.read()
         fp.close()
-
-        encode_text = base64.encodestring(data)
-        self.write(cr, uid, ids, {
-            'file': encode_text,
-            'state': 'saved',
-            'datas_fname': 'supplier_invoice_' + str(datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')) + '.csv'
-            }, context=context)
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Export Invoice to CMMS',
-            'res_model': 'account.export',
-            'res_id': ids[0],
-            'view_mode': 'form',
-            'view_type': 'form',
-            'target': 'new',
-            'context': context,
-        }
+        return data
 
     def _get_invoices(self, cr, uid, context=None):
-        return self.pool.get("account.invoice").search(cr, uid, [('type', '=', 'in_invoice'), ('state', '=', 'draft'), ('synchronized', '=', False)], context=context)
+        return self.pool.get("account.invoice").search(cr, uid, default_domain, context=context)
 
     _columns = {
-        'invoice_ids': fields.many2many('account.invoice', string="Export", domain=[('type', '=', 'in_invoice'), ('state', '=', 'draft'), ('synchronized', '=', False)]),
+        'invoice_ids': fields.many2many('account.invoice', string="Export", domain=default_domain),
         'datas_fname': fields.char("File Name", 128),
         'file': fields.binary('File', readonly=True),
         'state': fields.selection([
             ('draft','Draft'),
             ('saved', 'Saved')], readonly=True),
+        'use_criteria': fields.boolean('Search by criteria'),
+        'invoice_with_criteria_ids': fields.many2many('account.invoice', string="Export"),
     }
     _defaults = {
         'invoice_ids': _get_invoices,
