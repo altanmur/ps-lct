@@ -26,4 +26,3 @@ import account_voucher
 import auth_signature_position
 import res_partner_bank
 import account_account
-import account_asset
