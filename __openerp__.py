@@ -31,7 +31,8 @@
     """,
     'data': [
         'account_view.xml',
-        'cron/export_supplier_invoices.xml'
+        'cron/export_supplier_invoices.xml',
+        'config_parameter.xml'
     ],
     'css':['static/src/css/lct.css'],
     'js': ['static/src/js/lct.js'],

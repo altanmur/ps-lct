@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+		<record id="base_path_export" model="ir.config_parameter">
+        	<field name="key">LCT path export</field>
+        	<field name="value">/</field>
+        </record>
+    </data>
+</openerp>

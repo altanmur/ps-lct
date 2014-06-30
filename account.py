@@ -218,7 +218,7 @@ class account_export(osv.osv_memory):
 
 
     def auto_export(self, cr, uid, force_run=False):
-        base_path = self.pool.get('ir.config_parameter').get_param(cr, uid, 'LCT_supplier_invoice.base_path_export', default='/tmp')
+        base_path = self.pool.get('ir.config_parameter').get_param(cr, uid, 'LCT path export', default='/tmp')
         invoice_reg = self.pool.get('account.invoice')
         inv_ids = invoice_reg.search(cr, uid, default_domain)
         invoices = invoice_reg.browse(cr, uid, inv_ids)
