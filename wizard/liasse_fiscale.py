@@ -36,6 +36,7 @@ import os
 
 class liasse_fiscale(osv.osv_memory):
 
+    _inherit = "account.common.account.report"
     _name = "lct_finance.liasse.fiscale"
 
     _columns = {
@@ -614,9 +615,16 @@ class liasse_fiscale(osv.osv_memory):
     def print_report(self, cr, uid, ids, name, context=None):
         if context is None:
             context = {}
+        browse_rec = self.browse(cr, uid, ids, context=context)[0]
         fy_obj = self.pool.get('account.fiscalyear')
-        fiscalyear = self.browse(cr, uid, ids, context=context)[0].fiscalyear_id
+        fiscalyear = browse_rec.fiscalyear_id
         context['fiscalyear']= fiscalyear and fiscalyear.id
+        if browse_rec.filter == 'filter_date':
+            context['date_from'] = browse_rec.date_from
+            context['date_to'] = browse_rec.date_to
+        elif browse_rec.filter == 'filter_period' :
+            context['period_from'] = browse_rec.period_from
+            context['preiod_to'] = browse_rec.period_to
         date = fy_obj.browse(cr, uid, context.get('fiscalyear'), context=context).date_start
         fys = fy_obj.browse(cr, uid, fy_obj.search(cr, uid, [('date_stop','<=',date)], context=context), context=context)
         if fys and len(fys)>0:
