@@ -64,12 +64,15 @@ class depreciation_table(osv.osv_memory):
 
     def _write_account(self, cr, uid,ids, code, context=None):
         acc = self._get_account(cr, uid, ids, code, context=context)
+        ctx_jan1 = dict(context)
+        ctx_jan1['date_to'] = str(self.today.year) + '-01-01'
+        acc_jan1 = self._get_account(cr, uid, ids, code, context=ctx_jan1)
         if acc :
             sheet = self.sheet
             i = self.current_line
             sheet.write(i,1,acc.name,xl_module.line_left)
             sheet.write(i,2,acc.code)
-            sheet.write(i,6,acc.balance)
+            sheet.write(i,6,acc_jan1.balance)
             sheet.write(i,10,xl_module.list_sum([[i,6,+1],[i,7,+1],[i,8,-1]]),xl_module.line)
             for j in (13,14):
                 sheet.write(i,j,"",xl_module.black_line)
@@ -98,8 +101,8 @@ class depreciation_table(osv.osv_memory):
             return
         for asset in assets :
             sheet.write(i,1,asset.name,xl_module.line_left)
-            sheet.write(i,2,asset.code if asset.code else "")
-            sheet.write(i,3,asset.allocation if asset.allocation else "")
+            sheet.write(i,2,asset.code or "")
+            sheet.write(i,3,asset.allocation or "")
             purchase_date = datetime.strptime(asset.purchase_date_2,'%Y-%m-%d')
             sheet.write(i,4,purchase_date.strftime('%d/%m/%Y'),xl_module.line)
             if purchase_date < datetime(2014,1,1):
@@ -120,7 +123,8 @@ class depreciation_table(osv.osv_memory):
                         totpre += line.amount
                     elif deprec_date.year == year :
                         m_deprec[deprec_date.month-1] = line.amount
-                        totcurr += line.amount
+                        if deprec_date < today:
+                            totcurr += line.amount
             sheet.write(i,12,totpre,xl_module.line)
             sheet.write(i,13,an_dot,xl_module.black_line)
             sheet.write(i,14,totcurr,xl_module.black_red_line)
@@ -338,7 +342,7 @@ class depreciation_table(osv.osv_memory):
             j = self.current_line
             sheet.write(j,1,"Terminal en cours de construction",xl_module.line_left)
             sheet.write(j,6,acc.balance)
-            sheet.write(j,10,xl_module.list_sum([[j,3,+1],[j,5,+1],[j,6,-1]]))
+            sheet.write(j,10,xl_module.list_sum([[j,6,+1],[j,7,+1],[j,8,-1]]))
             self.current_line += 1
             for k in (13,14):
                 sheet.write(j,k,"",xl_module.black_line)
@@ -444,7 +448,9 @@ class depreciation_table(osv.osv_memory):
     def print_report(self, cr, uid, ids, name, context=None):
         if context is None:
             context = {}
-        self.today = datetime.strptime(self.browse(cr,uid,ids,context=context)[0].report_date,'%Y-%m-%d')
+        context['date_to'] = self.browse(cr,uid,ids,context=context)[0].report_date
+        context['date_from'] = '1000-01-01'
+        self.today = datetime.strptime(context['date_to'],'%Y-%m-%d')
         report = Workbook()
         self.sheet = report.add_sheet('Sheet 1')
         self._write_report(cr,uid,ids,context=context)
