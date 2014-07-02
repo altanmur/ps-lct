@@ -35,4 +35,6 @@ class account_invoice(orm.Model):
         'rib': fields.char('RIB', size=64),
         'customer_nbr': fields.char('Customer Number', size=64),
         'reference' : fields.text('Reference'),
+        # For the invoice report (fiche d'imputation)
+        'create_date': fields.datetime('Creation Date' , readonly=True),
     }
