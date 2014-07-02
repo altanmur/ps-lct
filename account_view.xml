@@ -104,7 +104,7 @@
                             <field name="account_id" groups="account.group_account_invoice"
                                 domain="[('company_id', '=', parent.company_id), ('journal_id', '=', parent.journal_id), ('type', '=', 'other')]"
                                 on_change="onchange_account_id(product_id, parent.partner_id, parent.type, parent.fiscal_position,account_id)" />
-                            <field name="account_analytic_id" string="Cost Center" groups="analytic.group_analytic_accounting"
+                            <field name="account_analytic_id" string="Cost Center" groups="analytic.group_analytic_accounting" required="1"
                                 domain="[('type','!=','view'), ('company_id', '=', parent.company_id)]" attrs="{'readonly': [('state','=','synchronized')]}"/>
                             <field name="cost_purpose" attrs="{'readonly': [('state','=','synchronized')]}"/>
                             <field name="object_nr" attrs="{'readonly': [('state','=','synchronized')]}"/>
@@ -263,7 +263,7 @@
                         <field name="use_criteria"/>
                     </group>
                     <field name="invoice_with_criteria_ids" attrs="{'invisible': ['|', ('state', '=', 'saved'), ('use_criteria', '=', False)]}">
-                        <tree string="Choose Your Invoices" create="0" edit="0" delete="true">
+                        <tree string="Choose Your Invoices" create="false" edit="false" delete="true">
                             <field name="state" invisible="1"/>
                             <field name="number"/>
                             <field name="partner_id"/>
