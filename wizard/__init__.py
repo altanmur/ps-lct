@@ -26,3 +26,4 @@ import cash_flow
 import depreciation_table
 import liasse_fiscale
 import file_download
+import partner_ledger_report
