@@ -50,6 +50,7 @@ Small modifications to the account and account_budget modules.
         'wizard/profit_loss.xml',
         'wizard/account_balance_report.xml',
         'wizard/partner_ledger_report.xml',
+        'wizard/general_ledger_report.xml',
         'wizard/file_download.xml',
     ],
     'demo': [],
