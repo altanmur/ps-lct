@@ -4,7 +4,7 @@
 		<style type="text/css">
 			header{margin-top:5em;}
 			h1{text-align:center;text-decoration:underline;}
-			th{text-align:left;width:10em;font-weight:normal;}
+			th{text-align:left;width:10em;font-weight:normal;font-size:12px;}
 			.boxed,table.boxed td{border:1px solid black;}
 			table{border-collapse:collapse;}
 			.data{width:6em; text-align:right;}
@@ -64,8 +64,8 @@
 					<td colspan="5" class="boxed" height="50" style="vertical-align:top;line-height:2;">
 						LIBELLE :
 						%for line in invoice.invoice_line:
-							%if line.wo_description:
-								${line.wo_description}<br/>
+							%if line.name:
+								${line.name}<br/>
 							%endif
 						%endfor
 					</td>
@@ -92,8 +92,8 @@
 								${line.account_id.code}
 							%endif
 						</td>
-						<td>${invoice.partner_id.name}</td>
-						<td>${invoice.account_id.name}</td>
+						<td></td>
+						<td>${line.account_id.name}</td>
 						<td>${line.price_subtotal}</td>
 						<td></td>
 					</tr>
@@ -117,11 +117,15 @@
 							${invoice.account_id.code}
 						%endif
 					</td>
-					<td></td>
 					<td>
 							%if invoice.partner_id:
 								${invoice.partner_id.name}
 							%endif
+					</td>
+					<td>
+						%if invoice.account_id:
+							${invoice.account_id.name}
+						%endif
 					</td>
 					<td></td>
 					<td>${invoice.amount_total}</td>
