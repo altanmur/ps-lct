@@ -71,8 +71,20 @@
                     <!-- -->
                     %endif
                 </td>
-                <td class="numeric">${'{0:,.0f}'.format(line.get('debit')).replace(',', '.')}</td>
-                <td class="numeric">${'{0:,.0f}'.format(line.get('credit')).replace(',', '.')}</td>
+                <td class="numeric">
+                    %if line.get('prev_balance') >= 0:
+                        ${'{0:,.0f}'.format(line.get('debit') + line.get('prev_balance')).replace(',', '.')}
+                    %else:
+                        ${'{0:,.0f}'.format(line.get('debit')).replace(',', '.')}
+                    %endif
+                </td>
+                <td class="numeric">
+                    %if line.get('prev_balance') <= 0:
+                        ${'{0:,.0f}'.format(line.get('credit') + line.get('prev_balance')).replace(',', '.')}
+                    %else:
+                        ${'{0:,.0f}'.format(line.get('credit')).replace(',', '.')}
+                    %endif
+                </td>
                 <td class="numeric">
                     %if line.get('balance') > 0:
                     ${'{0:,.0f}'.format(line.get('balance')).replace(',', '.')}
