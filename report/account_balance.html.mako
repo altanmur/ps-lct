@@ -73,7 +73,7 @@
                 </td>
                 <td class="numeric">
                     %if line.get('prev_balance') >= 0:
-                        ${'{0:,.0f}'.format(line.get('debit') + line.get('prev_balance')).replace(',', '.')}
+                        ${'{0:,.0f}'.format(line.get('debit') - line.get('prev_balance')).replace(',', '.')}
                     %else:
                         ${'{0:,.0f}'.format(line.get('debit')).replace(',', '.')}
                     %endif
