@@ -51,7 +51,7 @@ class account_account(osv.osv):
             digits_compute=dp.get_precision('Account'), string='Previous Debit', multi='balance'),
         'prev_balance': fields.function(lambda self, *args, **kwargs: self.__compute(*args, **kwargs),
             digits_compute=dp.get_precision('Account'), string='Previous Balance', multi='balance'),
-        'start_balance': fields.float('Starting Balance', digits=(16, 2)),
+        # 'start_balance': fields.float('Starting Balance', digits=(16, 2)),
     }
 
     def __compute(self, cr, uid, ids, field_names, arg=None, context=None,
@@ -82,29 +82,16 @@ class account_account(osv.osv):
         accounts = dict([(x, null_result.copy()) for x in children_and_consolidated])
         res = {}
         if children_and_consolidated:
-            # First get the initial balance for the very first year
-            fy_obj = self.pool.get('account.fiscalyear')
-            curr_fy = fy_obj.browse(cr, uid, context.get('fiscalyear'))
-            is_first_year = not len(fy_obj.search(cr, uid, [('date_stop', '<', curr_fy.date_start)], context=context))
-            if is_first_year:
-                request = "SELECT id, COALESCE(start_balance, 0) AS prev_balance "\
-                          " FROM account_account WHERE id IN %s"
-                params = (tuple(children_and_consolidated),)
-                cr.execute(request, params)
-                for row in cr.dictfetchall():
-                    accounts[row['id']].update(row)
-            # Then update with rest of fields
-            for fiscalyear in [context.get('fiscalyear'), context.get('prev_fiscalyear')]:
-                ctx = context.copy()
-                ctx.update({'fiscalyear': fiscalyear})
-                aml_query = self.pool.get('account.move.line')._query_get(cr, uid, context=ctx)
+            aml_query = self.pool.get('account.move.line')._query_get(cr, uid, context=context)
 
-                wheres = [""]
-                if query.strip():
-                    wheres.append(query.strip())
-                if aml_query.strip():
-                    wheres.append(aml_query.strip())
+            wheres = [""]
+            if query.strip():
+                wheres.append(query.strip())
+            if aml_query.strip():
+                wheres.append(aml_query.strip())
+            for special in ['f', 't']:
                 filters = " AND ".join(wheres)
+                filters += " AND l.period_id NOT IN (SELECT id FROM account_period WHERE special = '%s') " % special
                 # IN might not work ideally in case there are too many
                 # children_and_consolidated, in that case join on a
                 # values() e.g.:
@@ -122,16 +109,15 @@ class account_account(osv.osv):
                 cr.execute(request, params)
 
                 for row in cr.dictfetchall():
-                    if ctx.get('fiscalyear') == context.get('fiscalyear'):
+                    if special == 'f':
                         accounts[row['id']].update(row)
-                    elif ctx.get('fiscalyear'):
+                    else:
                         accounts[row['id']].update(
                             {
                                 'prev_credit': row['credit'],
                                 'prev_debit': row['debit'],
-                                'prev_balance': row['balance'],
-                            }
-                        )
+                                'balance': accounts[row['id']]['balance'] + row['balance'],
+                            })
 
             # consolidate accounts with direct children
             children_and_consolidated.reverse()
@@ -140,7 +126,6 @@ class account_account(osv.osv):
             currency_obj = self.pool.get('res.currency')
             while brs:
                 current = brs.pop(0)
-
                 for fn in field_names:
                     sums.setdefault(current.id, {})[fn] = accounts.get(current.id, {}).get(fn, 0.0)
                     for child in current.child_id:

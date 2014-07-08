@@ -58,32 +58,16 @@
                 <td>${line.get('code')}</td>
                 <td>${line.get('name')}</td>
                 <td class="numeric">
-                    %if line.get('prev_balance') > 0:
-                    ${'{0:,.0f}'.format(line.get('prev_balance')).replace(',', '.')}
-                    %else:
-                    <!-- -->
-                    %endif
+                    ${'{0:,.0f}'.format(line.get('prev_debit')).replace(',', '.')}
                 </td>
                 <td class="numeric">
-                    %if line.get('prev_balance') <= 0:
-                    ${'{0:,.0f}'.format((abs(line.get('prev_balance')))).replace(',', '.')}
-                    %else:
-                    <!-- -->
-                    %endif
+                    ${'{0:,.0f}'.format((abs(line.get('prev_credit')))).replace(',', '.')}
                 </td>
                 <td class="numeric">
-                    %if line.get('prev_balance') >= 0:
-                        ${'{0:,.0f}'.format(line.get('debit') - line.get('prev_balance')).replace(',', '.')}
-                    %else:
-                        ${'{0:,.0f}'.format(line.get('debit')).replace(',', '.')}
-                    %endif
+                    ${'{0:,.0f}'.format(line.get('debit')).replace(',', '.')}
                 </td>
                 <td class="numeric">
-                    %if line.get('prev_balance') <= 0:
-                        ${'{0:,.0f}'.format(line.get('credit') + line.get('prev_balance')).replace(',', '.')}
-                    %else:
-                        ${'{0:,.0f}'.format(line.get('credit')).replace(',', '.')}
-                    %endif
+                    ${'{0:,.0f}'.format(line.get('credit')).replace(',', '.')}
                 </td>
                 <td class="numeric">
                     %if line.get('balance') > 0:
