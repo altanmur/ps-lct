@@ -89,7 +89,7 @@ class account_account(osv.osv):
                 wheres.append(query.strip())
             if aml_query.strip():
                 wheres.append(aml_query.strip())
-            for special in ['t', 'f']:
+            for special in ['f', 't']:
                 filters = " AND ".join(wheres)
                 filters += " AND l.period_id IN (SELECT id FROM account_period WHERE special = '%s') " % special
                 # IN might not work ideally in case there are too many
@@ -110,6 +110,13 @@ class account_account(osv.osv):
 
                 for row in cr.dictfetchall():
                     if special == 'f':
+                        # Due to the order in which we do true, false, this shouldn't
+                        # be necessary, but this dependence on the order in which we
+                        # work has bitten me in the rear end more than once, so let's
+                        # foolproof this:
+                        if accounts[row['id']]['balance']:
+                            row['balance'] += accounts[row['id']]['balance']
+                        # Now we continue...
                         accounts[row['id']].update(row)
                     else:
                         accounts[row['id']].update(
