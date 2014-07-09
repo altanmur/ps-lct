@@ -89,9 +89,9 @@ class account_account(osv.osv):
                 wheres.append(query.strip())
             if aml_query.strip():
                 wheres.append(aml_query.strip())
-            for special in ['f', 't']:
+            for special in ['t', 'f']:
                 filters = " AND ".join(wheres)
-                filters += " AND l.period_id NOT IN (SELECT id FROM account_period WHERE special = '%s') " % special
+                filters += " AND l.period_id IN (SELECT id FROM account_period WHERE special = '%s') " % special
                 # IN might not work ideally in case there are too many
                 # children_and_consolidated, in that case join on a
                 # values() e.g.:
