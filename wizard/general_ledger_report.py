@@ -29,6 +29,10 @@ class account_report_general_ledger(osv.osv_memory):
         'account_ids': fields.many2many('account.account', 'account_account_res_account_rel', 'account_id', 'account2_id', 'Accounts'),
     }
 
+    _defaults = {
+        'amount_currency': False,
+    }
+
     def check_report(self, cr, uid, ids, context=None):
         if context is None:
             context = {}

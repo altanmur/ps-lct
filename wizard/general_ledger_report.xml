@@ -5,6 +5,9 @@
             <field name="model">account.report.general.ledger</field>
             <field name="inherit_id" ref="account.account_report_general_ledger_view" />
             <field name="arch" type="xml">
+                <field name="amount_currency" position="replace">
+                    <field name="amount_currency" string="With Currency/Counterpart"/>
+                </field>
                 <page string="Journals" position="after">
                     <page string="Accounts">
                         <label for="filter_accounts"/><field name="filter_accounts"/>
