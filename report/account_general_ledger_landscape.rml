@@ -557,7 +557,7 @@
         </blockTable>
       </section>
     </section>
-    <blockTable colWidths="45.0,35.0,35.0,100.0,75.0,65.0,105.0,70.0,70.0,70.0,100.0" style="Table10">[[ data['form']['amount_currency'] == False or removeParentNode('blockTable') ]]
+    <blockTable colWidths="45.0,35.0,35.0,100.0,95.0,90.0,125.0,70.0,70.0,100.0" style="Table10">[[ data['form']['amount_currency'] == False or removeParentNode('blockTable') ]]
       <tr>
         <td>
           <para style="terp_tblheader_Details">Date</para>
@@ -579,9 +579,6 @@
         </td>
         <td>
           <para style="terp_tblheader_Details">Entry Label</para>
-        </td>
-        <td>
-          <para style="terp_tblheader_Details">Counterpart</para>
         </td>
         <td>
           <para style="terp_tblheader_Details_Right">Debit</para>
@@ -614,7 +611,7 @@
       </blockTable>
       <section>
         <para style="Standard">[[ repeatIn(lines(o), 'line') ]]</para>
-        <blockTable rowHeights="0.55cm" colWidths="45.0,35.0,35.0,100.0,75.0,65.0,105.0,70.0,70.0,70.0,100.0" style="Table12">[[ data['form']['amount_currency'] == False or removeParentNode('blockTable') ]]
+        <blockTable rowHeights="0.55cm" colWidths="45.0,35.0,35.0,100.0,95.0,90.0,125.0,70.0,70.0,100.0" style="Table12">[[ data['form']['amount_currency'] == False or removeParentNode('blockTable') ]]
           <tr>
             <td>
               <para style="terp_default_7">[[ formatLang(line['ldate'],date=True) ]]</para>
@@ -636,9 +633,6 @@
             </td>
             <td>
               <para style="terp_default_7">[[ strip_name(line['lname'],28) ]]</para>
-            </td>
-            <td>
-              <para style="terp_default_7">[[ strip_name(line['line_corresp'],23) ]]</para>
             </td>
             <td>
               <para style="terp_default_Right_7">[[ formatLang(line['debit'], digits=0) ]]</para>

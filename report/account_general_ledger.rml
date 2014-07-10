@@ -596,9 +596,6 @@
               <para style="terp_default_8">[[ strip_name(line['lname'],18) ]]</para>
             </td>
             <td>
-              <para style="terp_default_Centre_8">[[ strip_name(line['line_corresp'].replace(', ',','),20) ]]</para>
-            </td>
-            <td>
               <para style="terp_default_Right_8">[[ formatLang(line['debit'], digits=get_digits(dp='Account')) ]]</para>
             </td>
             <td>
