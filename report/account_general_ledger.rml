@@ -264,7 +264,7 @@
   <story>
     <pto>
     <pto_header>
-        <blockTable colWidths="40.0,28.0,82.0,42.0,42.0,71.0,42.0,57.0,57.0,77.0" style="Table10">[[ data['form']['amount_currency'] == False or removeParentNode('blockTable') ]]
+        <blockTable colWidths="40.0,28.0,82.0,42.0,64.0,91.0,57.0,57.0,77.0" style="Table10">[[ data['form']['amount_currency'] == False or removeParentNode('blockTable') ]]
           <tr>
             <td>
               <para style="terp_tblheader_Details">Date</para>
@@ -283,9 +283,6 @@
             </td>
             <td>
               <para style="terp_tblheader_Details">Entry Label</para>
-            </td>
-            <td>
-              <para style="terp_tblheader_Details_Centre">Counterpart</para>
             </td>
             <td>
               <para style="terp_tblheader_Details_Right">Debit</para>
