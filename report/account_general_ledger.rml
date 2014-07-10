@@ -524,7 +524,7 @@
         </blockTable>
       </section>
     </section>
-    <blockTable colWidths="40.0,28.0,82.0,42.0,42.0,71.0,42.0,57.0,57.0,77.0" style="Table10">[[ data['form']['amount_currency'] == False or removeParentNode('blockTable') ]]
+    <blockTable colWidths="40.0,28.0,82.0,42.0,64.0,91.0,57.0,57.0,77.0" style="Table10">[[ data['form']['amount_currency'] == False or removeParentNode('blockTable') ]]
       <tr>
         <td>
           <para style="terp_tblheader_Details">Date</para>
@@ -543,9 +543,6 @@
         </td>
         <td>
           <para style="terp_tblheader_Details">Entry Label</para>
-        </td>
-        <td>
-          <para style="terp_tblheader_Details_Centre">Counterpart</para>
         </td>
         <td>
           <para style="terp_tblheader_Details_Right">Debit</para>
@@ -578,7 +575,7 @@
       </blockTable>
       <section>
         <para style="terp_default_8">[[ repeatIn(lines(o), 'line') ]]</para>
-        <blockTable rowHeights="0.55cm" colWidths="40.0,28.0,82.0,42.0,42.0,71.0,42.0,57.0,57.0,77.0" style="Table6">[[ data['form']['amount_currency'] == False or removeParentNode('blockTable') ]]
+        <blockTable rowHeights="0.55cm" colWidths="40.0,28.0,82.0,42.0,64.0,91.0,57.0,57.0,77.0" style="Table6">[[ data['form']['amount_currency'] == False or removeParentNode('blockTable') ]]
           <tr>
             <td>
               <para style="terp_default_8">[[ formatLang(line['ldate'],date=True) ]]</para>
