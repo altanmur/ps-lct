@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="hr_hr_employee_view_form2_togo" model="ir.ui.view">
+            <field name="name">hr.employee.view.form2_togo</field>
+            <field name="model">hr.employee</field>
+            <field name="priority">1</field>
+            <field name="inherit_id" ref="hr_contract.hr_hr_employee_view_form2"/>
+            <field name="arch" type="xml">
+                <field name="children" position="replace">
+                    <field name="nbr_dependents"/>
+                    <field name="mortgage_interests"/>
+                    <field name="advance_on_salary"/>
+                    <field name="overtime"/>
+                    <field name="loan_repayments"/>
+                    <field name="other_deductions"/>
+                    <field name="pension_allowance"/>
+                </field>
+                <field name="active" position="after">
+                    <field name="start_date"/>
+                    <field name="reg_nbr"/>
+                    <field name="cnss_nbr"/>
+                    <field name="active_years"/>
+                    <field name="seniority_pay"/>
+                </field>
+                <field name="bank_account_id" position="replace">
+                    <field name="bank_name"/>
+                    <field name="acc_number"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

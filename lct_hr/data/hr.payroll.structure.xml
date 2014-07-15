@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="lct_hr.hr_payroll_structure_togo" model="hr.payroll.structure">
+            <field name="note"></field>
+            <field name="name">National</field>
+            <field name="parent_id"></field>
+            <field name="code">NAT</field>
+            <field name="rule_ids" eval="[(6, 0, [ref('lct_hr.hr_salary_rule_4'), ref('lct_hr.hr_salary_rule_5'), ref('lct_hr.hr_salary_rule_6'), ref('lct_hr.hr_salary_rule_28'), ref('lct_hr.hr_salary_rule_7'), ref('lct_hr.hr_salary_rule_8'), ref('lct_hr.hr_salary_rule_9'), ref('lct_hr.hr_salary_rule_10'), ref('lct_hr.hr_salary_rule_11'), ref('lct_hr.hr_salary_rule_12'), ref('lct_hr.hr_salary_rule_13'), ref('lct_hr.hr_salary_rule_14'), ref('lct_hr.hr_salary_rule_15'), ref('lct_hr.hr_salary_rule_16'), ref('lct_hr.hr_salary_rule_17'), ref('lct_hr.hr_salary_rule_18'), ref('lct_hr.hr_salary_rule_19'), ref('lct_hr.hr_salary_rule_20'), ref('lct_hr.hr_salary_rule_21'), ref('lct_hr.hr_salary_rule_22'), ref('lct_hr.hr_salary_rule_23'), ref('lct_hr.hr_salary_rule_24'), ref('lct_hr.hr_salary_rule_25'), ref('lct_hr.hr_salary_rule_26'), ref('lct_hr.hr_salary_rule_27'), ref('lct_hr.hr_salary_rule_29'), ref('lct_hr.hr_salary_rule_30'), ref('lct_hr.hr_salary_rule_31'), ref('lct_hr.hr_salary_rule_32'), ref('lct_hr.hr_salary_rule_33'), ref('lct_hr.hr_salary_rule_34')])]"/>
+        </record>
+        <record id="lct_hr.hr_payroll_structure_togo_int" model="hr.payroll.structure">
+            <field name="note"></field>
+            <field name="name">International</field>
+            <field name="parent_id"></field>
+            <field name="code">INT</field>
+            <field name="rule_ids" eval="[(6, 0, [ref('lct_hr.hr_salary_rule_4'), ref('lct_hr.hr_salary_rule_5'), ref('lct_hr.hr_salary_rule_6'), ref('lct_hr.hr_salary_rule_28'), ref('lct_hr.hr_salary_rule_7'), ref('lct_hr.hr_salary_rule_8'), ref('lct_hr.hr_salary_rule_9'), ref('lct_hr.hr_salary_rule_10'), ref('lct_hr.hr_salary_rule_11'), ref('lct_hr.hr_salary_rule_12'), ref('lct_hr.hr_salary_rule_13'), ref('lct_hr.hr_salary_rule_14'), ref('lct_hr.hr_salary_rule_15'), ref('lct_hr.hr_salary_rule_16'), ref('lct_hr.hr_salary_rule_17'), ref('lct_hr.hr_salary_rule_18'), ref('lct_hr.hr_salary_rule_19'), ref('lct_hr.hr_salary_rule_20'), ref('lct_hr.hr_salary_rule_21'), ref('lct_hr.hr_salary_rule_22'), ref('lct_hr.hr_salary_rule_23'), ref('lct_hr.hr_salary_rule_24'), ref('lct_hr.hr_salary_rule_25'), ref('lct_hr.hr_salary_rule_26'), ref('lct_hr.hr_salary_rule_27'), ref('lct_hr.hr_salary_rule_29'), ref('lct_hr.hr_salary_rule_30'), ref('lct_hr.hr_salary_rule_31'), ref('lct_hr.hr_salary_rule_32'), ref('lct_hr.hr_salary_rule_33'), ref('lct_hr.hr_salary_rule_34')])]"/>
+        </record>
+        <record id="lct_hr.hr_payroll_structure_togo_trn" model="hr.payroll.structure">
+            <field name="note"></field>
+            <field name="name">Trainees</field>
+            <field name="parent_id"></field>
+            <field name="code">TRN</field>
+            <field name="rule_ids" eval="[(6, 0, [ref('lct_hr.hr_salary_rule_4'), ref('lct_hr.hr_salary_rule_5'), ref('lct_hr.hr_salary_rule_6'), ref('lct_hr.hr_salary_rule_28'), ref('lct_hr.hr_salary_rule_7'), ref('lct_hr.hr_salary_rule_8'), ref('lct_hr.hr_salary_rule_9'), ref('lct_hr.hr_salary_rule_10'), ref('lct_hr.hr_salary_rule_11'), ref('lct_hr.hr_salary_rule_12'), ref('lct_hr.hr_salary_rule_13'), ref('lct_hr.hr_salary_rule_14'), ref('lct_hr.hr_salary_rule_15'), ref('lct_hr.hr_salary_rule_16'), ref('lct_hr.hr_salary_rule_17'), ref('lct_hr.hr_salary_rule_18'), ref('lct_hr.hr_salary_rule_19'), ref('lct_hr.hr_salary_rule_20'), ref('lct_hr.hr_salary_rule_21'), ref('lct_hr.hr_salary_rule_22'), ref('lct_hr.hr_salary_rule_23'), ref('lct_hr.hr_salary_rule_24'), ref('lct_hr.hr_salary_rule_25'), ref('lct_hr.hr_salary_rule_26'), ref('lct_hr.hr_salary_rule_27'), ref('lct_hr.hr_salary_rule_29'), ref('lct_hr.hr_salary_rule_30'), ref('lct_hr.hr_salary_rule_31'), ref('lct_hr.hr_salary_rule_32'), ref('lct_hr.hr_salary_rule_33'), ref('lct_hr.hr_salary_rule_34')])]"/>
+        </record>
+    </data>
+</openerp>

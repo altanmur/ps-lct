@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="hr_contract_view_form_togo" model="ir.ui.view">
+            <field name="name">hr.contract.view.form_togo</field>
+            <field name="model">hr.contract</field>
+            <field name="priority">1</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <group name="salary_and_advantages" position="before">
+                    <group name="categorisation" string="Categorisation">
+                        <field name="category"/>
+                        <field name="hr_class"/>
+                        <field name="echelon"/>
+                        <field name="date_next_promotion"/>
+                    </group>
+                </group>
+                <field name="wage" position="after">
+                    <field name="benefits_in_kind"/>
+                    <field name="transport_allowance"/>
+                    <field name="representation_allowance"/>
+                    <field name="individual_allowance"/>
+                    <field name="performance_allowance"/>
+                    <field name="other_allowances"/>
+                    <field name="bonus"/>
+                    <field name="pension_annuities"/>
+                    <field name="life_insurance"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

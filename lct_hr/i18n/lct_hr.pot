@@ -1,0 +1,536 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#   * lct_hr
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-03-25 11:30+0000\n"
+"PO-Revision-Date: 2014-03-25 11:30+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lct_hr
+#: field:payslip_report,export_selected_only:0
+msgid "Export selected payslips only"
+msgstr ""
+
+#. module: lct_hr
+#: field:payslip_report,payslip_ids:0
+msgid "Payslips"
+msgstr ""
+
+#. module: lct_hr
+#: sql_constraint:hr.contract:0
+msgid "You can only have one contract per employee."
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.employee,reg_nbr:0
+msgid "Registration number"
+msgstr ""
+
+#. module: lct_hr
+#: model:ir.model,name:lct_hr.model_hr_salary_rule
+msgid "hr.salary.rule"
+msgstr ""
+
+#. module: lct_hr
+#: help:hr.employee,overtime:0
+msgid "Expressed in monetary terms, not hours"
+msgstr ""
+
+#. module: lct_hr
+#: model:ir.model,name:lct_hr.model_hr_payslip
+msgid "Pay Slip"
+msgstr ""
+
+#. module: lct_hr
+#: selection:hr.contract,echelon:0
+msgid "10"
+msgstr ""
+
+#. module: lct_hr
+#: field:paybook_report,datas_fname:0
+#: field:payslip_report,datas_fname:0
+msgid "File name"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_18
+msgid "Interests on mortgages"
+msgstr ""
+
+#. module: lct_hr
+#: selection:hr.contract,echelon:0
+msgid "13"
+msgstr ""
+
+#. module: lct_hr
+#: sql_constraint:hr.employee:0
+msgid "An employee with the same CNSS number already exists."
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_11
+msgid "Other Allowances"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.contract,life_insurance:0
+msgid "Life insurance"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.employee,loan_repayments:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_24
+msgid "Loan repayments"
+msgstr ""
+
+#. module: lct_hr
+#: help:hr.payroll.base_wage,base_wage:0
+msgid "Salary for Category 1, class EA, echelon 1"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.contract,hr_class:0
+msgid "Class"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_22
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_irpp
+msgid "IRPP"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.contract,individual_allowance:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_9
+msgid "Individual allowance"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_13
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_cnss
+msgid "Employee CNSS"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_31
+msgid "Employer CNSS"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.employee,active_years:0
+msgid "Active years"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.contract,transport_allowance:0
+msgid "Transport allowance"
+msgstr ""
+
+#. module: lct_hr
+#: model:ir.model,name:lct_hr.model_hr_employee
+msgid "Employee"
+msgstr ""
+
+#. module: lct_hr
+#: selection:hr.contract,hr_class:0
+msgid "HC"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.employee,start_date:0
+#: field:paybook_report,dt_start:0
+#: field:payslip_report,dt_start:0
+msgid "Start date"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.contract,echelon:0
+msgid "Echelon"
+msgstr ""
+
+#. module: lct_hr
+#: view:hr.contract:0
+msgid "Categorisation"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.employee,cnss_nbr:0
+msgid "CNSS Number"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_21
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_tcs
+msgid "TCS"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.contract,other_allowances:0
+msgid "Other allowances"
+msgstr ""
+
+#. module: lct_hr
+#: field:paybook_report,xls_file:0
+#: field:payslip_report,out_file:0
+msgid "Report"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_26
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_other_ded_tot
+msgid "Total Other deductions"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.contract,performance_allowance:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_10
+msgid "Performance allowance"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.employee,other_deductions:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_25
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_other_ded
+msgid "Other deductions"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.payslip,seniority_rate:0
+msgid "Seniority rate"
+msgstr ""
+
+#. module: lct_hr
+#: selection:hr.contract,hr_class:0
+msgid "ED"
+msgstr ""
+
+#. module: lct_hr
+#: view:hr.payroll.base_wage:0
+#: model:ir.actions.act_window,name:lct_hr.action_hr_payroll_base_wage_tree_view
+#: model:ir.ui.menu,name:lct_hr.hr_payroll_base_wage_menu
+msgid "Base wages"
+msgstr ""
+
+#. module: lct_hr
+#: selection:hr.contract,hr_class:0
+msgid "EA"
+msgstr ""
+
+#. module: lct_hr
+#: selection:hr.contract,hr_class:0
+msgid "EC"
+msgstr ""
+
+#. module: lct_hr
+#: selection:hr.contract,hr_class:0
+msgid "EB"
+msgstr ""
+
+#. module: lct_hr
+#: view:paybook_report:0
+#: view:payslip_report:0
+msgid "Cancel"
+msgstr ""
+
+#. module: lct_hr
+#: view:paybook_report:0
+#: view:payslip_report:0
+msgid "Close"
+msgstr ""
+
+#. module: lct_hr
+#: view:hr.payroll.base_wage:0
+#: field:hr.payroll.base_wage,base_wage:0
+#: model:ir.model,name:lct_hr.model_hr_payroll_base_wage
+msgid "Base wage"
+msgstr ""
+
+#. module: lct_hr
+#: selection:hr.contract,hr_class:0
+msgid "ME"
+msgstr ""
+
+#. module: lct_hr
+#: selection:hr.contract,hr_class:0
+msgid "MG"
+msgstr ""
+
+#. module: lct_hr
+#: selection:hr.contract,hr_class:0
+msgid "MF"
+msgstr ""
+
+#. module: lct_hr
+#: sql_constraint:hr.employee:0
+msgid "An employee with the same registration number already exists."
+msgstr ""
+
+#. module: lct_hr
+#: selection:paybook_report,state:0
+#: selection:payslip_report,state:0
+msgid "Draft"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_4
+#: model:hr.salary.rule.category,name:hr_payroll.BASIC
+msgid "Basic"
+msgstr ""
+
+#. module: lct_hr
+#: field:paybook_report,state:0
+#: field:payslip_report,state:0
+msgid "Status"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.employee,seniority_pay:0
+msgid "Seniority pay"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.employee,advance_on_salary:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_23
+msgid "Advance on salary"
+msgstr ""
+
+#. module: lct_hr
+#: selection:hr.contract,hr_class:0
+msgid "CI"
+msgstr ""
+
+#. module: lct_hr
+#: selection:hr.contract,hr_class:0
+msgid "CH"
+msgstr ""
+
+#. module: lct_hr
+#: model:ir.model,name:lct_hr.model_hr_contract
+msgid "Contract"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_27
+msgid "To pay"
+msgstr ""
+
+#. module: lct_hr
+#: model:ir.actions.act_window,name:lct_hr.action_paybook_report
+#: model:ir.model,name:lct_hr.model_paybook_report
+msgid "Paybook report"
+msgstr ""
+
+#. module: lct_hr
+#: selection:hr.contract,echelon:0
+msgid "11"
+msgstr ""
+
+#. module: lct_hr
+#: field:paybook_report,dt_end:0
+#: field:payslip_report,dt_end:0
+msgid "End date"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_5
+msgid "Seniority premium"
+msgstr ""
+
+#. module: lct_hr
+#: selection:hr.contract,echelon:0
+msgid "12"
+msgstr ""
+
+#. module: lct_hr
+#: selection:hr.contract,echelon:0
+msgid "15"
+msgstr ""
+
+#. module: lct_hr
+#: selection:hr.contract,echelon:0
+msgid "14"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_20
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_nts
+msgid "NTS"
+msgstr ""
+
+#. module: lct_hr
+#: selection:paybook_report,state:0
+#: selection:payslip_report,state:0
+msgid "Done"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_19
+msgid "Life Insurance"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.employee,pension_allowance:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_30
+msgid "Pension allowance"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_12
+#: model:hr.salary.rule.category,name:hr_payroll.GROSS
+msgid "Gross"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_14
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_profexp
+msgid "Professional Expenses"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.employee,overtime:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_28
+msgid "Overtime"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_15
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_taxal
+msgid "Tax Allowance"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_7
+msgid "Transportation allowance"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.contract,bonus:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_6
+msgid "Bonus"
+msgstr ""
+
+#. module: lct_hr
+#: view:paybook_report:0
+#: view:payslip_report:0
+msgid "Report for : "
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.employee,nbr_dependents:0
+msgid "Number of dependents"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_32
+msgid "Tax on salary"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.contract,pension_annuities:0
+msgid "Pension or annuities"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.employee,mortgage_interests:0
+msgid "Interests on mortgage(s)"
+msgstr ""
+
+#. module: lct_hr
+#: view:paybook_report:0
+#: view:payslip_report:0
+msgid "Continue"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_16
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_dependents
+msgid "Dependents"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.contract,benefits_in_kind:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_29
+msgid "Benefits in kind"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_17
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_pension
+msgid "Pension or Annuities"
+msgstr ""
+
+#. module: lct_hr
+#: model:ir.actions.act_window,name:lct_hr.action_payslip_report
+#: model:ir.model,name:lct_hr.model_payslip_report
+msgid "Payslip report"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.contract,representation_allowance:0
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_8
+msgid "Representation allowance"
+msgstr ""
+
+#. module: lct_hr
+#: view:paybook_report:0
+#: view:payslip_report:0
+msgid "The report has been generated"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.config.settings,base_wage:0
+#: model:ir.model,name:lct_hr.model_hr_payroll_base_wage
+msgid "Base wage"
+msgstr ""
+
+#. module: lct_hr
+#: field:hr.payslip.employees,select_all_active_employees:0
+msgid "Generate for all active employees"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_33
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_total_costing
+msgid "Total Contributions"
+msgstr ""
+
+#. module: lct_hr
+#: model:ir.actions.act_window,name:lct_hr.action_payslip_report
+#: model:ir.model,name:lct_hr.model_payslip_report
+msgid "Payslip report"
+msgstr ""
+
+#. module: lct_hr
+#: model:ir.model,name:lct_hr.model_hr_salary_rule_category
+msgid "Salary Rule Category"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_nts_ded
+msgid "NTS Deductions"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_employer_contrib
+msgid "Employer Contributions"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule.category,name:hr_payroll.ALW
+msgid "Allowance"
+msgstr ""
+
+#. module: lct_hr
+#: model:hr.salary.rule,name:lct_hr.hr_salary_rule_34
+#: model:hr.salary.rule.category,name:lct_hr.hr_salary_rule_category_total_employee_contrib
+msgid "Total Employee Contributions"
+msgstr ""

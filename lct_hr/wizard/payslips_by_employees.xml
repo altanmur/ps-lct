@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_hr_payslip_by_employees_lct" model="ir.ui.view">
+            <field name="name">hr_payroll_payslip_employees_lct</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_by_employees"/>
+            <field name="model">hr.payslip.employees</field>
+            <field name="arch" type="xml">
+                <xpath expr="//group[2]" position="before">
+                    <field name="select_all_active_employees" nolabel="1"/>
+                    <label for="select_all_active_employees"/>
+                </xpath>
+                <xpath expr="//group[2]" position="attributes">
+                    <attribute name="attrs">{'invisible': [('select_all_active_employees', '=', True)]}</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="lct_hr.ir_header_webkit_payslip" model="ir.header_webkit">
+            <field name="name">Payslip Landscape</field>
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+        </record>
+        <record id="lct_hr.ir_header_webkit_bank_info" model="ir.header_webkit">
+            <field name="name">Staff Bank Info</field>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_bottom">30</field>
+            <field name="footer_html">
+                <![CDATA[
+                <html>
+                    <head></head>
+                    <body style="text-align: center; font-weight: bold;">
+                        LCT S.A. - LOME CONTAINER TERMINAL S.A.<br/>
+                        Route A3 d'Akodessewa - 09 BP. 9103 LOME<br/>
+                        RCCM : TOGO LOME 2008 B 2184
+                    </body>
+                </html>
+                ]]>
+            </field>
+        </record>
+    </data>
+</openerp>

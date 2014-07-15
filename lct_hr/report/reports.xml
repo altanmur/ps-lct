@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <!-- First, delete the original one. Ours is cuter. -->
+    <delete model="ir.actions.report.xml" search="[('name','=','Employee PaySlip')]"/>
+    <report id="lct_hr.report_payslip_webkit"
+            name="webkit.payslip_report_pdf"
+            auto="False"
+            model="hr.payslip"
+            file="lct_hr/report/payslip_report.html.mako"
+            string="Employee Payslips"
+            report_type="webkit"
+            webkit_header="lct_hr.ir_header_webkit_payslip"
+            header="False" />
+    <report id="lct_hr.report_bankinfo_webkit"
+            name="webkit.bank_information_report_pdf"
+            auto="False"
+            model="hr.payslip.run"
+            file="lct_hr/report/bank_information_report.html.mako"
+            string="Staff Bank Information report"
+            report_type="webkit"
+            header="False"
+            webkit_header="lct_hr.ir_header_webkit_bank_info" />
+    </data>
+</openerp>

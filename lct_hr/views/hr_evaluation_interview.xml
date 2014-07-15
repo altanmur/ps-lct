@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		
+
+		<record id="view_hr_evaluation_form_togo" model="ir.ui.view">
+			<field name="name">hr_evaluation.view_hr_evaluation_form_togo</field>
+			<field name="model">hr_evaluation.evaluation</field>
+			<field name="inherit_id" ref="hr_evaluation.view_hr_evaluation_form"/>
+			<field name="arch" type="xml">
+				<field name="response" position="after">
+					<field name="global_appreciation"/>
+				</field>
+			</field>
+		</record>
+
+
+		<record model="ir.ui.view" id="view_hr_evaluation_interview_tree_togo">
+            <field name="name">hr_evaluation.interview.tree_togo</field>
+            <field name="model">hr.evaluation.interview</field>
+            <field name="inherit_id" ref="hr_evaluation.view_hr_evaluation_interview_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@string='Done']" position="after">
+					<field name="global_appreciation"/>
+                </xpath>  
+            </field>
+        </record>
+
+		
+
+
+	</data>
+</openerp>

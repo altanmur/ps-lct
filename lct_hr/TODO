@@ -1,0 +1,71 @@
+TODO:
+=====
+* 13th month; prorata based on start date
+
+DONE:
+=====
+* Calculate base wage based on category, class, echelon (see spreadsheet)
+* Payslips & report: monthly/yearly (payslips: use filter, show all, select all, then print; report: choose start/end dates)
+* Fix paybook report so it downloads the excell; I already know it works because I wrote it to /tmp and the report looks good.
+* Round salary to lower 1000
+* Fix Python code in salary rules to deal with OpenERP's insane convention of storing 0 as None in the DB
+* remove 'Other deductions' from contract (already used on employee)
+* Add 'Pension allowance' ('Indemnité de départ à la retraite' in fr) on employee after 'Other deductions'
+* Include 75% of 'Pension allowance' in computation of GROSS
+* French translations
+* French translations: salary rules in xml, new fields (Pension allowance on Employee)
+* The salary rule 'Togo - Benefit' takes contract.benefits_in_kind whereas it should take contract.benefits.
+    Probably better to rename 'Benefits' into 'Bonus', create a new rule with contract.bonus and change the name of the existing 'Togo - Benefits' into ' Togo - Benefits in kind'.
+* Add employee pension allowance rule, so it shows up on the payslip as well? And what's with the other pension allowance?
+* Employer's contribution on payslip (half done)
+* People automatically raise to the next echelon after 2 years, and their pay automatically follows. Cron job. First do echelon, then seniority!
+* Seniority: it's 2% after 2 years, 1% for each subsequent year. But the percentages are calculated according to the wage at the time they "entered" that year.
+    => cron job that checks on a daily basis if years of service > stored years of service; adds 1 to years of service if so, adapts stored seniority pay. First do echelon, then seniority!
+* Create methods for getting the default start/end dates for paybook/payslip report (monthly)
+* Wizard for all payslips in a given month/year (adapt existing one to be able to work with either selected records or date ranges)
+* Change layout of paybook report to match the example report.
+* Make base wage "unique": ir.config_parameter and get_param()
+* Figure out how to generate/print all payslips at once => cron job
+* Footer under payslip report, improve layout
+* French translation of salary rule categories
+* CNSS should be called 'CNSS salariale'
+* CNSS 17.5% should be called 'CNSS patronale'
+* TS 3% should be called 'Taxe sur salaire'.
+* The total of CNSS 17.5 and TS 3 should appear in row 'Total cotisations', also with positive sign, in the column 'retenue' but in the section 'Part patronale'
+* CNSS, TCS, IRPP, Avance sur salaire, remboursement de pret, autres retenues, total autres retenues: make positive (and adapt rules that use them) + put in Retenues column of their respective Salariale/Patronale section
+* Sequence of 'Taxe sur salaire' should be 2030 and it should appear after IRPP.
+* Hide from payslip/report: battement, personnes à charge, pension ou rente, intérêts sur prêts, assurance-vie , RNT, avantages en nature, indemnités de départ à la retraite, frais professionnels , net (only as line from report, but keep on payslip)
+* Date de paiement: last day of month
+* Category field (functional) on hr.contract in case they want to report on this.
+* Move TAXAL, DEPENDENTS, PENSION rules up, right after PROFTAX. And NTS right after that.
+* Then, move TCS/IRPP back to their proper locations on the payslip.
+* Show Base/Taux only for payslip lines where Taux != 100%
+* Payslip report: PDF instead of XLS, for batch printing.
+* Payslip report PDF: finish the bottom box, using actual values
+* Fix layout of PDF payslip report
+* Wizard in front of PDF payslip report
+* Normal PDF payslip report takes active ids
+* Fix Payslip report PDF: bank info now comes directly from fields on employee due to functional reasons
+* Payslip report PDF: Nombre de Jours: hide for the moment.
+* Staff Bank Information report
+* Payslip report PDF: Heures Travaillées = 160, but prorata in the 1st month
+* Payslip report PDF: Holidays - acquired (see computation of employee.remaining_leave), remaining (employee.remaining_leave), list of from-to values for holidays taken that month.
+* 3 salary structures, same set of rules: National/International/Trainees
+* Payslip report PDF: yearly values for all the lower left box fields
+* Fix the auto-promote code: keep track of last promotion date.
+* Rename PROFTAX to PROFEXP (Professional Expenses)
+* Remove PROFEXP from To Pay
+
+N/A:
+====
+* Create export fieldset for employees containing id, name, loan repayment, advance salary, other deductions, overtime (all in monetary terms, no hours for overtime since the formula is complex and not user-friendly to capture through the screens)  ==> Short manual action, no need to figure out how to export that into a data file.
+* Move base salary to XML so it doesn't autoupdate with the module
+
+
+Terms:
+======
+NTS == Net Taxable Salary
+CNSS == something with Social Security (private & self-employed vs CRS for public sector)
+TCS == Taxe Complementaire sur Salaires
+IRPP == Impôt sur le Revenu des Personnes Physiques
+
