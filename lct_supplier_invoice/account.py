@@ -50,7 +50,6 @@ class account_invoice_line(osv.osv):
         'project_nr': fields.char('Project Nr'),
         'project_description': fields.char('Project Description'),
         'wo_nr': fields.char('WO Nr'),
-        'wo_description': fields.char('WO Description'),
         'part_nr': fields.char('Part Nr'),
         'part_description': fields.char('Part Description'),
         'po_nr': fields.char('PO Nr'),
