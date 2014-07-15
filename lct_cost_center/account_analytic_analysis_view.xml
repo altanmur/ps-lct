@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<record id="view_account_analytic_account_form_lct" model="ir.ui.view">
+            <field name="name">analytic.analytic.account.form.lct</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+            <field name="model">account.analytic.account</field>
+            <field name="arch" type="xml">
+            	<xpath expr="//div[@class='oe_title']" position="replace">
+            		<h1>
+            			<label string="Reference" class="oe_edit_only"/>
+                        <field name="name" class="oe_inline"/>
+                    </h1>
+                    <div name="project"/>
+            	</xpath>
+            	<xpath expr="//field[@name='code']" position="replace"/>
+				<xpath expr="//field[@name='partner_id']" position="before">
+            		<field name="code" string="Name"/>
+            	</xpath>
+            </field>
+        </record>
+
+        <record id="view_account_analytic_account_tree_lct" model="ir.ui.view">
+            <field name="name">account.analytic.account.list.lct</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="account.view_account_analytic_account_tree"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='complete_name']" position="replace">
+            		<field name="complete_name" string="Reference"/>
+            	</xpath>
+            	<xpath expr="//field[@name='code']" position="replace">
+            		<field name="code" string="Name"/>
+            	</xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>
