@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="ir_cron_lct_post_depreciation_lines" model="ir.cron">
+            <field name="name">Post Depreciation Lines</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">months</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="True" />
+            <field name="model" eval="'account.asset.depreciation.line'" />
+            <field name="function" eval="'cron_post_lines'" />
+            <field name="args" eval="''" />
+            <field name="nextcall" eval="time.strftime('%Y-%m-31 23:00:00')" />
+        </record>
+
+    </data>
+</openerp>
