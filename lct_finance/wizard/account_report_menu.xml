@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+    <data>
+
+        <menuitem
+            name="Syscohada Reports"
+            icon="STOCK_PRINT"
+            parent="account.final_accounting_reports"
+            id="menu_syscohada_reports"
+            sequence="1"
+            />
+
+        <menuitem
+            name="IFRS Reports"
+            icon="STOCK_PRINT"
+            parent="account.final_accounting_reports"
+            id="menu_ifrs_reports"
+            sequence="2"
+            />
+
+        <menuitem
+            icon="STOCK_PRINT"
+            name="General Ledger"
+            parent="menu_syscohada_reports"
+            action="account.action_account_general_ledger_menu"
+            groups="account.group_account_manager,account.group_account_user"
+            id="menu_general_ledger"
+           />
+
+    </data>
+</openerp>
+

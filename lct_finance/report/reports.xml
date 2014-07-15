@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+        <report
+            auto="False"
+            id="report_invoice"
+            model="account.invoice"
+            name="account.invoice.report"
+            file="lct_finance/report/invoice.mako"
+            string="Invoice File"
+            report_type="webkit"
+            webkit_header="lct_finance.ir_header_webkit_invoice"
+            header="False"/>
+        <report id="lct_finance.report_wire_transfer_webkit"
+            name="webkit.wire_transfer_report"
+            auto="False"
+            model="account.voucher"
+            file="lct_finance/report/wire_transfer.html.mako"
+            string="Wire Transfer"
+            report_type="webkit"
+            webkit_header="lct_finance.ir_header_webkit_finance_portrait"
+            header="False" />
+        <!-- First, let's delete the old ones -->
+        <!-- <delete model="ir.actions.report.xml" id="account.account_account_balance"/> -->
+        <!-- And now, we define our own. -->
+        <report id="lct_finance.report_account_balance_webkit"
+            name="webkit.account_balance_report"
+            auto="False"
+            model="account.account"
+            file="lct_finance/report/account_balance.html.mako"
+            string="Trial Balance 2"
+            report_type="webkit"
+            webkit_header="lct_finance.ir_header_webkit_finance_landscape"
+            header="False"/>
+        <!-- Not necessary, just putting it here in case we want to override these too someday. -->
+<!--
+        <delete model="ir.actions.report.xml" id="account.account_general_ledger"/>
+        <report id="account.account_general_ledger"
+            name="account.general.ledger"
+            auto="False"
+            menu="False"
+            model="account.account"
+            rml="addons/lct_finance/report/account_general_ledger.rml"
+            string="General Ledger"/>
+ -->
+        <delete model="ir.actions.report.xml" id="account.account_general_ledger_landscape"/>
+        <report id="account.account_general_ledger_landscape"
+            name="account.general.ledger_landscape"
+            auto="False"
+            menu="False"
+            model="account.account"
+            rml="addons/lct_finance/report/account_general_ledger_landscape.rml"
+            string="General Ledger"
+            report_type="pdf"
+            webkit_header="internal landscape"
+            header="False"/>
+
+
+
+    </data>
+</openerp>

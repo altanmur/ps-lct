@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="depreciation_table_view_togo" model="ir.ui.view">
+            <field name="name">Depreciation Table</field>
+            <field name="model">lct_finance.depreciation.table.report</field>
+            <field name="arch" type="xml">
+                <form string="Report Options" version="7.0">
+                    <group>
+                        <field name="report_date"/>
+                    </group>
+                    <footer>
+                        <button name="print_report" string="Print" type="object" default_focus="1" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_account_report_dt" model="ir.actions.act_window">
+             <field name="name">Depreciation Table</field>
+             <field name="res_model">lct_finance.depreciation.table.report</field>
+             <field name="type">ir.actions.act_window</field>
+             <field name="view_type">form</field>
+             <field name="view_mode">form</field>
+             <field name="target">new</field>
+        </record>
+
+        <menuitem
+            icon="STOCK_PRINT"
+            name="Depreciation Table"
+            action="action_account_report_dt"
+            id="menu_account_report_dt"
+            parent="account.final_accounting_reports"
+            />
+
+    </data>
+</openerp>

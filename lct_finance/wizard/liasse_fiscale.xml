@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="liasse_fiscale_view_togo" model="ir.ui.view">
+            <field name="name">Liasse fiscale</field>
+            <field name="model">lct_finance.liasse.fiscale</field>
+            <field name="arch" type="xml">
+                <form string="Liasse fiscale" version="7.0">
+                    <group colspan="2">
+                        <field name="fiscalyear_id" />
+                        <field name="date_of_report" />
+                    </group>
+                    <footer>
+                        <button name="print_report" string="Print" type="object" default_focus="1" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_account_report_lf" model="ir.actions.act_window">
+             <field name="name">Liasse Fiscale</field>
+             <field name="res_model">lct_finance.liasse.fiscale</field>
+             <field name="type">ir.actions.act_window</field>
+             <field name="view_type">form</field>
+             <field name="view_mode">form</field>
+             <field name="target">new</field>
+        </record>
+
+        <menuitem
+            icon="STOCK_PRINT"
+            name="Liasse fiscale"
+            action="action_account_report_lf"
+            id="menu_account_report_lf"
+            parent="menu_syscohada_reports"
+            />
+
+    </data>
+</openerp>

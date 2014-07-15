@@ -1,0 +1,20 @@
+<openerp>
+    <data>
+        <record id="account_report_general_ledger_view_inherit" model="ir.ui.view">
+            <field name="name">General Ledger</field>
+            <field name="model">account.report.general.ledger</field>
+            <field name="inherit_id" ref="account.account_report_general_ledger_view" />
+            <field name="arch" type="xml">
+                <field name="amount_currency" position="replace">
+                    <field name="amount_currency" string="With Currency/Counterpart"/>
+                </field>
+                <page string="Journals" position="after">
+                    <page string="Accounts">
+                        <label for="filter_accounts"/><field name="filter_accounts"/>
+                        <field name="account_ids" attrs="{'invisible': [('filter_accounts', '=', False)], 'required': [('filter_accounts', '=', True)]}"/>
+                    </page>
+                </page>
+            </field>
+        </record>
+    </data>
+</openerp>

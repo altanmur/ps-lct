@@ -1,0 +1,601 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* lct_finance
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-05-16 11:17+0000\n"
+"PO-Revision-Date: 2014-05-16 11:17+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lct_finance
+#: field:depreciation.table.download,xls_report:0
+msgid "Depreciation table"
+msgstr "Tableau des amortissements"
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_auth_signature_position
+msgid "Position"
+msgstr "Position"
+
+#. module: lct_finance
+#: view:crossovered.budget.lines:0
+msgid "Progress"
+msgstr "Progrès"
+
+#. module: lct_finance
+#: model:ir.actions.act_window,name:lct_finance.action_crossovered_budget_line_tree_view
+msgid "Crossovered Budget Lines"
+msgstr "Lignes de budget"
+
+#. module: lct_finance
+#: view:balance.sheet.download:0
+#: field:balance.sheet.download,xls_report:0
+#: model:ir.actions.act_window,name:lct_finance.action_account_report_bs
+msgid "Balance Sheet"
+msgstr "Bilan"
+
+#. module: lct_finance
+#: field:balance.sheet,company_id:0
+#: field:lct_finance.balance.report,company_id:0
+#: field:lct_finance.cash.flow.report,company_id:0
+#: field:lct_finance.depreciation.table.report,company_id:0
+#: field:profit.loss,company_id:0
+msgid "Company"
+msgstr "Compagnie"
+
+#. module: lct_finance
+#: view:balance.sheet:0
+#: field:balance.sheet,journal_ids:0
+#: field:lct_finance.balance.report,journal_ids:0
+#: view:lct_finance.cash.flow.report:0
+#: field:lct_finance.cash.flow.report,journal_ids:0
+#: view:lct_finance.depreciation.table.report:0
+#: field:lct_finance.depreciation.table.report,journal_ids:0
+#: field:profit.loss,journal_ids:0
+msgid "Journals"
+msgstr "Livres"
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_account_account
+msgid "Account"
+msgstr "Compte"
+
+#. module: lct_finance
+#: field:account.invoice,counter_code:0
+#: field:res.partner.bank,counter_code:0
+msgid "Counter Code"
+msgstr "Code guichet"
+
+#. module: lct_finance
+#: model:ir.actions.act_window,name:lct_finance.action_account_report_pl
+#: view:profit.loss.download:0
+msgid "Profit and Loss"
+msgstr "Compte de résultat"
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_lct_finance_balance_report
+msgid "Trial Balance Report"
+msgstr "Balance générale"
+
+#. module: lct_finance
+#: field:lct_finance.balance.report,display_account:0
+#: field:lct_finance.cash.flow.report,display_account:0
+#: field:lct_finance.depreciation.table.report,display_account:0
+msgid "Display Accounts"
+msgstr "Montrer les comptes"
+
+#. module: lct_finance
+#: field:account.voucher,internal_transfer:0
+msgid "Internal transfer"
+msgstr "Virement bancaire interne"
+
+#. module: lct_finance
+#: model:ir.actions.report.xml,name:lct_finance.report_wire_transfer_webkit
+msgid "Wire Transfer"
+msgstr "Virement bancaire"
+
+#. module: lct_finance
+#: view:cash.flow.download:0
+#: field:cash.flow.download,xls_report:0
+#: model:ir.ui.menu,name:lct_finance.menu_account_report_cf
+msgid "Cash Flow Statement"
+msgstr "Cash Flow Statement"
+
+#. module: lct_finance
+#: field:account.invoice,acc_number:0
+msgid "Account Number"
+msgstr "Numéro de compte"
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_account_analytic_account
+msgid "Analytic Account"
+msgstr "Compte analytique"
+
+#. module: lct_finance
+#: model:ir.actions.report.xml,name:lct_finance.report_invoice
+msgid "Invoice File"
+msgstr "Fiche d'imputation"
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_cash_flow_download
+msgid "cash.flow.download"
+msgstr "cash.flow.download"
+
+#. module: lct_finance
+#: field:balance.sheet,filter:0
+#: field:balance.sheet,filter_cmp:0
+#: field:lct_finance.balance.report,filter:0
+#: field:lct_finance.cash.flow.report,filter:0
+#: field:lct_finance.depreciation.table.report,filter:0
+#: field:profit.loss,filter:0
+#: field:profit.loss,filter_cmp:0
+msgid "Filter by"
+msgstr "Filtrer par"
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_res_partner_bank
+msgid "Bank Accounts"
+msgstr "Comptes en banque"
+
+#. module: lct_finance
+#: view:crossovered.budget.lines:0
+msgid "Practical Amount"
+msgstr "Montant réel"
+
+#. module: lct_finance
+#: field:account.voucher,pos2_id:0
+msgid "Position 2"
+msgstr "Position 2"
+
+#. module: lct_finance
+#: field:account.invoice,customer_nbr:0
+msgid "Customer Number"
+msgstr "Référence client"
+
+#. module: lct_finance
+#: field:balance.sheet,label_filter:0
+#: field:profit.loss,label_filter:0
+msgid "Column Label"
+msgstr "Titre de colonne"
+
+#. module: lct_finance
+#: view:balance.sheet:0
+#: view:lct_finance.balance.report:0
+#: view:lct_finance.cash.flow.report:0
+#: view:lct_finance.depreciation.table.report:0
+#: view:profit.loss:0
+msgid "Print"
+msgstr "Imprimer"
+
+#. module: lct_finance
+#: field:auth_signature_position,name:0
+msgid "Name"
+msgstr "Nom"
+
+#. module: lct_finance
+#: field:account.move,create_date:0
+msgid "Creation Date"
+msgstr "Date de création"
+
+#. module: lct_finance
+#: selection:lct_finance.balance.report,display_account:0
+#: selection:lct_finance.cash.flow.report,display_account:0
+#: selection:lct_finance.depreciation.table.report,display_account:0
+msgid "With balance is not equal to 0"
+msgstr "Avec solde non nul"
+
+#. module: lct_finance
+#: field:account.invoice,bank_bic:0
+msgid "Swift"
+msgstr "Swift"
+
+#. module: lct_finance
+#: view:balance.sheet:0
+#: view:lct_finance.balance.report:0
+#: view:lct_finance.cash.flow.report:0
+#: view:lct_finance.depreciation.table.report:0
+msgid "Report Options"
+msgstr "Options du rapport"
+
+#. module: lct_finance
+#: view:balance.sheet:0
+#: view:lct_finance.balance.report:0
+#: view:lct_finance.cash.flow.report:0
+#: view:lct_finance.depreciation.table.report:0
+msgid "Dates"
+msgstr "Dates"
+
+#. module: lct_finance
+#: field:account.voucher,signee1_id:0
+msgid "Signee 1"
+msgstr "Signataire 1"
+
+#. module: lct_finance
+#: field:account.voucher,signee2_id:0
+msgid "Signee 2"
+msgstr "Signataire 2"
+
+#. module: lct_finance
+#: field:balance.sheet,period_to:0
+#: field:balance.sheet,period_to_cmp:0
+#: field:lct_finance.balance.report,period_to:0
+#: field:lct_finance.cash.flow.report,period_to:0
+#: field:lct_finance.depreciation.table.report,period_to:0
+#: field:profit.loss,period_to:0
+#: field:profit.loss,period_to_cmp:0
+msgid "End Period"
+msgstr "Période de fin"
+
+#. module: lct_finance
+#: field:account.voucher,origin_bank_id:0
+msgid "Origin bank account"
+msgstr "Compte en banque d'origine"
+
+#. module: lct_finance
+#: selection:lct_finance.balance.report,display_account:0
+#: selection:lct_finance.cash.flow.report,display_account:0
+#: selection:lct_finance.depreciation.table.report,display_account:0
+msgid "With movements"
+msgstr "Avec mouvements"
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_lct_finance_cash_flow_report
+#: model:ir.model,name:lct_finance.model_lct_finance_depreciation_table_report
+msgid "Account Common Account Report"
+msgstr "Account Common Account Report"
+
+#. module: lct_finance
+#: view:depreciation.table.download:0
+#: model:ir.actions.act_window,name:lct_finance.action_account_report_dt
+#: model:ir.ui.menu,name:lct_finance.menu_account_report_dt
+msgid "Depreciation Table"
+msgstr "Tableau des amortissements"
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_depreciation_table_download
+msgid "depreciation.table.download"
+msgstr "tableau.amortissements.download"
+
+#. module: lct_finance
+#: field:account.account,prev_balance:0
+msgid "Previous Balance"
+msgstr "Solde précédent"
+
+#. module: lct_finance
+#: view:crossovered.budget.lines:0
+#: model:ir.ui.menu,name:lct_finance.crossovered_budget_line_menu
+msgid "Budget Lines"
+msgstr "Lignes de budget"
+
+#. module: lct_finance
+#: field:balance.sheet,date_from:0
+#: field:balance.sheet,date_from_cmp:0
+#: field:lct_finance.balance.report,date_from:0
+#: field:lct_finance.cash.flow.report,date_from:0
+#: field:lct_finance.depreciation.table.report,date_from:0
+#: field:profit.loss,date_from:0
+#: field:profit.loss,date_from_cmp:0
+msgid "Start Date"
+msgstr "Date de début"
+
+#. module: lct_finance
+#: view:balance.sheet:0
+#: view:lct_finance.balance.report:0
+#: view:lct_finance.cash.flow.report:0
+#: view:lct_finance.depreciation.table.report:0
+#: view:profit.loss:0
+msgid "or"
+msgstr "ou"
+
+#. module: lct_finance
+#: selection:balance.sheet,target_move:0
+#: selection:lct_finance.balance.report,target_move:0
+#: selection:lct_finance.cash.flow.report,target_move:0
+#: selection:lct_finance.depreciation.table.report,target_move:0
+#: selection:profit.loss,target_move:0
+msgid "All Entries"
+msgstr "Toutes les pièces"
+
+#. module: lct_finance
+#: field:account.voucher,destination_bank_id:0
+msgid "Destination bank account"
+msgstr "Compte en banque destinataire"
+
+#. module: lct_finance
+#: help:balance.sheet,debit_credit:0
+#: help:profit.loss,debit_credit:0
+msgid "This option allows you to get more details about the way your balances are computed. Because it is space consuming, we do not allow to use it while doing a comparison."
+msgstr "Cette option permet d'obtenir plus de détails sur le calcul des soldes. Ceci prend beaucoup de place et n'est donc pas autorisé lors d'une comparaison."
+
+#. module: lct_finance
+#: selection:balance.sheet,filter:0
+#: selection:balance.sheet,filter_cmp:0
+#: selection:lct_finance.balance.report,filter:0
+#: selection:lct_finance.cash.flow.report,filter:0
+#: selection:lct_finance.depreciation.table.report,filter:0
+#: selection:profit.loss,filter:0
+#: selection:profit.loss,filter_cmp:0
+msgid "Date"
+msgstr "Date"
+
+#. module: lct_finance
+#: field:lct_finance.balance.report,prev_fiscalyear_id:0
+msgid "Previous Fiscal Year"
+msgstr "Exercice comptable précédent"
+
+#. module: lct_finance
+#: field:balance.sheet,debit_credit:0
+#: field:profit.loss,debit_credit:0
+msgid "Display Debit/Credit Columns"
+msgstr "Montrer les débits et crédits"
+
+#. module: lct_finance
+#: selection:balance.sheet,target_move:0
+#: selection:lct_finance.balance.report,target_move:0
+#: selection:lct_finance.cash.flow.report,target_move:0
+#: selection:lct_finance.depreciation.table.report,target_move:0
+#: selection:profit.loss,target_move:0
+msgid "All Posted Entries"
+msgstr "Complète"
+
+#. module: lct_finance
+#: help:balance.sheet,fiscalyear_id:0
+#: help:balance.sheet,fiscalyear_id_cmp:0
+#: help:lct_finance.balance.report,fiscalyear_id:0
+#: help:lct_finance.balance.report,prev_fiscalyear_id:0
+#: help:lct_finance.cash.flow.report,fiscalyear_id:0
+#: help:lct_finance.depreciation.table.report,fiscalyear_id:0
+#: help:profit.loss,fiscalyear_id:0
+#: help:profit.loss,fiscalyear_id_cmp:0
+msgid "Keep empty for all open fiscal year"
+msgstr "Garder vide pour tous les exercices comptables ouverts"
+
+#. module: lct_finance
+#: field:account.invoice,iban:0
+msgid "IBAN"
+msgstr "IBAN"
+
+#. module: lct_finance
+#: model:ir.actions.act_window,name:lct_finance.action_account_balance_menu
+#: model:ir.actions.report.xml,name:lct_finance.report_account_balance_webkit
+#: model:ir.ui.menu,name:lct_finance.menu_general_Balance_report
+msgid "Trial Balance"
+msgstr "Balance générale"
+
+#. module: lct_finance
+#: selection:balance.sheet,filter:0
+#: selection:balance.sheet,filter_cmp:0
+#: selection:lct_finance.balance.report,filter:0
+#: selection:lct_finance.cash.flow.report,filter:0
+#: selection:lct_finance.depreciation.table.report,filter:0
+#: selection:profit.loss,filter:0
+#: selection:profit.loss,filter_cmp:0
+msgid "No Filters"
+msgstr "Pas de filtre"
+
+#. module: lct_finance
+#: field:profit.loss.download,xls_report:0
+msgid "Profit & Loss"
+msgstr "Compte de résultat"
+
+#. module: lct_finance
+#: field:account.invoice,bank_code:0
+#: field:res.partner.bank,bank_code:0
+msgid "Bank Code"
+msgstr "Code bancaire"
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_balance_sheet_download
+msgid "balance.sheet.download"
+msgstr "bilan.download"
+
+#. module: lct_finance
+#: field:account.invoice,rib:0
+#: field:res.partner.bank,rib:0
+msgid "RIB"
+msgstr "RIB"
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_account_voucher
+msgid "Accounting Voucher"
+msgstr "Accounting Voucher"
+
+#. module: lct_finance
+#: view:crossovered.budget.lines:0
+msgid "Theoretical Amount"
+msgstr "Montant théorique"
+
+#. module: lct_finance
+#: model:ir.ui.menu,name:lct_finance.menu_account_report_pl
+msgid "Profit And Loss"
+msgstr "Compte de résultat"
+
+#. module: lct_finance
+#: view:balance.sheet:0
+#: selection:balance.sheet,filter:0
+#: selection:balance.sheet,filter_cmp:0
+#: view:lct_finance.balance.report:0
+#: selection:lct_finance.balance.report,filter:0
+#: view:lct_finance.cash.flow.report:0
+#: selection:lct_finance.cash.flow.report,filter:0
+#: view:lct_finance.depreciation.table.report:0
+#: selection:lct_finance.depreciation.table.report,filter:0
+#: selection:profit.loss,filter:0
+#: selection:profit.loss,filter_cmp:0
+msgid "Periods"
+msgstr "Périodes"
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_account_invoice
+msgid "Invoice"
+msgstr "Facture"
+
+#. module: lct_finance
+#: view:balance.sheet:0
+#: view:lct_finance.balance.report:0
+#: view:lct_finance.cash.flow.report:0
+#: view:lct_finance.depreciation.table.report:0
+#: view:profit.loss:0
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_balance_sheet
+#: model:ir.model,name:lct_finance.model_profit_loss
+msgid "Accounting Report"
+msgstr "Rapport comptable"
+
+#. module: lct_finance
+#: field:balance.sheet,account_report_id:0
+#: field:profit.loss,account_report_id:0
+msgid "Account Reports"
+msgstr "Rapports comptables"
+
+#. module: lct_finance
+#: field:balance.sheet,enable_filter:0
+#: field:profit.loss,enable_filter:0
+msgid "Enable Comparison"
+msgstr "Activer la comparaison"
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_profit_loss_download
+msgid "profit.loss.download"
+msgstr "compte.résultat.download"
+
+#. module: lct_finance
+#: view:account.voucher:0
+msgid "Authorised Signatures"
+msgstr "Signatures autorisées"
+
+#. module: lct_finance
+#: view:crossovered.budget.lines:0
+msgid "Budget Line"
+msgstr "Ligne de budget"
+
+#. module: lct_finance
+#: view:crossovered.budget.lines:0
+msgid "Progress"
+msgstr "Progrès"
+
+#. module: lct_finance
+#: field:balance.sheet,chart_account_id:0
+#: field:lct_finance.balance.report,chart_account_id:0
+#: field:lct_finance.cash.flow.report,chart_account_id:0
+#: field:lct_finance.depreciation.table.report,chart_account_id:0
+#: field:profit.loss,chart_account_id:0
+msgid "Chart of Account"
+msgstr "Plan comptable"
+
+#. module: lct_finance
+#: field:balance.sheet,target_move:0
+#: field:lct_finance.balance.report,target_move:0
+#: field:lct_finance.cash.flow.report,target_move:0
+#: field:lct_finance.depreciation.table.report,target_move:0
+#: field:profit.loss,target_move:0
+msgid "Target Moves"
+msgstr "Mouvements ciblés"
+
+#. module: lct_finance
+#: field:account.invoice,bank:0
+msgid "Bank"
+msgstr "Banque"
+
+#. module: lct_finance
+#: help:balance.sheet,chart_account_id:0
+#: help:lct_finance.balance.report,chart_account_id:0
+#: help:lct_finance.cash.flow.report,chart_account_id:0
+#: help:lct_finance.depreciation.table.report,chart_account_id:0
+#: help:profit.loss,chart_account_id:0
+msgid "Select Charts of Accounts"
+msgstr "Sélectionner les plans comptables"
+
+#. module: lct_finance
+#: field:balance.sheet,date_to:0
+#: field:balance.sheet,date_to_cmp:0
+#: field:lct_finance.balance.report,date_to:0
+#: field:lct_finance.cash.flow.report,date_to:0
+#: field:lct_finance.depreciation.table.report,date_to:0
+#: field:profit.loss,date_to:0
+#: field:profit.loss,date_to_cmp:0
+msgid "End Date"
+msgstr "Date de fin"
+
+#. module: lct_finance
+#: field:account.voucher,pos1_id:0
+msgid "Position 1"
+msgstr "Position 1"
+
+#. module: lct_finance
+#: field:balance.sheet,period_from:0
+#: field:balance.sheet,period_from_cmp:0
+#: field:lct_finance.balance.report,period_from:0
+#: field:lct_finance.cash.flow.report,period_from:0
+#: field:lct_finance.depreciation.table.report,period_from:0
+#: field:profit.loss,period_from:0
+#: field:profit.loss,period_from_cmp:0
+msgid "Start Period"
+msgstr "Période de début"
+
+#. module: lct_finance
+#: view:balance.sheet:0
+#: view:lct_finance.balance.report:0
+#: view:lct_finance.cash.flow.report:0
+#: view:lct_finance.depreciation.table.report:0
+msgid "Filters"
+msgstr "Filtres"
+
+#. module: lct_finance
+#: model:ir.actions.act_window,name:lct_finance.action_account_report_cf
+msgid "Cash flow report"
+msgstr "Cash flow report"
+
+#. module: lct_finance
+#: field:balance.sheet,fiscalyear_id:0
+#: field:balance.sheet,fiscalyear_id_cmp:0
+#: field:lct_finance.balance.report,fiscalyear_id:0
+#: field:lct_finance.cash.flow.report,fiscalyear_id:0
+#: field:lct_finance.depreciation.table.report,fiscalyear_id:0
+#: field:profit.loss,fiscalyear_id:0
+#: field:profit.loss,fiscalyear_id_cmp:0
+msgid "Fiscal Year"
+msgstr "Exercice comptable"
+
+#. module: lct_finance
+#: selection:lct_finance.balance.report,display_account:0
+#: selection:lct_finance.cash.flow.report,display_account:0
+#: selection:lct_finance.depreciation.table.report,display_account:0
+msgid "All"
+msgstr "Tous"
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_account_move
+msgid "Account Entry"
+msgstr "Pièce comptable"
+
+#. module: lct_finance
+#: field:balance.sheet.download,file_name:0
+#: field:cash.flow.download,file_name:0
+#: field:depreciation.table.download,file_name:0
+#: field:profit.loss.download,file_name:0
+msgid "File Name"
+msgstr "Nom de fichier"
+
+#. module: lct_finance
+#: help:balance.sheet,label_filter:0
+#: help:profit.loss,label_filter:0
+msgid "This label will be displayed on report to show the balance computed for the given comparison filter."
+msgstr "Ce libellé sera affiché sur le rapport pour montrer le solde calculé pour le filtre de comparaison."
+
+#. module: lct_finance
+#: model:ir.model,name:lct_finance.model_account_asset_asset
+msgid "account.asset.asset"
+msgstr "account.asset.asset"
+

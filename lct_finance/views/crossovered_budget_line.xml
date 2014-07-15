@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="crossovered_budget_line_tree_view">
+            <field name="name">crossovered.budget.line.tree</field>
+            <field name="model">crossovered.budget.lines</field>
+            <field name="arch" type="xml">
+                <tree string="Budget Lines">
+                    <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
+                    <field name="general_budget_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="paid_date"/>
+                    <field name="planned_amount" sum="Planned Amount"/>
+                    <field name="practical_amount" sum="Practical Amount"/>
+                    <field name="theoritical_amount" sum="Theoretical Amount"/>
+                    <field name="percentage"/>
+                    <field name="percentage" widget="progressbar" string="Progress"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="crossovered_budget_line_form_view">
+            <field name="name">crossovered.budget.line.form</field>
+            <field name="model">crossovered.budget.lines</field>
+            <field name="arch" type="xml">
+                <form string="Budget Line">
+                    <group colspan="3">
+                        <field name="crossovered_budget_id"/>
+                        <field name="general_budget_id"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                        <field name="paid_date"/>
+                    </group>
+                    <group colspan="3">
+                        <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
+                        <field name="planned_amount"/>
+                        <field name="practical_amount"/>
+                        <field name="theoritical_amount"/>
+                        <field name="percentage" widget="progressbar"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_crossovered_budget_line_tree_view">
+            <field name="name">Crossovered Budget Lines</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">crossovered.budget.lines</field>
+        <!-- <field name="domain">[('field_name','condition',criteria)]</field>-->
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="crossovered_budget_line_tree_view"/>
+        </record>
+
+        <menuitem id="crossovered_budget_line_menu"
+            name="Budget Lines"
+            parent="account_budget.next_id_31"
+            action="action_crossovered_budget_line_tree_view"/>
+    </data>
+</openerp>
