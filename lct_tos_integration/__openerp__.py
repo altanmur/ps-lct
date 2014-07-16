@@ -30,8 +30,8 @@
         LCT TOS integration
     """,
     'data': [
-             
-             ],
+        'views/ftp_config.xml',
+        ],
     'images': [],
     'demo': [],
     'installable': True,
