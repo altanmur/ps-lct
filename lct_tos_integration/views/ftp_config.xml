@@ -1,18 +1,6 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-        <record id="view_ftp_config_tree_lct" model="ir.ui.view">
-            <field name="name">view.ftp.config.tree.lct</field>
-            <field name="model">ftp.config</field>
-            <field name="type">tree</field>
-            <field name="arch" type="xml">
-                <tree string="FTP configurations" edit="1">
-                    <field name="name"/>
-                    <field name="is_active"/>
-                </tree>
-            </field>
-        </record>
-
         <record id="view_ftp_config_form_lct" model="ir.ui.view">
             <field name="name">view.ftp.config.form.lct</field>
             <field name="model">ftp.config</field>
@@ -23,7 +11,7 @@
                         <group colspan="4" col="4">
                             <group colspan="4" col="2">
                                 <field name="name"/>
-                                <field name="is_active" select="1"/>
+                                <field name="active" select="1"/>
                             </group>
                             <group colspan="2" col="2">
                                 <field name="addr"/>
@@ -47,9 +35,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="tos_integ_main_menu" name="TOS integration" sequence="100"/>
-
-        <menuitem id="tos_integ_ftp_menu" name="FTP" parent="tos_integ_main_menu"/>
+        <menuitem id="tos_integ_ftp_menu" name="TOS integration" sequence="200" parent="base.menu_config"/>
 
         <menuitem id="tos_integ_ftp_config_menu" action="action_ftp_config_lct" name="FTP Configurations" parent="tos_integ_ftp_menu"/>
     </data>

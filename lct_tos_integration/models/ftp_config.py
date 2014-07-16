@@ -32,19 +32,17 @@ class ftp_config(osv.osv):
         'psswd': fields.char('Password', required=True),
         'inbound_path': fields.char('Path of inbound folder', required=True),
         'outbound_path': fields.char('Path of outbound folder', required=True),
-        'is_active': fields.boolean('Active'),
+        'active': fields.boolean('Active'),
     }
 
-    _order = 'is_active desc'
-
     def create(self, cr, uid, vals, context=None):
-        if vals and vals.get('is_active', False):
+        if vals and vals.get('active', False):
             config_ids = self.search(cr, uid, [], context=context)
-            self.write(cr, uid, config_ids, {'is_active': False}, context=context)
+            self.write(cr, uid, config_ids, {'active': False}, context=context)
         return super(ftp_config, self).create(cr, uid, vals, context=context)
 
     def write(self, cr, uid, ids, vals, context=None):
-        if vals and vals.get('is_active', False):
+        if vals and vals.get('active', False):
             config_ids = self.search(cr, uid, [('id','not in',ids)], context=context)
-            self.write(cr, uid, config_ids, {'is_active': False}, context=context)
+            self.write(cr, uid, config_ids, {'active': False}, context=context)
         return super(ftp_config, self).write(cr, uid, ids, vals, context=context)
