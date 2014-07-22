@@ -35,14 +35,10 @@ class ftp_config(osv.osv):
         'active': fields.boolean('Active'),
     }
 
-    def create(self, cr, uid, vals, context=None):
-        if vals and vals.get('active', False):
-            config_ids = self.search(cr, uid, [], context=context)
-            self.write(cr, uid, config_ids, {'active': False}, context=context)
-        return super(ftp_config, self).create(cr, uid, vals, context=context)
+    def _check_active(self, cr, uid, ids, context=None):
+        config_ids = self.search(cr, uid, [('active','=',True)], context=context)
+        return len(config_ids) <= 1
 
-    def write(self, cr, uid, ids, vals, context=None):
-        if vals and vals.get('active', False):
-            config_ids = self.search(cr, uid, [('id','not in',ids)], context=context)
-            self.write(cr, uid, config_ids, {'active': False}, context=context)
-        return super(ftp_config, self).write(cr, uid, ids, vals, context=context)
+    _constraints = [
+        (_check_active, 'There can only be one active ftp configuration', ['active']),
+    ]

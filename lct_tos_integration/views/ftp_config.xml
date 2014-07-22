@@ -28,6 +28,31 @@
             </field>
         </record>
 
+        <record id="view_ftp_config_tree_lct" model="ir.ui.view">
+            <field name="name">view.ftp.config.tree.lct</field>
+            <field name="model">ftp.config</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="FTP configuration" version="7.0">
+                    <field name="name"/>
+                    <field name="addr"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_ftp_config_search_lct" model="ir.ui.view">
+            <field name="name">view.ftp.config.search.lct</field>
+            <field name="model">ftp.config</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <search string="Search FTP config">
+                    <filter name="inactive_config" string="Inactive" domain="[('active', '=', 0)]"/>
+                    <filter name="all_config" string="Active &amp; Inactive" domain="['|', ('active', '=', 0), ('active', '=', 1)]"/>
+                </search>
+            </field>
+        </record>
+
         <record id="action_ftp_config_lct" model="ir.actions.act_window">
             <field name="name">FTP Configurations</field>
             <field name="res_model">ftp.config</field>
