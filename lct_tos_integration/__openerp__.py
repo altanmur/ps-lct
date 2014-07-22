@@ -23,14 +23,17 @@
     'name': 'LCT TOS integration',
     'author': 'OpenERP SA',
     'version': '0.1',
-    'depends': ['base'],
+    'depends': ['base','product'],
     'category' : 'Tools',
     'summary': 'LCT TOS integration',
     'description': """
         LCT TOS integration
     """,
     'data': [
-             
+        'views/product.xml',
+        'views/product_properties.xml',
+        'data/product_properties.xml',
+        'data/products.xml',
              ],
     'images': [],
     'demo': [],
