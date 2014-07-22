@@ -6,15 +6,14 @@
         <record id="view_invoice_form_lct" model="ir.ui.view">
             <field name="name">account.invoice.form.lct</field>
             <field name="model">account.invoice</field>
-            <field name="inherit_id" ref="LCT_supplier_invoice.invoice_form_lct"/>
+            <field name="inherit_id" ref="account.invoice_form"/>
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <field name="partner_id" position="after">
                     <field name="type2" invisible="1"/>
                 </field>
-                <field name="tax_line" position="after">
-                    <div attrs="{'invisible':['|',('type2','!=','vessel'),('type','!=','out_invoice')]}">
-                        <separator string="Vessel Billing Info" />
+                <xpath expr="//page[@string='Invoice Lines']" position="after">
+                    <page string="Vessel Biling Info" attrs="{'invisible':[('type2','!=','vessel')]}">
                         <group col="4">
                             <field name="call_sign"/>
                             <field name="lloyds_nr"/>
@@ -22,38 +21,36 @@
                             <field name="berth_time"/>
                             <field name="dep_time"/>
                         </group>
-                    </div>
-                    <div attrs="{'invisible':['|',('type2','!=','appointment'),('type','!=','out_invoice')]}">
-                        <separator string="Appointment Info" />
+                    </page>
+                    <page string="Appointment Info" attrs="{'invisible':[('type2','!=','appointment')]}">
                         <group col="4">
                             <field name="individual_cust"/>
                             <field name="appoint_ref"/>
                             <field name="appoint_date"/>
                         </group>
-                    </div>
-                </field>
+                    </page>
+                </xpath>
                 <xpath expr="//field[@name='invoice_line']" position="attributes">
-                    <attribute name="attrs">{'invisible':[('type2','!=',False)]}</attribute>
+                    <attribute name="attrs">{'invisible':[('type2', '!=', 'default')]}</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']" position="after">
                     <field name="invoice_line_vessel" nolabel="1" widget="one2many_list" context="{'type': type}" attrs="{'invisible':[('type2','!=','vessel')]}">
                         <tree string="Invoice Lines" editable="bottom">
-                            <field name="sequence" widget="handle"/>
                             <field name="product_id"
-                                on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id)" invisible="1"/>
+                                on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id)"/>
                             <field name="name"/>
                             <field name="company_id" invisible="1"/>
-                            <field name="account_id" groups="account.group_account_invoice"
-                                domain="[('company_id', '=', parent.company_id), ('journal_id', '=', parent.journal_id), ('type', '=', 'other')]"
+                            <field name="account_id" groups="account.group_account_user"
+                                domain="[('company_id', '=', parent.company_id), ('journal_id', '=', parent.journal_id), ('type', '!=', 'view')]"
                                 on_change="onchange_account_id(product_id, parent.partner_id, parent.type, parent.fiscal_position,account_id)"/>
-                            <field name="account_analytic_id" string="Profit Center" groups="analytic.group_analytic_accounting"
+                            <field name="account_analytic_id" groups="analytic.group_analytic_accounting"
                                 domain="[('type','!=','view'), ('company_id', '=', parent.company_id)]"/>
-                            <field name="cont_nr"/>
                             <field name="quantity"/>
                             <field name="uos_id" groups="product.group_uom"
                                 on_change="uos_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id)"/>
                             <field name="price_unit"/>
                             <field name="discount" groups="sale.group_discount_per_so_line"/>
+                            <field name="cont_nr"/>
                             <field name="invoice_line_tax_id" widget="many2many_tags" context="{'type':parent.type}"
                                 domain="[('parent_id','=',False),('company_id', '=', parent.company_id)]"/>
                             <field name="price_subtotal"/>
@@ -61,24 +58,23 @@
                     </field>
                     <field name="invoice_line_appoint" nolabel="1" widget="one2many_list" context="{'type': type}" attrs="{'invisible':[('type2','!=','appointment')]}">
                         <tree string="Invoice Lines" editable="bottom">
-                            <field name="sequence" widget="handle"/>
                             <field name="product_id"
-                                on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id)" invisible="1"/>
+                                on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id)"/>
                             <field name="name"/>
                             <field name="company_id" invisible="1"/>
-                            <field name="account_id" groups="account.group_account_invoice"
-                                domain="[('company_id', '=', parent.company_id), ('journal_id', '=', parent.journal_id), ('type', '=', 'other')]"
+                            <field name="account_id" groups="account.group_account_user"
+                                domain="[('company_id', '=', parent.company_id), ('journal_id', '=', parent.journal_id), ('type', '!=', 'view')]"
                                 on_change="onchange_account_id(product_id, parent.partner_id, parent.type, parent.fiscal_position,account_id)"/>
-                            <field name="account_analytic_id" string="Profit Center" groups="analytic.group_analytic_accounting"
+                            <field name="account_analytic_id" groups="analytic.group_analytic_accounting"
                                 domain="[('type','!=','view'), ('company_id', '=', parent.company_id)]"/>
-                            <field name="cont_nr"/>
-                            <field name="cont_operator"/>
-                            <field name="book_nr"/>
                             <field name="quantity"/>
                             <field name="uos_id" groups="product.group_uom"
                                 on_change="uos_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id)"/>
                             <field name="price_unit"/>
                             <field name="discount" groups="sale.group_discount_per_so_line"/>
+                            <field name="cont_nr"/>
+                            <field name="cont_operator"/>
+                            <field name="book_nr"/>
                             <field name="invoice_line_tax_id" widget="many2many_tags" context="{'type':parent.type}"
                                 domain="[('parent_id','=',False),('company_id', '=', parent.company_id)]"/>
                             <field name="price_subtotal"/>
