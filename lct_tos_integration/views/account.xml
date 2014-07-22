@@ -31,7 +31,7 @@
                     </page>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']" position="attributes">
-                    <attribute name="attrs">{'invisible':[('type2', '!=', 'default')]}</attribute>
+                    <attribute name="attrs">{'invisible':[('type2', 'in', ['vessel', 'appointment'])]}</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']" position="after">
                     <field name="invoice_line_vessel" nolabel="1" widget="one2many_list" context="{'type': type}" attrs="{'invisible':[('type2','!=','vessel')]}">
