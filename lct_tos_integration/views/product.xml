@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record id="view_product_template_form_lct" model="ir.ui.view">
+            <field name="name">product.template.form.lct</field>
+            <field name="inherit_id" ref="account.product_normal_form_view"/>
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <xpath expr="//h2[preceding::label[@for='categ_id']]" position="after">
+                    <label for="category_id" class="oe_edit_only"/>
+                    <h2><field name="category_id" widget="selection"/></h2>
+                </xpath>
+                <xpath expr="//field[@name='type']" position="after">
+                    <field name="service_id" widget="selection"/>
+                    <field name="size_id" widget="selection"/>
+                    <field name="status_id" widget="selection"/>
+                    <field name="type_id" widget="selection"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

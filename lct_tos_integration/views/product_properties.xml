@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <!-- Services -->
+        <record id="view_lct_product_service_tree" model="ir.ui.view">
+            <field name="name">lct.product.service.tree.lct</field>
+            <field name="model">lct.product.service</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <tree string="Product Services" editable="top">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_lct_product_service" model="ir.actions.act_window">
+            <field name="name">Services</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">lct.product.service</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_lct_product_service_tree"/>
+        </record>
+        <menuitem id="lct_product_service_menu" parent="product.prod_config_main" action="action_lct_product_service"/>
+
+        <!-- Categories -->
+        <record id="view_lct_product_category_tree" model="ir.ui.view">
+            <field name="name">lct.product.category.tree.lct</field>
+            <field name="model">lct.product.category</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <tree string="Product Categories (Import/Export)" editable="top">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_lct_product_category" model="ir.actions.act_window">
+            <field name="name">Categories (Import/Export)</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">lct.product.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_lct_product_category_tree"/>
+        </record>
+        <menuitem id="lct_product_category_menu" parent="product.prod_config_main" action="action_lct_product_category"/>
+
+        <!-- Sizes -->
+        <record id="view_lct_product_size_tree" model="ir.ui.view">
+            <field name="name">lct.product.size.tree.lct</field>
+            <field name="model">lct.product.size</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <tree string="Product Sizes" editable="top">
+                    <field name="size"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_lct_product_size" model="ir.actions.act_window">
+            <field name="name">Sizes</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">lct.product.size</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_lct_product_size_tree"/>
+        </record>
+        <menuitem id="lct_product_size_menu" parent="product.prod_config_main" action="action_lct_product_size"/>
+
+        <!-- Status -->
+        <record id="view_lct_product_status_tree" model="ir.ui.view">
+            <field name="name">lct.product.status.tree.lct</field>
+            <field name="model">lct.product.status</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <tree string="Product Status" editable="top">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_lct_product_status" model="ir.actions.act_window">
+            <field name="name">Status</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">lct.product.status</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_lct_product_status_tree"/>
+        </record>
+        <menuitem id="lct_product_status_menu" parent="product.prod_config_main" action="action_lct_product_status"/>
+
+        <!-- Types -->
+        <record id="view_lct_product_type_tree" model="ir.ui.view">
+            <field name="name">lct.product.type.tree.lct</field>
+            <field name="model">lct.product.type</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <tree string="Product Types" editable="top">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_lct_product_type" model="ir.actions.act_window">
+            <field name="name">Types</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">lct.product.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_lct_product_type_tree"/>
+        </record>
+        <menuitem id="lct_product_type_menu" parent="product.prod_config_main" action="action_lct_product_type"/>
+    </data>
+</openerp>
