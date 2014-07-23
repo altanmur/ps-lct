@@ -7,14 +7,14 @@
             <field name="model">product.product</field>
             <field name="arch" type="xml">
                 <xpath expr="//h2[preceding::label[@for='categ_id']]" position="after">
-                    <label for="lct_product_category_id" class="oe_edit_only"/>
-                    <h2><field name="lct_product_category_id" widget="selection"/></h2>
+                    <label for="category_id" class="oe_edit_only"/>
+                    <h2><field name="category_id" widget="selection"/></h2>
                 </xpath>
                 <xpath expr="//field[@name='type']" position="after">
-                    <field name="lct_product_service_id" widget="selection"/>
-                    <field name="lct_product_size_id" widget="selection"/>
-                    <field name="lct_product_status_id" widget="selection"/>
-                    <field name="lct_product_type_id" widget="selection"/>
+                    <field name="service_id" widget="selection"/>
+                    <field name="size_id" widget="selection"/>
+                    <field name="status_id" widget="selection"/>
+                    <field name="type_id" widget="selection"/>
                 </xpath>
             </field>
         </record>

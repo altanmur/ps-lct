@@ -7,13 +7,13 @@
             <field name="model">lct.product.service</field>
             <field name="priority">1</field>
             <field name="arch" type="xml">
-                <tree string="Product Services (LCT)" editable="top">
+                <tree string="Product Services" editable="top">
                     <field name="name"/>
                 </tree>
             </field>
         </record>
         <record id="action_lct_product_service" model="ir.actions.act_window">
-            <field name="name">Product Services (LCT)</field>
+            <field name="name">Services</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">lct.product.service</field>
             <field name="view_type">form</field>
@@ -28,13 +28,13 @@
             <field name="model">lct.product.category</field>
             <field name="priority">1</field>
             <field name="arch" type="xml">
-                <tree string="Product Categories (LCT)" editable="top">
+                <tree string="Product Categories (Import/Export)" editable="top">
                     <field name="name"/>
                 </tree>
             </field>
         </record>
         <record id="action_lct_product_category" model="ir.actions.act_window">
-            <field name="name">Product Categories (LCT)</field>
+            <field name="name">Categories (Import/Export)</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">lct.product.category</field>
             <field name="view_type">form</field>
@@ -49,13 +49,13 @@
             <field name="model">lct.product.size</field>
             <field name="priority">1</field>
             <field name="arch" type="xml">
-                <tree string="Product Sizes (LCT)" editable="top">
+                <tree string="Product Sizes" editable="top">
                     <field name="size"/>
                 </tree>
             </field>
         </record>
         <record id="action_lct_product_size" model="ir.actions.act_window">
-            <field name="name">Product Sizes (LCT)</field>
+            <field name="name">Sizes</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">lct.product.size</field>
             <field name="view_type">form</field>
@@ -70,13 +70,13 @@
             <field name="model">lct.product.status</field>
             <field name="priority">1</field>
             <field name="arch" type="xml">
-                <tree string="Product Status (LCT)" editable="top">
+                <tree string="Product Status" editable="top">
                     <field name="name"/>
                 </tree>
             </field>
         </record>
         <record id="action_lct_product_status" model="ir.actions.act_window">
-            <field name="name">Product Status (LCT)</field>
+            <field name="name">Status</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">lct.product.status</field>
             <field name="view_type">form</field>
@@ -91,13 +91,13 @@
             <field name="model">lct.product.type</field>
             <field name="priority">1</field>
             <field name="arch" type="xml">
-                <tree string="Product Types (LCT)" editable="top">
+                <tree string="Product Types" editable="top">
                     <field name="name"/>
                 </tree>
             </field>
         </record>
         <record id="action_lct_product_type" model="ir.actions.act_window">
-            <field name="name">Product Types (LCT)</field>
+            <field name="name">Types</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">lct.product.type</field>
             <field name="view_type">form</field>

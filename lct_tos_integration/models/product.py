@@ -25,11 +25,11 @@ class product_product(osv.osv):
     _inherit = 'product.product'
 
     _columns = {
-        'lct_product_service_id': fields.many2one('lct.product.service', 'Service (LCT)'),
-        'lct_product_category_id': fields.many2one('lct.product.category', 'Category (LCT)'),
-        'lct_product_size_id': fields.many2one('lct.product.size', 'Size (LCT)'),
-        'lct_product_status_id': fields.many2one('lct.product.status', 'Status (LCT)'),
-        'lct_product_type_id': fields.many2one('lct.product.type', 'Type (LCT)'),
+        'service_id': fields.many2one('lct.product.service', 'Service'),
+        'category_id': fields.many2one('lct.product.category', 'Category (Import/Export)'),
+        'size_id': fields.many2one('lct.product.size', 'Size'),
+        'status_id': fields.many2one('lct.product.status', 'Status'),
+        'type_id': fields.many2one('lct.product.type', 'Type'),
     }
 
 
