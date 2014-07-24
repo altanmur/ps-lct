@@ -28,13 +28,13 @@
             <field name="model">lct.product.category</field>
             <field name="priority">1</field>
             <field name="arch" type="xml">
-                <tree string="Product Categories (Import/Export)" editable="top">
+                <tree string="Product Category Types" editable="top">
                     <field name="name"/>
                 </tree>
             </field>
         </record>
         <record id="action_lct_product_category" model="ir.actions.act_window">
-            <field name="name">Categories (Import/Export)</field>
+            <field name="name">Category Types</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">lct.product.category</field>
             <field name="view_type">form</field>
