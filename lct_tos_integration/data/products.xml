@@ -2,7 +2,7 @@
 <openerp>
     <data>
         <record id="product_product_hcm" model="product.product">
-            <field name="name">Hatch cover moves</field>
+            <field name="name">Hatch cover move</field>
             <field name="service_id" ref="lct_product_service_hcm"/>
         </record>
         <record id="product_product_gc" model="product.product">
