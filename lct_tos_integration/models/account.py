@@ -36,7 +36,7 @@ class account_invoice(osv.osv):
         'dep_time': fields.datetime('Departure date'),
         'individual_cust': fields.boolean('Individual customer'),
         'appoint_ref': fields.char('Appointment reference'),
-        'appoint_date': fields.date('Appointment date'),
+        'appoint_date': fields.datetime('Appointment date'),
         'invoice_line_vessel': fields.related('invoice_line', type='one2many', relation='account.invoice.line', string="Invoice lines"),
         'invoice_line_appoint': fields.related('invoice_line', type='one2many', relation='account.invoice.line', string="Invoice lines"),
     }

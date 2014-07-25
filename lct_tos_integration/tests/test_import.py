@@ -55,13 +55,19 @@ class TestImport(TransactionCase):
         if inv_ids:
             self.invoice_model.unlink(cr, uid, inv_ids)
         import create_xml
-        sleep(0.1)
         self.ftp_config_model.button_import_data(cr, uid, [self.config_id])
         inv_ids = self.invoice_model.search(cr, uid, [('type2','=','vessel')])
-        self.assertEqual(len(inv_ids),1,msg='Importing the xml file should create 1 invoice')
+        self.assertEqual(len(inv_ids),1,msg='Importing the xml file should create 1 invoice of type Vessel Billing')
         invoice = self.invoice_model.browse(cr, uid, inv_ids)[0]
         products = [line.product_id.name for line in invoice.invoice_line]
         expected_products = [u'Discharge import 40 F GP', u'Load export 20 E GP', u'Discharge import 20 F GP', u'Hatch cover move', u'Gearbox count']
         for expected_product in expected_products:
             self.assertTrue(expected_product in products,"Products should all be imported, missing '%s'" % expected_product)
 
+        inv_ids = self.invoice_model.search(cr, uid, [('type2','=','appointment')])
+        self.assertEqual(len(inv_ids),1,msg='Importing the xml file should create 1 invoice of type Appointment')
+        invoice = self.invoice_model.browse(cr, uid, inv_ids)[0]
+        products = [line.product_id.name for line in invoice.invoice_line]
+        expected_products = [u'Discharge import 20 F GP', u'Discharge import 40 F GP']
+        for expected_product in expected_products:
+            self.assertTrue(expected_product in products,"Products should all be imported, missing '%s'" % expected_product)
