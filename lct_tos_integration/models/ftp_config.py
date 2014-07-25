@@ -89,7 +89,7 @@ class ftp_config(osv.osv):
             type_ids = type_name and self.pool.get('lct.product.type').search(cr, uid, [('name','=',type_name)], context=context) or False
             type_id = type_ids and type_ids[0] or False
 
-            for property in [service_id, size_id, status_id, type_id]:
+            for product_property in [service_id, size_id, status_id, type_id]:
                 if not product_property:
                     raise osv.except_osv(('Error'), ('XML file is missing some information on products'))
 
