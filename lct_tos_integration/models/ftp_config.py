@@ -134,6 +134,8 @@ class ftp_config(osv.osv):
             'account_id': account_id,
             'date_invoice': datetime.today().strftime('%Y-%m-%d'),
             'invoice_line': invoice_line,
+            'state': 'draft',
+            'type': 'out_invoice',
         }
         for field, tag in invoice_map.iteritems():
 
