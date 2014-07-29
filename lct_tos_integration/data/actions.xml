@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record id="server_action_export_partners" model="ir.actions.server">
+            <field name="name">Export Customer</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="state">code</field>
+            <field name="condition" eval="True"/>
+            <field name="code">
+self.pool.get('ftp.config').action_export_partners(cr, uid, [object.id], context=context)
+            </field>
+        </record>
+        <record id="action_rule_export_partners" model="base.action.rule">
+            <field name="name">Export customer</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="server_action_ids" eval="[(4,ref('server_action_export_partners'))]"/>
+        </record>
+    </data>
+</openerp>

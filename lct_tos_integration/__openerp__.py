@@ -36,6 +36,8 @@
         'views/product_properties.xml',
         'data/product_properties.xml',
         'data/products.xml',
+        'data/actions.xml',
+        'data/ir_sequence.xml'
         ],
     'images': [],
     'demo': [],

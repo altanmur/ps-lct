@@ -7,6 +7,9 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="FTP configuration" version="7.0">
+                    <header>
+                        <button name="button_export_data" string="Export data" type="object" class="oe_highlight"/>
+                    </header>
                     <sheet>
                         <group colspan="4" col="4">
                             <group colspan="4" col="2">

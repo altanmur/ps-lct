@@ -20,6 +20,11 @@
 ##############################################################################
 
 from openerp.osv import fields, osv
+from datetime import datetime, timedelta
+import xml.etree.ElementTree as ET
+import io
+from ftplib import FTP
+import os
 
 class ftp_config(osv.osv):
 
@@ -42,3 +47,82 @@ class ftp_config(osv.osv):
     _constraints = [
         (_check_active, 'There can only be one active ftp configuration', ['active']),
     ]
+
+    def _write_tree(self, elmnt, vals):
+        for tag, val in vals.iteritems():
+            subelmnt = ET.SubElement(elmnt, tag)
+            if isinstance(val, unicode):
+                subelmnt.text = val
+            elif isinstance(val, str):
+                subelmnt.text = unicode(val)
+            elif isinstance(val,dict):
+                self._write_tree(subelmnt, val)
+
+    def _write_partner_data(self, cr, uid, cust_elmnt, partner, context=None):
+        if not partner:
+            return
+
+        values = {
+            'customer_id': partner.name,
+            'customer_key': partner.ref,
+            'name': partner.parent_id and partner.parent_id.name or False,
+            'street': (partner.street + (partner.street2 if partner.street2 else '') if partner.street else ''),
+            'city': partner.city,
+            'zip': partner.zip,
+            'country': partner.country and partner.country.name,
+            'email': partner.email,
+            'website': partner.website,
+            'phone': partner.phone or partner.mobile or False
+        }
+
+        self._write_tree(cust_elmnt, values)
+
+    def _export_partners(self, cr, uid, ftp_config_id, partner_ids, context=None):
+        if not ftp_config_id:
+            return []
+
+        root = ET.Element('customers')
+        partner_model = self.pool.get('res.partner')
+        for partner_id in partner_ids:
+            partner = partner_model.browse(cr, uid, partner_id, context=context)
+            partner_perm = partner_model.perm_read(cr, uid, [partner_id], context=context, details=True)
+            create_date = datetime.strptime(partner_perm[0].get('create_date'),'%Y-%m-%d %H:%M:%S.%f')
+            # if create_date > datetime.now() - timedelta(seconds=2):
+            if True:
+                self._write_partner_data(cr, uid, ET.SubElement(root,'customer'), partner, context=None)
+
+        if len(root.findall('customer')) < 1:
+            import ipdb; ipdb.set_trace()
+            return []
+
+        module_path = __file__.split('models')[0]
+        local_file = module_path + 'tmp/customers.xml'
+        with io.open(local_file, 'w+', encoding='utf-8') as f:
+            f.write(u'<?xml version="1.0" encoding="utf-8"?>')
+            f.write(ET.tostring(root, encoding='utf-8').decode('utf-8'))
+
+        ir_model_data_model = self.pool.get('ir.model.data')
+        sequence_model = self.pool.get('ir.sequence')
+        mdid = ir_model_data_model._get_id(cr, uid, 'lct_tos_integration', 'sequence_partner_export')
+        sequence_id = ir_model_data_model.read(cr, uid, [mdid], ['res_id'])[0]['res_id']
+        sequence = sequence_model.next_by_id(cr, uid, sequence_id, context=context)
+        if int(sequence[3:]) >= 999998:
+            sequence_model._alter_sequence(cr, sequence_id, 1, 1)
+        remote_file = "CUS_CREATE_" + datetime.today().strftime('%y%m%d') + "_" + sequence + ".xml"
+
+        config_obj = self.browse(cr, uid, ftp_config_id, context=context)
+        ftp = FTP(host=config_obj.addr,user=config_obj.user, passwd=config_obj.psswd)
+        inbound_path =  config_obj.inbound_path.rstrip('/') + "/"
+        ftp.cwd(inbound_path)
+        with open(local_file, 'r') as f:
+            ftp.storlines('STOR ' + remote_file, f)
+        os.remove(local_file)
+
+
+        return []
+
+    def action_export_partners(self, cr, uid, partner_ids, context=None):
+        ftp_config_ids = self.search(cr, uid, [('active','=',True)], context=context)
+        ftp_config_id = ftp_config_ids and ftp_config_ids[0] or False
+        return self._export_partners(cr, uid, ftp_config_id, partner_ids, context=context)
+
