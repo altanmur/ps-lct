@@ -66,7 +66,7 @@ class ftp_config(osv.osv):
             'customer_id': partner.name,
             'customer_key': partner.ref,
             'name': partner.parent_id and partner.parent_id.name or False,
-            'street': (partner.street + (partner.street2 if partner.street2 else '') if partner.street else ''),
+            'street': (partner.street + ( (', ' + partner.street2) if partner.street2 else '') if partner.street else ''),
             'city': partner.city,
             'zip': partner.zip,
             'country': partner.country_id and partner.country_id.name,
@@ -77,51 +77,62 @@ class ftp_config(osv.osv):
 
         self._write_tree(cust_elmnt, values)
 
-    def _export_partners(self, cr, uid, ftp_config_id, partner_ids, context=None):
-        if not ftp_config_id:
-            return []
-
-        root = ET.Element('customers')
-        partner_model = self.pool.get('res.partner')
-        for partner_id in partner_ids:
-            partner = partner_model.browse(cr, uid, partner_id, context=context)
-            partner_perm = partner_model.perm_read(cr, uid, [partner_id], context=context, details=True)
-            create_date = datetime.strptime(partner_perm[0].get('create_date'),'%Y-%m-%d %H:%M:%S.%f')
-            # if create_date > datetime.now() - timedelta(seconds=2):
-            if True:
-                self._write_partner_data(cr, uid, ET.SubElement(root,'customer'), partner, context=None)
-
-        if len(root.findall('customer')) < 1:
-            import ipdb; ipdb.set_trace()
-            return []
-
-        ir_model_data_model = self.pool.get('ir.model.data')
-        sequence_model = self.pool.get('ir.sequence')
-        mdid = ir_model_data_model._get_id(cr, uid, 'lct_tos_integration', 'sequence_partner_export')
-        sequence_id = ir_model_data_model.read(cr, uid, [mdid], ['res_id'])[0]['res_id']
-        sequence = sequence_model.next_by_id(cr, uid, sequence_id, context=context)
-        if int(sequence[3:]) >= 999998:
-            sequence_model._alter_sequence(cr, sequence_id, 1, 1)
-        remote_file = "CUS_CREATE_" + datetime.today().strftime('%y%m%d') + "_" + sequence + ".xml"
+    def _write_to_file(self, filename, root):
         module_path = __file__.split('models')[0]
-        local_file = module_path + 'tmp/' + remote_file
+        local_file = module_path + 'tmp/' + filename
         with io.open(local_file, 'w+', encoding='utf-8') as f:
             f.write(u'<?xml version="1.0" encoding="utf-8"?>')
             f.write(ET.tostring(root, encoding='utf-8').decode('utf-8'))
 
+    def _upload(self, cr, uid, ftp_config_id, filename, context=None):
+        config_obj = self.browse(cr, uid, ftp_config_id, context=context)
+        ftp = FTP(host=config_obj.addr,user=config_obj.user, passwd=config_obj.psswd)
+        inbound_path =  config_obj.inbound_path.rstrip('/') + "/"
+        ftp.cwd(inbound_path)
+        with open(local_file, 'r') as f:
+            ftp.storlines('STOR ' + filename, f)
+        os.remove(local_file)
 
+    def _export_partners(self, cr, uid, ftp_config_id, partner_ids, context=None):
+        if not ftp_config_id:
+            return []
 
+        now = datetime.now()
+        root_create = ET.Element('customers')
+        root_update = ET.Element('customers')
+        partner_model = self.pool.get('res.partner')
 
-        # Uncomment when server is accessible
+        for partner_id in partner_ids:
+            partner = partner_model.browse(cr, uid, partner_id, context=context)
+            partner_perm = partner_model.perm_read(cr, uid, [partner_id], context=context, details=True)
+            create_date = datetime.strptime(partner_perm[0].get('create_date'),'%Y-%m-%d %H:%M:%S.%f')
+            if create_date > now - timedelta(seconds=2):
+                self._write_partner_data(cr, uid, ET.SubElement(root_create,'customer'), partner, context=None)
+            else:
+                self._write_partner_data(cr, uid, ET.SubElement(root_update,'customer'), partner, context=None)
 
-        # config_obj = self.browse(cr, uid, ftp_config_id, context=context)
-        # ftp = FTP(host=config_obj.addr,user=config_obj.user, passwd=config_obj.psswd)
-        # inbound_path =  config_obj.inbound_path.rstrip('/') + "/"
-        # ftp.cwd(inbound_path)
-        # with open(local_file, 'r') as f:
-        #     ftp.storlines('STOR ' + remote_file, f)
-        # os.remove(local_file)
+        ir_model_data_model = self.pool.get('ir.model.data')
+        sequence_model = self.pool.get('ir.sequence')
 
+        if len(root_create.findall('customer')) > 0:
+            mdid = ir_model_data_model._get_id(cr, uid, 'lct_tos_integration', 'sequence_partner_create_export')
+            sequence_id = ir_model_data_model.read(cr, uid, [mdid], ['res_id'])[0]['res_id']
+            sequence = sequence_model.next_by_id(cr, uid, sequence_id, context=context)
+            if int(sequence[3:]) >= 999999:
+                sequence_model._alter_sequence(cr, sequence_id, 1, 1)
+            filename = "CUS_CREATE_" + datetime.today().strftime('%y%m%d') + "_" + sequence + ".xml"
+            self._write_to_file(filename, root_create)
+            self._upload(cr, uid, ftp_config_id, filename, context=context)
+
+        if len(root_update.findall('customer')) > 0:
+            mdid = ir_model_data_model._get_id(cr, uid, 'lct_tos_integration', 'sequence_partner_update_export')
+            sequence_id = ir_model_data_model.read(cr, uid, [mdid], ['res_id'])[0]['res_id']
+            sequence = sequence_model.next_by_id(cr, uid, sequence_id, context=context)
+            if int(sequence[3:]) >= 999999:
+                sequence_model._alter_sequence(cr, sequence_id, 1, 1)
+            filename = "CUS_UPDATE_" + datetime.today().strftime('%y%m%d') + "_" + sequence + ".xml"
+            self._write_to_file(filename, root_update)
+            self._upload(cr, uid, ftp_config_id, filename, context=context)
 
         return []
 
