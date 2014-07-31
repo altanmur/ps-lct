@@ -48,7 +48,7 @@ class ftp_config(osv.osv):
         (_check_active, 'There can only be one active ftp configuration', ['active']),
     ]
 
-    def _write_tree(self, elmnt, vals):
+    def _dict_to_tree(self, vals, elmnt):
         for tag, val in vals.iteritems():
             subelmnt = ET.SubElement(elmnt, tag)
             if isinstance(val, unicode):
@@ -56,7 +56,7 @@ class ftp_config(osv.osv):
             elif isinstance(val, str):
                 subelmnt.text = unicode(val)
             elif isinstance(val,dict):
-                self._write_tree(subelmnt, val)
+                self._dict_to_tree(val, subelmnt)
 
     def _upload(self, cr, uid, root, ftp_config_id, file_name, context=None):
         module_path = __file__.split('models')[0]
@@ -82,7 +82,7 @@ class ftp_config(osv.osv):
                 'website': partner.website,
                 'phone': partner.phone or partner.mobile or False
             }
-            self._write_tree(ET.SubElement(root, 'customer'), values)
+            self._dict_to_tree(values, ET.SubElement(root, 'customer'))
         return root
 
     def _get_sequence(self, cr, uid, module, xml_id, context=None):
