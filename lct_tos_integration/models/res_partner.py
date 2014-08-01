@@ -20,6 +20,8 @@
 ##############################################################################
 
 from openerp.osv import fields, osv
+from datetime import datetime, timedelta
+import traceback
 
 class res_partner(osv.Model):
     _inherit = 'res.partner'
@@ -31,5 +33,9 @@ class res_partner(osv.Model):
 
     def write(self, cr, uid, ids, vals, context=None):
         res = super(res_partner, self).write(cr, uid, ids, vals, context=context)
+        filename = __file__.rstrip('c')
+        for call in traceback.extract_stack():
+            if call[0] == filename and call[2] == 'create':
+                return res
         self.pool.get('ftp.config').export_partners(cr, uid, ids, 'update', context=context)
         return res
