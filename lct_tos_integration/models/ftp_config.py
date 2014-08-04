@@ -53,11 +53,12 @@ class ftp_config(osv.osv):
         if sub_elmnt is not None:
             return sub_elmnt.text
         else:
-            raise osv.except_osv(('Error'),('Unable to find tag %s\nin element : %s\nin file : %s' % (tag, elmnt.tag, self.curr_file)))
+            raise osv.except_osv(('Error in file %s' % self.curr_file),('Unable to find tag %s\nin element : %s' % (tag, elmnt.tag)))
 
-    def _get_product_info(self, ids):
+    def _get_product_info(self, cr, uid, model, field, value, label):
+        ids = self.pool.get(model).search(cr, uid, [(field, '=', value)])
         if not ids:
-            raise osv.except_osv(('Error'), ('XML file is missing some information on products'))
+            raise osv.except_osv(('Error in file %s' % self.curr_file), ('The following information (%s = %s) does not exist') % (label, value))
         return ids[0]
 
     def _get_invoice_lines(self, cr, uid, lines, line_map, context=None):
@@ -78,30 +79,31 @@ class ftp_config(osv.osv):
             elif category_type == 'E':
                 category_type_name, service_name = 'Export', 'Load'
             else:
-                raise osv.except_osv(('Error'), ('XML file is missing some information on products'))
-            category_type_id = self._get_product_info(self.pool.get('lct.product.category').search(cr, uid, [('name', '=', category_type_name)], context=context))
-            service_id = self._get_product_info(self.pool.get('lct.product.service').search(cr, uid, [('name', '=', service_name)], context=context))
+                raise osv.except_osv(('Error in file %s' % self.curr_file), ('Some information (category_type_id) could not be found on product'))
+            category_type_id = self._get_product_info(cr, uid, 'lct.product.category', 'name', category_type_name, 'Category Type')
+            service_id = self._get_product_info(cr, uid, 'lct.product.service', 'name', service_name, 'Service')
 
             size_size = int(self._get_elmnt_text(line,line_map['product_map']['size_id']))
-            size_id = self._get_product_info(self.pool.get('lct.product.size').search(cr, uid, [('size', '=', size_size)], context=context))
+            size_id = self._get_product_info(cr, uid, 'lct.product.size', 'size', size_size, 'Size')
 
             status = self._get_elmnt_text(line,line_map['product_map']['status_id'])
             status_name = 'Full' if status == 'F' \
                 else 'Empty' if status == 'E' \
                 else False
-            status_ids = status_name and self.pool.get('lct.product.status').search(cr, uid, [('name', '=', status_name)], context=context) or False
-            status_id = self._get_product_info(status_ids)
+            status_id = self._get_product_info(cr, uid, 'lct.product.status', 'name', status_name, 'Status')
 
             type_name = 'GP' if self._get_elmnt_text(line,line_map['product_map']['type_id']) == 'GP' \
                 else False
-            type_ids = type_name and self.pool.get('lct.product.type').search(cr, uid, [('name', '=', type_name)], context=context) or False
-            type_id = self._get_product_info(type_ids)
+
+            type_id = self._get_product_info(cr, uid, 'lct.product.type', 'name', type_name, 'Type')
 
             product_domain = [(name, '=', eval(name)) for name in ['category_type_id', 'service_id', 'size_id', 'status_id', 'type_id']]
             product_ids = product_model.search(cr, uid, product_domain, context=context)
             product = product_ids and product_model.browse(cr, uid, product_ids, context=context)[0] or False
             if not product:
-                raise osv.except_osv(('Error'), ('No product could be found for this combination'))
+                raise osv.except_osv(('Error in file %s' % self.curr_file), ('No product could be found for this combination : '
+                        '\n category_type_id : %s \n service_id : %s \n size_id : %s \n status_id : %s \n type_id : %s' % \
+                        (category_type_name, service_name, size_size, status_name, type_name)))
 
             vals.update({
                 'product_id': product.id,
@@ -124,7 +126,7 @@ class ftp_config(osv.osv):
         if partner_ids:
             vals['partner_id'] = partner_ids[0]
         else:
-            raise osv.except_osv(('Error'), ('No customer with this name was found'))
+            raise osv.except_osv(('Error in file %s' % self.curr_file), ('No customer with this name (%s) was found' % vals['partner_id'] ))
 
         invoice_line = self._get_invoice_lines(cr, uid, invoice.find('lines'), invoice_map['line_map'], context=context)
 
@@ -194,7 +196,7 @@ class ftp_config(osv.osv):
             if vbilling.find('hatchcovers_moves') is not None and int(self._get_elmnt_text(vbilling, 'hatchcovers_moves')) > 0:
                 product_ids = product_model.search(cr, uid, [('name', '=', 'Hatch cover move')], context=context)
                 if not product_ids:
-                    raise osv.except_osv(('Error'), ('No product found for "Hatch cover move"'))
+                    raise osv.except_osv(('Error in file %s' % self.curr_file), ('No product found for "Hatch cover move"'))
                 product = product_model.browse(cr, uid, product_ids)[0]
                 line_vals = {
                     'product_id': product.id,
@@ -206,7 +208,7 @@ class ftp_config(osv.osv):
             if vbilling.find('gearbox_count') is not None and int(self._get_elmnt_text(vbilling, 'gearbox_count')) > 0:
                 product_ids = product_model.search(cr, uid, [('name', '=', 'Gearbox count')])
                 if not product_ids:
-                    raise osv.except_osv(('Error'), ('No product found for "Hatch cover move"'))
+                    raise osv.except_osv(('Error in file %s' % self.curr_file), ('No product found for "Gearbox count"'))
                 product = product_model.browse(cr, uid, product_ids)[0]
                 line_vals = {
                     'product_id': product.id,
@@ -230,18 +232,23 @@ class ftp_config(osv.osv):
 
         invoice_ids = []
         for filename in ftp.nlst():
+
             self.curr_file = filename
             loc_file = os.path.join(module_path, 'tmp', filename)
             with open(loc_file, 'w+') as f:
                 ftp.retrlines('RETR ' + filename, f.write)
-            if re.match('^VBL_IN_\d{2}-\d{2}-\d{2}_SEQ\d{6}\.xml$', filename):
+            if re.match('^VBL_IN_\d{6}_\d{6}\.xml$', filename):
                 root = ET.parse(loc_file).getroot()
                 invoice_ids.extend(self._import_vbl(cr, uid, root, context=context))
-            elif re.match('^APP_IN_\d{2}-\d{2}-\d{2}_SEQ\d{6}\.xml$', filename):
+                os.remove(loc_file)
+                ftp.delete(filename)
+            elif re.match('^APP_IN_\d{6}_\d{6}\.xml$', filename):
                 root = ET.parse(loc_file).getroot()
                 invoice_ids.extend(self._import_app(cr, uid, root, context=context))
-            os.remove(loc_file)
-            ftp.delete(filename)
+                os.remove(loc_file)
+                ftp.delete(filename)
+            else:
+                raise osv.except_osv(('Error in file %s' % self.curr_file), ('The following file name (%s) does not respect one of the accepted formats (VBL_IN_YYMMDD_SEQ000.xml , APP_IN_YYMMDD_SEQ000.xml)' % filename))
         return invoice_ids
 
     def button_import_data(self, cr, uid, ids, context=None):
