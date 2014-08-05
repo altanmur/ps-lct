@@ -51,7 +51,7 @@
                                 on_change="uos_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id)"/>
                             <field name="price_unit"/>
                             <field name="discount" groups="sale.group_discount_per_so_line"/>
-                            <field name="cont_nr"/>
+                            <field name="cont_nr_ids"/>
                             <field name="invoice_line_tax_id" widget="many2many_tags" context="{'type':parent.type}"
                                 domain="[('parent_id','=',False),('company_id', '=', parent.company_id)]"/>
                             <field name="price_subtotal"/>
@@ -74,7 +74,7 @@
                                 on_change="uos_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id)"/>
                             <field name="price_unit"/>
                             <field name="discount" groups="sale.group_discount_per_so_line"/>
-                            <field name="cont_nr"/>
+                            <field name="cont_nr_ids"/>
                             <field name="cont_operator"/>
                             <field name="book_nr"/>
                             <field name="invoice_line_tax_id" widget="many2many_tags" context="{'type':parent.type}"

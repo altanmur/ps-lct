@@ -66,13 +66,8 @@ class ftp_config(osv.osv):
         if len(lines) < 1:
             return []
 
-        lines_vals = []
+        lines_vals = {}
         for line in lines.findall('line'):
-            vals = {}
-            for field, tag in line_map.iteritems():
-                if isinstance(tag, str):
-                    vals[field] = self._get_elmnt_text(line,tag)
-
             category_type = self._get_elmnt_text(line, line_map['product_map']['category_type_id'])
             if category_type == 'I':
                 category_type_name, service_name = 'Import', 'Discharge'
@@ -104,15 +99,29 @@ class ftp_config(osv.osv):
                 raise osv.except_osv(('Error in file %s' % self.curr_file), ('No product could be found for this combination : '
                         '\n category_type_id : %s \n service_id : %s \n size_id : %s \n status_id : %s \n type_id : %s' % \
                         (category_type_name, service_name, size_size, status_name, type_name)))
+            try:
+                cont_nr_name = line.find('container_number').text
+                cont_nr_mgc_nr = (0,0,{'name': cont_nr_name})
+            except:
+                raise osv.except_osv(('Error in file %s' % self.curr_file), ('Could not find the container number'))
 
-            vals.update({
-                'product_id': product.id,
-                'name' : product.name,
-                'quantity': 1,
-                'price_unit': product.list_price,
-            })
-            lines_vals.append(vals)
-        return [(0,0,vals) for vals in lines_vals]
+            if product.name in lines_vals:
+                lines_vals[product.name]['quantity'] += 1
+                lines_vals[product.name]['cont_nr_ids'].append(cont_nr_mgc_nr)
+            else:
+                vals = {}
+                for field, tag in line_map.iteritems():
+                    if isinstance(tag, str):
+                        vals[field] = self._get_elmnt_text(line,tag)
+                vals['cont_nr_ids'] = [cont_nr_mgc_nr]
+                vals.update({
+                    'product_id': product.id,
+                    'name' : product.name,
+                    'price_unit': product.list_price,
+                    'quantity': 1,
+                })
+                lines_vals[product.name] = vals
+        return [(0,0,vals) for vals in lines_vals.values()]
 
     def _get_invoice_vals(self, cr, uid, invoice, invoice_map, context=None):
         partner_model = self.pool.get('res.partner')
@@ -154,7 +163,6 @@ class ftp_config(osv.osv):
                     'status_id': 'status',
                     'type_id': 'container_type',
                 },
-                'cont_nr': 'container_number',
                 'cont_operator': 'container_operator',
             },
         }
@@ -183,7 +191,6 @@ class ftp_config(osv.osv):
                     'status_id': 'container_status',
                     'type_id': 'container_type_id',
                 },
-                'cont_nr': 'container_number',
                 'cont_operator': 'container_operator_id',
             },
         }

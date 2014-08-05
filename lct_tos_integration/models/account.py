@@ -41,11 +41,19 @@ class account_invoice(osv.osv):
         'invoice_line_appoint': fields.related('invoice_line', type='one2many', relation='account.invoice.line', string="Invoice lines"),
     }
 
+class lct_container_number(osv.osv):
+    _name = 'lct.container.number'
+
+    _columns = {
+        'name': fields.char('Container Number'),
+    }
+
+
 class account_invoice_line(osv.osv):
     _inherit = 'account.invoice.line'
 
     _columns = {
-        'cont_nr': fields.char('Container number'),
+        'cont_nr_ids': fields.many2many('lct.container.number', 'lct_container_number_rel', 'invoice_line_id', 'cont_nr_id', 'Container numbers'),
         'cont_operator': fields.char('Container operator'),
         'book_nr': fields.char('Booking number'),
     }
@@ -56,3 +64,4 @@ class account_voucher(osv.osv):
     _columns = {
         'cashier_rcpt_nr': fields.char('Cashier receipt number'),
     }
+
