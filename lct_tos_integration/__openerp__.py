@@ -37,6 +37,7 @@
         'data/product_properties.xml',
         'data/products.xml',
         'data/cron.xml',
+        'data/ir_sequences.xml',
         ],
     'images': [],
     'demo': [],

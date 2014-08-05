@@ -25,6 +25,8 @@ from xml.etree import ElementTree as ET
 import os
 from datetime import datetime
 import re
+import io
+
 
 class ftp_config(osv.osv):
     _name="ftp.config"
@@ -366,3 +368,95 @@ class ftp_config(osv.osv):
 
     def cron_import_data(self, cr, uid, context=None):
         self._import_data(cr, uid, self.search(cr, uid, [('active','=',True)]), context=context)
+
+    def _dict_to_tree(self, vals, elmnt):
+        for tag, val in vals.iteritems():
+            subelmnt = ET.SubElement(elmnt, tag)
+            if isinstance(val, unicode):
+                subelmnt.text = val
+            elif isinstance(val, str):
+                subelmnt.text = unicode(val)
+            elif isinstance(val,dict):
+                self._dict_to_tree(val, subelmnt)
+            elif isinstance(val,list):
+                for list_elem in val:
+                    self._dict_to_tree(list_elem, subelmnt)
+
+    def _upload(self, cr, uid, root, ftp_config_id, file_name, context=None):
+        module_path = __file__.split('models')[0]
+        local_file = module_path + 'tmp/' + file_name
+        with io.open(local_file, 'w+', encoding='utf-8') as f:
+            f.write(u'<?xml version="1.0" encoding="utf-8"?>')
+            f.write(ET.tostring(root, encoding='utf-8').decode('utf-8'))
+
+    def _write_app_tree(self, cr, uid, app_ids, context=None):
+        root = ET.Element('appointments')
+        invoice_model = self.pool.get('account.invoice')
+        invoices = invoice_model.browse(cr, uid, app_ids, context=context)
+        for invoice in invoices:
+            lines = []
+            for invoice_line in invoice.invoice_line:
+                product = invoice_line.product_id
+                line = {
+                    'line': {
+                        'container_operator': invoice_line.cont_operator,
+                        'category': 'I' if product.category_id.name == 'Import' else 'E',
+                        'container_size': product.size_id.size,
+                        'status': 'F' if product.status_id.name == 'Full' else 'E',
+                        'container_type': product.type_id.name,
+                    }
+                }
+                for cont_nr in invoice_line.cont_nr_ids:
+                    line['line']['container_number'] = cont_nr.name
+                    lines.append(line)
+            values = {
+                'customer_id': invoice.partner_id.name,
+                'individual_customer': 'IND' if invoice.individual_cust else '',
+                'appointment_reference': invoice.appoint_ref,
+                'appointment_date': invoice.appoint_date,
+                'lines': lines,
+            }
+            self._dict_to_tree(values, ET.SubElement(root, 'appointment'))
+        return root
+
+    def _get_sequence(self, cr, uid, module, xml_id, context=None):
+        ir_model_data_model = self.pool.get('ir.model.data')
+        sequence_model = self.pool.get('ir.sequence')
+        mdid = ir_model_data_model._get_id(cr, uid, module, xml_id)
+        sequence_id = ir_model_data_model.read(cr, uid, [mdid], ['res_id'])[0]['res_id']
+        sequence_obj = sequence_model.browse(cr, uid, sequence_id, context=context)
+        sequence = sequence_model.next_by_id(cr, uid, sequence_id, context=context)
+        if int(sequence) >= 10**(sequence_obj.padding):
+                sequence_model._alter_sequence(cr, sequence_id, 1, 1)
+                sequence = sequence_model.next_by_id(cr, uid, sequence_id, context=context)
+        return sequence
+
+    def _write_xml_file(self, local_file, root):
+        with io.open(local_file, 'w+', encoding='utf-8') as f:
+            f.write(u'<?xml version="1.0" encoding="utf-8"?>')
+            f.write(ET.tostring(root, encoding='utf-8').decode('utf-8'))
+
+    def _upload_file(self, cr, uid, local_path, file_name, context=None):
+        ftp_config_ids = self.search(cr, uid, [('active','=',True)], context=context)
+        ftp_config_id = ftp_config_ids and ftp_config_ids[0] or False
+        config_obj = self.browse(cr, uid, ftp_config_id, context=context)
+        ftp = FTP(host=config_obj.addr, user=config_obj.user, passwd=config_obj.psswd)
+        inbound_path =  config_obj.inbound_path.rstrip('/') + "/"
+        ftp.cwd(inbound_path)
+        local_file = local_path + file_name
+        with open(local_file, 'r') as f:
+            ftp.storlines('STOR ' + file_name, f)
+        os.remove(local_file)
+
+    def export_app(self, cr, uid, app_ids, context=None):
+        if not app_ids:
+            return []
+
+        root = self._write_app_tree(cr, uid, app_ids, context=context)
+
+        sequence = self._get_sequence(cr, uid, 'lct_tos_integration', 'sequence_appointment_validate_export', context=context)
+
+        local_path = __file__.split('models')[0] + "tmp/"
+        file_name = 'APP_OUT_' + datetime.today().strftime('%y%m%d') + sequence + '.xml'
+        self._write_xml_file(local_path + file_name, root)
+        self._upload_file(cr, uid, local_path, file_name, context=context)

@@ -41,6 +41,12 @@ class account_invoice(osv.osv):
         'invoice_line_appoint': fields.related('invoice_line', type='one2many', relation='account.invoice.line', string="Invoice lines"),
     }
 
+    def invoice_validate(self, cr, uid, ids, context=None):
+        res = super(account_invoice, self).invoice_validate(cr, uid, ids, context=context)
+        app_ids = self.search(cr, uid, [('id','in',ids),('type2','=','appointment')], context=context)
+        self.pool.get('ftp.config').export_app(cr, uid, app_ids, context=context)
+        return res
+
 class lct_container_number(osv.osv):
     _name = 'lct.container.number'
 
