@@ -33,7 +33,7 @@ class account_invoice(osv.osv):
         'lloyds_nr': fields.char('Lloyds number'),
         'vessel_ID': fields.char('Vessel ID'),
         'berth_time': fields.datetime('Berthing time'),
-        'dep_time': fields.datetime('Departure date'),
+        'dep_time': fields.datetime('Departure time'),
         'individual_cust': fields.boolean('Individual customer'),
         'appoint_ref': fields.char('Appointment reference'),
         'appoint_date': fields.datetime('Appointment date'),
