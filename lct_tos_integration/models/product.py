@@ -26,7 +26,7 @@ class product_product(osv.osv):
 
     _columns = {
         'service_id': fields.many2one('lct.product.service', 'Service'),
-        'category_type_id': fields.many2one('lct.product.category', 'Category Type'),
+        'category_id': fields.many2one('lct.product.category', 'Category'),
         'size_id': fields.many2one('lct.product.size', 'Size'),
         'status_id': fields.many2one('lct.product.status', 'Status'),
         'type_id': fields.many2one('lct.product.type', 'Type'),

@@ -12,7 +12,7 @@
         <record id="product_product_di20fgp" model="product.product">
             <field name="name">Discharge import 20 F GP</field>
             <field name="service_id" ref="lct_product_service_discharge"/>
-            <field name="category_type_id" ref="lct_product_category_import"/>
+            <field name="category_id" ref="lct_product_category_import"/>
             <field name="size_id" ref="lct_product_size_20"/>
             <field name="status_id" ref="lct_product_status_full"/>
             <field name="type_id" ref="lct_product_type_gp"/>
@@ -20,7 +20,7 @@
         <record id="product_product_di40fgp" model="product.product">
             <field name="name">Discharge import 40 F GP</field>
             <field name="service_id" ref="lct_product_service_discharge"/>
-            <field name="category_type_id" ref="lct_product_category_import"/>
+            <field name="category_id" ref="lct_product_category_import"/>
             <field name="size_id" ref="lct_product_size_40"/>
             <field name="status_id" ref="lct_product_status_full"/>
             <field name="type_id" ref="lct_product_type_gp"/>
@@ -28,7 +28,7 @@
         <record id="product_product_le20egp" model="product.product">
             <field name="name">Load export 20 E GP</field>
             <field name="service_id" ref="lct_product_service_load"/>
-            <field name="category_type_id" ref="lct_product_category_export"/>
+            <field name="category_id" ref="lct_product_category_export"/>
             <field name="size_id" ref="lct_product_size_20"/>
             <field name="status_id" ref="lct_product_status_empty"/>
             <field name="type_id" ref="lct_product_type_gp"/>
@@ -36,7 +36,7 @@
         <record id="product_product_si20fgp" model="product.product">
             <field name="name">Storage import 20 F GP</field>
             <field name="service_id" ref="lct_product_service_storage"/>
-            <field name="category_type_id" ref="lct_product_category_import"/>
+            <field name="category_id" ref="lct_product_category_import"/>
             <field name="size_id" ref="lct_product_size_20"/>
             <field name="status_id" ref="lct_product_status_full"/>
             <field name="type_id" ref="lct_product_type_gp"/>
@@ -44,7 +44,7 @@
         <record id="product_product_si40fgp" model="product.product">
             <field name="name">Storage import 40 F GP</field>
             <field name="service_id" ref="lct_product_service_storage"/>
-            <field name="category_type_id" ref="lct_product_category_import"/>
+            <field name="category_id" ref="lct_product_category_import"/>
             <field name="size_id" ref="lct_product_size_40"/>
             <field name="status_id" ref="lct_product_status_full"/>
             <field name="type_id" ref="lct_product_type_gp"/>
@@ -52,7 +52,7 @@
         <record id="product_product_ri20fgp" model="product.product">
             <field name="name">Reefer plugging import 20 F GP</field>
             <field name="service_id" ref="lct_product_service_reefer"/>
-            <field name="category_type_id" ref="lct_product_category_import"/>
+            <field name="category_id" ref="lct_product_category_import"/>
             <field name="size_id" ref="lct_product_size_20"/>
             <field name="status_id" ref="lct_product_status_full"/>
             <field name="type_id" ref="lct_product_type_gp"/>
