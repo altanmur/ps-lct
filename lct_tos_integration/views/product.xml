@@ -9,11 +9,8 @@
                 <xpath expr="//label[@for='categ_id']" position="attributes">
                     <attribute name="string">Product Category</attribute>
                 </xpath>
-                <xpath expr="//h2[preceding::label[@for='categ_id']]" position="after">
-                    <label for="category_id" class="oe_edit_only"/>
-                    <h2><field name="category_id" widget="selection"/></h2>
-                </xpath>
                 <xpath expr="//field[@name='type']" position="after">
+                    <field name="category_id" widget="selection"/>
                     <field name="service_id" widget="selection"/>
                     <field name="size_id" widget="selection"/>
                     <field name="status_id" widget="selection"/>

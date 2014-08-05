@@ -28,20 +28,20 @@
             <field name="model">lct.product.category</field>
             <field name="priority">1</field>
             <field name="arch" type="xml">
-                <tree string="Product Category Types" editable="top">
+                <tree string="Category" editable="top">
                     <field name="name"/>
                 </tree>
             </field>
         </record>
         <record id="action_lct_product_category" model="ir.actions.act_window">
-            <field name="name">Info</field>
+            <field name="name">Categories</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">lct.product.category</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree</field>
             <field name="view_id" ref="view_lct_product_category_tree"/>
         </record>
-        <menuitem string="Info" id="lct_product_category_menu" parent="product.prod_config_main" action="action_lct_product_category"/>
+        <menuitem id="lct_product_category_menu" parent="product.prod_config_main" action="action_lct_product_category"/>
 
         <!-- Sizes -->
         <record id="view_lct_product_size_tree" model="ir.ui.view">
