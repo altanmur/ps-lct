@@ -68,14 +68,14 @@ class ftp_config(osv.osv):
 
         lines_vals = {}
         for line in lines.findall('line'):
-            category_type = self._get_elmnt_text(line, line_map['product_map']['category_type_id'])
-            if category_type == 'I':
-                category_type_name, service_name = 'Import', 'Discharge'
-            elif category_type == 'E':
-                category_type_name, service_name = 'Export', 'Load'
+            category = self._get_elmnt_text(line, line_map['product_map']['category_id'])
+            if category == 'I':
+                category_name, service_name = 'Import', 'Discharge'
+            elif category == 'E':
+                category_name, service_name = 'Export', 'Load'
             else:
-                raise osv.except_osv(('Error in file %s' % self.curr_file), ('Some information (category_type_id) could not be found on product'))
-            category_type_id = self._get_product_info(cr, uid, 'lct.product.category', 'name', category_type_name, 'Category Type')
+                raise osv.except_osv(('Error in file %s' % self.curr_file), ('Some information (category_id) could not be found on product'))
+            category_id = self._get_product_info(cr, uid, 'lct.product.category', 'name', category_name, 'Category Type')
             service_id = self._get_product_info(cr, uid, 'lct.product.service', 'name', service_name, 'Service')
 
             size_size = int(self._get_elmnt_text(line,line_map['product_map']['size_id']))
@@ -92,18 +92,19 @@ class ftp_config(osv.osv):
 
             type_id = self._get_product_info(cr, uid, 'lct.product.type', 'name', type_name, 'Type')
 
-            product_domain = [(name, '=', eval(name)) for name in ['category_type_id', 'service_id', 'size_id', 'status_id', 'type_id']]
+            product_domain = [(name, '=', eval(name)) for name in ['category_id', 'service_id', 'size_id', 'status_id', 'type_id']]
             product_ids = product_model.search(cr, uid, product_domain, context=context)
             product = product_ids and product_model.browse(cr, uid, product_ids, context=context)[0] or False
             if not product:
                 raise osv.except_osv(('Error in file %s' % self.curr_file), ('No product could be found for this combination : '
-                        '\n category_type_id : %s \n service_id : %s \n size_id : %s \n status_id : %s \n type_id : %s' % \
-                        (category_type_name, service_name, size_size, status_name, type_name)))
+                        '\n category_id : %s \n service_id : %s \n size_id : %s \n status_id : %s \n type_id : %s' % \
+                        (category_name, service_name, size_size, status_name, type_name)))
             try:
                 cont_nr_name = line.find('container_number').text
                 cont_nr_mgc_nr = (0,0,{'name': cont_nr_name})
             except:
                 raise osv.except_osv(('Error in file %s' % self.curr_file), ('Could not find the container number'))
+
 
             if product.name in lines_vals:
                 lines_vals[product.name]['quantity'] += 1
@@ -114,6 +115,11 @@ class ftp_config(osv.osv):
                     if isinstance(tag, str):
                         vals[field] = self._get_elmnt_text(line,tag)
                 vals['cont_nr_ids'] = [cont_nr_mgc_nr]
+                account = product.property_account_income or (product.categ_id and product.categ_id.property_account_income_categ) or False
+                if account:
+                    vals['account_id'] = account.id
+                else:
+                    raise osv.except_osv(('Error in file %s' % self.curr_file), ('Could not find an income account on product %s ') % product.name)
                 vals.update({
                     'product_id': product.id,
                     'name' : product.name,
@@ -139,11 +145,14 @@ class ftp_config(osv.osv):
 
         invoice_line = self._get_invoice_lines(cr, uid, invoice.find('lines'), invoice_map['line_map'], context=context)
 
-        # TODO /!\ Must be changed
-        account_id = self.pool.get('account.account').search(cr, uid, [], limit=1, context=context)[0]
+        partner  = partner_model.browse(cr, uid, vals['partner_id'], context=context)
+        account = partner.property_account_receivable
+        if account:
+            vals['account_id'] = account.id
+        else:
+            raise osv.except_osv(('Error in file %s' % self.curr_file), ('No account receivable could be found on cutomer %s' % partner.name))
 
         vals.update({
-            'account_id': account_id,
             'date_invoice': datetime.today().strftime('%Y-%m-%d'),
             'invoice_line': invoice_line,
             'state': 'draft',
@@ -158,7 +167,7 @@ class ftp_config(osv.osv):
             'appoint_date': 'appointment_date',
             'line_map':  {
                 'product_map':{
-                    'category_type_id': 'category',
+                    'category_id': 'category',
                     'size_id': 'container_size',
                     'status_id': 'status',
                     'type_id': 'container_type',
@@ -186,7 +195,7 @@ class ftp_config(osv.osv):
             'dep_time': 'departure_time',
             'line_map':  {
                 'product_map':{
-                    'category_type_id': 'transaction_category_id',
+                    'category_id': 'transaction_category_id',
                     'size_id': 'container_size',
                     'status_id': 'container_status',
                     'type_id': 'container_type_id',
