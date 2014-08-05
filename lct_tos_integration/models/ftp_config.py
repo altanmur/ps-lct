@@ -61,7 +61,98 @@ class ftp_config(osv.osv):
             raise osv.except_osv(('Error in file %s' % self.curr_file), ('The following information (%s = %s) does not exist') % (label, value))
         return ids[0]
 
-    def _get_invoice_lines(self, cr, uid, lines, line_map, context=None):
+    def _get_product_properties(self, cr, uid, line, product_map, context=None):
+        product_properties = {}
+
+        category = self._get_elmnt_text(line, product_map['category_id'])
+        category_name = 'Import' if category == 'I' else 'Export' if category == 'E' else False
+        if not category_name:
+            raise osv.except_osv(('Error in file %s' % self.curr_file), ('Some information (category_id) could not be found on product'))
+        product_properties['category_id'] = {
+            'name': category_name,
+            'id': self._get_product_info(cr, uid, 'lct.product.category', 'name', category_name, 'Category Type')
+        }
+
+        size_size = int(self._get_elmnt_text(line, product_map['size_id']))
+        product_properties['size_id'] = {
+            'name': size_size,
+            'id': self._get_product_info(cr, uid, 'lct.product.size', 'size', size_size, 'Size')
+        }
+
+        status = self._get_elmnt_text(line, product_map['status_id'])
+        status_name = 'Full' if status == 'F' \
+            else 'Empty' if status == 'E' \
+            else False
+        product_properties['status_id'] = {
+            'name': status_name,
+            'id': self._get_product_info(cr, uid, 'lct.product.status', 'name', status_name, 'Status')
+        }
+
+        type_name = 'GP' if self._get_elmnt_text(line, product_map['type_id']) == 'GP' \
+            else False
+
+        product_properties['type_id'] = {
+            'name': type_name,
+            'id': self._get_product_info(cr, uid, 'lct.product.type', 'name', type_name, 'Type')
+        }
+
+        return product_properties
+
+    def _get_app_lines(self, cr, uid, lines, line_map, context=None):
+        product_model = self.pool.get('product.product')
+        if len(lines) < 1:
+            return []
+
+        lines_vals = {}
+        for line in lines.findall('line'):
+            product_properties = self._get_product_properties(cr, uid, line, line_map['product_map'], context=context)
+            services = {
+                'Storage': self._get_elmnt_text(line, 'storage'),
+                'Reefer': self._get_elmnt_text(line, 'plugged_time'),
+            }
+            for service, quantity in services.iteritems():
+                if quantity and int(quantity) > 0:
+                    product_properties['service_id'] = {
+                        'name': service,
+                        'id': self._get_product_info(cr, uid, 'lct.product.service', 'name', service, 'Status')
+                    }
+                    product_domain = [(name, '=', product_properties[name]['id']) for name in ['category_id', 'size_id', 'status_id', 'type_id', 'service_id']]
+                    product_ids = product_model.search(cr, uid, product_domain, context=context)
+                    product = product_ids and product_model.browse(cr, uid, product_ids, context=context)[0] or False
+                    if not product:
+                        raise osv.except_osv(('Error in file %s' % self.curr_file), ('No product could be found for this combination : '
+                                '\n category_id : %s \n service_id : %s \n size_id : %s \n status_id : %s \n type_id : %s' % \
+                                tuple(product_properties[name]['name'] for name in ['category_id',  'service_id', 'size_id', 'status_id', 'type_id'])))
+                    try:
+                        cont_nr_name = line.find('container_number').text
+                        cont_nr_mgc_nr = (0,0,{'name': cont_nr_name})
+                    except:
+                        raise osv.except_osv(('Error in file %s' % self.curr_file), ('Could not find the container number'))
+
+                    if product.name in lines_vals:
+                        lines_vals[product.name]['quantity'] += int(quantity)
+                        lines_vals[product.name]['cont_nr_ids'].extend([cont_nr_mgc_nr] * int(quantity))
+                    else:
+                        vals = {}
+                        for field, tag in line_map.iteritems():
+                            if isinstance(tag, str):
+                                vals[field] = self._get_elmnt_text(line,tag)
+                        vals['cont_nr_ids'] = [cont_nr_mgc_nr] * int(quantity)
+                        account = product.property_account_income or (product.categ_id and product.categ_id.property_account_income_categ) or False
+                        if account:
+                            vals['account_id'] = account.id
+                        else:
+                            raise osv.except_osv(('Error in file %s' % self.curr_file), ('Could not find an income account on product %s ') % product.name)
+                        vals.update({
+                            'product_id': product.id,
+                            'name' : product.name,
+                            'price_unit': product.list_price,
+                            'quantity': int(quantity),
+                        })
+                        lines_vals[product.name] = vals
+        return [(0,0,vals) for vals in lines_vals.values()]
+
+    def _get_vbl_lines(self, cr, uid, lines, line_map, context=None):
         product_model = self.pool.get('product.product')
         if len(lines) < 1:
             return []
@@ -129,7 +220,39 @@ class ftp_config(osv.osv):
                 lines_vals[product.name] = vals
         return [(0,0,vals) for vals in lines_vals.values()]
 
-    def _get_invoice_vals(self, cr, uid, invoice, invoice_map, context=None):
+    def _get_invoice_vals(self, cr, uid, invoice, invoice_type, context=None):
+        invoice_map = {
+            'partner_id': 'customer_id',
+            'appoint_ref': 'appointment_reference',
+            'appoint_date': 'appointment_date',
+            'line_map':  {
+                'product_map':{
+                    'category_id': 'category',
+                    'size_id': 'container_size',
+                    'status_id': 'status',
+                    'type_id': 'container_type',
+                },
+                'cont_operator': 'container_operator',
+            },
+        } if invoice_type == 'app' \
+        else {
+            'partner_id': 'vessel_operator_id',
+            'call_sign': 'call_sign',
+            'lloyds_nr': 'lloyds_number',
+            'vessel_ID': 'vessel_id',
+            'berth_time': 'berthing_time',
+            'dep_time': 'departure_time',
+            'line_map':  {
+                'product_map':{
+                    'category_id': 'transaction_category_id',
+                    'size_id': 'container_size',
+                    'status_id': 'container_status',
+                    'type_id': 'container_type_id',
+                },
+                'cont_operator': 'container_operator_id',
+            },
+        }
+
         partner_model = self.pool.get('res.partner')
         vals = {}
         for field, tag in invoice_map.iteritems():
@@ -143,7 +266,10 @@ class ftp_config(osv.osv):
         else:
             raise osv.except_osv(('Error in file %s' % self.curr_file), ('No customer with this name (%s) was found' % vals['partner_id'] ))
 
-        invoice_line = self._get_invoice_lines(cr, uid, invoice.find('lines'), invoice_map['line_map'], context=context)
+
+        invoice_line = self._get_app_lines(cr, uid, invoice.find('lines'), invoice_map['line_map'], context=context) \
+                if invoice_type == 'app' \
+                else self._get_vbl_lines(cr, uid, invoice.find('lines'), invoice_map['line_map'], context=context)
 
         partner  = partner_model.browse(cr, uid, vals['partner_id'], context=context)
         account = partner.property_account_receivable
@@ -161,24 +287,10 @@ class ftp_config(osv.osv):
         return vals
 
     def _import_app(self, cr, uid, appointments, context=None):
-        appointment_map = {
-            'partner_id': 'customer_id',
-            'appoint_ref': 'appointment_reference',
-            'appoint_date': 'appointment_date',
-            'line_map':  {
-                'product_map':{
-                    'category_id': 'category',
-                    'size_id': 'container_size',
-                    'status_id': 'status',
-                    'type_id': 'container_type',
-                },
-                'cont_operator': 'container_operator',
-            },
-        }
         appointment_ids = []
         invoice_model = self.pool.get('account.invoice')
         for appointment in appointments.findall('appointment'):
-            appointment_vals = self._get_invoice_vals(cr, uid, appointment, appointment_map, context=context)
+            appointment_vals = self._get_invoice_vals(cr, uid, appointment, 'app', context=context)
             appointment_vals['type2'] = 'appointment'
             individual = appointment.find('individual_customer')
             appointment_vals['individual_cust'] = True if individual is not None and individual.text == 'IND' else False
@@ -186,28 +298,11 @@ class ftp_config(osv.osv):
         return appointment_ids
 
     def _import_vbl(self, cr, uid, vbillings, context=None):
-        vbilling_map = {
-            'partner_id': 'vessel_operator_id',
-            'call_sign': 'call_sign',
-            'lloyds_nr': 'lloyds_number',
-            'vessel_ID': 'vessel_id',
-            'berth_time': 'berthing_time',
-            'dep_time': 'departure_time',
-            'line_map':  {
-                'product_map':{
-                    'category_id': 'transaction_category_id',
-                    'size_id': 'container_size',
-                    'status_id': 'container_status',
-                    'type_id': 'container_type_id',
-                },
-                'cont_operator': 'container_operator_id',
-            },
-        }
         vbilling_ids = []
         product_model = self.pool.get('product.product')
         invoice_model = self.pool.get('account.invoice')
         for vbilling in vbillings.findall('vbilling'):
-            vbilling_vals = self._get_invoice_vals(cr, uid, vbilling, vbilling_map, context=context)
+            vbilling_vals = self._get_invoice_vals(cr, uid, vbilling, 'vbl', context=context)
             vbilling_vals['type2'] = 'vessel'
             if vbilling.find('hatchcovers_moves') is not None and int(self._get_elmnt_text(vbilling, 'hatchcovers_moves')) > 0:
                 product_ids = product_model.search(cr, uid, [('name', '=', 'Hatch cover move')], context=context)
@@ -248,7 +343,6 @@ class ftp_config(osv.osv):
 
         invoice_ids = []
         for filename in ftp.nlst():
-
             self.curr_file = filename
             loc_file = os.path.join(module_path, 'tmp', filename)
             with open(loc_file, 'w+') as f:
