@@ -21,7 +21,7 @@
 
 from openerp.osv import fields, osv
 from datetime import datetime, timedelta
-import xml.etree.ElementTree as ET
+from lxml import etree as ET
 import io
 from ftplib import FTP
 import os
@@ -58,13 +58,6 @@ class ftp_config(osv.osv):
             elif isinstance(val,dict):
                 self._dict_to_tree(val, subelmnt)
 
-    def _upload(self, cr, uid, root, ftp_config_id, file_name, context=None):
-        module_path = __file__.split('models')[0]
-        local_file = module_path + 'tmp/' + file_name
-        with io.open(local_file, 'w+', encoding='utf-8') as f:
-            f.write(u'<?xml version="1.0" encoding="utf-8"?>')
-            f.write(ET.tostring(root, encoding='utf-8').decode('utf-8'))
-
     def _write_partners_tree(self, cr, uid, partner_ids, context=None):
         root = ET.Element('customers')
         partner_model = self.pool.get('res.partner')
@@ -100,7 +93,7 @@ class ftp_config(osv.osv):
     def _write_xml_file(self, local_file, root):
         with io.open(local_file, 'w+', encoding='utf-8') as f:
             f.write(u'<?xml version="1.0" encoding="utf-8"?>')
-            f.write(ET.tostring(root, encoding='utf-8').decode('utf-8'))
+            f.write(ET.tostring(root, encoding='utf-8', pretty_print=True).decode('utf-8'))
 
     def _upload_file(self, cr, uid, local_path, file_name, context=None):
         ftp_config_ids = self.search(cr, uid, [('active','=',True)], context=context)
