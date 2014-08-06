@@ -37,5 +37,20 @@ class res_partner(osv.Model):
         for call in traceback.extract_stack():
             if call[0] == filename and call[2] == 'create':
                 return res
-        self.pool.get('ftp.config').export_partners(cr, uid, ids, 'update', context=context)
+        to_update = [
+            'name',
+            'ref',
+            'parent_id',
+            'street',
+            'street2',
+            'city',
+            'zip',
+            'country_id',
+            'email',
+            'website',
+            'phone',
+            'mobile',
+        ]
+        if any(item in vals for item in to_update):
+            self.pool.get('ftp.config').export_partners(cr, uid, ids, 'update', context=context)
         return res

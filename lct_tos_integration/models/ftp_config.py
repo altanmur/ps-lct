@@ -383,7 +383,9 @@ class ftp_config(osv.osv):
     def _dict_to_tree(self, vals, elmnt):
         for tag, val in vals.iteritems():
             subelmnt = ET.SubElement(elmnt, tag)
-            if isinstance(val, unicode):
+            if not val:
+                pass
+            elif isinstance(val, unicode):
                 subelmnt.text = val
             elif isinstance(val, str):
                 subelmnt.text = unicode(val)
@@ -404,7 +406,7 @@ class ftp_config(osv.osv):
                 'customer_id': partner.name,
                 'customer_key': partner.ref,
                 'name': partner.parent_id and partner.parent_id.name or False,
-                'street': (partner.street + ( (', ' + partner.street2) if partner.street2 else '') if partner.street else ''),
+                'street': (partner.street + ( (', ' + partner.street2) if partner.street2 else '') if partner.street else '') or False,
                 'city': partner.city,
                 'zip': partner.zip,
                 'country': partner.country_id and partner.country_id.name,
@@ -423,7 +425,7 @@ class ftp_config(osv.osv):
         voucher = voucher_model.browse(cr, uid, payment_id, context=context)
         values = {
             'customer_id': invoice.partner_id.name,
-            'individual_customer': 'IND' if invoice.individual_cust else '',
+            'individual_customer': 'IND' if invoice.individual_cust else 'STD',
             'appointment_reference': invoice.appoint_ref,
             'appointment_date': invoice.appoint_date,
             'payment_made': 'YES',
@@ -465,7 +467,7 @@ class ftp_config(osv.osv):
         sequence = self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', sequence_xml_id, context=context)
 
         local_path = __file__.split('models')[0] + "tmp/"
-        file_name = file_prefix + datetime.today().strftime('%y%m%d') + '_SEQ' + sequence + '.xml'
+        file_name = file_prefix + datetime.today().strftime('%y%m%d') + '_' + sequence + '.xml'
         self._write_xml_file(local_path + file_name, root)
         self._upload_file(cr, uid, local_path, file_name, context=context)
 
@@ -477,6 +479,6 @@ class ftp_config(osv.osv):
         sequence = self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', 'sequence_appointment_validate_export', context=context)
 
         local_path = __file__.split('models')[0] + "tmp/"
-        file_name = 'APP_' + datetime.today().strftime('%y%m%d') + sequence + '.xml'
+        file_name = 'APP_' + datetime.today().strftime('%y%m%d') + '_' + sequence + '.xml'
         self._write_xml_file(local_path + file_name, root)
         self._upload_file(cr, uid, local_path, file_name, context=context)
