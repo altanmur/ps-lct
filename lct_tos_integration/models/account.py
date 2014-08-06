@@ -65,21 +65,9 @@ class account_voucher(osv.osv):
         'cashier_rcpt_nr': fields.char('Cashier receipt number'),
     }
 
-    def _get_sequence(self, cr, uid, module, xml_id, context=None):
-        ir_model_data_model = self.pool.get('ir.model.data')
-        sequence_model = self.pool.get('ir.sequence')
-        mdid = ir_model_data_model._get_id(cr, uid, module, xml_id)
-        sequence_id = ir_model_data_model.read(cr, uid, [mdid], ['res_id'])[0]['res_id']
-        sequence_obj = sequence_model.browse(cr, uid, sequence_id, context=context)
-        sequence = sequence_model.next_by_id(cr, uid, sequence_id, context=context)
-        if int(sequence) >= 10**(sequence_obj.padding):
-                sequence_model._alter_sequence(cr, sequence_id, 1, 1)
-                sequence = sequence_model.next_by_id(cr, uid, sequence_id, context=context)
-        return sequence
-
     def create(self, cr, uid, vals, context=None):
         if 'cashier_rcpt_nr' not in vals:
-            vals['cashier_rcpt_nr'] = self._get_sequence(cr, uid, 'lct_tos_integration', 'sequence_cashier_receipt_number', context=context)
+            vals['cashier_rcpt_nr'] = self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', 'sequence_cashier_receipt_number', context=context)
         return super(account_voucher, self).create(cr, uid, vals, context=context)
 
     def button_proforma_voucher(self, cr, uid, ids, context=None):
