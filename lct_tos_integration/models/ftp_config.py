@@ -358,18 +358,18 @@ class ftp_config(osv.osv):
             loc_file = os.path.join(module_path, 'tmp', filename)
             with open(loc_file, 'w+') as f:
                 ftp.retrlines('RETR ' + filename, f.write)
-            if re.match('^VBL_IN_\d{6}_\d{6}\.xml$', filename):
+            if re.match('^VBL_\d{6}_\d{6}\.xml$', filename):
                 root = ET.parse(loc_file).getroot()
                 invoice_ids.extend(self._import_vbl(cr, uid, root, context=context))
                 os.remove(loc_file)
                 ftp.delete(filename)
-            elif re.match('^APP_IN_\d{6}_\d{6}\.xml$', filename):
+            elif re.match('^APP_\d{6}_\d{6}\.xml$', filename):
                 root = ET.parse(loc_file).getroot()
                 invoice_ids.extend(self._import_app(cr, uid, root, context=context))
                 os.remove(loc_file)
                 ftp.delete(filename)
             else:
-                raise osv.except_osv(('Error in file %s' % self.curr_file), ('The following file name (%s) does not respect one of the accepted formats (VBL_IN_YYMMDD_SEQ000.xml , APP_IN_YYMMDD_SEQ000.xml)' % filename))
+                raise osv.except_osv(('Error in file %s' % self.curr_file), ('The following file name (%s) does not respect one of the accepted formats (VBL_YYMMDD_SEQ000.xml , APP_YYMMDD_SEQ000.xml)' % filename))
         return invoice_ids
 
     def button_import_data(self, cr, uid, ids, context=None):
@@ -477,6 +477,6 @@ class ftp_config(osv.osv):
         sequence = self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', 'sequence_appointment_validate_export', context=context)
 
         local_path = __file__.split('models')[0] + "tmp/"
-        file_name = 'APP_OUT_' + datetime.today().strftime('%y%m%d') + sequence + '.xml'
+        file_name = 'APP_' + datetime.today().strftime('%y%m%d') + sequence + '.xml'
         self._write_xml_file(local_path + file_name, root)
         self._upload_file(cr, uid, local_path, file_name, context=context)
