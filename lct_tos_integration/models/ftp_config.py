@@ -376,6 +376,8 @@ class ftp_config(osv.osv):
                 subelmnt.text = val
             elif isinstance(val, str):
                 subelmnt.text = unicode(val)
+            elif isinstance(val, int):
+                subelmnt.text = unicode(str(val))
             elif isinstance(val,dict):
                 self._dict_to_tree(val, subelmnt)
             elif isinstance(val,list):
@@ -383,34 +385,39 @@ class ftp_config(osv.osv):
                     self._dict_to_tree(list_elem, subelmnt)
 
 
-    def _write_app_tree(self, cr, uid, app_ids, context=None):
+    def _write_app_tree(self, cr, uid, app_id, payment_id, context=None):
         root = ET.Element('appointments')
         invoice_model = self.pool.get('account.invoice')
-        invoices = invoice_model.browse(cr, uid, app_ids, context=context)
-        for invoice in invoices:
-            lines = []
-            for invoice_line in invoice.invoice_line:
-                product = invoice_line.product_id
-                line = {
-                    'line': {
-                        'container_operator': invoice_line.cont_operator,
-                        'category': 'I' if product.category_id.name == 'Import' else 'E',
-                        'container_size': product.size_id.size,
-                        'status': 'F' if product.status_id.name == 'Full' else 'E',
-                        'container_type': product.type_id.name,
-                    }
+        voucher_model = self.pool.get('account.voucher')
+        invoice = invoice_model.browse(cr, uid, app_id, context=context)
+        voucher = voucher_model.browse(cr, uid, payment_id, context=context)
+        lines = []
+        for invoice_line in invoice.invoice_line:
+            product = invoice_line.product_id
+            line = {
+                'line': {
+                    'container_operator': invoice_line.cont_operator,
+                    'category': 'I' if product.category_id.name == 'Import' else 'E',
+                    'container_size': product.size_id.size,
+                    'status': 'F' if product.status_id.name == 'Full' else 'E',
+                    'container_type': product.type_id.name,
                 }
-                for cont_nr in invoice_line.cont_nr_ids:
-                    line['line']['container_number'] = cont_nr.name
-                    lines.append(line)
-            values = {
-                'customer_id': invoice.partner_id.name,
-                'individual_customer': 'IND' if invoice.individual_cust else '',
-                'appointment_reference': invoice.appoint_ref,
-                'appointment_date': invoice.appoint_date,
-                'lines': lines,
             }
-            self._dict_to_tree(values, ET.SubElement(root, 'appointment'))
+            for cont_nr in invoice_line.cont_nr_ids:
+                line['line']['container_number'] = cont_nr.name
+                lines.append(line)
+        values = {
+            'customer_id': invoice.partner_id.name,
+            'individual_customer': 'IND' if invoice.individual_cust else '',
+            'appointment_reference': invoice.appoint_ref,
+            'appointment_date': invoice.appoint_date,
+            'payment_made': 'YES',
+            'pay_through_date': invoice.date_due,
+            'payment_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            'cashier_receipt_number': voucher.cashier_rcpt_nr, # TODO
+            'lines': lines,
+        }
+        self._dict_to_tree(values, ET.SubElement(root, 'appointment'))
         return root
 
     def _get_sequence(self, cr, uid, module, xml_id, context=None):
@@ -442,11 +449,10 @@ class ftp_config(osv.osv):
             ftp.storlines('STOR ' + file_name, f)
         os.remove(local_file)
 
-    def export_app(self, cr, uid, app_ids, context=None):
-        if not app_ids:
+    def export_app(self, cr, uid, app_id, payment_id, context=None):
+        if not (app_id and payment_id):
             return []
-
-        root = self._write_app_tree(cr, uid, app_ids, context=context)
+        root = self._write_app_tree(cr, uid, app_id, payment_id, context=context)
 
         sequence = self._get_sequence(cr, uid, 'lct_tos_integration', 'sequence_appointment_validate_export', context=context)
 
