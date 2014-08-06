@@ -199,7 +199,6 @@ class ftp_config(osv.osv):
             except:
                 raise osv.except_osv(('Error in file %s' % self.curr_file), ('Could not find the container number'))
 
-
             if product.name in lines_vals:
                 lines_vals[product.name]['quantity'] += 1
                 lines_vals[product.name]['cont_nr_ids'].append(cont_nr_mgc_nr)
@@ -268,7 +267,6 @@ class ftp_config(osv.osv):
             vals['partner_id'] = partner_ids[0]
         else:
             raise osv.except_osv(('Error in file %s' % self.curr_file), ('No customer with this name (%s) was found' % vals['partner_id'] ))
-
 
         invoice_line = self._get_app_lines(cr, uid, invoice.find('lines'), invoice_map['line_map'], context=context) \
                 if invoice_type == 'app' \
@@ -380,7 +378,6 @@ class ftp_config(osv.osv):
     def cron_import_data(self, cr, uid, context=None):
         self._import_data(cr, uid, self.search(cr, uid, [('active','=',True)]), context=context)
 
-
     # Data Export
 
     def _dict_to_tree(self, vals, elmnt):
@@ -388,9 +385,9 @@ class ftp_config(osv.osv):
             subelmnt = ET.SubElement(elmnt, tag)
             if isinstance(val, unicode):
                 subelmnt.text = val
-            elif isinstance(val, str) and not isinstance(val, bool):
+            elif isinstance(val, str):
                 subelmnt.text = unicode(val)
-            elif isinstance(val, int):
+            elif isinstance(val, int) and not isinstance(val, bool):
                 subelmnt.text = unicode(str(val))
             elif isinstance(val,dict):
                 self._dict_to_tree(val, subelmnt)
