@@ -388,7 +388,7 @@ class ftp_config(osv.osv):
             subelmnt = ET.SubElement(elmnt, tag)
             if isinstance(val, unicode):
                 subelmnt.text = val
-            elif isinstance(val, str):
+            elif isinstance(val, str) and not isinstance(val, bool):
                 subelmnt.text = unicode(val)
             elif isinstance(val, int):
                 subelmnt.text = unicode(str(val))
