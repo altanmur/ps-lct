@@ -37,8 +37,6 @@
         'data/product_properties.xml',
         'data/products.xml',
         'data/cron.xml',
-        'data/actions.xml',
-        'data/ir_sequence.xml',
         'data/ir_sequences.xml',
         ],
     'images': [],
