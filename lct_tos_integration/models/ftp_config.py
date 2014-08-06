@@ -467,7 +467,7 @@ class ftp_config(osv.osv):
         sequence = self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', sequence_xml_id, context=context)
 
         local_path = __file__.split('models')[0] + "tmp/"
-        file_name = file_prefix + datetime.today().strftime('%y%m%d') + '_SEQ' + sequence + '.xml'
+        file_name = file_prefix + datetime.today().strftime('%y%m%d') + '_' + sequence + '.xml'
         self._write_xml_file(local_path + file_name, root)
         self._upload_file(cr, uid, local_path, file_name, context=context)
 
@@ -479,6 +479,6 @@ class ftp_config(osv.osv):
         sequence = self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', 'sequence_appointment_validate_export', context=context)
 
         local_path = __file__.split('models')[0] + "tmp/"
-        file_name = 'APP_' + datetime.today().strftime('%y%m%d') + sequence + '.xml'
+        file_name = 'APP_' + datetime.today().strftime('%y%m%d') + '_' + sequence + '.xml'
         self._write_xml_file(local_path + file_name, root)
         self._upload_file(cr, uid, local_path, file_name, context=context)
