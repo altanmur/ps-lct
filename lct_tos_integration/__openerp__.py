@@ -39,6 +39,7 @@
         'data/cron.xml',
         'data/actions.xml',
         'data/ir_sequence.xml',
+        'data/ir_sequences.xml',
         ],
     'images': [],
     'demo': [],

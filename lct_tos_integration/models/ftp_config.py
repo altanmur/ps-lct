@@ -20,19 +20,12 @@
 ##############################################################################
 
 from openerp.osv import fields, osv
-<<<<<<< HEAD
 from ftplib import FTP
-from xml.etree import ElementTree as ET
+from lxml import etree as ET
 import os
 from datetime import datetime
 import re
-=======
-from datetime import datetime, timedelta
-from lxml import etree as ET
 import io
-from ftplib import FTP
-import os
->>>>>>> master-9000-tgr
 
 class ftp_config(osv.osv):
     _name="ftp.config"
@@ -397,8 +390,13 @@ class ftp_config(osv.osv):
                 subelmnt.text = val
             elif isinstance(val, str):
                 subelmnt.text = unicode(val)
+            elif isinstance(val, int):
+                subelmnt.text = unicode(str(val))
             elif isinstance(val,dict):
                 self._dict_to_tree(val, subelmnt)
+            elif isinstance(val,list):
+                for list_elem in val:
+                    self._dict_to_tree(list_elem, subelmnt)
 
     def _write_partners_tree(self, cr, uid, partner_ids, context=None):
         root = ET.Element('customers')
@@ -418,6 +416,25 @@ class ftp_config(osv.osv):
                 'phone': partner.phone or partner.mobile or False
             }
             self._dict_to_tree(values, ET.SubElement(root, 'customer'))
+        return root
+
+    def _write_app_tree(self, cr, uid, app_id, payment_id, context=None):
+        root = ET.Element('appointments')
+        invoice_model = self.pool.get('account.invoice')
+        voucher_model = self.pool.get('account.voucher')
+        invoice = invoice_model.browse(cr, uid, app_id, context=context)
+        voucher = voucher_model.browse(cr, uid, payment_id, context=context)
+        values = {
+            'customer_id': invoice.partner_id.name,
+            'individual_customer': 'IND' if invoice.individual_cust else '',
+            'appointment_reference': invoice.appoint_ref,
+            'appointment_date': invoice.appoint_date,
+            'payment_made': 'YES',
+            'pay_through_date': invoice.date_due,
+            'payment_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            'cashier_receipt_number': voucher.cashier_rcpt_nr, # TODO
+        }
+        self._dict_to_tree(values, ET.SubElement(root, 'appointment'))
         return root
 
     def _get_sequence(self, cr, uid, module, xml_id, context=None):
@@ -467,5 +484,14 @@ class ftp_config(osv.osv):
         self._write_xml_file(local_path + file_name, root)
         self._upload_file(cr, uid, local_path, file_name, context=context)
 
+    def export_app(self, cr, uid, app_id, payment_id, context=None):
+        if not (app_id and payment_id):
+            return []
+        root = self._write_app_tree(cr, uid, app_id, payment_id, context=context)
 
+        sequence = self._get_sequence(cr, uid, 'lct_tos_integration', 'sequence_appointment_validate_export', context=context)
 
+        local_path = __file__.split('models')[0] + "tmp/"
+        file_name = 'APP_OUT_' + datetime.today().strftime('%y%m%d') + sequence + '.xml'
+        self._write_xml_file(local_path + file_name, root)
+        self._upload_file(cr, uid, local_path, file_name, context=context)
