@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2012 Tiny SPRL (<http://tiny.be>).
+#    Copyright (C) 2004-TODAY OpenERP S.A. <http://www.openerp.com>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,28 +19,23 @@
 #
 ##############################################################################
 
-{
-    'name': 'LCT TOS integration',
-    'author': 'OpenERP SA',
-    'version': '0.1',
-    'depends': ['base','account','product'],
-    'category' : 'Tools',
-    'summary': 'LCT TOS integration',
-    'description': """
-        LCT TOS integration
-    """,
-    'data': [
-        'views/account.xml',
-        'views/ftp_config.xml',
-        'views/product.xml',
-        'views/product_properties.xml',
-        'data/product_properties.xml',
-        'data/products.xml',
-        'data/cron.xml',
-        'data/ir_sequences.xml',
-        ],
-    'images': [],
-    'demo': [],
-    'installable': True,
-    'application' : True,
-}
+from openerp.osv import fields, osv
+from datetime import datetime, timedelta
+import traceback
+
+class res_partner(osv.Model):
+    _inherit = 'res.partner'
+
+    def create(self, cr, uid, vals, context=None):
+        partner_id = super(res_partner, self).create(cr, uid, vals, context=context)
+        self.pool.get('ftp.config').export_partners(cr, uid, [partner_id], 'create', context=context)
+        return partner_id
+
+    def write(self, cr, uid, ids, vals, context=None):
+        res = super(res_partner, self).write(cr, uid, ids, vals, context=context)
+        filename = __file__.rstrip('c')
+        for call in traceback.extract_stack():
+            if call[0] == filename and call[2] == 'create':
+                return res
+        self.pool.get('ftp.config').export_partners(cr, uid, ids, 'update', context=context)
+        return res

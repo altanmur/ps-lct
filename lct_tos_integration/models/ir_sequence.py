@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2012 Tiny SPRL (<http://tiny.be>).
+#    Copyright (C) 2004-TODAY OpenERP S.A. <http://www.openerp.com>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,28 +19,18 @@
 #
 ##############################################################################
 
-{
-    'name': 'LCT TOS integration',
-    'author': 'OpenERP SA',
-    'version': '0.1',
-    'depends': ['base','account','product'],
-    'category' : 'Tools',
-    'summary': 'LCT TOS integration',
-    'description': """
-        LCT TOS integration
-    """,
-    'data': [
-        'views/account.xml',
-        'views/ftp_config.xml',
-        'views/product.xml',
-        'views/product_properties.xml',
-        'data/product_properties.xml',
-        'data/products.xml',
-        'data/cron.xml',
-        'data/ir_sequences.xml',
-        ],
-    'images': [],
-    'demo': [],
-    'installable': True,
-    'application' : True,
-}
+from openerp.osv import fields, osv
+
+class ir_sequence(osv.osv):
+    _inherit = "ir.sequence"
+
+    def get_next_by_xml_id(self, cr, uid, module, xml_id, context=None):
+        ir_model_data_model = self.pool.get('ir.model.data')
+        mdid = ir_model_data_model._get_id(cr, uid, module, xml_id)
+        sequence_id = ir_model_data_model.read(cr, uid, [mdid], ['res_id'])[0]['res_id']
+        sequence_obj = self.browse(cr, uid, sequence_id, context=context)
+        sequence = self.next_by_id(cr, uid, sequence_id, context=context)
+        if int(sequence) >= 10**(sequence_obj.padding):
+            self._alter_sequence(cr, sequence_id, 1, 1)
+            sequence = self.next_by_id(cr, uid, sequence_id, context=context)
+        return sequence

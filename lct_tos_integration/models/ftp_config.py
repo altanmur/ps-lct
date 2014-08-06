@@ -21,10 +21,11 @@
 
 from openerp.osv import fields, osv
 from ftplib import FTP
-from xml.etree import ElementTree as ET
+from lxml import etree as ET
 import os
 from datetime import datetime
 import re
+import io
 
 class ftp_config(osv.osv):
     _name="ftp.config"
@@ -47,6 +48,8 @@ class ftp_config(osv.osv):
     _constraints = [
         (_check_active, 'There can only be one active ftp configuration', ['active']),
     ]
+
+    # Data Import
 
     def _get_elmnt_text(self, elmnt, tag):
         sub_elmnt = elmnt.find(tag)
@@ -196,7 +199,6 @@ class ftp_config(osv.osv):
             except:
                 raise osv.except_osv(('Error in file %s' % self.curr_file), ('Could not find the container number'))
 
-
             if product.name in lines_vals:
                 lines_vals[product.name]['quantity'] += 1
                 lines_vals[product.name]['cont_nr_ids'].append(cont_nr_mgc_nr)
@@ -265,7 +267,6 @@ class ftp_config(osv.osv):
             vals['partner_id'] = partner_ids[0]
         else:
             raise osv.except_osv(('Error in file %s' % self.curr_file), ('No customer with this name (%s) was found' % vals['partner_id'] ))
-
 
         invoice_line = self._get_app_lines(cr, uid, invoice.find('lines'), invoice_map['line_map'], context=context) \
                 if invoice_type == 'app' \
@@ -357,18 +358,18 @@ class ftp_config(osv.osv):
             loc_file = os.path.join(module_path, 'tmp', filename)
             with open(loc_file, 'w+') as f:
                 ftp.retrlines('RETR ' + filename, f.write)
-            if re.match('^VBL_IN_\d{6}_\d{6}\.xml$', filename):
+            if re.match('^VBL_\d{6}_\d{6}\.xml$', filename):
                 root = ET.parse(loc_file).getroot()
                 invoice_ids.extend(self._import_vbl(cr, uid, root, context=context))
                 os.remove(loc_file)
                 ftp.delete(filename)
-            elif re.match('^APP_IN_\d{6}_\d{6}\.xml$', filename):
+            elif re.match('^APP_\d{6}_\d{6}\.xml$', filename):
                 root = ET.parse(loc_file).getroot()
                 invoice_ids.extend(self._import_app(cr, uid, root, context=context))
                 os.remove(loc_file)
                 ftp.delete(filename)
             else:
-                raise osv.except_osv(('Error in file %s' % self.curr_file), ('The following file name (%s) does not respect one of the accepted formats (VBL_IN_YYMMDD_SEQ000.xml , APP_IN_YYMMDD_SEQ000.xml)' % filename))
+                raise osv.except_osv(('Error in file %s' % self.curr_file), ('The following file name (%s) does not respect one of the accepted formats (VBL_YYMMDD_SEQ000.xml , APP_YYMMDD_SEQ000.xml)' % filename))
         return invoice_ids
 
     def button_import_data(self, cr, uid, ids, context=None):
@@ -376,3 +377,106 @@ class ftp_config(osv.osv):
 
     def cron_import_data(self, cr, uid, context=None):
         self._import_data(cr, uid, self.search(cr, uid, [('active','=',True)]), context=context)
+
+    # Data Export
+
+    def _dict_to_tree(self, vals, elmnt):
+        for tag, val in vals.iteritems():
+            subelmnt = ET.SubElement(elmnt, tag)
+            if isinstance(val, unicode):
+                subelmnt.text = val
+            elif isinstance(val, str):
+                subelmnt.text = unicode(val)
+            elif isinstance(val, int) and not isinstance(val, bool):
+                subelmnt.text = unicode(str(val))
+            elif isinstance(val,dict):
+                self._dict_to_tree(val, subelmnt)
+            elif isinstance(val,list):
+                for list_elem in val:
+                    self._dict_to_tree(list_elem, subelmnt)
+
+    def _write_partners_tree(self, cr, uid, partner_ids, context=None):
+        root = ET.Element('customers')
+        partner_model = self.pool.get('res.partner')
+        partners = partner_model.browse(cr, uid, partner_ids, context=context)
+        for partner in partners:
+            values = {
+                'customer_id': partner.name,
+                'customer_key': partner.ref,
+                'name': partner.parent_id and partner.parent_id.name or False,
+                'street': (partner.street + ( (', ' + partner.street2) if partner.street2 else '') if partner.street else ''),
+                'city': partner.city,
+                'zip': partner.zip,
+                'country': partner.country_id and partner.country_id.name,
+                'email': partner.email,
+                'website': partner.website,
+                'phone': partner.phone or partner.mobile or False
+            }
+            self._dict_to_tree(values, ET.SubElement(root, 'customer'))
+        return root
+
+    def _write_app_tree(self, cr, uid, app_id, payment_id, context=None):
+        root = ET.Element('appointments')
+        invoice_model = self.pool.get('account.invoice')
+        voucher_model = self.pool.get('account.voucher')
+        invoice = invoice_model.browse(cr, uid, app_id, context=context)
+        voucher = voucher_model.browse(cr, uid, payment_id, context=context)
+        values = {
+            'customer_id': invoice.partner_id.name,
+            'individual_customer': 'IND' if invoice.individual_cust else '',
+            'appointment_reference': invoice.appoint_ref,
+            'appointment_date': invoice.appoint_date,
+            'payment_made': 'YES',
+            'pay_through_date': invoice.date_due,
+            'payment_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            'cashier_receipt_number': voucher.cashier_rcpt_nr, # TODO
+        }
+        self._dict_to_tree(values, ET.SubElement(root, 'appointment'))
+        return root
+
+    def _write_xml_file(self, local_file, root):
+        with io.open(local_file, 'w+', encoding='utf-8') as f:
+            f.write(u'<?xml version="1.0" encoding="utf-8"?>')
+            f.write(ET.tostring(root, encoding='utf-8', pretty_print=True).decode('utf-8'))
+
+    def _upload_file(self, cr, uid, local_path, file_name, context=None):
+        ftp_config_ids = self.search(cr, uid, [('active','=',True)], context=context)
+        ftp_config_id = ftp_config_ids and ftp_config_ids[0] or False
+        config_obj = self.browse(cr, uid, ftp_config_id, context=context)
+        ftp = FTP(host=config_obj.addr, user=config_obj.user, passwd=config_obj.psswd)
+        inbound_path =  config_obj.inbound_path.rstrip('/') + "/"
+        ftp.cwd(inbound_path)
+        local_file = local_path + file_name
+        with open(local_file, 'r') as f:
+            ftp.storlines('STOR ' + file_name, f)
+        os.remove(local_file)
+
+    def export_partners(self, cr, uid, partner_ids, create_or_write='create', context=None):
+        if not partner_ids:
+            return []
+        if create_or_write not in ['create', 'update']:
+            raise osv.except_osv(('Error'), ("Argument create_or_write should be 'create' or 'write'"))
+
+        sequence_xml_id, file_prefix = ('sequence_partner_update_export', 'CUS_UPDATE_') if create_or_write == 'update' \
+            else ('sequence_partner_create_export', 'CUS_CREATE_')
+
+        root = self._write_partners_tree(cr, uid, partner_ids, context=context)
+
+        sequence = self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', sequence_xml_id, context=context)
+
+        local_path = __file__.split('models')[0] + "tmp/"
+        file_name = file_prefix + datetime.today().strftime('%y%m%d') + '_SEQ' + sequence + '.xml'
+        self._write_xml_file(local_path + file_name, root)
+        self._upload_file(cr, uid, local_path, file_name, context=context)
+
+    def export_app(self, cr, uid, app_id, payment_id, context=None):
+        if not (app_id and payment_id):
+            return []
+        root = self._write_app_tree(cr, uid, app_id, payment_id, context=context)
+
+        sequence = self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', 'sequence_appointment_validate_export', context=context)
+
+        local_path = __file__.split('models')[0] + "tmp/"
+        file_name = 'APP_' + datetime.today().strftime('%y%m%d') + sequence + '.xml'
+        self._write_xml_file(local_path + file_name, root)
+        self._upload_file(cr, uid, local_path, file_name, context=context)
