@@ -78,8 +78,8 @@ class account_voucher(osv.osv):
         return sequence
 
     def create(self, cr, uid, vals, context=None):
-        if 'cashier_rcpt_number' not in vals:
-            vals['cashier_rcpt_number'] = self._get_sequence(cr, uid, 'lct_tos_integration', 'sequence_cashier_receipt_number', context=context)
+        if 'cashier_rcpt_nr' not in vals:
+            vals['cashier_rcpt_nr'] = self._get_sequence(cr, uid, 'lct_tos_integration', 'sequence_cashier_receipt_number', context=context)
         return super(account_voucher, self).create(cr, uid, vals, context=context)
 
     def button_proforma_voucher(self, cr, uid, ids, context=None):
