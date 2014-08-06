@@ -395,21 +395,6 @@ class ftp_config(osv.osv):
         voucher_model = self.pool.get('account.voucher')
         invoice = invoice_model.browse(cr, uid, app_id, context=context)
         voucher = voucher_model.browse(cr, uid, payment_id, context=context)
-        lines = []
-        for invoice_line in invoice.invoice_line:
-            product = invoice_line.product_id
-            line = {
-                'line': {
-                    'container_operator': invoice_line.cont_operator,
-                    'category': 'I' if product.category_id.name == 'Import' else 'E',
-                    'container_size': product.size_id.size,
-                    'status': 'F' if product.status_id.name == 'Full' else 'E',
-                    'container_type': product.type_id.name,
-                }
-            }
-            for cont_nr in invoice_line.cont_nr_ids:
-                line['line']['container_number'] = cont_nr.name
-                lines.append(line)
         values = {
             'customer_id': invoice.partner_id.name,
             'individual_customer': 'IND' if invoice.individual_cust else '',
@@ -419,7 +404,6 @@ class ftp_config(osv.osv):
             'pay_through_date': invoice.date_due,
             'payment_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             'cashier_receipt_number': voucher.cashier_rcpt_nr, # TODO
-            'lines': lines,
         }
         self._dict_to_tree(values, ET.SubElement(root, 'appointment'))
         return root
