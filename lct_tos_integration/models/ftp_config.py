@@ -308,24 +308,28 @@ class ftp_config(osv.osv):
                 product_ids = product_model.search(cr, uid, [('name', '=', 'Hatch cover move')], context=context)
                 if not product_ids:
                     raise osv.except_osv(('Error in file %s' % self.curr_file), ('No product found for "Hatch cover move"'))
-                product = product_model.browse(cr, uid, product_ids)[0]
+                product = product_model.browse(cr, uid, product_ids, context=context)[0]
+                account = product.property_account_income or (product.categ_id and product.categ_id.property_account_income_categ) or False
                 line_vals = {
                     'product_id': product.id,
                     'name' : product.name,
                     'quantity': int(self._get_elmnt_text(vbilling, 'hatchcovers_moves')),
                     'price_unit': product.list_price,
+                    'account_id': account.id,
                 }
                 vbilling_vals['invoice_line'].append((0,0,line_vals))
             if vbilling.find('gearbox_count') is not None and int(self._get_elmnt_text(vbilling, 'gearbox_count')) > 0:
-                product_ids = product_model.search(cr, uid, [('name', '=', 'Gearbox count')])
+                product_ids = product_model.search(cr, uid, [('name', '=', 'Gearbox count')], context=context)
                 if not product_ids:
                     raise osv.except_osv(('Error in file %s' % self.curr_file), ('No product found for "Gearbox count"'))
-                product = product_model.browse(cr, uid, product_ids)[0]
+                product = product_model.browse(cr, uid, product_ids, context=context)[0]
+                account = product.property_account_income or (product.categ_id and product.categ_id.property_account_income_categ) or False
                 line_vals = {
                     'product_id': product.id,
                     'name' : product.name,
                     'quantity': int(self._get_elmnt_text(vbilling, 'gearbox_count')),
                     'price_unit': product.list_price,
+                    'account_id': account.id,
                 }
                 vbilling_vals['invoice_line'].append((0,0,line_vals))
             vbilling_ids.append(invoice_model.create(cr, uid, vbilling_vals, context=context))
