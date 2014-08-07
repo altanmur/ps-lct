@@ -66,7 +66,7 @@ class TestExport(TransactionCase):
             if file != files_before[0]:
                 filename = file
                 break
-        match = re.match("^CUS_CREATE_\d{6}_SEQ(\d{6}).xml$", filename)
+        match = re.match("^CUS_\d{6}_SEQ(\d{6}).xml$", filename)
         self.assertTrue(match is not None, 'Bad filename format')
         sequence2 = int(match.group(1))
         self.assertTrue(sequence2 == (sequence+1)%1000000)

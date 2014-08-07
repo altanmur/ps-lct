@@ -453,21 +453,16 @@ class ftp_config(osv.osv):
             ftp.storlines('STOR ' + file_name, f)
         os.remove(local_file)
 
-    def export_partners(self, cr, uid, partner_ids, create_or_write='create', context=None):
+    def export_partners(self, cr, uid, partner_ids, context=None):
         if not partner_ids:
-            return []
-        if create_or_write not in ['create', 'update']:
-            raise osv.except_osv(('Error'), ("Argument create_or_write should be 'create' or 'write'"))
-
-        sequence_xml_id, file_prefix = ('sequence_partner_update_export', 'CUS_UPDATE_') if create_or_write == 'update' \
-            else ('sequence_partner_create_export', 'CUS_CREATE_')
+            return
 
         root = self._write_partners_tree(cr, uid, partner_ids, context=context)
 
-        sequence = self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', sequence_xml_id, context=context)
+        sequence = self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', 'sequence_partner_export', context=context)
 
         local_path = __file__.split('models')[0] + "tmp/"
-        file_name = file_prefix + datetime.today().strftime('%y%m%d') + '_' + sequence + '.xml'
+        file_name = 'CUS_' + datetime.today().strftime('%y%m%d') + '_' + sequence + '.xml'
         self._write_xml_file(local_path + file_name, root)
         self._upload_file(cr, uid, local_path, file_name, context=context)
 

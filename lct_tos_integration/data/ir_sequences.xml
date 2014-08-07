@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
-        <record id="sequence_partner_create_export" model="ir.sequence">
-            <field name="name">Customer creation export sequence</field>
+        <record id="sequence_partner_export" model="ir.sequence">
+            <field name="name">Customer export sequence</field>
             <field name="active" eval="True"/>
             <field name="padding">6</field>
             <field name="number_increment">1</field>
@@ -10,13 +10,6 @@
         </record>
         <record id="sequence_appointment_validate_export" model="ir.sequence">
             <field name="name">Appointment validation export sequence</field>
-            <field name="active" eval="True"/>
-            <field name="padding">6</field>
-            <field name="number_increment">1</field>
-            <field name="implementation">standard</field>
-        </record>
-        <record id="sequence_partner_update_export" model="ir.sequence">
-            <field name="name">Customer update export sequence</field>
             <field name="active" eval="True"/>
             <field name="padding">6</field>
             <field name="number_increment">1</field>

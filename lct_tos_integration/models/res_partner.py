@@ -28,7 +28,7 @@ class res_partner(osv.Model):
 
     def create(self, cr, uid, vals, context=None):
         partner_id = super(res_partner, self).create(cr, uid, vals, context=context)
-        self.pool.get('ftp.config').export_partners(cr, uid, [partner_id], 'create', context=context)
+        self.pool.get('ftp.config').export_partners(cr, uid, [partner_id], context=context)
         return partner_id
 
     def write(self, cr, uid, ids, vals, context=None):
@@ -52,5 +52,5 @@ class res_partner(osv.Model):
             'mobile',
         ]
         if any(item in vals for item in to_update):
-            self.pool.get('ftp.config').export_partners(cr, uid, ids, 'update', context=context)
+            self.pool.get('ftp.config').export_partners(cr, uid, ids, context=context)
         return res
