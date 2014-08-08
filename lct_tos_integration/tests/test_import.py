@@ -48,7 +48,7 @@ class TestImport(TransactionCase):
         outbound_path = "/home/ftp/data/openerp/" + self.config['outbound_path'] + '/'
         for outbound_file in sftp.listdir(outbound_path):
             sftp.remove(outbound_path + outbound_file)
-        xml_dirs = ['APP_XML_files', 'VBL_XML_files']
+        xml_dirs = ['APP_XML_files']
         local_path_path = os.path.join(__file__.split(__file__.split('/')[-1])[0], 'xml_files')
         self.sum = 0
         for xml_dir in xml_dirs:
