@@ -1,6 +1,12 @@
 <?xml version="1.0"?>
 <openerp>
   <data>
+    <record id="hatch_cover_move" model="product.product">
+      <field name="name">Hatch cover move</field>
+    </record>
+    <record id="gearbox_count" model="product.product">
+      <field name="name">Gearbox count</field>
+    </record>
     <record id="gp_discharge_20_import_full" model="product.product">
       <field name="name">GP DISCHARGE 20 IMPORT FULL</field>
       <field name="type_id" ref="lct_product_type_gp"/>

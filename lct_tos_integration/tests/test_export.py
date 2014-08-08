@@ -2,7 +2,7 @@ from openerp.tests.common import TransactionCase
 from openerp.osv import osv
 from ftplib import FTP
 import re
-import xml.etree.ElementTree as ET
+import lxml.etree as ET
 import os
 
 class TestExport(TransactionCase):
@@ -77,7 +77,7 @@ class TestExport(TransactionCase):
         self.assertTrue(len(customer) == 1, 'There should be one and only one customer in the xml file when one customer is created')
         customer = customer[0]
         expected_values = {
-            'customer_id': vals['name'],
+            'customer_id': str(partner_id),
             'customer_key': vals['ref'],
             'name': 'New Company',
             'street': vals['street'] + ', ' + vals['street2'],

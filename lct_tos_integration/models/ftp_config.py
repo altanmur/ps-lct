@@ -228,6 +228,7 @@ class ftp_config(osv.osv):
             'partner_id': 'customer_id',
             'appoint_ref': 'appointment_reference',
             'appoint_date': 'appointment_date',
+            'date_due': 'pay_through_date',
             'line_map':  {
                 'product_map':{
                     'category_id': 'category',
@@ -262,8 +263,9 @@ class ftp_config(osv.osv):
             if isinstance(tag, str):
                 vals[field] = self._get_elmnt_text(invoice, tag)
 
-        partner_ids = partner_model.search(cr, uid, [('name', '=', vals['partner_id'])], context=context) \
-            or partner_model.search(cr, uid, [('name', 'ilike', vals['partner_id'])], context=context)
+        if not vals['partner_id'].isdigit():
+            raise osv.except_osv(('Error in file %s' % self.curr_file), ('customer_id should be an integer'))
+        partner_ids = partner_model.search(cr, uid, [('id', '=', int(vals['partner_id']))], context=context)
         if partner_ids:
             vals['partner_id'] = partner_ids[0]
         else:
@@ -390,7 +392,7 @@ class ftp_config(osv.osv):
                 subelmnt.text = val
             elif isinstance(val, str):
                 subelmnt.text = unicode(val)
-            elif isinstance(val, int) and not isinstance(val, bool):
+            elif isinstance(val, int) or isinstance(val, long) and not isinstance(val, bool):
                 subelmnt.text = unicode(str(val))
             elif isinstance(val,dict):
                 self._dict_to_tree(val, subelmnt)
@@ -404,7 +406,7 @@ class ftp_config(osv.osv):
         partners = partner_model.browse(cr, uid, partner_ids, context=context)
         for partner in partners:
             values = {
-                'customer_id': partner.name,
+                'customer_id': partner.id,
                 'customer_key': partner.ref,
                 'name': partner.parent_id and partner.parent_id.name or False,
                 'street': (partner.street + ( (', ' + partner.street2) if partner.street2 else '') if partner.street else '') or False,
@@ -456,7 +458,7 @@ class ftp_config(osv.osv):
 
     def export_partners(self, cr, uid, partner_ids, context=None):
         if not partner_ids:
-            return
+            return []
         ftp_config_ids = self.search(cr, uid, [('active','=',True)], context=context)
         if not ftp_config_ids:
             raise osv.except_osv(('Error'), ('Impossible to find an active FTP configuration to export this partner'))
@@ -468,6 +470,7 @@ class ftp_config(osv.osv):
         file_name = 'CUS_' + datetime.today().strftime('%y%m%d') + '_' + sequence + '.xml'
         self._write_xml_file(local_path + file_name, root)
         self._upload_file(cr, uid, local_path, file_name, context=context)
+        return partner_ids
 
     def export_app(self, cr, uid, app_id, payment_id, context=None):
         if not (app_id and payment_id):
