@@ -1,10 +1,8 @@
 from openerp.tests.common import TransactionCase
 from openerp.osv import osv
-from ftplib import FTP
-from time import sleep
-from itertools import combinations
 import paramiko
-import datetime
+import os
+from lxml import etree as ET
 
 
 class TestImport(TransactionCase):
@@ -13,6 +11,7 @@ class TestImport(TransactionCase):
         super(TestImport, self).setUp()
         self.ftp_config_model = self.registry('ftp.config')
         self.invoice_model = self.registry('account.invoice')
+        self.partner_model = self.registry('res.partner')
         cr, uid = self.cr, self.uid
         config_ids = self.ftp_config_model.search(cr, uid, [])
         self.ftp_config_model.unlink(cr, uid, config_ids)
@@ -22,11 +21,10 @@ class TestImport(TransactionCase):
             addr='192.168.0.11',
             user='openerp',
             psswd='Azerty01',
-            inbound_path='InBound',
-            outbound_path='test/transfer_complete'
+            inbound_path='test_inbound/transfer_complete',
+            outbound_path='test_outbound/transfer_complete'
         )
         self.config_id = self.ftp_config_model.create(cr, uid, config)
-        self.ftp = FTP(host=config['addr'],user=config['user'], passwd=config['psswd'])
 
     def test_only_one_active(self):
         cr, uid = self.cr, self.uid
@@ -43,44 +41,28 @@ class TestImport(TransactionCase):
             msg='Creating a second active config should raise an error'):
             self.ftp_config_model.create(cr, uid, config2)
 
-    def create_xml(self):
+    def _prepare_import(self):
         t = paramiko.Transport(("192.168.0.11", 22))
         t.connect(username="openerp", password="openerp")
         sftp = paramiko.SFTPClient.from_transport(t)
-        file_path = __file__.split('test_import.py')[0]
-        name = "VBL_"+datetime.datetime.now().strftime('%y%m%d')+"_000001.xml"
-        sftp.put(file_path + "VBL_IN.xml", "/home/ftp/data/openerp/test/transfer_complete/"+name)
-        name = "APP_"+datetime.datetime.now().strftime('%y%m%d')+"_000001.xml"
-        sftp.put(file_path + "APP_IN.xml", "/home/ftp/data/openerp/test/transfer_complete/"+name)
+        outbound_path = "/home/ftp/data/openerp/" + self.config['outbound_path'] + '/'
+        for outbound_file in sftp.listdir(outbound_path):
+            sftp.remove(outbound_path + outbound_file)
+        xml_dirs = ['APP_XML_files', 'VBL_XML_files']
+        local_path_path = os.path.join(__file__.split(__file__.split('/')[-1])[0], 'xml_files')
+        self.sum = 0
+        for xml_dir in xml_dirs:
+            local_path = os.path.join(local_path_path,xml_dir)
+            for xml_file in os.listdir(local_path):
+                xml_abs_file = os.path.join(local_path, xml_file)
+                sftp.put(xml_abs_file, outbound_path + xml_file)
+        print self.sum
 
     def test_import(self):
         cr, uid = self.cr, self.uid
-        config, ftp = self.config, self.ftp
-        ftp.cwd(config['outbound_path'])
-        for file in ftp.nlst():
-            try:
-                ftp.delete(file)
-            except:
-                ftp.rmd(file)
-        self.registry('res.partner').create(cr, uid, {'name': 'MSK'})
-        inv_ids = self.invoice_model.search(cr, uid, [('type2','=','vessel')])
+        self._prepare_import()
+        inv_ids = self.invoice_model.search(cr, uid, ['|',('type2','=','vessel'),('type2','=','appointment')])
         if inv_ids:
             self.invoice_model.unlink(cr, uid, inv_ids)
-        self.create_xml()
         self.ftp_config_model.button_import_data(cr, uid, [self.config_id])
-        inv_ids = self.invoice_model.search(cr, uid, [('type2','=','vessel')])
-        self.assertEqual(len(inv_ids),1,msg='Importing the xml file should create 1 invoice of type Vessel Billing')
-        invoice = self.invoice_model.browse(cr, uid, inv_ids)[0]
-        products = [line.product_id.name for line in invoice.invoice_line]
-        expected_products = [u'Discharge import 40 F GP', u'Load export 20 E GP', u'Discharge import 20 F GP', u'Hatch cover move', u'Gearbox count']
-        for expected_product in expected_products:
-            self.assertTrue(expected_product in products,"Products should all be imported, missing '%s'" % expected_product)
-
-        inv_ids = self.invoice_model.search(cr, uid, [('type2','=','appointment')])
-        self.assertEqual(len(inv_ids),1,msg='Importing the xml file should create 1 invoice of type Appointment')
-        invoice = self.invoice_model.browse(cr, uid, inv_ids)[0]
-        products = [line.product_id.name for line in invoice.invoice_line]
-        expected_products = [u'Storage import 20 F GP', u'Storage import 40 F GP', u'Reefer plugging import 20 F GP']
-        print products
-        for expected_product in expected_products:
-            self.assertTrue(expected_product in products,"Products should all be imported, missing '%s'" % expected_product)
+        vessel_ids = self.invoice_model.search(cr, uid, [('type2','=','vessel')])

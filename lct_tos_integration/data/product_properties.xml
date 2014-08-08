@@ -31,6 +31,9 @@
         <record id="lct_product_size_40" model="lct.product.size">
             <field name="size">40</field>
         </record>
+        <record id="lct_product_size_45" model="lct.product.size">
+            <field name="size">45</field>
+        </record>
         <record id="lct_product_status_full" model="lct.product.status">
             <field name="name">Full</field>
         </record>
@@ -39,6 +42,15 @@
         </record>
         <record id="lct_product_type_gp" model="lct.product.type">
             <field name="name">GP</field>
+        </record>
+        <record id="lct_product_type_vh" model="lct.product.type">
+            <field name="name">VH</field>
+        </record>
+        <record id="lct_product_type_pf" model="lct.product.type">
+            <field name="name">PF</field>
+        </record>
+        <record id="lct_product_type_re" model="lct.product.type">
+            <field name="name">RE</field>
         </record>
     </data>
 </openerp>

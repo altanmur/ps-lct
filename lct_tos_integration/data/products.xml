@@ -1,61 +1,1541 @@
 <?xml version="1.0"?>
 <openerp>
-    <data>
-        <record id="product_product_hcm" model="product.product">
-            <field name="name">Hatch cover move</field>
-            <field name="service_id" ref="lct_product_service_hcm"/>
-        </record>
-        <record id="product_product_gc" model="product.product">
-            <field name="name">Gearbox count</field>
-            <field name="service_id" ref="lct_product_service_gc"/>
-        </record>
-        <record id="product_product_di20fgp" model="product.product">
-            <field name="name">Discharge import 20 F GP</field>
-            <field name="service_id" ref="lct_product_service_discharge"/>
-            <field name="category_id" ref="lct_product_category_import"/>
-            <field name="size_id" ref="lct_product_size_20"/>
-            <field name="status_id" ref="lct_product_status_full"/>
-            <field name="type_id" ref="lct_product_type_gp"/>
-        </record>
-        <record id="product_product_di40fgp" model="product.product">
-            <field name="name">Discharge import 40 F GP</field>
-            <field name="service_id" ref="lct_product_service_discharge"/>
-            <field name="category_id" ref="lct_product_category_import"/>
-            <field name="size_id" ref="lct_product_size_40"/>
-            <field name="status_id" ref="lct_product_status_full"/>
-            <field name="type_id" ref="lct_product_type_gp"/>
-        </record>
-        <record id="product_product_le20egp" model="product.product">
-            <field name="name">Load export 20 E GP</field>
-            <field name="service_id" ref="lct_product_service_load"/>
-            <field name="category_id" ref="lct_product_category_export"/>
-            <field name="size_id" ref="lct_product_size_20"/>
-            <field name="status_id" ref="lct_product_status_empty"/>
-            <field name="type_id" ref="lct_product_type_gp"/>
-        </record>
-        <record id="product_product_si20fgp" model="product.product">
-            <field name="name">Storage import 20 F GP</field>
-            <field name="service_id" ref="lct_product_service_storage"/>
-            <field name="category_id" ref="lct_product_category_import"/>
-            <field name="size_id" ref="lct_product_size_20"/>
-            <field name="status_id" ref="lct_product_status_full"/>
-            <field name="type_id" ref="lct_product_type_gp"/>
-        </record>
-        <record id="product_product_si40fgp" model="product.product">
-            <field name="name">Storage import 40 F GP</field>
-            <field name="service_id" ref="lct_product_service_storage"/>
-            <field name="category_id" ref="lct_product_category_import"/>
-            <field name="size_id" ref="lct_product_size_40"/>
-            <field name="status_id" ref="lct_product_status_full"/>
-            <field name="type_id" ref="lct_product_type_gp"/>
-        </record>
-        <record id="product_product_ri20fgp" model="product.product">
-            <field name="name">Reefer plugging import 20 F GP</field>
-            <field name="service_id" ref="lct_product_service_reefer"/>
-            <field name="category_id" ref="lct_product_category_import"/>
-            <field name="size_id" ref="lct_product_size_20"/>
-            <field name="status_id" ref="lct_product_status_full"/>
-            <field name="type_id" ref="lct_product_type_gp"/>
-        </record>
-    </data>
+  <data>
+    <record id="gp_discharge_20_import_full" model="product.product">
+      <field name="name">GP DISCHARGE 20 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_discharge_20_import_full" model="product.product">
+      <field name="name">VH DISCHARGE 20 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_discharge_20_import_full" model="product.product">
+      <field name="name">PF DISCHARGE 20 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_discharge_20_import_full" model="product.product">
+      <field name="name">RE DISCHARGE 20 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_discharge_20_import_empty" model="product.product">
+      <field name="name">GP DISCHARGE 20 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_discharge_20_import_empty" model="product.product">
+      <field name="name">VH DISCHARGE 20 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_discharge_20_import_empty" model="product.product">
+      <field name="name">PF DISCHARGE 20 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_discharge_20_import_empty" model="product.product">
+      <field name="name">RE DISCHARGE 20 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_discharge_40_import_full" model="product.product">
+      <field name="name">GP DISCHARGE 40 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_discharge_40_import_full" model="product.product">
+      <field name="name">VH DISCHARGE 40 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_discharge_40_import_full" model="product.product">
+      <field name="name">PF DISCHARGE 40 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_discharge_40_import_full" model="product.product">
+      <field name="name">RE DISCHARGE 40 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_discharge_40_import_empty" model="product.product">
+      <field name="name">GP DISCHARGE 40 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_discharge_40_import_empty" model="product.product">
+      <field name="name">VH DISCHARGE 40 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_discharge_40_import_empty" model="product.product">
+      <field name="name">PF DISCHARGE 40 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_discharge_40_import_empty" model="product.product">
+      <field name="name">RE DISCHARGE 40 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_discharge_45_import_full" model="product.product">
+      <field name="name">GP DISCHARGE 45 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_discharge_45_import_full" model="product.product">
+      <field name="name">VH DISCHARGE 45 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_discharge_45_import_full" model="product.product">
+      <field name="name">PF DISCHARGE 45 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_discharge_45_import_full" model="product.product">
+      <field name="name">RE DISCHARGE 45 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_discharge_45_import_empty" model="product.product">
+      <field name="name">GP DISCHARGE 45 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_discharge_45_import_empty" model="product.product">
+      <field name="name">VH DISCHARGE 45 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_discharge_45_import_empty" model="product.product">
+      <field name="name">PF DISCHARGE 45 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_discharge_45_import_empty" model="product.product">
+      <field name="name">RE DISCHARGE 45 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_load_20_import_full" model="product.product">
+      <field name="name">GP LOAD 20 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_load_20_import_full" model="product.product">
+      <field name="name">VH LOAD 20 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_load_20_import_full" model="product.product">
+      <field name="name">PF LOAD 20 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_load_20_import_full" model="product.product">
+      <field name="name">RE LOAD 20 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_load_20_import_empty" model="product.product">
+      <field name="name">GP LOAD 20 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_load_20_import_empty" model="product.product">
+      <field name="name">VH LOAD 20 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_load_20_import_empty" model="product.product">
+      <field name="name">PF LOAD 20 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_load_20_import_empty" model="product.product">
+      <field name="name">RE LOAD 20 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_load_40_import_full" model="product.product">
+      <field name="name">GP LOAD 40 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_load_40_import_full" model="product.product">
+      <field name="name">VH LOAD 40 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_load_40_import_full" model="product.product">
+      <field name="name">PF LOAD 40 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_load_40_import_full" model="product.product">
+      <field name="name">RE LOAD 40 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_load_40_import_empty" model="product.product">
+      <field name="name">GP LOAD 40 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_load_40_import_empty" model="product.product">
+      <field name="name">VH LOAD 40 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_load_40_import_empty" model="product.product">
+      <field name="name">PF LOAD 40 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_load_40_import_empty" model="product.product">
+      <field name="name">RE LOAD 40 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_load_45_import_full" model="product.product">
+      <field name="name">GP LOAD 45 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_load_45_import_full" model="product.product">
+      <field name="name">VH LOAD 45 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_load_45_import_full" model="product.product">
+      <field name="name">PF LOAD 45 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_load_45_import_full" model="product.product">
+      <field name="name">RE LOAD 45 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_load_45_import_empty" model="product.product">
+      <field name="name">GP LOAD 45 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_load_45_import_empty" model="product.product">
+      <field name="name">VH LOAD 45 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_load_45_import_empty" model="product.product">
+      <field name="name">PF LOAD 45 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_load_45_import_empty" model="product.product">
+      <field name="name">RE LOAD 45 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_storage_20_import_full" model="product.product">
+      <field name="name">GP STORAGE 20 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_storage_20_import_full" model="product.product">
+      <field name="name">VH STORAGE 20 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_storage_20_import_full" model="product.product">
+      <field name="name">PF STORAGE 20 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_storage_20_import_full" model="product.product">
+      <field name="name">RE STORAGE 20 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_storage_20_import_empty" model="product.product">
+      <field name="name">GP STORAGE 20 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_storage_20_import_empty" model="product.product">
+      <field name="name">VH STORAGE 20 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_storage_20_import_empty" model="product.product">
+      <field name="name">PF STORAGE 20 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_storage_20_import_empty" model="product.product">
+      <field name="name">RE STORAGE 20 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_storage_40_import_full" model="product.product">
+      <field name="name">GP STORAGE 40 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_storage_40_import_full" model="product.product">
+      <field name="name">VH STORAGE 40 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_storage_40_import_full" model="product.product">
+      <field name="name">PF STORAGE 40 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_storage_40_import_full" model="product.product">
+      <field name="name">RE STORAGE 40 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_storage_40_import_empty" model="product.product">
+      <field name="name">GP STORAGE 40 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_storage_40_import_empty" model="product.product">
+      <field name="name">VH STORAGE 40 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_storage_40_import_empty" model="product.product">
+      <field name="name">PF STORAGE 40 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_storage_40_import_empty" model="product.product">
+      <field name="name">RE STORAGE 40 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_storage_45_import_full" model="product.product">
+      <field name="name">GP STORAGE 45 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_storage_45_import_full" model="product.product">
+      <field name="name">VH STORAGE 45 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_storage_45_import_full" model="product.product">
+      <field name="name">PF STORAGE 45 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_storage_45_import_full" model="product.product">
+      <field name="name">RE STORAGE 45 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_storage_45_import_empty" model="product.product">
+      <field name="name">GP STORAGE 45 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_storage_45_import_empty" model="product.product">
+      <field name="name">VH STORAGE 45 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_storage_45_import_empty" model="product.product">
+      <field name="name">PF STORAGE 45 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_storage_45_import_empty" model="product.product">
+      <field name="name">RE STORAGE 45 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_reefer_20_import_full" model="product.product">
+      <field name="name">GP REEFER 20 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_reefer_20_import_full" model="product.product">
+      <field name="name">VH REEFER 20 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_reefer_20_import_full" model="product.product">
+      <field name="name">PF REEFER 20 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_reefer_20_import_full" model="product.product">
+      <field name="name">RE REEFER 20 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_reefer_20_import_empty" model="product.product">
+      <field name="name">GP REEFER 20 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_reefer_20_import_empty" model="product.product">
+      <field name="name">VH REEFER 20 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_reefer_20_import_empty" model="product.product">
+      <field name="name">PF REEFER 20 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_reefer_20_import_empty" model="product.product">
+      <field name="name">RE REEFER 20 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_reefer_40_import_full" model="product.product">
+      <field name="name">GP REEFER 40 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_reefer_40_import_full" model="product.product">
+      <field name="name">VH REEFER 40 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_reefer_40_import_full" model="product.product">
+      <field name="name">PF REEFER 40 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_reefer_40_import_full" model="product.product">
+      <field name="name">RE REEFER 40 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_reefer_40_import_empty" model="product.product">
+      <field name="name">GP REEFER 40 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_reefer_40_import_empty" model="product.product">
+      <field name="name">VH REEFER 40 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_reefer_40_import_empty" model="product.product">
+      <field name="name">PF REEFER 40 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_reefer_40_import_empty" model="product.product">
+      <field name="name">RE REEFER 40 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_reefer_45_import_full" model="product.product">
+      <field name="name">GP REEFER 45 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_reefer_45_import_full" model="product.product">
+      <field name="name">VH REEFER 45 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_reefer_45_import_full" model="product.product">
+      <field name="name">PF REEFER 45 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_reefer_45_import_full" model="product.product">
+      <field name="name">RE REEFER 45 IMPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_reefer_45_import_empty" model="product.product">
+      <field name="name">GP REEFER 45 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_reefer_45_import_empty" model="product.product">
+      <field name="name">VH REEFER 45 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_reefer_45_import_empty" model="product.product">
+      <field name="name">PF REEFER 45 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_reefer_45_import_empty" model="product.product">
+      <field name="name">RE REEFER 45 IMPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_discharge_20_export_full" model="product.product">
+      <field name="name">GP DISCHARGE 20 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_discharge_20_export_full" model="product.product">
+      <field name="name">VH DISCHARGE 20 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_discharge_20_export_full" model="product.product">
+      <field name="name">PF DISCHARGE 20 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_discharge_20_export_full" model="product.product">
+      <field name="name">RE DISCHARGE 20 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_discharge_20_export_empty" model="product.product">
+      <field name="name">GP DISCHARGE 20 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_discharge_20_export_empty" model="product.product">
+      <field name="name">VH DISCHARGE 20 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_discharge_20_export_empty" model="product.product">
+      <field name="name">PF DISCHARGE 20 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_discharge_20_export_empty" model="product.product">
+      <field name="name">RE DISCHARGE 20 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_discharge_40_export_full" model="product.product">
+      <field name="name">GP DISCHARGE 40 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_discharge_40_export_full" model="product.product">
+      <field name="name">VH DISCHARGE 40 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_discharge_40_export_full" model="product.product">
+      <field name="name">PF DISCHARGE 40 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_discharge_40_export_full" model="product.product">
+      <field name="name">RE DISCHARGE 40 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_discharge_40_export_empty" model="product.product">
+      <field name="name">GP DISCHARGE 40 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_discharge_40_export_empty" model="product.product">
+      <field name="name">VH DISCHARGE 40 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_discharge_40_export_empty" model="product.product">
+      <field name="name">PF DISCHARGE 40 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_discharge_40_export_empty" model="product.product">
+      <field name="name">RE DISCHARGE 40 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_discharge_45_export_full" model="product.product">
+      <field name="name">GP DISCHARGE 45 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_discharge_45_export_full" model="product.product">
+      <field name="name">VH DISCHARGE 45 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_discharge_45_export_full" model="product.product">
+      <field name="name">PF DISCHARGE 45 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_discharge_45_export_full" model="product.product">
+      <field name="name">RE DISCHARGE 45 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_discharge_45_export_empty" model="product.product">
+      <field name="name">GP DISCHARGE 45 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_discharge_45_export_empty" model="product.product">
+      <field name="name">VH DISCHARGE 45 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_discharge_45_export_empty" model="product.product">
+      <field name="name">PF DISCHARGE 45 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_discharge_45_export_empty" model="product.product">
+      <field name="name">RE DISCHARGE 45 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_load_20_export_full" model="product.product">
+      <field name="name">GP LOAD 20 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_load_20_export_full" model="product.product">
+      <field name="name">VH LOAD 20 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_load_20_export_full" model="product.product">
+      <field name="name">PF LOAD 20 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_load_20_export_full" model="product.product">
+      <field name="name">RE LOAD 20 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_load_20_export_empty" model="product.product">
+      <field name="name">GP LOAD 20 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_load_20_export_empty" model="product.product">
+      <field name="name">VH LOAD 20 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_load_20_export_empty" model="product.product">
+      <field name="name">PF LOAD 20 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_load_20_export_empty" model="product.product">
+      <field name="name">RE LOAD 20 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_load_40_export_full" model="product.product">
+      <field name="name">GP LOAD 40 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_load_40_export_full" model="product.product">
+      <field name="name">VH LOAD 40 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_load_40_export_full" model="product.product">
+      <field name="name">PF LOAD 40 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_load_40_export_full" model="product.product">
+      <field name="name">RE LOAD 40 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_load_40_export_empty" model="product.product">
+      <field name="name">GP LOAD 40 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_load_40_export_empty" model="product.product">
+      <field name="name">VH LOAD 40 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_load_40_export_empty" model="product.product">
+      <field name="name">PF LOAD 40 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_load_40_export_empty" model="product.product">
+      <field name="name">RE LOAD 40 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_load_45_export_full" model="product.product">
+      <field name="name">GP LOAD 45 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_load_45_export_full" model="product.product">
+      <field name="name">VH LOAD 45 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_load_45_export_full" model="product.product">
+      <field name="name">PF LOAD 45 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_load_45_export_full" model="product.product">
+      <field name="name">RE LOAD 45 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_load_45_export_empty" model="product.product">
+      <field name="name">GP LOAD 45 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_load_45_export_empty" model="product.product">
+      <field name="name">VH LOAD 45 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_load_45_export_empty" model="product.product">
+      <field name="name">PF LOAD 45 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_load_45_export_empty" model="product.product">
+      <field name="name">RE LOAD 45 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_storage_20_export_full" model="product.product">
+      <field name="name">GP STORAGE 20 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_storage_20_export_full" model="product.product">
+      <field name="name">VH STORAGE 20 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_storage_20_export_full" model="product.product">
+      <field name="name">PF STORAGE 20 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_storage_20_export_full" model="product.product">
+      <field name="name">RE STORAGE 20 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_storage_20_export_empty" model="product.product">
+      <field name="name">GP STORAGE 20 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_storage_20_export_empty" model="product.product">
+      <field name="name">VH STORAGE 20 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_storage_20_export_empty" model="product.product">
+      <field name="name">PF STORAGE 20 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_storage_20_export_empty" model="product.product">
+      <field name="name">RE STORAGE 20 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_storage_40_export_full" model="product.product">
+      <field name="name">GP STORAGE 40 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_storage_40_export_full" model="product.product">
+      <field name="name">VH STORAGE 40 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_storage_40_export_full" model="product.product">
+      <field name="name">PF STORAGE 40 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_storage_40_export_full" model="product.product">
+      <field name="name">RE STORAGE 40 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_storage_40_export_empty" model="product.product">
+      <field name="name">GP STORAGE 40 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_storage_40_export_empty" model="product.product">
+      <field name="name">VH STORAGE 40 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_storage_40_export_empty" model="product.product">
+      <field name="name">PF STORAGE 40 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_storage_40_export_empty" model="product.product">
+      <field name="name">RE STORAGE 40 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_storage_45_export_full" model="product.product">
+      <field name="name">GP STORAGE 45 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_storage_45_export_full" model="product.product">
+      <field name="name">VH STORAGE 45 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_storage_45_export_full" model="product.product">
+      <field name="name">PF STORAGE 45 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_storage_45_export_full" model="product.product">
+      <field name="name">RE STORAGE 45 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_storage_45_export_empty" model="product.product">
+      <field name="name">GP STORAGE 45 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_storage_45_export_empty" model="product.product">
+      <field name="name">VH STORAGE 45 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_storage_45_export_empty" model="product.product">
+      <field name="name">PF STORAGE 45 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_storage_45_export_empty" model="product.product">
+      <field name="name">RE STORAGE 45 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_reefer_20_export_full" model="product.product">
+      <field name="name">GP REEFER 20 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_reefer_20_export_full" model="product.product">
+      <field name="name">VH REEFER 20 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_reefer_20_export_full" model="product.product">
+      <field name="name">PF REEFER 20 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_reefer_20_export_full" model="product.product">
+      <field name="name">RE REEFER 20 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_reefer_20_export_empty" model="product.product">
+      <field name="name">GP REEFER 20 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_reefer_20_export_empty" model="product.product">
+      <field name="name">VH REEFER 20 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_reefer_20_export_empty" model="product.product">
+      <field name="name">PF REEFER 20 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_reefer_20_export_empty" model="product.product">
+      <field name="name">RE REEFER 20 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_reefer_40_export_full" model="product.product">
+      <field name="name">GP REEFER 40 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_reefer_40_export_full" model="product.product">
+      <field name="name">VH REEFER 40 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_reefer_40_export_full" model="product.product">
+      <field name="name">PF REEFER 40 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_reefer_40_export_full" model="product.product">
+      <field name="name">RE REEFER 40 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_reefer_40_export_empty" model="product.product">
+      <field name="name">GP REEFER 40 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_reefer_40_export_empty" model="product.product">
+      <field name="name">VH REEFER 40 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_reefer_40_export_empty" model="product.product">
+      <field name="name">PF REEFER 40 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_reefer_40_export_empty" model="product.product">
+      <field name="name">RE REEFER 40 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="gp_reefer_45_export_full" model="product.product">
+      <field name="name">GP REEFER 45 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="vh_reefer_45_export_full" model="product.product">
+      <field name="name">VH REEFER 45 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="pf_reefer_45_export_full" model="product.product">
+      <field name="name">PF REEFER 45 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="re_reefer_45_export_full" model="product.product">
+      <field name="name">RE REEFER 45 EXPORT FULL</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="gp_reefer_45_export_empty" model="product.product">
+      <field name="name">GP REEFER 45 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="vh_reefer_45_export_empty" model="product.product">
+      <field name="name">VH REEFER 45 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_vh"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="pf_reefer_45_export_empty" model="product.product">
+      <field name="name">PF REEFER 45 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_pf"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="re_reefer_45_export_empty" model="product.product">
+      <field name="name">RE REEFER 45 EXPORT EMPTY</field>
+      <field name="type_id" ref="lct_product_type_re"/>
+      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="size_id" ref="lct_product_size_45"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+  </data>
 </openerp>

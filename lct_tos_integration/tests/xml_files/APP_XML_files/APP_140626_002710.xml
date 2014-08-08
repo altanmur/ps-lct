@@ -28,7 +28,7 @@
         <storage />
         <transaction_direction>D</transaction_direction>
         <status>E</status>
-        <category />
+        <category>I</category>
         <container_size>20</container_size>
         <container_type>GP</container_type>
         <container_height>8.60</container_height>
@@ -60,7 +60,7 @@
         <storage />
         <transaction_direction>D</transaction_direction>
         <status>E</status>
-        <category />
+        <category>I</category>
         <container_size>20</container_size>
         <container_type>GP</container_type>
         <container_height>8.60</container_height>

@@ -61,7 +61,10 @@ class ftp_config(osv.osv):
     def _get_product_info(self, cr, uid, model, field, value, label):
         ids = self.pool.get(model).search(cr, uid, [(field, '=', value)])
         if not ids:
-            raise osv.except_osv(('Error in file %s' % self.curr_file), ('The following information (%s = %s) does not exist') % (label, value))
+            if value:
+                raise osv.except_osv(('Error in file %s' % self.curr_file), ('The following information (%s = %s) does not exist') % (label, value))
+            else:
+                raise osv.except_osv(('Error in file %s' % self.curr_file), ('The following information (%s) was not found') % (label,))
         return ids[0]
 
     def _get_product_properties(self, cr, uid, line, product_map, context=None):
@@ -73,7 +76,7 @@ class ftp_config(osv.osv):
             raise osv.except_osv(('Error in file %s' % self.curr_file), ('Some information (category_id) could not be found on product'))
         product_properties['category_id'] = {
             'name': category_name,
-            'id': self._get_product_info(cr, uid, 'lct.product.category', 'name', category_name, 'Category Type')
+            'id': self._get_product_info(cr, uid, 'lct.product.category', 'name', category_name, 'Category')
         }
 
         size_size = int(self._get_elmnt_text(line, product_map['size_id']))
@@ -91,9 +94,7 @@ class ftp_config(osv.osv):
             'id': self._get_product_info(cr, uid, 'lct.product.status', 'name', status_name, 'Status')
         }
 
-        type_name = 'GP' if self._get_elmnt_text(line, product_map['type_id']) == 'GP' \
-            else False
-
+        type_name = self._get_elmnt_text(line, product_map['type_id'])
         product_properties['type_id'] = {
             'name': type_name,
             'id': self._get_product_info(cr, uid, 'lct.product.type', 'name', type_name, 'Type')
@@ -456,7 +457,9 @@ class ftp_config(osv.osv):
     def export_partners(self, cr, uid, partner_ids, context=None):
         if not partner_ids:
             return
-
+        ftp_config_ids = self.search(cr, uid, [('active','=',True)], context=context)
+        if not ftp_config_ids:
+            raise osv.except_osv(('Error'), ('Impossible to find an active FTP configuration to export this partner'))
         root = self._write_partners_tree(cr, uid, partner_ids, context=context)
 
         sequence = self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', 'sequence_partner_export', context=context)

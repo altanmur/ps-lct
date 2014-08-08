@@ -20,8 +20,8 @@ class TestExport(TransactionCase):
             addr='192.168.0.11',
             user='openerp',
             psswd='Azerty01',
-            inbound_path='test',
-            outbound_path='test'
+            inbound_path='test_inbound/transfer_complete',
+            outbound_path='test_outbound/transfer_complete'
         )
         self.config_id = self.ftp_config_model.create(cr, uid, config)
         self.ftp = FTP(host=config['addr'],user=config['user'], passwd=config['psswd'])
@@ -30,7 +30,7 @@ class TestExport(TransactionCase):
     def test_export(self):
         cr, uid = self.cr, self.uid
         ftp, config = self.ftp, self.config
-        ftp.cwd(config['inbound_path'] + '/transfer_complete')
+        ftp.cwd(config['inbound_path'])
         for f in ftp.nlst():
             try:
                 ftp.delete(f)
@@ -40,8 +40,7 @@ class TestExport(TransactionCase):
         company_id = partner_model.create(cr, uid, {'name': 'New Company', 'is_company': True})
         files_before = ftp.nlst()
         self.assertTrue(len(files_before) == 1, 'Creating a new partner should upload an XML file')
-        match = re.match("^.+SEQ(\d{6}).xml$", files_before[0])
-        self.assertTrue(match is not None, 'Bad filename format')
+        match = re.match("^.+(\d{6}).xml$", files_before[0])
         sequence = int(match.group(1))
         country_id = self.registry('res.country').create(cr, uid, {'name': 'New Country'})
         vals = {
@@ -66,8 +65,7 @@ class TestExport(TransactionCase):
             if file != files_before[0]:
                 filename = file
                 break
-        match = re.match("^CUS_\d{6}_SEQ(\d{6}).xml$", filename)
-        self.assertTrue(match is not None, 'Bad filename format')
+        match = re.match("^CUS_\d{6}_(\d{6}).xml$", filename)
         sequence2 = int(match.group(1))
         self.assertTrue(sequence2 == (sequence+1)%1000000)
         local_path = __file__.split(__file__.split('/')[-1])[0]
