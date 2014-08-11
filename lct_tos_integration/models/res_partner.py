@@ -40,7 +40,6 @@ class res_partner(osv.Model):
         to_update = [
             'name',
             'ref',
-            'parent_id',
             'street',
             'street2',
             'city',

@@ -408,7 +408,7 @@ class ftp_config(osv.osv):
             values = {
                 'customer_id': partner.id,
                 'customer_key': partner.ref,
-                'name': partner.parent_id and partner.parent_id.name or False,
+                'name': partner.name,
                 'street': (partner.street + ( (', ' + partner.street2) if partner.street2 else '') if partner.street else '') or False,
                 'city': partner.city,
                 'zip': partner.zip,
