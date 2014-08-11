@@ -49,8 +49,12 @@ class res_partner(osv.Model):
             'email',
             'website',
             'phone',
-            'mobile',
         ]
+        import ipdb; ipdb.set_trace()
         if any(item in vals for item in to_update):
             self.pool.get('ftp.config').export_partners(cr, uid, ids, context=context)
+        elif 'mobile' in vals:
+            for partner in self.browse(cr, uid, ids, context=context):
+                if not partner.phone:
+                    self.pool.get('ftp.config').export_partners(cr, uid, [partner.id], context=context)
         return res
