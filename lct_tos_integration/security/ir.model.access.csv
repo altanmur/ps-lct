@@ -1,0 +1,32 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lct_product_category_employee,lct.product.category employee,model_lct_product_category,base.group_user,1,0,0,0
+access_lct_product_category_account_user,lct.product.category account user,model_lct_product_category,account.group_account_user,1,0,0,0
+access_lct_product_category_sale_user,lct.product.category sale user,model_lct_product_category,base.group_sale_salesman,1,0,0,0
+access_lct_product_category_sale_manager,lct.product.category salemanager,model_lct_product_category,base.group_sale_manager,1,1,1,1
+access_lct_product_category_hr_expense_user,lct.product.category hr expense user,model_lct_product_category,base.group_hr_user,1,1,1,1
+access_lct_product_size_employee,lct.product.size employee,model_lct_product_size,base.group_user,1,0,0,0
+access_lct_product_size_account_user,lct.product.size account user,model_lct_product_size,account.group_account_user,1,0,0,0
+access_lct_product_size_sale_user,lct.product.size sale user,model_lct_product_size,base.group_sale_salesman,1,0,0,0
+access_lct_product_size_sale_manager,lct.product.size salemanager,model_lct_product_size,base.group_sale_manager,1,1,1,1
+access_lct_product_size_hr_expense_user,lct.product.size hr expense user,model_lct_product_size,base.group_hr_user,1,1,1,1
+access_lct_product_service_employee,lct.product.service employee,model_lct_product_service,base.group_user,1,0,0,0
+access_lct_product_service_account_user,lct.product.service account user,model_lct_product_service,account.group_account_user,1,0,0,0
+access_lct_product_service_sale_user,lct.product.service sale user,model_lct_product_service,base.group_sale_salesman,1,0,0,0
+access_lct_product_service_sale_manager,lct.product.service salemanager,model_lct_product_service,base.group_sale_manager,1,1,1,1
+access_lct_product_service_hr_expense_user,lct.product.service hr expense user,model_lct_product_service,base.group_hr_user,1,1,1,1
+access_lct_product_type_employee,lct.product.type employee,model_lct_product_type,base.group_user,1,0,0,0
+access_lct_product_type_account_user,lct.product.type account user,model_lct_product_type,account.group_account_user,1,0,0,0
+access_lct_product_type_sale_user,lct.product.type sale user,model_lct_product_type,base.group_sale_salesman,1,0,0,0
+access_lct_product_type_sale_manager,lct.product.type salemanager,model_lct_product_type,base.group_sale_manager,1,1,1,1
+access_lct_product_type_hr_expense_user,lct.product.type hr expense user,model_lct_product_type,base.group_hr_user,1,1,1,1
+access_lct_product_status_employee,lct.product.status employee,model_lct_product_status,base.group_user,1,0,0,0
+access_lct_product_status_account_user,lct.product.status account user,model_lct_product_status,account.group_account_user,1,0,0,0
+access_lct_product_status_sale_user,lct.product.status sale user,model_lct_product_status,base.group_sale_salesman,1,0,0,0
+access_lct_product_status_sale_manager,lct.product.status salemanager,model_lct_product_status,base.group_sale_manager,1,1,1,1
+access_lct_product_status_hr_expense_user,lct.product.status hr expense user,model_lct_product_status,base.group_hr_user,1,1,1,1
+access_lct_container_number_employee,lct.container.number employee,model_lct_container_number,base.group_user,1,0,0,0
+access_lct_container_number_account_user,lct.container.number account user,model_lct_container_number,account.group_account_user,1,0,0,0
+access_lct_container_number_sale_user,lct.container.number sale user,model_lct_container_number,base.group_sale_salesman,1,0,0,0
+access_lct_container_number_sale_manager,lct.container.number salemanager,model_lct_container_number,base.group_sale_manager,1,1,1,1
+access_lct_container_number_hr_expense_user,lct.container.number hr expense user,model_lct_container_number,base.group_hr_user,1,1,1,1
+access_lct_ftp_config_employee,ftp.config employee,model_ftp_config,base.group_user,0,0,0,0

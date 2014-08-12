@@ -38,6 +38,7 @@
         'data/products.xml',
         'data/cron.xml',
         'data/ir_sequences.xml',
+        'security/ir.model.access.csv',
         ],
     'images': [],
     'demo': [],
