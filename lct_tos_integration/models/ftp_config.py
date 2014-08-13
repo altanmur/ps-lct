@@ -376,7 +376,6 @@ class ftp_config(osv.osv):
                 os.remove(loc_file)
                 raise osv.except_osv(('Error in file %s' % self.curr_file), ('The following file name (%s) does not respect one of the accepted formats (VBL_YYMMDD_SEQ000.xml , APP_YYMMDD_SEQ000.xml)' % filename))
             os.remove(loc_file)
-            cr.commit()
             toname = archive_path + '/' + filename
             toname_base = toname[:-4]
             n = 1
@@ -384,6 +383,7 @@ class ftp_config(osv.osv):
                 toname = toname_base + '-' + str(n) + '.xml'
                 n += 1
             ftp.rename(filename, toname)
+            cr.commit()
         return invoice_ids
 
     def button_import_data(self, cr, uid, ids, context=None):
