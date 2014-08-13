@@ -355,12 +355,17 @@ class ftp_config(osv.osv):
         ftp.cwd(outbound_path)
         module_path = __file__.split('models')[0]
         invoice_ids = []
-        archive_path = '../done/'
+        archive_path = 'done'
+        if archive_path not in ftp.nlst():
+            ftp.mkd(archive_path)
         for filename in ftp.nlst():
             self.curr_file = filename
             loc_file = os.path.join(module_path, 'tmp', filename)
-            with open(loc_file, 'w+') as f:
-                ftp.retrlines('RETR ' + filename, f.write)
+            try:
+                with open(loc_file, 'w+') as f:
+                    ftp.retrlines('RETR ' + filename, f.write)
+            except:
+                continue
             if re.match('^VBL_\d{6}_\d{6}\.xml$', filename):
                 root = ET.parse(loc_file).getroot()
                 invoice_ids.extend(self._import_vbl(cr, uid, root, context=context))
@@ -372,7 +377,7 @@ class ftp_config(osv.osv):
                 raise osv.except_osv(('Error in file %s' % self.curr_file), ('The following file name (%s) does not respect one of the accepted formats (VBL_YYMMDD_SEQ000.xml , APP_YYMMDD_SEQ000.xml)' % filename))
             os.remove(loc_file)
             cr.commit()
-            toname = archive_path + filename
+            toname = archive_path + '/' + filename
             toname_base = toname[:-4]
             n = 1
             while toname in ftp.nlst(archive_path):
