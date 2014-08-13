@@ -354,8 +354,8 @@ class ftp_config(osv.osv):
         outbound_path =  config_obj.outbound_path
         ftp.cwd(outbound_path)
         module_path = __file__.split('models')[0]
-
         invoice_ids = []
+        archive_path = '../done/'
         for filename in ftp.nlst():
             self.curr_file = filename
             loc_file = os.path.join(module_path, 'tmp', filename)
@@ -364,15 +364,21 @@ class ftp_config(osv.osv):
             if re.match('^VBL_\d{6}_\d{6}\.xml$', filename):
                 root = ET.parse(loc_file).getroot()
                 invoice_ids.extend(self._import_vbl(cr, uid, root, context=context))
-                os.remove(loc_file)
-                ftp.delete(filename)
             elif re.match('^APP_\d{6}_\d{6}\.xml$', filename):
                 root = ET.parse(loc_file).getroot()
                 invoice_ids.extend(self._import_app(cr, uid, root, context=context))
-                os.remove(loc_file)
-                ftp.delete(filename)
             else:
+                os.remove(loc_file)
                 raise osv.except_osv(('Error in file %s' % self.curr_file), ('The following file name (%s) does not respect one of the accepted formats (VBL_YYMMDD_SEQ000.xml , APP_YYMMDD_SEQ000.xml)' % filename))
+            os.remove(loc_file)
+            cr.commit()
+            toname = archive_path + filename
+            toname_base = toname[:-4]
+            n = 1
+            while toname in ftp.nlst(archive_path):
+                toname = toname_base + '-' + str(n) + '.xml'
+                n += 1
+            ftp.rename(filename, toname)
         return invoice_ids
 
     def button_import_data(self, cr, uid, ids, context=None):
@@ -445,16 +451,19 @@ class ftp_config(osv.osv):
             f.write(ET.tostring(root, encoding='utf-8', pretty_print=True).decode('utf-8'))
 
     def _upload_file(self, cr, uid, local_path, file_name, context=None):
-        ftp_config_ids = self.search(cr, uid, [('active','=',True)], context=context)
-        ftp_config_id = ftp_config_ids and ftp_config_ids[0] or False
-        config_obj = self.browse(cr, uid, ftp_config_id, context=context)
-        ftp = FTP(host=config_obj.addr, user=config_obj.user, passwd=config_obj.psswd)
-        inbound_path =  config_obj.inbound_path.rstrip('/') + "/"
-        ftp.cwd(inbound_path)
         local_file = local_path + file_name
-        with open(local_file, 'r') as f:
-            ftp.storlines('STOR ' + file_name, f)
-        os.remove(local_file)
+        try:
+            ftp_config_ids = self.search(cr, uid, [('active','=',True)], context=context)
+            ftp_config_id = ftp_config_ids and ftp_config_ids[0] or False
+            config_obj = self.browse(cr, uid, ftp_config_id, context=context)
+            ftp = FTP(host=config_obj.addr, user=config_obj.user, passwd=config_obj.psswd)
+            inbound_path =  config_obj.inbound_path.rstrip('/') + "/"
+            ftp.cwd(inbound_path)
+            with open(local_file, 'r') as f:
+                ftp.storlines('STOR ' + file_name, f)
+        except:
+            os.remove(local_file)
+            raise
 
     def export_partners(self, cr, uid, partner_ids, context=None):
         if not partner_ids:
@@ -478,7 +487,6 @@ class ftp_config(osv.osv):
         root = self._write_app_tree(cr, uid, app_id, payment_id, context=context)
 
         sequence = self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', 'sequence_appointment_validate_export', context=context)
-
         local_path = __file__.split('models')[0] + "tmp/"
         file_name = 'APP_' + datetime.today().strftime('%y%m%d') + '_' + sequence + '.xml'
         self._write_xml_file(local_path + file_name, root)

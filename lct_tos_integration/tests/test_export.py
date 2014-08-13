@@ -71,24 +71,28 @@ class TestExport(TransactionCase):
         local_path = __file__.split(__file__.split('/')[-1])[0]
         with open(local_path + filename, 'w+') as f:
             ftp.retrlines('RETR ' + filename, f.write)
-        tree = ET.parse(local_path + filename)
-        customers = tree.getroot()
-        customer = customers.findall('customer')
-        self.assertTrue(len(customer) == 1, 'There should be one and only one customer in the xml file when one customer is created')
-        customer = customer[0]
-        expected_values = {
-            'customer_id': str(partner_id),
-            'customer_key': vals['ref'],
-            'name': 'New Company',
-            'street': vals['street'] + ', ' + vals['street2'],
-            'city': vals['city'],
-            'zip': vals['zip'],
-            'country': 'New Country',
-            'email': vals['email'],
-            'website': vals['website'],
-            'phone': vals['phone']
-        }
+        try:
+            tree = ET.parse(local_path + filename)
+            customers = tree.getroot()
+            customer = customers.findall('customer')
+            self.assertTrue(len(customer) == 1, 'There should be one and only one customer in the xml file when one customer is created')
+            customer = customer[0]
+            expected_values = {
+                'customer_id': str(partner_id),
+                'customer_key': vals['ref'],
+                'name': vals['name'],
+                'street': vals['street'] + ', ' + vals['street2'],
+                'city': vals['city'],
+                'zip': vals['zip'],
+                'country': 'New Country',
+                'email': vals['email'],
+                'website': vals['website'],
+                'phone': vals['phone']
+            }
 
-        for tag, val in expected_values.iteritems():
-            self.assertTrue(customer.find(tag).text == val, 'Exported values should correspond to the record')
-        os.remove(local_path + filename)
+            for tag, val in expected_values.iteritems():
+                self.assertTrue(customer.find(tag).text == val, 'Exported values should correspond to the record. Tag : %s' % tag)
+            os.remove(local_path + filename)
+        except:
+            os.remove(local_path + filename)
+            raise

@@ -47,7 +47,10 @@ class TestImport(TransactionCase):
         sftp = paramiko.SFTPClient.from_transport(t)
         outbound_path = "/home/ftp/data/openerp/" + self.config['outbound_path'] + '/'
         for outbound_file in sftp.listdir(outbound_path):
-            sftp.remove(outbound_path + outbound_file)
+            try:
+                sftp.remove(outbound_path + outbound_file)
+            except:
+                pass
         xml_dirs = ['APP_XML_files']
         local_path_path = os.path.join(__file__.split(__file__.split('/')[-1])[0], 'xml_files')
         self.sum = 0
@@ -58,6 +61,7 @@ class TestImport(TransactionCase):
                 sftp.put(xml_abs_file, outbound_path + xml_file)
         print self.sum
 
+
     def test_import(self):
         cr, uid = self.cr, self.uid
         self._prepare_import()
@@ -66,3 +70,4 @@ class TestImport(TransactionCase):
             self.invoice_model.unlink(cr, uid, inv_ids)
         self.ftp_config_model.button_import_data(cr, uid, [self.config_id])
         vessel_ids = self.invoice_model.search(cr, uid, [('type2','=','vessel')])
+
