@@ -86,7 +86,7 @@ class account_invoice(osv.osv):
             \n* The \'Paid\' status is set automatically when the invoice is paid. Its related journal entries may or may not be reconciled. \
             \n* The \'Cancelled\' status is used when user cancel invoice.'),
         'internal_number': fields.char('Invoice Number', size=32, help="Unique number of the invoice, computed automatically when the invoice is created."),
-        'supplier_invoice_number': fields.char('Supplier Invoice Number', size=64, help="The reference of this invoice as provided by the supplier.", required=True, states={'draft':[('readonly',False)]}),
+        'supplier_invoice_number': fields.char('Supplier Invoice Number', size=64, help="The reference of this invoice as provided by the supplier.", states={'draft':[('readonly',False)]}),
         'po_number': fields.char('PO number', size=32),
         'is_cmms_supplier': fields.related('partner_id', 'is_cmms_supplier', type='boolean'),
         'template': fields.boolean(string="Template"),
