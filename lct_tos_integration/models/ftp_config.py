@@ -292,6 +292,8 @@ class ftp_config(osv.osv):
 
     def _import_app(self, cr, uid, appointments, context=None):
         appointment_ids = []
+        if not appointments.findall('appointment'):
+            raise osv.except_osv(('Warning in file %s' % self.curr_file),('This file contains no appointment'))
         invoice_model = self.pool.get('account.invoice')
         for appointment in appointments.findall('appointment'):
             appointment_vals = self._get_invoice_vals(cr, uid, appointment, 'app', context=context)
@@ -303,6 +305,8 @@ class ftp_config(osv.osv):
 
     def _import_vbl(self, cr, uid, vbillings, context=None):
         vbilling_ids = []
+        if not vbillings.findall('vbilling'):
+            raise osv.except_osv(('Warning in file %s' % self.curr_file),('This file contains no vessel billing'))
         product_model = self.pool.get('product.product')
         invoice_model = self.pool.get('account.invoice')
         for vbilling in vbillings.findall('vbilling'):
@@ -356,8 +360,12 @@ class ftp_config(osv.osv):
         module_path = __file__.split('models')[0]
         invoice_ids = []
         archive_path = 'done'
-        if archive_path not in ftp.nlst():
-            ftp.mkd(archive_path)
+        log_path = 'logs'
+        errors = []
+        for path in [archive_path, log_path]:
+            if path not in ftp.nlst():
+                ftp.mkd(path)
+        cr.commit()
         for filename in ftp.nlst():
             self.curr_file = filename
             loc_file = os.path.join(module_path, 'tmp', filename)
@@ -367,14 +375,22 @@ class ftp_config(osv.osv):
             except:
                 continue
             if re.match('^VBL_\d{6}_\d{6}\.xml$', filename):
-                root = ET.parse(loc_file).getroot()
-                invoice_ids.extend(self._import_vbl(cr, uid, root, context=context))
+                try:
+                    root = ET.parse(loc_file).getroot()
+                    invoice_ids.extend(self._import_vbl(cr, uid, root, context=context))
+                except Exception as e:
+                    errors.append(e)
+                    os.remove(loc_file); cr.rollback(); continue
             elif re.match('^APP_\d{6}_\d{6}\.xml$', filename):
-                root = ET.parse(loc_file).getroot()
-                invoice_ids.extend(self._import_app(cr, uid, root, context=context))
+                try:
+                    root = ET.parse(loc_file).getroot()
+                    invoice_ids.extend(self._import_app(cr, uid, root, context=context))
+                except Exception as e:
+                    errors.append(e)
+                    os.remove(loc_file); cr.rollback(); continue
             else:
-                os.remove(loc_file)
-                raise osv.except_osv(('Error in file %s' % self.curr_file), ('The following file name (%s) does not respect one of the accepted formats (VBL_YYMMDD_SEQ000.xml , APP_YYMMDD_SEQ000.xml)' % filename))
+                errors.append(osv._except_osv((('File format Error'),('While processing %s. Unknown file name format' % self.curr_file))))
+                os.remove(loc_file); cr.rollback(); continue
             os.remove(loc_file)
             toname = archive_path + '/' + filename
             toname_base = toname[:-4]
@@ -382,8 +398,19 @@ class ftp_config(osv.osv):
             while toname in ftp.nlst(archive_path):
                 toname = toname_base + '-' + str(n) + '.xml'
                 n += 1
-            ftp.rename(filename, toname)
+            try:
+                ftp.rename(filename, toname)
+            except Exception as e:
+                errors.append(e)
+                cr.rollback(); continue
             cr.commit()
+        if errors:
+            log_file = datetime.now().strftime('%Y%m%d_%H%M%S')
+            with open(log_file, 'w+') as f:
+                for e in errors:
+                    f.write(type(e).__name__ + ": " + " - ".join([mssg for mssg in e.args]))
+            ftp.storlines('STOR ' + log_path + '/' + log_file, open(log_file))
+            os.remove(log_file)
         return invoice_ids
 
     def button_import_data(self, cr, uid, ids, context=None):

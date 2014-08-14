@@ -47,20 +47,30 @@ class TestImport(TransactionCase):
         sftp = paramiko.SFTPClient.from_transport(t)
         outbound_path = "/home/ftp/data/openerp/" + self.config['outbound_path'] + '/'
         for outbound_file in sftp.listdir(outbound_path):
+            if outbound_file == 'logs':
+                for log_file in sftp.listdir(outbound_path + outbound_file):
+                    try:
+                        sftp.remove(outbound_path + outbound_file + '/' + log_file)
+                    except:
+                        pass
             try:
                 sftp.remove(outbound_path + outbound_file)
             except:
                 pass
         xml_dirs = ['APP_XML_files']
         local_path_path = os.path.join(__file__.split(__file__.split('/')[-1])[0], 'xml_files')
-        self.sum = 0
         for xml_dir in xml_dirs:
             local_path = os.path.join(local_path_path,xml_dir)
             for xml_file in os.listdir(local_path):
                 xml_abs_file = os.path.join(local_path, xml_file)
                 sftp.put(xml_abs_file, outbound_path + xml_file)
-        print self.sum
 
+    def _assertNoLogs(self):
+        t = paramiko.Transport(("192.168.0.11", 22))
+        t.connect(username="openerp", password="openerp")
+        sftp = paramiko.SFTPClient.from_transport(t)
+        log_path = "/home/ftp/data/openerp/" + self.config['outbound_path'] + '/logs/'
+        self.assertTrue(not sftp.listdir(log_path), 'Importing valid files should be successful')
 
     def test_import(self):
         cr, uid = self.cr, self.uid
@@ -70,4 +80,4 @@ class TestImport(TransactionCase):
             self.invoice_model.unlink(cr, uid, inv_ids)
         self.ftp_config_model.button_import_data(cr, uid, [self.config_id])
         vessel_ids = self.invoice_model.search(cr, uid, [('type2','=','vessel')])
-
+        self._assertNoLogs()
