@@ -2,7 +2,7 @@
 <openerp>
     <data>
         <record id="ir_cron_ftp_import" model="ir.cron">
-            <field name="name">Import Invoices from FTP</field>
+            <field name="name">Import data from FTP</field>
             <field name="active" eval="True"/>
             <field name="priority">5</field>
             <field name="interval_number">1</field>
@@ -10,7 +10,7 @@
             <field name="numbercall">-1</field>
             <field name="doall" eval="False"/>
             <field name="model">ftp.config</field>
-            <field name="function">cron_import_data</field>
+            <field name="function">cron_import_ftp_data</field>
             <field name="args">()</field>
         </record>
     </data>

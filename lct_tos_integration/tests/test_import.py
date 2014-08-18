@@ -78,6 +78,6 @@ class TestImport(TransactionCase):
         inv_ids = self.invoice_model.search(cr, uid, ['|',('type2','=','vessel'),('type2','=','appointment')])
         if inv_ids:
             self.invoice_model.unlink(cr, uid, inv_ids)
-        self.ftp_config_model.button_import_data(cr, uid, [self.config_id])
+        self.ftp_config_model.button_import_ftp_data(cr, uid, [self.config_id])
         vessel_ids = self.invoice_model.search(cr, uid, [('type2','=','vessel')])
         self._assertNoLogs()

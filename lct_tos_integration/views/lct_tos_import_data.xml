@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+        <record id="view_lct_tos_import_data_form" model="ir.ui.view">
+            <field name="name">lct.tos.import.data.form</field>
+            <field name="model">lct.tos.import.data</field>
+            <field name="arch" type="xml">
+                <form string="Import Data" version="7.0" create="0" edit="0">
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <group colspan="4" col="2">
+                                <field name="name"/>
+                                <field name="create_date"/>
+                                <field name="status"/>
+                            </group>
+                            <group colspan="4" col="1">
+                                <field name="content"/>
+                                <field name="error" attrs="{'invisible': [('status','!=','fail')]}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_lct_tos_import_data_tree" model="ir.ui.view">
+            <field name="name">lct.tos.import.data.tree</field>
+            <field name="model">lct.tos.import.data</field>
+            <field name="arch" type="xml">
+                <tree string="Import Data" version="7.0" colors="red:status=='fail';black:status=='success';blue:status=='pending'" create="0">
+                    <field name="name"/>
+                    <field name="create_date"/>
+                    <field name="status"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_lct_tos_import_data_search_lct" model="ir.ui.view">
+            <field name="name">lct.tos.import.data.search</field>
+            <field name="model">lct.tos.import.data</field>
+            <field name="arch" type="xml">
+                <search string="Search LCT TOS import data">
+                    <filter name="status_failed" string="Fail" domain="[('status', '=', 'fail')]"/>
+                    <filter name="status_success" string="Success" domain="[('status', '=', 'success')]"/>
+                    <filter name="status_pending" string="Pending" domain="[('status', '=', 'pending')]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_lct_tos_import_data" model="ir.actions.act_window">
+            <field name="name">LCT TOS import data</field>
+            <field name="res_model">lct.tos.import.data</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="lct_tos_import_data_menu" action="action_lct_tos_import_data" name="Import Data" parent="tos_integ_ftp_menu"/>
+    </data>
+</openerp>

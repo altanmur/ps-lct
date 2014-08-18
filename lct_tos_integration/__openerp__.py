@@ -39,6 +39,7 @@
         'data/cron.xml',
         'data/ir_sequences.xml',
         'security/ir.model.access.csv',
+        'views/lct_tos_import_data.xml',
         ],
     'images': [],
     'demo': [],
