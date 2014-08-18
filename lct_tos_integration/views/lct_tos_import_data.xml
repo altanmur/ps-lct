@@ -5,17 +5,20 @@
             <field name="name">lct.tos.import.data.form</field>
             <field name="model">lct.tos.import.data</field>
             <field name="arch" type="xml">
-                <form string="Import Data" version="7.0" create="0" edit="0">
+                <form string="Import Data" version="7.0" create="0">
+                    <header>
+                        <button name="button_reset" type="object" string="Reset" attrs="{'invisible': [('status','!=','fail')]}"/>
+                    </header>
                     <sheet>
                         <group colspan="4" col="4">
                             <group colspan="4" col="2">
-                                <field name="name"/>
-                                <field name="create_date"/>
-                                <field name="status"/>
+                                <field name="name" attrs="{'readonly': [('status','!=','pending')]}"/>
+                                <field name="create_date" readonly="1"/>
+                                <field name="status" readonly="1"/>
                             </group>
                             <group colspan="4" col="1">
-                                <field name="content"/>
-                                <field name="error" attrs="{'invisible': [('status','!=','fail')]}"/>
+                                <field name="content" attrs="{'readonly': [('status','!=','pending')]}"/>
+                                <field name="error" readonly="1" attrs="{'invisible': [('status','!=','fail')]}"/>
                             </group>
                         </group>
                     </sheet>

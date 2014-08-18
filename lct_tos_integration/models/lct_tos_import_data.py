@@ -44,24 +44,26 @@ class lct_tos_import_data(osv.Model):
         'status': 'pending',
     }
 
+    def button_reset(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'status': 'pending', 'error': False}, context=context)
+
     def process_data(self, cr, uid, ids, context=None):
         if not ids:
             return []
-
-        for imp_data_id in ids:
-            cr.execute('SAVEPOINT SP')
-            imp_data = self.browse(cr, uid, imp_data_id, context=context)
+        imp_datas = self.browse(cr, uid, ids, context=context)
+        for imp_data in imp_datas:
             if imp_data.status != 'pending':
-                continue
+                raise osv.except_osv(('Error'),('You can only process pending data'))
+        for imp_data in imp_datas:
+            cr.execute('SAVEPOINT SP')
             filename = imp_data.name
             if re.match('^VBL_\d{6}_\d{6}\.xml$', filename):
                 try:
                     root = ET.fromstring(imp_data.content)
                     self._import_vbl(cr, uid, root, context=context)
-
                 except:
                     cr.execute('ROLLBACK TO SP')
-                    imp_data_model.write(cr, uid, imp_data_id, {
+                    imp_data_model.write(cr, uid, imp_data.id, {
                         'status': 'fail',
                         'error': traceback.format_exc(),
                         }, context=context)
@@ -72,7 +74,7 @@ class lct_tos_import_data(osv.Model):
                     self._import_app(cr, uid, root, context=context)
                 except:
                     cr.execute('ROLLBACK TO SP')
-                    self.write(cr, uid, imp_data_id, {
+                    self.write(cr, uid, imp_data.id, {
                         'status': 'fail',
                         'error': traceback.format_exc(),
                         }, context=context)
@@ -80,30 +82,28 @@ class lct_tos_import_data(osv.Model):
             else:
                 cr.execute('ROLLBACK TO SP')
                 error = 'Filename format not known.\nKnown formats are :\n    APP_YYMMDD_SEQ000.xml\n    VBL_YYMMDD_SEQ000.xml'
-                self.write(cr, uid, imp_data_id, {
+                self.write(cr, uid, imp_data.id, {
                     'status': 'fail',
                     'error': error,
                     }, context=context)
                 continue
-            self.write(cr, uid, imp_data_id, {'status': 'success'}, context=context)
+            self.write(cr, uid, imp_data.id, {'status': 'success'}, context=context)
             cr.execute('RELEASE SAVEPOINT SP')
-            # cr.execute('COMMIT')
-
 
     def _get_elmnt_text(self, elmnt, tag):
         sub_elmnt = elmnt.find(tag)
         if sub_elmnt is not None:
             return sub_elmnt.text
         else:
-            raise osv.except_osv(('Error in file %s' % self.curr_file),('Unable to find tag %s\nin element : %s' % (tag, elmnt.tag)))
+            raise osv.except_osv(('Error'),('Unable to find tag %s\nin element : %s' % (tag, elmnt.tag)))
 
     def _get_product_info(self, cr, uid, model, field, value, label):
         ids = self.pool.get(model).search(cr, uid, [(field, '=', value)])
         if not ids:
             if value:
-                raise osv.except_osv(('Error in file %s' % self.curr_file), ('The following information (%s = %s) does not exist') % (label, value))
+                raise osv.except_osv(('Error'), ('The following information (%s = %s) does not exist') % (label, value))
             else:
-                raise osv.except_osv(('Error in file %s' % self.curr_file), ('The following information (%s) was not found') % (label,))
+                raise osv.except_osv(('Error'), ('The following information (%s) was not found') % (label,))
         return ids[0]
 
     def _get_product_properties(self, cr, uid, line, product_map, context=None):
@@ -112,7 +112,7 @@ class lct_tos_import_data(osv.Model):
         category = self._get_elmnt_text(line, product_map['category_id'])
         category_name = 'Import' if category == 'I' else 'Export' if category == 'E' else False
         if not category_name:
-            raise osv.except_osv(('Error in file %s' % self.curr_file), ('Some information (category_id) could not be found on product'))
+            raise osv.except_osv(('Error'), ('Some information (category_id) could not be found on product'))
         product_properties['category_id'] = {
             'name': category_name,
             'id': self._get_product_info(cr, uid, 'lct.product.category', 'name', category_name, 'Category')
@@ -163,14 +163,14 @@ class lct_tos_import_data(osv.Model):
                     product_ids = product_model.search(cr, uid, product_domain, context=context)
                     product = product_ids and product_model.browse(cr, uid, product_ids, context=context)[0] or False
                     if not product:
-                        raise osv.except_osv(('Error in file %s' % self.curr_file), ('No product could be found for this combination : '
+                        raise osv.except_osv(('Error'), ('No product could be found for this combination : '
                                 '\n category_id : %s \n service_id : %s \n size_id : %s \n status_id : %s \n type_id : %s' % \
                                 tuple(product_properties[name]['name'] for name in ['category_id',  'service_id', 'size_id', 'status_id', 'type_id'])))
                     try:
                         cont_nr_name = line.find('container_number').text
                         cont_nr_mgc_nr = (0,0,{'name': cont_nr_name})
                     except:
-                        raise osv.except_osv(('Error in file %s' % self.curr_file), ('Could not find the container number'))
+                        raise osv.except_osv(('Error'), ('Could not find the container number'))
 
                     if product.name in lines_vals:
                         lines_vals[product.name]['quantity'] += int(quantity)
@@ -185,7 +185,7 @@ class lct_tos_import_data(osv.Model):
                         if account:
                             vals['account_id'] = account.id
                         else:
-                            raise osv.except_osv(('Error in file %s' % self.curr_file), ('Could not find an income account on product %s ') % product.name)
+                            raise osv.except_osv(('Error'), ('Could not find an income account on product %s ') % product.name)
                         vals.update({
                             'product_id': product.id,
                             'name' : product.name,
@@ -208,7 +208,7 @@ class lct_tos_import_data(osv.Model):
             elif category == 'E':
                 category_name, service_name = 'Export', 'Load'
             else:
-                raise osv.except_osv(('Error in file %s' % self.curr_file), ('Some information (category_id) could not be found on product'))
+                raise osv.except_osv(('Error'), ('Some information (category_id) could not be found on product'))
             category_id = self._get_product_info(cr, uid, 'lct.product.category', 'name', category_name, 'Category Type')
             service_id = self._get_product_info(cr, uid, 'lct.product.service', 'name', service_name, 'Service')
 
@@ -230,14 +230,14 @@ class lct_tos_import_data(osv.Model):
             product_ids = product_model.search(cr, uid, product_domain, context=context)
             product = product_ids and product_model.browse(cr, uid, product_ids, context=context)[0] or False
             if not product:
-                raise osv.except_osv(('Error in file %s' % self.curr_file), ('No product could be found for this combination : '
+                raise osv.except_osv(('Error'), ('No product could be found for this combination : '
                         '\n category_id : %s \n service_id : %s \n size_id : %s \n status_id : %s \n type_id : %s' % \
                         (category_name, service_name, size_size, status_name, type_name)))
             try:
                 cont_nr_name = line.find('container_number').text
                 cont_nr_mgc_nr = (0,0,{'name': cont_nr_name})
             except:
-                raise osv.except_osv(('Error in file %s' % self.curr_file), ('Could not find the container number'))
+                raise osv.except_osv(('Error'), ('Could not find the container number'))
 
             if product.name in lines_vals:
                 lines_vals[product.name]['quantity'] += 1
@@ -252,7 +252,7 @@ class lct_tos_import_data(osv.Model):
                 if account:
                     vals['account_id'] = account.id
                 else:
-                    raise osv.except_osv(('Error in file %s' % self.curr_file), ('Could not find an income account on product %s ') % product.name)
+                    raise osv.except_osv(('Error'), ('Could not find an income account on product %s ') % product.name)
                 vals.update({
                     'product_id': product.id,
                     'name' : product.name,
@@ -303,12 +303,12 @@ class lct_tos_import_data(osv.Model):
                 vals[field] = self._get_elmnt_text(invoice, tag)
 
         if not vals['partner_id'].isdigit():
-            raise osv.except_osv(('Error in file %s' % self.curr_file), ('customer_id should be an integer'))
+            raise osv.except_osv(('Error'), ('customer_id should be an integer'))
         partner_ids = partner_model.search(cr, uid, [('id', '=', int(vals['partner_id']))], context=context)
         if partner_ids:
             vals['partner_id'] = partner_ids[0]
         else:
-            raise osv.except_osv(('Error in file %s' % self.curr_file), ('No customer with this name (%s) was found' % vals['partner_id'] ))
+            raise osv.except_osv(('Error'), ('No customer with this name (%s) was found' % vals['partner_id'] ))
 
         invoice_line = self._get_app_lines(cr, uid, invoice.find('lines'), invoice_map['line_map'], context=context) \
                 if invoice_type == 'app' \
@@ -319,7 +319,7 @@ class lct_tos_import_data(osv.Model):
         if account:
             vals['account_id'] = account.id
         else:
-            raise osv.except_osv(('Error in file %s' % self.curr_file), ('No account receivable could be found on cutomer %s' % partner.name))
+            raise osv.except_osv(('Error'), ('No account receivable could be found on cutomer %s' % partner.name))
 
         vals.update({
             'date_invoice': datetime.today().strftime('%Y-%m-%d'),
@@ -331,8 +331,6 @@ class lct_tos_import_data(osv.Model):
 
     def _import_app(self, cr, uid, appointments, context=None):
         appointment_ids = []
-        if not appointments.findall('appointment'):
-            raise osv.except_osv(('Warning in file %s' % self.curr_file),('This file contains no appointment'))
         invoice_model = self.pool.get('account.invoice')
         for appointment in appointments.findall('appointment'):
             appointment_vals = self._get_invoice_vals(cr, uid, appointment, 'app', context=context)
@@ -344,8 +342,6 @@ class lct_tos_import_data(osv.Model):
 
     def _import_vbl(self, cr, uid, vbillings, context=None):
         vbilling_ids = []
-        if not vbillings.findall('vbilling'):
-            raise osv.except_osv(('Warning in file %s' % self.curr_file),('This file contains no vessel billing'))
         product_model = self.pool.get('product.product')
         invoice_model = self.pool.get('account.invoice')
         for vbilling in vbillings.findall('vbilling'):
@@ -354,7 +350,7 @@ class lct_tos_import_data(osv.Model):
             if vbilling.find('hatchcovers_moves') is not None and int(self._get_elmnt_text(vbilling, 'hatchcovers_moves')) > 0:
                 product_ids = product_model.search(cr, uid, [('name', '=', 'Hatch cover move')], context=context)
                 if not product_ids:
-                    raise osv.except_osv(('Error in file %s' % self.curr_file), ('No product found for "Hatch cover move"'))
+                    raise osv.except_osv(('Error'), ('No product found for "Hatch cover move"'))
                 product = product_model.browse(cr, uid, product_ids, context=context)[0]
                 line_vals = {
                     'product_id': product.id,
@@ -366,12 +362,12 @@ class lct_tos_import_data(osv.Model):
                 if account:
                     line_vals['account_id'] = account.id
                 else:
-                    raise osv.except_osv(('Error in file %s' % self.curr_file), ('Could not find an income account on product %s ') % product.name)
+                    raise osv.except_osv(('Error'), ('Could not find an income account on product %s ') % product.name)
                 vbilling_vals['invoice_line'].append((0,0,line_vals))
             if vbilling.find('gearbox_count') is not None and int(self._get_elmnt_text(vbilling, 'gearbox_count')) > 0:
                 product_ids = product_model.search(cr, uid, [('name', '=', 'Gearbox count')], context=context)
                 if not product_ids:
-                    raise osv.except_osv(('Error in file %s' % self.curr_file), ('No product found for "Gearbox count"'))
+                    raise osv.except_osv(('Error'), ('No product found for "Gearbox count"'))
                 product = product_model.browse(cr, uid, product_ids, context=context)[0]
                 line_vals = {
                     'product_id': product.id,
@@ -383,7 +379,7 @@ class lct_tos_import_data(osv.Model):
                 if account:
                     line_vals['account_id'] = account.id
                 else:
-                    raise osv.except_osv(('Error in file %s' % self.curr_file), ('Could not find an income account on product %s ') % product.name)
+                    raise osv.except_osv(('Error'), ('Could not find an income account on product %s ') % product.name)
                 vbilling_vals['invoice_line'].append((0,0,line_vals))
             vbilling_ids.append(invoice_model.create(cr, uid, vbilling_vals, context=context))
         return vbilling_ids
