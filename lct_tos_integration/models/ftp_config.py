@@ -23,7 +23,7 @@ from openerp.osv import fields, osv
 from ftplib import FTP
 from lxml import etree as ET
 import os
-import StringIO
+from StringIO import StringIO
 from datetime import datetime
 import io
 import traceback
@@ -52,12 +52,12 @@ class ftp_config(osv.osv):
 
     # Data Import
 
-    def _import_ftp_data(self, cr, uid, ids, context=None):
-        if not ids:
+    def _import_ftp_data(self, cr, uid, config_ids, context=None):
+        if not config_ids:
             return []
 
         imp_data_model = self.pool.get('lct.tos.import.data')
-        config_obj = self.browse(cr, uid, ids, context=context)[0]
+        config_obj = self.browse(cr, uid, config_ids, context=context)[0]
         ftp = FTP(host=config_obj.addr, user=config_obj.user, passwd=config_obj.psswd)
         ftp.cwd(config_obj.outbound_path)
         archive_path = 'done'
@@ -66,31 +66,45 @@ class ftp_config(osv.osv):
 
         imp_data_ids = []
         for filename in ftp.nlst():
-            content = StringIO.StringIO()
+            if filename == archive_path:
+                continue
+
+            content = StringIO()
             try:
                 ftp.retrlines('RETR ' + filename, content.write)
             except:
+                imp_data_model.create(cr, uid, {
+                    'name': filename,
+                    'content': False,
+                    'status': 'fail',
+                    'error': traceback.format_exc(),
+                    }, context=context)
                 continue
+
             imp_data_ids.append(imp_data_model.create(cr, uid, {
                 'name': filename,
                 'content': content.getvalue(),
                 }, context=context))
+
             toname = archive_path + '/' + filename
-            extension = filename.split('.')[-1]
-            toname_base = toname[:-(len(extension)+1)]
+            extension = ''
+            if '.' in filename[1:-1]:
+                extension =  "".join(['.', filename.split('.')[-1]])
+            toname_base = toname[:-(len(extension))]
+
             n = 1
             while toname in ftp.nlst(archive_path):
-                toname = toname_base + '-' + str(n) + '.' + extension
+                toname = "".join([toname_base, '-', str(n), extension])
                 n += 1
             try:
                 ftp.rename(filename, toname)
             except:
-                imp_data_model.write(cr, uid, imp_data_ids[-1], {
-                        'status': 'fail',
-                        'error': traceback.format_exc(),
-                        }, context=context)
-                del imp_data_ids[-1]
+                imp_data_model.write(cr, uid, imp_data_ids.pop(), {
+                    'status': 'fail',
+                    'error': traceback.format_exc(),
+                    }, context=context)
                 continue
+
         cr.commit()
         imp_data_model.process_data(cr, uid, imp_data_ids, context=context)
 
