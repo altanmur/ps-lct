@@ -1,0 +1,184 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+        <record model="ir.ui.menu" id="product.menu_product_pricelist_main">
+            <field name="name">Tariffs</field>
+        </record>
+
+        <record id="product_tariff_form_view" model="ir.ui.view">
+            <field name="name">product.tariff.form</field>
+            <field name="model">product.pricelist.version</field>
+            <field name="inherit_id" ref="product.product_pricelist_version_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="string">Tariff</attribute>
+                </xpath>
+                <field name="pricelist_id" position="attributes">
+                    <attribute name="string">Tarrif Template</attribute>
+                </field>
+                <field name="items_id" position="replace">
+                    <field name="items_id">
+                        <tree string="Tariff Rates">
+                            <field name="sequence"/>
+                            <field colspan="4" name="name" string="Code"/>
+                            <field name="description"/>
+                            <field name="product_id" string="Tariff item"/>
+                        </tree>
+                    </field>
+                </field>
+            </field>
+        </record>
+        <record id="product_tariff_tree_view" model="ir.ui.view">
+            <field name="name">product.tariff.tree</field>
+            <field name="model">product.pricelist.version</field>
+            <field name="inherit_id" ref="product.product_pricelist_version_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="string">Tariff</attribute>
+                </xpath>
+                <field name="pricelist_id" position="attributes">
+                    <attribute name="string">Tarrif Template</attribute>
+                </field>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="product.product_pricelist_action">
+            <field name="name">Tariffs</field>
+        </record>
+        <record model="ir.ui.menu" id="product.menu_product_pricelist_action">
+            <field name="name">Tariffs</field>
+        </record>
+
+        <record id="product_tariff_template_view_tree" model="ir.ui.view">
+            <field name="name">product.tariff.template.tree</field>
+            <field name="model">product.pricelist</field>
+            <field name="inherit_id" ref="product.product_pricelist_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="string">Tariff Templates</attribute>
+                </xpath>
+                <field name="name" position="attributes">
+                    <attribute name="string">Tariff Template Name</attribute>
+                </field>
+                <field name="type" position="attributes">
+                    <attribute name="string">Tariff Template Type</attribute>
+                </field>
+            </field>
+        </record>
+        <record id="product_tariff_template_view" model="ir.ui.view">
+            <field name="name">product.tariff.template.form</field>
+            <field name="model">product.pricelist</field>
+            <field name="inherit_id" ref="product.product_pricelist_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="string">Tariff Template</attribute>
+                </xpath>
+                <xpath expr="//label[@for='name']" position="attributes">
+                    <attribute name="string">Tariff Template Name</attribute>
+                </xpath>
+                <field name="type" position="attributes">
+                    <attribute name="string">Tariff Template Type</attribute>
+                </field>
+                <xpath expr="//field[@name='version_id']/tree/field[@name='name']" position="attributes">
+                    <attribute name="string">Tariff Name</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="product.product_pricelist_action2">
+            <field name="name">Tariffs Templates</field>
+        </record>
+        <record model="ir.ui.menu" id="product.menu_product_pricelist_action2">
+            <field name="name">Tariffs Templates</field>
+        </record>
+
+        <record model="ir.ui.menu" id="product.menu_product_pricelist_type_action">
+            <field name="sequence">4</field>
+        </record>
+
+        <record id="product_tariff_rate_tree_view" model="ir.ui.view">
+            <field name="name">product.tariff.rate.tree</field>
+            <field name="model">product.pricelist.item</field>
+            <field name="inherit_id" ref="product.product_pricelist_item_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="string">Tariff Rates</attribute>
+                    <attribute name="create">0</attribute>
+                </xpath>
+                <field name="name" position="attributes">
+                    <attribute name="string">Code</attribute>
+                </field>
+            </field>
+        </record>
+        <record id="product_tariff_rate_form_view" model="ir.ui.view">
+            <field name="name">product.tariff.rate.form</field>
+            <field name="model">product.pricelist.item</field>
+            <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="string">Tariff Rates</attribute>
+                    <attribute name="create">0</attribute>
+                </xpath>
+                <xpath expr="//label[@for='name']" position="attributes">
+                    <attribute name="string">Code</attribute>
+                </xpath>
+                <xpath expr="//h1[./field[@name='name']]" position="after">
+                    <label for="description" class="oe_edit_only"/>
+                    <h1><field colspan="4" name="description"/></h1>
+                </xpath>
+                <field name="categ_id" position="replace"/>
+                <field name="company_id" position="replace"/>
+                <field name="sequence" position="replace">
+                    <newline/>
+                    <field name="sequence"/>
+                    <field name="slab_rate"/>
+                    <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                </field>
+                <xpath expr="//group[./field[@name='price_discount']]" position="replace">
+                    <group col="6" colspan="4" attrs="{'invisible': [('slab_rate','=',True)]}">
+                        <label string="Rate ="/>
+                        <label string="Base Price"/>
+                        <label string="* ( 1 + "/>
+                        <field name="price_discount" nolabel="1"/>
+                        <label string=" ) + "/>
+                        <field name="price_surcharge" nolabel="1"/>
+                    </group>
+                    <group col="2" colspan="4" attrs="{'invisible': [('slab_rate','=',False)]}">
+                        <field name="free_period"/>
+                    </group>
+                    <group col="6" colspan="4" attrs="{'invisible': [('slab_rate','=',False)]}">
+                        <label string="Rate for 1st Slab =" />
+                        <label string="Base Price"/>
+                        <label string="* ( 1 + "/>
+                        <field name="price_discount" nolabel="1"/>
+                        <label string=" ) + "/>
+                        <field name="price_surcharge" nolabel="1"/>
+                    </group>
+                    <group col="2" colspan="4" attrs="{'invisible': [('slab_rate','=',False)]}">
+                        <field name="first_slab_last_day"/>
+                    </group>
+                    <group col="6" colspan="4" attrs="{'invisible': [('slab_rate','=',False)]}">
+                        <label string="Rate for 2nd Slab =" />
+                        <label string="Base Price"/>
+                        <label string="* ( 1 + "/>
+                        <field name="price_discount2" nolabel="1"/>
+                        <label string=" ) + "/>
+                        <field name="price_surcharge2" nolabel="1"/>
+                    </group>
+                    <group col="2" colspan="4">
+                        <field name="price_round" string="Rounding Method"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="product_pricelist_item_action">
+            <field name="name">Tariff Rates</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.pricelist.item</field>
+            <field name="view_type">form</field>
+        </record>
+        <menuitem
+            action="product_pricelist_item_action"
+            id="menu_product_pricelist_item"
+            parent="product.menu_product_pricelist_main"
+            sequence="3"/>
+    </data>
+</openerp>
