@@ -54,21 +54,21 @@
             { }
         </style>
     </head>
-    <body dir="ltr" style="max-width:29.7cm;margin-top:0.254cm; margin-bottom:0.254cm; margin-left:0.762cm; margin-right:0.762cm; writing-mode:lr-tb; ">
+    <body dir="ltr" style="max-width:21.0cm; margin-top:0.254cm; margin-bottom:0.254cm; margin-left:0.762cm; margin-right:0.762cm; writing-mode:lr-tb; ">
         %for payslip in context.get('payslips'):
             <table border="0" cellspacing="0" cellpadding="0" class="ta1">
                 <colgroup>
-                    <col width="86" />
-                    <col width="99" />
-                    <col width="137" />
-                    <col width="99" />
-                    <col width="99" />
-                    <col width="99" />
-                    <col width="137" />
-                    <col width="99" />
-                    <col width="128" />
-                    <col width="137" />
-                    <col width="99" />
+                    <col width="61" />
+                    <col width="70" />
+                    <col width="97" />
+                    <col width="70" />
+                    <col width="70" />
+                    <col width="70" />
+                    <col width="97" />
+                    <col width="70" />
+                    <col width="91" />
+                    <col width="97" />
+                    <col width="70" />
                 </colgroup>
                 <tr class="ro1">
                     <td colspan="6" style="text-align:left;width:1.958cm; " class="ce1">
