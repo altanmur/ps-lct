@@ -841,6 +841,28 @@
                 </tr>
                 <tr class="ro2">
                 </tr>
+                <tr class="ro2">
+                    <td colspan="4" rowspan="5" style="font-weight:bold;text-align:center;width:1.958cm; " class="ce10">
+                        <p>
+                            Signature et cachet de l'employeur
+                        </p>
+                    </td>
+		    <td colspan="4" rowspan="5" style="font-weight:bold; text-align:center">
+		    </td>
+                    <td colspan="3" rowspan="5" style="font-weight:bold;text-align:center;width:3.133cm;" class="ce12">
+                        <p>
+                            Signature de l'employé
+                        </p>		        
+                    </td>
+                </tr>		
+                <tr class="ro2">
+                </tr>
+                <tr class="ro2">
+                </tr>
+                <tr class="ro2">
+                </tr>
+                <tr class="ro2">
+                </tr>
                 <tr class="ro1">
                     <td colspan="11" style="text-align:left;width:1.958cm; " class="ce1">
                         <p>
