@@ -846,10 +846,11 @@
                         <p>
                             Signature et cachet de l'employeur
                         </p>
+                        <img src="data:image/png;base64,${context.get('signature')}" style="max-width:8cm; max-height: 5cm;"/>
                     </td>
-		    <td colspan="4" rowspan="5" style="font-weight:bold; text-align:center">
+		    <td colspan="2" rowspan="5" style="font-weight:bold; text-align:center">
 		    </td>
-                    <td colspan="3" rowspan="5" style="font-weight:bold;text-align:center;width:3.133cm;" class="ce12">
+                    <td colspan="5" rowspan="5" style="font-weight:bold;text-align:center;width:3.133cm;" class="ce12">
                         <p>
                             Signature de l'employé
                         </p>		        
