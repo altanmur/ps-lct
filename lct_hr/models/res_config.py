@@ -20,6 +20,7 @@
 ##############################################################################
 
 from openerp.osv import fields, osv
+from openerp import tools
 
 class human_resources_configuration(osv.osv_memory):
     _inherit = 'hr.config.settings'
@@ -46,6 +47,13 @@ class human_resources_configuration(osv.osv_memory):
         self.pool.get('ir.config_parameter').set_param(cr, uid, 'lct_hr.base_wage', str(wage))
 
     def get_payslip_signature(self, cr, uid, ids, context=None):
+        """ returns lower resolution image for widget to limit place usage """
+        signature = self.get_payslip_signature_big(cr, uid, ids, context=context)
+        signature = tools.image_resize_image_medium(signature, avoid_if_small=True)
+        return signature
+
+    def get_payslip_signature_big(self, cr, uid, ids, context=None):
+        """ returns high resolution image for printing """
         signature = self.pool.get('ir.config_parameter')\
             .get_param(cr, uid, 'lct_hr.payslip_signature', default=None, context=context)
         if not signature:
@@ -54,4 +62,5 @@ class human_resources_configuration(osv.osv_memory):
 
     def set_payslip_signature(self, cr, uid, ids, context=None):
         signature = self.browse(cr, uid, ids[0], context=context).payslip_signature
-        self.pool.get('ir.config_parameter').set_param(cr, uid, 'lct_hr.payslip_signature', signature)
+        self.pool.get('ir.config_parameter').set_param(cr, uid,
+                                    'lct_hr.payslip_signature', signature)
