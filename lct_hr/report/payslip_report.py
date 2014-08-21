@@ -50,6 +50,8 @@ class payslip_report(TransientModel):
         return end_of_month.strftime("%Y-%m-%d")
 
     def print_report(self, cr, uid, ids, context=None):
+        signature = self.pool.get('hr.config.settings')\
+                    .get_payslip_signature_big(cr, uid, ids, context=context)
         for report in self.browse(cr, uid, ids, context=context):
             payslip_ids = []
             if report.export_selected_only:
@@ -58,7 +60,10 @@ class payslip_report(TransientModel):
                 payslip_ids = self.pool.get('hr.payslip').search(cr, uid,
                     [('date_from', '>=', report.dt_start),
                     ('date_to', '<=', report.dt_end)], context=context)
-            context.update({'active_ids': payslip_ids})
+            context.update({
+                'active_ids': payslip_ids,
+                'signature': signature
+            })
             return {
                 'type': 'ir.actions.report.xml',
                 'report_name': 'webkit.payslip_report_pdf',

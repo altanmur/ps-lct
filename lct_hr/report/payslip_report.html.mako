@@ -54,21 +54,21 @@
             { }
         </style>
     </head>
-    <body dir="ltr" style="max-width:29.7cm;margin-top:0.254cm; margin-bottom:0.254cm; margin-left:0.762cm; margin-right:0.762cm; writing-mode:lr-tb; ">
+    <body dir="ltr" style="max-width:21.0cm; margin-top:0.254cm; margin-bottom:0.254cm; margin-left:0.762cm; margin-right:0.762cm; writing-mode:lr-tb; ">
         %for payslip in context.get('payslips'):
             <table border="0" cellspacing="0" cellpadding="0" class="ta1">
                 <colgroup>
-                    <col width="86" />
-                    <col width="99" />
-                    <col width="137" />
-                    <col width="99" />
-                    <col width="99" />
-                    <col width="99" />
-                    <col width="137" />
-                    <col width="99" />
-                    <col width="128" />
-                    <col width="137" />
-                    <col width="99" />
+                    <col width="61" />
+                    <col width="70" />
+                    <col width="97" />
+                    <col width="70" />
+                    <col width="70" />
+                    <col width="70" />
+                    <col width="97" />
+                    <col width="70" />
+                    <col width="91" />
+                    <col width="97" />
+                    <col width="70" />
                 </colgroup>
                 <tr class="ro1">
                     <td colspan="6" style="text-align:left;width:1.958cm; " class="ce1">
@@ -836,6 +836,29 @@
                     <td colspan="9" rowspan="3" style="text-align:left;width:3.133cm; " class="ce12">
 
                     </td>
+                </tr>
+                <tr class="ro2">
+                </tr>
+                <tr class="ro2">
+                </tr>
+                <tr class="ro2">
+                    <td colspan="4" rowspan="5" style="font-weight:bold;text-align:center;width:1.958cm; " class="ce10">
+                        <p>
+                            Signature et cachet de l'employeur
+                        </p>
+                        <img src="data:image/png;base64,${context.get('signature')}" style="max-width:8cm; max-height: 5cm;"/>
+                    </td>
+		    <td colspan="2" rowspan="5" style="font-weight:bold; text-align:center">
+		    </td>
+                    <td colspan="5" rowspan="5" style="font-weight:bold;text-align:center;width:3.133cm;" class="ce12">
+                        <p>
+                            Signature de l'employé
+                        </p>		        
+                    </td>
+                </tr>		
+                <tr class="ro2">
+                </tr>
+                <tr class="ro2">
                 </tr>
                 <tr class="ro2">
                 </tr>
