@@ -272,7 +272,7 @@ class account_export(osv.osv_memory):
             ('draft','Draft'),
             ('saved', 'Saved')], readonly=True),
         'use_criteria': fields.boolean('Search by criteria'),
-        'invoice_with_criteria_ids': fields.many2many('account.invoice', 'export_criteria_invoice_line_rel', 'export_id', 'invoice_line_id', string="Export"),
+        'invoice_with_criteria_ids': fields.many2many('account.invoice', 'export_criteria_invoice_line_rel', 'export_id', 'invoice_line_id', string="Export", domain=[('type', '=', 'in_invoice')]),
     }
     _defaults = {
         'invoice_ids': _get_invoices,
