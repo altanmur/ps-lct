@@ -31,6 +31,7 @@ class payslip_report_pdf(report_sxw.rml_parse):
         super(payslip_report_pdf, self).__init__(cr, uid, name, context=context)
         self.localcontext.update({
             'payslips': self.get_payslip_data(cr, uid, context=context),
+            'signature': self.pool.get('hr.config.settings').get_payslip_signature_big(cr, uid, name, context=context)
             })
 
     # Not sure how well this will perform on big data sets. The yearly stuff is
