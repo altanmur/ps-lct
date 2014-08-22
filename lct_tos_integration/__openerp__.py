@@ -35,7 +35,7 @@
         'views/product.xml',
         'views/product_properties.xml',
         'data/product_properties.xml',
-        # 'data/products.xml',
+        'data/products.xml',
         'data/cron.xml',
         'data/ir_sequences.xml',
         'security/ir.model.access.csv',
