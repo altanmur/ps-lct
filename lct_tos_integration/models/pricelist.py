@@ -36,7 +36,6 @@ class product_pricelist_item(osv.Model):
     }
 
     _defaults = {
-        'price_surcharge': lambda *a: 0,
         'price_surcharge2': lambda *a: 0,
         'price_discount2': lambda *a: 0,
     }
@@ -54,8 +53,8 @@ class product_pricelist_item(osv.Model):
         return True
 
     _constraints = [
-        (_check_free_period, 'Error! Free period should be a positive integer!', ['free_period']),
-        (_check_first_slab_last_day, 'Error! Free period should be a positive integer!', ['first_slab_last_day'])
+        (_check_free_period, 'Error! Free period should be a positive number!', ['free_period']),
+        (_check_first_slab_last_day, 'Error! First slab period should be a positive number!', ['first_slab_last_day'])
     ]
 
 class product_pricelist(osv.Model):
