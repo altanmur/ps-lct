@@ -398,7 +398,9 @@
 		<!-- Add placeholder for payslip -->
 		<tr class="ro2">
 		<td style="height:12cm" rowspan="${len(context.get('payslips').get(payslip).get('lines'))+1}"></td>
-		%for i in range(11):
+		<td class="ce15"></td>
+		<td class="ce15" colspan="2"></td>
+		%for i in range(8):
 		<td class="ce15"></td>
 		%endfor
 		</tr>
