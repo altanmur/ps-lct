@@ -142,7 +142,7 @@
                         <field name="price_surcharge" nolabel="1"/>
                     </group>
                     <group col="2" colspan="4" attrs="{'invisible': [('slab_rate','=',False)]}">
-                        <field name="free_period"/>
+                        <field name="free_period" on_change="on_change_free_period(free_period, first_slab_last_day)"/>
                     </group>
                     <group col="6" colspan="4" attrs="{'invisible': [('slab_rate','=',False)]}">
                         <label string="Rate for 1st Slab =" />
@@ -153,7 +153,7 @@
                         <field name="price_surcharge" nolabel="1"/>
                     </group>
                     <group col="2" colspan="4" attrs="{'invisible': [('slab_rate','=',False)]}">
-                        <field name="first_slab_last_day"/>
+                        <field name="first_slab_last_day" on_change="on_change_first_slab_last_day(first_slab_last_day, second_slab_last_day)"/>
                     </group>
                     <group col="6" colspan="4" attrs="{'invisible': [('slab_rate','=',False)]}">
                         <label string="Rate for 2nd Slab =" />
@@ -162,6 +162,17 @@
                         <field name="price_discount2" nolabel="1"/>
                         <label string=" ) + "/>
                         <field name="price_surcharge2" nolabel="1"/>
+                    </group>
+                    <group col="2" colspan="4" attrs="{'invisible': [('slab_rate','=',False)]}">
+                        <field name="second_slab_last_day"/>
+                    </group>
+                    <group col="6" colspan="4" attrs="{'invisible': [('slab_rate','=',False)]}">
+                        <label string="Rate for 3rd Slab =" />
+                        <label string="Base Price"/>
+                        <label string="* ( 1 + "/>
+                        <field name="price_discount3" nolabel="1"/>
+                        <label string=" ) + "/>
+                        <field name="price_surcharge3" nolabel="1"/>
                     </group>
                     <group col="2" colspan="4">
                         <field name="price_round" string="Rounding Method"/>

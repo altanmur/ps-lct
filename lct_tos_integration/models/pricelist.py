@@ -30,32 +30,39 @@ class product_pricelist_item(osv.Model):
         'slab_rate': fields.boolean('Slab Rate'),
         'free_period': fields.integer('Free Period'),
         'first_slab_last_day': fields.integer('Last Day of 1st Slab'),
+        'second_slab_last_day': fields.integer('Last Day of 2nd Slab'),
         'price_surcharge2': fields.float('Price Surcharge',
             digits_compute= dp.get_precision('Product Price'), help='Specify the fixed amount to add or substract(if negative) to the amount calculated with the discount.'),
         'price_discount2': fields.float('Price Discount', digits=(16,4)),
+        'price_surcharge3': fields.float('Price Surcharge',
+            digits_compute= dp.get_precision('Product Price'), help='Specify the fixed amount to add or substract(if negative) to the amount calculated with the discount.'),
+        'price_discount3': fields.float('Price Discount', digits=(16,4)),
     }
 
     _defaults = {
         'price_surcharge2': lambda *a: 0,
         'price_discount2': lambda *a: 0,
+        'price_surcharge3': lambda *a: 0,
+        'price_discount3': lambda *a: 0,
     }
 
-    def _check_free_period(self, cr, uid, ids, context=None):
+    def _check_period(self, cr, uid, ids, context=None):
         for item in self.browse(cr, uid, ids, context=context):
-            if item.free_period and item.free_period < 0:
-                return False
-        return True
-
-    def _check_first_slab_last_day(self, cr, uid, ids, context=None):
-        for item in self.browse(cr, uid, ids, context=context):
-            if item.first_slab_last_day and item.first_slab_last_day < 0:
+            days = [0, item.free_period or 0, item.first_slab_last_day or 0, item.second_slab_last_day or 0]
+            # Return False if free_period < 0, first_slab_last_day < free_period or second_slab_last_day < first_slab_last_day
+            if any([(b < a) for (a, b) in zip(days[:-1], days[1:])]):
                 return False
         return True
 
     _constraints = [
-        (_check_free_period, 'Error! Free period should be a positive number!', ['free_period']),
-        (_check_first_slab_last_day, 'Error! First slab period should be a positive number!', ['first_slab_last_day'])
+        (_check_period, 'Error! Free period and slab periods should be positive!', ['free_period', 'first_slab_last_day', 'first_slab_last_day']),
     ]
+
+    def on_change_free_period(self, cr, uid, ids, free_period=0, first_slab_last_day=0, context=None):
+        return {'value': {'first_slab_last_day': max(first_slab_last_day, free_period)}}
+
+    def on_change_first_slab_last_day(self, cr, uid, ids, first_slab_last_day=0, second_slab_last_day=0, context=None):
+        return {'value': {'second_slab_last_day': max(second_slab_last_day, first_slab_last_day)}}
 
 class product_pricelist(osv.Model):
     _inherit = 'product.pricelist'
