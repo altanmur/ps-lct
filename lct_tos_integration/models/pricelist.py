@@ -31,19 +31,24 @@ class product_pricelist_item(osv.Model):
         'free_period': fields.integer('Free Period'),
         'first_slab_last_day': fields.integer('Last Day of 1st Slab'),
         'second_slab_last_day': fields.integer('Last Day of 2nd Slab'),
-        'price_surcharge2': fields.float('Price Surcharge',
+        'price_surcharge_rate1': fields.float('Price Surcharge',
             digits_compute= dp.get_precision('Product Price'), help='Specify the fixed amount to add or substract(if negative) to the amount calculated with the discount.'),
-        'price_discount2': fields.float('Price Discount', digits=(16,4)),
-        'price_surcharge3': fields.float('Price Surcharge',
+        'price_discount_rate1': fields.float('Price Discount', digits=(16,4)),
+        'price_surcharge_rate2': fields.float('Price Surcharge',
             digits_compute= dp.get_precision('Product Price'), help='Specify the fixed amount to add or substract(if negative) to the amount calculated with the discount.'),
-        'price_discount3': fields.float('Price Discount', digits=(16,4)),
+        'price_discount_rate2': fields.float('Price Discount', digits=(16,4)),
+        'price_surcharge_rate3': fields.float('Price Surcharge',
+            digits_compute= dp.get_precision('Product Price'), help='Specify the fixed amount to add or substract(if negative) to the amount calculated with the discount.'),
+        'price_discount_rate3': fields.float('Price Discount', digits=(16,4)),
     }
 
     _defaults = {
-        'price_surcharge2': lambda *a: 0,
-        'price_discount2': lambda *a: 0,
-        'price_surcharge3': lambda *a: 0,
-        'price_discount3': lambda *a: 0,
+        'price_surcharge_rate1': lambda *a: 0,
+        'price_discount_rate1': lambda *a: 0,
+        'price_surcharge_rate2': lambda *a: 0,
+        'price_discount_rate2': lambda *a: 0,
+        'price_surcharge_rate3': lambda *a: 0,
+        'price_discount_rate3': lambda *a: 0,
     }
 
     def _check_period(self, cr, uid, ids, context=None):
