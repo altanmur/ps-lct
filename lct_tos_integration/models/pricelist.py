@@ -50,7 +50,7 @@ class product_pricelist_item(osv.Model):
         for item in self.browse(cr, uid, ids, context=context):
             days = [0, item.free_period or 0, item.first_slab_last_day or 0, item.second_slab_last_day or 0]
             # Return False if free_period < 0, first_slab_last_day < free_period or second_slab_last_day < first_slab_last_day
-            if any([(b < a) for (a, b) in zip(days[:-1], days[1:])]):
+            if any((b < a) for (a, b) in zip(days[:-1], days[1:])):
                 return False
         return True
 
