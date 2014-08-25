@@ -52,7 +52,7 @@ class lct_tos_import_data(osv.Model):
             return []
 
         imp_datas = self.browse(cr, uid, ids, context=context)
-        if any([(imp_data.status != 'pending') for imp_data in  imp_datas]):
+        if any((imp_data.status != 'pending') for imp_data in  imp_datas):
             raise osv.except_osv(('Error'),('You can only process pending data'))
 
         inv_model = self.pool.get('account.invoice')
