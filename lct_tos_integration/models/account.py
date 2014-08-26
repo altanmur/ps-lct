@@ -334,8 +334,7 @@ class account_invoice(osv.osv):
 
     def xml_to_app(self, cr, uid, imp_data_id, context=None):
         imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
-        content = re.sub('<\?xml.*\?>','',imp_data.content)
-        content.replace(u"\ufeff","")
+        content = re.sub('<\?xml.*\?>','',imp_data.content).replace(u"\ufeff","")
         appointments = ET.fromstring(content)
         appointment_ids = []
         invoice_model = self.pool.get('account.invoice')
@@ -354,8 +353,7 @@ class account_invoice(osv.osv):
 
     def xml_to_vbl(self, cr, uid, imp_data_id, context=None):
         imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
-        content = re.sub('<\?xml.*\?>','',imp_data.content)
-        content.replace(u"\ufeff","")
+        content = re.sub('<\?xml.*\?>','',imp_data.content).replace(u"\ufeff","")
         vbillings = ET.fromstring(content)
         vbilling_ids = []
         product_model = self.pool.get('product.product')
