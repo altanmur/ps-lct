@@ -98,7 +98,7 @@ class ftp_config(osv.osv):
                 toname = "".join([toname_base, '-', str(n), extension])
                 n += 1
             try:
-                ftp.rename(filename, "".join(archive_path, "/", toname))
+                ftp.rename(filename, "".join([archive_path, "/", toname]))
             except:
                 imp_data_model.write(cr, uid, imp_data_ids.pop(), {
                     'status': 'fail',
