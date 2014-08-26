@@ -94,7 +94,6 @@ class ftp_config(osv.osv):
 
             n = 1
             archive_files = [archive_file.replace('/done','') for archive_file in ftp.nlst(archive_path)]
-            import ipdb; ipdb.set_trace()
             while toname in archive_files :
                 toname = "".join([toname_base, '-', str(n), extension])
                 n += 1
