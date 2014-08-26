@@ -59,6 +59,7 @@ class ftp_config(osv.osv):
 
         imp_data_model = self.pool.get('lct.tos.import.data')
         imp_data_ids = []
+<<<<<<< HEAD
         for config_obj in self.browse(cr, uid, config_ids, context=context):
             ftp = FTP(host=config_obj.addr, user=config_obj.user, passwd=config_obj.psswd)
             ftp.cwd(config_obj.outbound_path)
@@ -87,22 +88,23 @@ class ftp_config(osv.osv):
                         'content': content.getvalue(),
                     }, context=context))
 
-                toname = archive_path + '/' + filename
+                toname = filename
                 extension = ''
                 if '.' in filename[1:-1]:
                     extension =  "".join(['.', filename.split('.')[-1]])
                 toname_base = toname[:-(len(extension))]
 
                 n = 1
-                while toname in ftp.nlst(archive_path):
+                archive_files = [archive_file.replace('/done','') for archive_file in ftp.nlst(archive_path)]
+                while toname in archive_files :
                     toname = "".join([toname_base, '-', str(n), extension])
                     n += 1
                 try:
-                    ftp.rename(filename, toname)
+                    ftp.rename(filename, "".join([archive_path, "/", toname]))
                 except:
                     imp_data_model.write(cr, uid, imp_data_ids.pop(), {
-                            'status': 'fail',
-                            'error': traceback.format_exc(),
+                        'status': 'fail',
+                        'error': traceback.format_exc(),
                         }, context=context)
                     continue
 

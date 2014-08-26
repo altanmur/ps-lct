@@ -11,6 +11,10 @@
                         <label for="base_wage"/>
                         <field name="base_wage" class="oe_inline"/>
                     </div>
+                    <div>
+                        <label for="payslip_signature"/>
+                        <field name="payslip_signature" widget="image" class="oe_inline"/>
+                    </div>
                 </xpath>
             </field>
         </record>

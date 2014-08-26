@@ -23,6 +23,7 @@ from openerp.osv import fields, osv
 
 from lxml import etree as ET
 from datetime import datetime
+import re
 
 class lct_container_number(osv.osv):
     _name = 'lct.container.number'
@@ -333,7 +334,9 @@ class account_invoice(osv.osv):
 
     def xml_to_app(self, cr, uid, imp_data_id, context=None):
         imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
-        appointments = ET.fromstring(imp_data.content)
+        content = re.sub('<\?xml.*\?>','',imp_data.content)
+        content.replace(u"\ufeff","")
+        appointments = ET.fromstring(content)
         appointment_ids = []
         invoice_model = self.pool.get('account.invoice')
         for appointment in appointments.findall('appointment'):
@@ -351,7 +354,9 @@ class account_invoice(osv.osv):
 
     def xml_to_vbl(self, cr, uid, imp_data_id, context=None):
         imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
-        vbillings = ET.fromstring(imp_data.content)
+        content = re.sub('<\?xml.*\?>','',imp_data.content)
+        content.replace(u"\ufeff","")
+        vbillings = ET.fromstring(content)
         vbilling_ids = []
         product_model = self.pool.get('product.product')
         for vbilling in vbillings.findall('vbilling'):
