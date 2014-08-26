@@ -59,7 +59,6 @@ class ftp_config(osv.osv):
 
         imp_data_model = self.pool.get('lct.tos.import.data')
         imp_data_ids = []
-<<<<<<< HEAD
         for config_obj in self.browse(cr, uid, config_ids, context=context):
             ftp = FTP(host=config_obj.addr, user=config_obj.user, passwd=config_obj.psswd)
             ftp.cwd(config_obj.outbound_path)
