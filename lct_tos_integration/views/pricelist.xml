@@ -103,6 +103,7 @@
                     <attribute name="string">Tariff Rates</attribute>
                     <attribute name="create">0</attribute>
                 </xpath>
+                <field name="sequence" position="replace"/>
                 <field name="name" position="attributes">
                     <attribute name="string">Code</attribute>
                 </field>
