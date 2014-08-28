@@ -306,7 +306,7 @@ class account_invoice(osv.osv):
                 vals[field] = self._get_elmnt_text(invoice, tag)
 
         if not vals['partner_id'].isdigit():
-            raise osv.except_osv(('Error'), ('customer_id should be an integer'))
+            raise osv.except_osv(('Error'), (invoice_map['partner_id'] + ' should be an integer'))
         partner_ids = partner_model.search(cr, uid, [('id', '=', int(vals['partner_id']))], context=context)
         if partner_ids:
             vals['partner_id'] = partner_ids[0]
