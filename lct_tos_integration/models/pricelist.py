@@ -21,6 +21,7 @@
 
 from openerp.osv import fields, osv
 import openerp.addons.decimal_precision as dp
+import time
 
 class product_pricelist_item(osv.Model):
     _inherit = 'product.pricelist.item'
@@ -60,7 +61,7 @@ class product_pricelist_item(osv.Model):
         return True
 
     _constraints = [
-        (_check_period, 'Error! Free period and slab periods should be positive!', ['free_period', 'first_slab_last_day', 'first_slab_last_day']),
+        (_check_period, 'Error! Free period and slab periods should be positive!', ['free_period', 'first_slab_last_day', 'second_slab_last_day']),
     ]
 
     def on_change_free_period(self, cr, uid, ids, free_period=0, first_slab_last_day=0, context=None):
@@ -218,14 +219,30 @@ class product_pricelist(osv.Model):
 
                         if price is not False:
                             price_limit = price
-                            price = price * (1.0+(res['price_discount'] or 0.0))
-                            if res['price_round']:
-                                price = tools.float_round(price, precision_rounding=res['price_round'])
-                            price += (res['price_surcharge'] or 0.0)
-                            if res['price_min_margin']:
-                                price = max(price, price_limit+res['price_min_margin'])
-                            if res['price_max_margin']:
-                                price = min(price, price_limit+res['price_max_margin'])
+                            if res['slab_rate']:
+                                for key in ['free_period', 'first_slab_last_day', 'second_slab_last_day']:
+                                    res[key] = min(res[key] or 0, qty)
+                                for key in ['price_discount_rate1', 'price_surcharge_rate1', 'price_discount_rate2', 'price_surcharge_rate2', 'price_discount_rate3', 'price_surcharge_rate3']:
+                                    res[key] = res[key] or 0.0
+
+                                periods_by_discountcoef_by_surcharge = [
+                                    (res['free_period'], 0.0, 0.0),
+                                    (res['first_slab_last_day'] - res['free_period'], 1.0 + res['price_discount_rate1'], res['price_surcharge_rate1']),
+                                    (res['second_slab_last_day'] - res['first_slab_last_day'], 1.0 + res['price_discount_rate2'], res['price_surcharge_rate2']),
+                                    (qty - res['second_slab_last_day'], 1.0 + res['price_discount_rate3'], res['price_surcharge_rate3']),
+                                ]
+                                price = sum([(period*coef + (period > 0 and surcharge or 0)) for period, coef, surcharge in periods_by_discountcoef_by_surcharge])/qty
+                                if res['price_round']:
+                                    price = tools.float_round(price, precision_rounding=res['price_round'])
+                            else:
+                                price = price * (1.0+(res['price_discount'] or 0.0))
+                                if res['price_round']:
+                                    price = tools.float_round(price, precision_rounding=res['price_round'])
+                                price += (res['price_surcharge'] or 0.0)
+                                if res['price_min_margin']:
+                                    price = max(price, price_limit+res['price_min_margin'])
+                                if res['price_max_margin']:
+                                    price = min(price, price_limit+res['price_max_margin'])
                             break
 
                     else:
