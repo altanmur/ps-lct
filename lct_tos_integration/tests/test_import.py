@@ -1,9 +1,7 @@
 from openerp.tests.common import TransactionCase
 from openerp.osv import osv
-import paramiko
 import os
-from lxml import etree as ET
-
+from ftplib import FTP
 
 class TestImport(TransactionCase):
 
@@ -12,6 +10,7 @@ class TestImport(TransactionCase):
         self.ftp_config_model = self.registry('ftp.config')
         self.invoice_model = self.registry('account.invoice')
         self.partner_model = self.registry('res.partner')
+        self.import_data_model = self.registry('lct.tos.import.data')
         cr, uid = self.cr, self.uid
         config_ids = self.ftp_config_model.search(cr, uid, [])
         self.ftp_config_model.unlink(cr, uid, config_ids)
@@ -38,46 +37,39 @@ class TestImport(TransactionCase):
             outbound_path='out_path'
             )
         with self.assertRaises(Exception,
-            msg='Creating a second active config should raise an error'):
+                msg='Creating a second active config should raise an error'):
             self.ftp_config_model.create(cr, uid, config2)
 
     def _prepare_import(self):
-        t = paramiko.Transport(("192.168.0.11", 22))
-        t.connect(username="openerp", password="openerp")
-        sftp = paramiko.SFTPClient.from_transport(t)
-        outbound_path = "/home/ftp/data/openerp/" + self.config['outbound_path'] + '/'
-        for outbound_file in sftp.listdir(outbound_path):
-            if outbound_file == 'logs':
-                for log_file in sftp.listdir(outbound_path + outbound_file):
-                    try:
-                        sftp.remove(outbound_path + outbound_file + '/' + log_file)
-                    except:
-                        pass
-            try:
-                sftp.remove(outbound_path + outbound_file)
-            except:
-                pass
+        config = self.config
+        ftp = FTP(host=config['addr'], user=config['user'], passwd=config['psswd'])
+        ftp.cwd(config['outbound_path'])
+        for outbound_file in ftp.nlst():
+            if outbound_file != "done":
+                try:
+                    ftp.delete(outbound_file)
+                except:
+                    ftp.rmd(outbound_file)
         xml_dirs = ['APP_XML_files']
-        local_path_path = os.path.join(__file__.split(__file__.split('/')[-1])[0], 'xml_files')
+        local_path_path = os.path.join(__file__.split(__file__.split(os.sep)[-1])[0], 'xml_files')
         for xml_dir in xml_dirs:
-            local_path = os.path.join(local_path_path,xml_dir)
+            local_path = os.path.join(local_path_path, xml_dir)
             for xml_file in os.listdir(local_path):
                 xml_abs_file = os.path.join(local_path, xml_file)
-                sftp.put(xml_abs_file, outbound_path + xml_file)
-
-    def _assertNoLogs(self):
-        t = paramiko.Transport(("192.168.0.11", 22))
-        t.connect(username="openerp", password="openerp")
-        sftp = paramiko.SFTPClient.from_transport(t)
-        log_path = "/home/ftp/data/openerp/" + self.config['outbound_path'] + '/logs/'
-        self.assertTrue(not sftp.listdir(log_path), 'Importing valid files should be successful')
+                ftp.storlines(''.join(['STOR ', xml_file]), open(xml_abs_file))
 
     def test_import(self):
         cr, uid = self.cr, self.uid
+        ftp_config_model = self.ftp_config_model
+        invoice_model, import_data_model = self.invoice_model, self.import_data_model
         self._prepare_import()
-        inv_ids = self.invoice_model.search(cr, uid, ['|',('type2','=','vessel'),('type2','=','appointment')])
+        inv_ids = invoice_model.search(cr, uid, ['|',('type2','=','vessel'),('type2','=','appointment')])
         if inv_ids:
-            self.invoice_model.unlink(cr, uid, inv_ids)
-        self.ftp_config_model.button_import_ftp_data(cr, uid, [self.config_id])
-        vessel_ids = self.invoice_model.search(cr, uid, [('type2','=','vessel')])
-        self._assertNoLogs()
+            invoice_model.unlink(cr, uid, inv_ids)
+        data_ids = import_data_model.search(cr, uid, [])
+        if data_ids:
+            import_data_model.unlink(cr, uid, data_ids)
+        ftp_config_model.button_import_ftp_data(cr, uid, [self.config_id])
+        vessel_ids = invoice_model.search(cr, uid, [('type2','=','vessel')])
+        appoint_ids = invoice_model.search(cr, uid, [('type2','=','appointment')])
+
