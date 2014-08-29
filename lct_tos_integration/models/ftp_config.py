@@ -27,6 +27,7 @@ from StringIO import StringIO
 from datetime import datetime
 import io
 import traceback
+from tempfile import NamedTemporaryFile
 
 
 class ftp_config(osv.osv):
@@ -175,25 +176,21 @@ class ftp_config(osv.osv):
         self._dict_to_tree(values, ET.SubElement(root, 'appointment'))
         return root
 
-    def _write_xml_file(self, local_file, root):
-        with io.open(local_file, 'w+', encoding='utf-8') as f:
-            f.write(u'<?xml version="1.0" encoding="utf-8"?>')
-            f.write(ET.tostring(root, encoding='utf-8', pretty_print=True).decode('utf-8'))
+    def _write_xml_file(self, root):
+        f = NamedTemporaryFile("w+")
+        f.write(u'<?xml version="1.0" encoding="utf-8"?>')
+        f.write(ET.tostring(root, encoding='utf-8', pretty_print=True).decode('utf-8'))
+        return f
 
-    def _upload_file(self, cr, uid, local_path, file_name, context=None):
-        local_file = local_path + file_name
-        try:
-            ftp_config_ids = self.search(cr, uid, [('active','=',True)], context=context)
-            ftp_config_id = ftp_config_ids and ftp_config_ids[0] or False
-            config_obj = self.browse(cr, uid, ftp_config_id, context=context)
-            ftp = FTP(host=config_obj.addr, user=config_obj.user, passwd=config_obj.psswd)
-            inbound_path =  config_obj.inbound_path.rstrip('/') + "/"
-            ftp.cwd(inbound_path)
-            with open(local_file, 'r') as f:
-                ftp.storlines('STOR ' + file_name, f)
-        except:
-            os.remove(local_file)
-            raise
+    def _upload_file(self, cr, uid, temp_file, file_name, context=None):
+        ftp_config_ids = self.search(cr, uid, [('active','=',True)], context=context)
+        ftp_config_id = ftp_config_ids and ftp_config_ids[0] or False
+        config_obj = self.browse(cr, uid, ftp_config_id, context=context)
+        ftp = FTP(host=config_obj.addr, user=config_obj.user, passwd=config_obj.psswd)
+        inbound_path =  config_obj.inbound_path.rstrip('/') + "/"
+        ftp.cwd(inbound_path)
+        temp_file.seek(0)
+        ftp.storlines('STOR ' + file_name, temp_file)
 
     def export_partners(self, cr, uid, partner_ids, context=None):
         if not partner_ids:
@@ -207,17 +204,14 @@ class ftp_config(osv.osv):
 
         local_path = __file__.split('models')[0] + "tmp/"
         file_name = 'CUS_' + datetime.today().strftime('%y%m%d') + '_' + sequence + '.xml'
-        self._write_xml_file(local_path + file_name, root)
-        self._upload_file(cr, uid, local_path, file_name, context=context)
+        self._upload_file(cr, uid, self._write_xml_file(root), file_name, context=context)
         return partner_ids
 
     def export_app(self, cr, uid, app_id, payment_id, context=None):
         if not (app_id and payment_id):
             return []
         root = self._write_app_tree(cr, uid, app_id, payment_id, context=context)
-
         sequence = self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', 'sequence_appointment_validate_export', context=context)
         local_path = __file__.split('models')[0] + "tmp/"
         file_name = 'APP_' + datetime.today().strftime('%y%m%d') + '_' + sequence + '.xml'
-        self._write_xml_file(local_path + file_name, root)
-        self._upload_file(cr, uid, local_path, file_name, context=context)
+        self._upload_file(cr, uid, self._write_xml_file(root), file_name, context=context)
