@@ -253,7 +253,7 @@ class account_invoice(osv.osv):
                         (category_name, service_name, size_size, status_name, type_name)))
             cont_nr = (0, 0, {
                                 'name': self._get_elmnt_text(line, 'container_number'),
-                                'pricelist_qty': int(quantity),
+                                'pricelist_qty': 1,
                             })
             if product.id in lines_vals:
                 lines_vals[product.id]['cont_nr_ids'].append(cont_nr)
