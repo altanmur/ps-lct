@@ -271,7 +271,7 @@ class account_invoice(osv.osv):
                 vals.update({
                     'product_id': product.id,
                     'name' : product.name,
-                    'cont_nr': [cont_nr],
+                    'cont_nr_ids': [cont_nr],
                 })
                 lines_vals[product.name] = vals
 
