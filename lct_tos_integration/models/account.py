@@ -30,7 +30,9 @@ class lct_container_number(osv.osv):
 
     _columns = {
         'name': fields.char('Container Number'),
+        'date_start': fields.date('Arrival date'),
         'pricelist_qty': fields.integer('Quantity', help="Quantity used for pricelist computation"),
+        'cont_operator': fields.char('Container operator'),
         'invoice_line_id': fields.many2one('account.invoice.line', string="Invoice line"),
     }
 
@@ -40,7 +42,6 @@ class account_invoice_line(osv.osv):
 
     _columns = {
         'cont_nr_ids': fields.one2many('lct.container.number', 'invoice_line_id', 'Containers'),
-        'cont_operator': fields.char('Container operator'),
         'book_nr': fields.char('Booking number'),
     }
 
@@ -178,6 +179,7 @@ class account_invoice(osv.osv):
                     cont_nr = (0, 0, {
                                 'name': self._get_elmnt_text(line, 'container_number'),
                                 'pricelist_qty': int(quantity),
+                                'cont_operator': self._get_elmnt_text(line, 'container_operator'),
                             })
                     if product.id in lines_vals:
                         lines_vals[product.id]['cont_nr_ids'].append(cont_nr)
@@ -200,7 +202,6 @@ class account_invoice(osv.osv):
 
         for vals in lines_vals.values():
             qty_tot = 0.0
-            prices = []
             qties = [cont_nr[2]['pricelist_qty'] for cont_nr in vals['cont_nr_ids']]
             price = sum((qty*pricelist_model.price_get_multi(cr, uid, [pricelist.id], [(vals['product_id'], qty, partner.id)], context=context)[vals['product_id']][pricelist.id] for qty in qties))
             vals.update({
@@ -253,7 +254,8 @@ class account_invoice(osv.osv):
                         (category_name, service_name, size_size, status_name, type_name)))
             cont_nr = (0, 0, {
                                 'name': self._get_elmnt_text(line, 'container_number'),
-                                'pricelist_qty': int(quantity),
+                                'pricelist_qty': 1,
+                                'cont_operator': self._get_elmnt_text(line, 'container_operator_id'),
                             })
             if product.id in lines_vals:
                 lines_vals[product.id]['cont_nr_ids'].append(cont_nr)
@@ -271,7 +273,7 @@ class account_invoice(osv.osv):
                 vals.update({
                     'product_id': product.id,
                     'name' : product.name,
-                    'cont_nr': [cont_nr],
+                    'cont_nr_ids': [cont_nr],
                 })
                 lines_vals[product.name] = vals
 
@@ -300,7 +302,6 @@ class account_invoice(osv.osv):
                     'status_id': 'status',
                     'type_id': 'container_type',
                 },
-                'cont_operator': 'container_operator',
             },
         } if invoice_type == 'app' \
         else {
@@ -317,15 +318,12 @@ class account_invoice(osv.osv):
                     'status_id': 'container_status',
                     'type_id': 'container_type_id',
                 },
-                'cont_operator': 'container_operator_id',
             },
         }
-
         vals = {}
         for field, tag in invoice_map.iteritems():
             if isinstance(tag, str):
                 vals[field] = self._get_elmnt_text(invoice, tag)
-
         if not vals['partner_id'].isdigit():
             raise osv.except_osv(('Error'), (invoice_map['partner_id'] + ' should be an integer'))
         partner = self.pool.get('res.partner').browse(cr, uid, int(vals['partner_id']), context=context)
@@ -378,6 +376,7 @@ class account_invoice(osv.osv):
         vbillings = ET.fromstring(content)
         vbilling_ids = []
         product_model = self.pool.get('product.product')
+        invoice_model = self.pool.get('account.invoice')
         pricelist_model = self.pool.get('product.pricelist')
         partner_model = self.pool.get('res.partner')
         for vbilling in vbillings.findall('vbilling'):
@@ -401,7 +400,7 @@ class account_invoice(osv.osv):
                     'product_id': product.id,
                     'name' : product.name,
                     'quantity': n_hcm,
-                    'price_unit': pricelist_model.price_get_multi(cr, uid, [pricelist.id], [(product.id, qty, partner.id)], context=context)[product.id][pricelist.id],
+                    'price_unit': pricelist_model.price_get_multi(cr, uid, [pricelist.id], [(product.id, n_hcm, partner.id)], context=context)[product.id][pricelist.id],
                 }
                 account = product.property_account_income or (product.categ_id and product.categ_id.property_account_income_categ) or False
                 if account:
@@ -425,7 +424,7 @@ class account_invoice(osv.osv):
                     'product_id': product.id,
                     'name' : product.name,
                     'quantity': n_gc,
-                    'price_unit': pricelist_model.price_get_multi(cr, uid, [pricelist.id], [(product.id, qty, partner.id)], context=context)[product.id][pricelist.id],
+                    'price_unit': pricelist_model.price_get_multi(cr, uid, [pricelist.id], [(product.id, n_gc, partner.id)], context=context)[product.id][pricelist.id],
                 }
                 account = product.property_account_income or (product.categ_id and product.categ_id.property_account_income_categ) or False
                 if account:

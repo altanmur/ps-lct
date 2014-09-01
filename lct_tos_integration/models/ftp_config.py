@@ -187,7 +187,7 @@ class ftp_config(osv.osv):
         ftp_config_id = ftp_config_ids and ftp_config_ids[0] or False
         config_obj = self.browse(cr, uid, ftp_config_id, context=context)
         ftp = FTP(host=config_obj.addr, user=config_obj.user, passwd=config_obj.psswd)
-        inbound_path =  config_obj.inbound_path.rstrip('/') + "/"
+        inbound_path =  config_obj.inbound_path.rstrip(os.sep) + os.sep
         ftp.cwd(inbound_path)
         temp_file.seek(0)
         ftp.storlines('STOR ' + file_name, temp_file)
