@@ -4,6 +4,7 @@ from ftplib import FTP
 import re
 import lxml.etree as ET
 import os
+from StringIO import StringIO
 
 class TestExport(TransactionCase):
 
@@ -61,38 +62,35 @@ class TestExport(TransactionCase):
         filename = ''
 
         self.assertTrue(len(files_after) == 2, 'Creating a new partner should upload an XML file')
-        for file in files_after:
-            if file != files_before[0]:
-                filename = file
+        for cus_file in files_after:
+            if cus_file != files_before[0]:
+                filename = cus_file
                 break
         match = re.match("^CUS_\d{6}_(\d{6}).xml$", filename)
         sequence2 = int(match.group(1))
         self.assertTrue(sequence2 == (sequence+1)%1000000)
-        local_path = __file__.split(__file__.split('/')[-1])[0]
-        with open(local_path + filename, 'w+') as f:
-            ftp.retrlines('RETR ' + filename, f.write)
-        try:
-            tree = ET.parse(local_path + filename)
-            customers = tree.getroot()
-            customer = customers.findall('customer')
-            self.assertTrue(len(customer) == 1, 'There should be one and only one customer in the xml file when one customer is created')
-            customer = customer[0]
-            expected_values = {
-                'customer_id': str(partner_id),
-                'customer_key': vals['ref'],
-                'name': vals['name'],
-                'street': vals['street'] + ', ' + vals['street2'],
-                'city': vals['city'],
-                'zip': vals['zip'],
-                'country': 'New Country',
-                'email': vals['email'],
-                'website': vals['website'],
-                'phone': vals['phone']
-            }
+        f = StringIO()
+        ftp.retrlines('RETR ' + filename, f.write)
 
-            for tag, val in expected_values.iteritems():
-                self.assertTrue(customer.find(tag).text == val, 'Exported values should correspond to the record. Tag : %s' % tag)
-            os.remove(local_path + filename)
-        except:
-            os.remove(local_path + filename)
-            raise
+        f.seek(0)
+        customers = ET.fromstring(f.getvalue())
+        customer = customers.findall('customer')
+        self.assertTrue(len(customer) == 1, 'There should be one and only one customer in the xml file when one customer is created')
+        customer = customer[0]
+        import ipdb; ipdb.set_trace()
+        expected_values = {
+            'customer_id': str(partner_id),
+            'customer_key': vals['ref'],
+            'name': vals['name'],
+            'street': vals['street'] + ', ' + vals['street2'],
+            'city': vals['city'],
+            'zip': vals['zip'],
+            'country': 'New Country',
+            'email': vals['email'],
+            'website': vals['website'],
+            'phone': vals['phone']
+        }
+
+        for tag, val in expected_values.iteritems():
+            self.assertTrue(customer.find(tag).text == val, 'Exported values should correspond to the record. Tag : %s' % tag)
+
