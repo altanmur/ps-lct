@@ -128,7 +128,7 @@ class depreciation_table(osv.osv_memory):
             sheet.write(i,7,purchase_value if purchase_date.year == year else '')
             sheet.write(i,10,xl_module.list_sum([[i,5,+1],[i,8,-1]]),xl_module.line)
             sheet.write(i,11,str(int(100.0/(asset.category_id.method_number/12.0))) + "%",xl_module.line)
-            sheet.write(i,12,totpre,xl_module.line)
+            sheet.write(i,12,xl_module.list_sum([[i,5,+1],[i,6,-1]]) if purchase_date.year < year else 0,xl_module.line)
             sheet.write(i,13,an_dot,xl_module.black_line)
             sheet.write(i,14,totcurr,xl_module.black_red_line)
             for j in range(0,11):
