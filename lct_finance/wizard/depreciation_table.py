@@ -73,7 +73,7 @@ class depreciation_table(osv.osv_memory):
             sheet.write(i,1,acc.name,xl_module.line_left)
             sheet.write(i,2,acc.code)
             sheet.write(i,6,acc_jan1.balance)
-            sheet.write(i,10,xl_module.list_sum([[i,6,+1],[i,7,+1],[i,8,-1]]),xl_module.line)
+            # sheet.write(i,10,xl_module.list_sum([[i,6,+1],[i,7,+1],[i,8,-1]]),xl_module.line)
             for j in (13,14):
                 sheet.write(i,j,"",xl_module.black_line)
             for j in range(15,28):
@@ -96,14 +96,17 @@ class depreciation_table(osv.osv_memory):
         for j in range(15,28):
             sheet.write(i-1,j,"",xl_module.blue_line)
         assets = self._get_assets(cr, uid, ids, category_names=category_names, context=context)
-        if not assets or len(assets)<=0:
+        if not assets:
             self.current_line += 1
             return
         for asset in assets :
+            purchase_date = datetime.strptime(asset.purchase_date_2,'%Y-%m-%d')
+            if purchase_date > today:
+                continue
+
             sheet.write(i,1,asset.name,xl_module.line_left)
             sheet.write(i,2,asset.code or "")
             sheet.write(i,3,asset.allocation or "")
-            purchase_date = datetime.strptime(asset.purchase_date_2,'%Y-%m-%d')
             sheet.write(i,4,purchase_date.strftime('%d/%m/%Y'),xl_module.line)
             if purchase_date < datetime(2014,1,1):
                 sheet.write(i,5,float(asset.x_purchase_value),xl_module.line)
@@ -115,16 +118,15 @@ class depreciation_table(osv.osv_memory):
             totcurr = an_dot = 0.0
             totpre = asset.dep_2013 or 0.0
             m_deprec = [0.0]*12
-            if len(asset.depreciation_line_ids)>0:
-                an_dot = asset.depreciation_line_ids[0].amount *12.0
+            if asset.depreciation_line_ids:
+                an_dot = asset.depreciation_line_ids[0].amount * 12.0
                 for line in asset.depreciation_line_ids :
                     deprec_date = datetime.strptime(line.depreciation_date,'%Y-%m-%d')
                     if deprec_date.year > 2013 and deprec_date.year < year:
                         totpre += line.amount
-                    elif deprec_date.year == year :
+                    elif deprec_date.year == year and deprec_date < today:
                         m_deprec[deprec_date.month-1] = line.amount
-                        if deprec_date < today:
-                            totcurr += line.amount
+                        totcurr += line.amount
             sheet.write(i,12,totpre,xl_module.line)
             sheet.write(i,13,an_dot,xl_module.black_line)
             sheet.write(i,14,totcurr,xl_module.black_red_line)
@@ -256,7 +258,7 @@ class depreciation_table(osv.osv_memory):
         sheet.write(5,1,u"Désignation de l'immobilisation",xl_module.label_left)
         sheet.write(5,2,"Code",xl_module.label_center)
         sheet.write(5,3,"Allocation",xl_module.label_center)
-        sheet.write(5,4,"Date d'aquisition",xl_module.label_center)
+        sheet.write(5,4,"Date d'acquisition",xl_module.label_center)
         sheet.write(5,5,"Purchase Value",xl_module.label_center)
         sheet.write_merge(5,5,6,8,'Valeur brute',xl_module.label_center)
         sheet.write_merge(5,5,9,10,"",xl_module.label_center)
@@ -269,8 +271,8 @@ class depreciation_table(osv.osv_memory):
         sheet.row(6).height_mismatch = True
         sheet.row(6).height = 256*3
         sheet.write(6,1,"",xl_module.line_left)
-        sheet.write(6,6,"VALEURS AU " + jan1.strftime("%d/%m/%Y"),xl_module.label_center)
-        sheet.write(6,7,"AQUISITIONS",xl_module.label_center)
+        sheet.write(6,6,"VALEURS NETTES AU " + jan1.strftime("%d/%m/%Y"),xl_module.label_center)
+        sheet.write(6,7,"ACQUISITIONS",xl_module.label_center)
         sheet.write(6,8,"SORTIES OU TRANSFERTS",xl_module.label_center)
         sheet.write(6,9,"",xl_module.label_center)
         sheet.write(6,10,"VALEURS AU " + monthlast.strftime("%d/%m/%Y"),xl_module.label_center)
@@ -342,7 +344,6 @@ class depreciation_table(osv.osv_memory):
             j = self.current_line
             sheet.write(j,1,"Terminal en cours de construction",xl_module.line_left)
             sheet.write(j,6,acc.balance)
-            sheet.write(j,10,xl_module.list_sum([[j,6,+1],[j,7,+1],[j,8,-1]]))
             self.current_line += 1
             for k in (13,14):
                 sheet.write(j,k,"",xl_module.black_line)
@@ -354,7 +355,6 @@ class depreciation_table(osv.osv_memory):
             j = self.current_line
             sheet.write(j,1,u"Bâtiments et installations en cours",xl_module.line_left)
             sheet.write(j,6,acc.balance)
-            sheet.write(j,10,xl_module.list_sum([[j,3,+1],[j,5,+1],[j,6,-1]]))
             self.current_line += 1
             for k in (13,14):
                 sheet.write(j,k,"",xl_module.black_line)
@@ -366,7 +366,6 @@ class depreciation_table(osv.osv_memory):
             j = self.current_line
             sheet.write(j,1,u"Installations Techniques (Groupes élèctrogènes)",xl_module.line_left)
             sheet.write(j,6,acc.balance)
-            sheet.write(j,10,xl_module.list_sum([[j,3,+1],[j,5,+1],[j,6,-1]]))
             self.current_line += 1
             for k in (13,14):
                 sheet.write(j,k,"",xl_module.black_line)
