@@ -257,6 +257,7 @@ class account_invoice(osv.osv):
                                 'pricelist_qty': 1,
                                 'cont_operator': self._get_elmnt_text(line, 'container_operator_id'),
                             })
+
             if product.id in lines_vals:
                 lines_vals[product.id]['cont_nr_ids'].append(cont_nr)
             else:
@@ -275,7 +276,7 @@ class account_invoice(osv.osv):
                     'name' : product.name,
                     'cont_nr_ids': [cont_nr],
                 })
-                lines_vals[product.name] = vals
+                lines_vals[product.id] = vals
 
         for vals in lines_vals.values():
             qty_tot = 0.0
