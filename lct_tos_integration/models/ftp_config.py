@@ -182,7 +182,6 @@ class ftp_config(osv.osv):
         return f
 
     def _upload_file(self, cr, uid, f, file_name, context=None):
-        import ipdb; ipdb.set_trace()
         ftp_config_ids = self.search(cr, uid, [('active','=',True)], context=context)
         ftp_config_id = ftp_config_ids and ftp_config_ids[0] or False
         config_obj = self.browse(cr, uid, ftp_config_id, context=context)

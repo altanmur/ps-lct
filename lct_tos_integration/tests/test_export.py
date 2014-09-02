@@ -77,7 +77,6 @@ class TestExport(TransactionCase):
         customer = customers.findall('customer')
         self.assertTrue(len(customer) == 1, 'There should be one and only one customer in the xml file when one customer is created')
         customer = customer[0]
-        import ipdb; ipdb.set_trace()
         expected_values = {
             'customer_id': str(partner_id),
             'customer_key': vals['ref'],
