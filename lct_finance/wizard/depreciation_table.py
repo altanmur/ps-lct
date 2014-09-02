@@ -27,8 +27,7 @@ from xlrd import open_workbook,XL_CELL_BLANK
 from xlutils.copy import copy
 import StringIO
 import base64
-from datetime import datetime
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from tempfile import TemporaryFile
 import calendar
 import copy
@@ -118,6 +117,8 @@ class depreciation_table(osv.osv_memory):
             totcurr = an_dot = 0.0
             totpre = asset.dep_2013 or 0.0
             m_deprec = [0.0]*12
+            last_date = datetime(year=year-1, month=1, day=1)
+            remaining_value = asset.purchase_value
             if asset.depreciation_line_ids:
                 an_dot = asset.depreciation_line_ids[0].amount * 12.0
                 for line in asset.depreciation_line_ids :
@@ -127,14 +128,17 @@ class depreciation_table(osv.osv_memory):
                     elif deprec_date.year == year and deprec_date < today:
                         m_deprec[deprec_date.month-1] = line.amount
                         totcurr += line.amount
+                        if deprec_date > last_date:
+                            last_date = deprec_date
+                            remaing_value = line.remaining_value
             sheet.write(i,12,totpre,xl_module.line)
             sheet.write(i,13,an_dot,xl_module.black_line)
             sheet.write(i,14,totcurr,xl_module.black_red_line)
-            for j in range(0,11) :
+            for j in range(0,11):
                 sheet.write(i,15+j,m_deprec[j],xl_module.blue_line)
             sheet.write(i,26,m_deprec[11],xl_module.blue_red_line)
             sheet.write(i,27,xl_module.range_sum(i,15,i,26),xl_module.blue_red_line)
-            sheet.write(i,28,asset.value_residual,xl_module.line_right)
+            sheet.write(i,28,remaining_value,xl_module.line_right)
             i += 1
         self.current_line = i
 
