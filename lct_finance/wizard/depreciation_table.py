@@ -103,7 +103,7 @@ class depreciation_table(osv.osv_memory):
                 continue
             purchase_value = float(asset.x_purchase_value) if purchase_date < datetime(2014,1,1) else asset.purchase_value
             totcurr = an_dot = 0.0
-            totpre = asset.dep_2013 or 0.0
+            totpre = (float(asset.x_purchase_value) - asset.purchase_value) if purchase_date < datetime(2014,1,1) else 0.
             m_deprec = [0.0]*12
             last_date = datetime(year=year-1, month=1, day=1)
             remaining_value = asset.purchase_value
@@ -118,13 +118,13 @@ class depreciation_table(osv.osv_memory):
                         totcurr += line.amount
                         if deprec_date > last_date:
                             last_date = deprec_date
-                            remaing_value = line.remaining_value
+                            remaining_value = line.remaining_value
             sheet.write(i,1,asset.name,xl_module.line_left)
             sheet.write(i,2,asset.code or "")
             sheet.write(i,3,asset.allocation or "")
             sheet.write(i,4,purchase_date.strftime('%d/%m/%Y'),xl_module.line)
             sheet.write(i,5,purchase_value,xl_module.line)
-            sheet.write(i,6,purchase_value if today.year < 2015 and purchase_date < datetime(2014,1,1) else totpre)
+            sheet.write(i,6,purchase_value - totpre)
             sheet.write(i,7,purchase_value if purchase_date.year == year else '')
             sheet.write(i,10,xl_module.list_sum([[i,5,+1],[i,8,-1]]),xl_module.line)
             sheet.write(i,11,str(int(100.0/(asset.category_id.method_number/12.0))) + "%",xl_module.line)
