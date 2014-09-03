@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data noupdate="">
+    <data noupdate="1">
 
         <record id="lct_hr.hr_salary_rule_4" model="hr.salary.rule">
             <field name="name">Basic</field>
