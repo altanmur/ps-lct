@@ -4,6 +4,7 @@ import os
 from ftplib import FTP
 from lxml import etree as ET
 from StringIO import StringIO
+import import_export_tools as iet
 
 
 class TestImport(TransactionCase):
@@ -20,14 +21,13 @@ class TestImport(TransactionCase):
         self.config = config = dict(
             name="Config",
             active=True,
-            addr='192.168.0.11',
+            addr='10.10.0.9',
             user='openerp',
             psswd='Azerty01',
             inbound_path='test_inbound/transfer_complete',
             outbound_path='test_outbound/transfer_complete'
         )
         self.config_id = self.ftp_config_model.create(cr, uid, config)
-
 
     def test_only_one_active_config(self):
         cr, uid = self.cr, self.uid
@@ -174,12 +174,7 @@ class TestImport(TransactionCase):
 
         ftp = FTP(host=config['addr'], user=config['user'], passwd=config['psswd'])
         ftp.cwd(config['outbound_path'])
-        for outbound_file in ftp.nlst():
-            if outbound_file != "done":
-                try:
-                    ftp.delete(outbound_file)
-                except:
-                    ftp.rmd(outbound_file)
+        iet.purge_ftp(ftp, omit=['done'])
 
         xml_files = []
         local_path_path = os.path.join(__file__.split(__file__.split(os.sep)[-1])[0], 'xml_files')
@@ -187,30 +182,19 @@ class TestImport(TransactionCase):
         app_dir = os.path.join(local_path_path, 'APP_XML_files')
         app_files = [os.path.join(app_dir, file_name) for file_name in  os.listdir(app_dir)]
         for xml_file in app_files:
-            tree = ET.parse(open(xml_file))
-            root = tree.getroot()
-            for appoint in root.findall('appointment'):
-                appoint.find('customer_id').text = str(self.partner_id)
+            f = iet.set_appointment_customer(open(xml_file), self.partner_id)
             file_name = xml_file.split(os.sep)[-1]
-            f = StringIO()
-            f.write(ET.tostring(tree, pretty_print=True))
             xml_files.append((file_name, f))
 
         vbl_dir = os.path.join(local_path_path, 'VBL_XML_files')
         vbl_files = [os.path.join(vbl_dir, file_name) for file_name in  os.listdir(vbl_dir)]
         for xml_file in vbl_files:
-            tree = ET.parse(open(xml_file))
-            root = tree.getroot()
-            for vessel in root.findall('vbilling'):
-                vessel.find('vessel_operator_id').text = str(self.partner_id)
+            f = iet.set_vbilling_customer(open(xml_file), self.partner_id)
             file_name = xml_file.split(os.sep)[-1]
-            f = StringIO()
-            f.write(ET.tostring(tree, pretty_print=True))
             xml_files.append((file_name, f))
 
         for xml_file in xml_files:
-            xml_file[1].seek(0)
-            ftp.storlines(''.join(['STOR ', xml_file[0]]), xml_file[1])
+            iet.upload_file(ftp, xml_file[1], xml_file[0])
 
     def test_import(self):
         cr, uid = self.cr, self.uid
