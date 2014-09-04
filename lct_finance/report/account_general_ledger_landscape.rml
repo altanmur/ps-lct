@@ -521,7 +521,7 @@
               <para style="terp_default_7">[[ line['move'] ]]</para>
             </td>
             <td>
-              <para style="terp_default_7">[[ strip_name(line['lname'],22) ]]</para>
+              <para style="terp_default_7">[[ strip_name(line['lname'],55) ]]</para>
             </td>
             <td>
               <para style="terp_default_7">[[ strip_name(line['line_corresp'],18) ]]</para>
@@ -611,7 +611,7 @@
               <para style="terp_default_7">[[ line['move'] ]]</para>
             </td>
             <td>
-              <para style="terp_default_7">[[ strip_name(line['lname'],28) ]]</para>
+              <para style="terp_default_7">[[ strip_name(line['lname'],70) ]]</para>
             </td>
             <td>
               <para style="terp_default_Right_7">[[ formatLang(line['debit'], digits=0) ]]</para>
