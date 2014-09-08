@@ -19,8 +19,6 @@
 #
 ##############################################################################
 
-import time
-
 from openerp.osv import fields, osv
 
 class account_balance_report(osv.osv_memory):
@@ -76,39 +74,6 @@ class account_balance_report(osv.osv_memory):
         data['form']['periods'] = used_context.get('periods', False) and used_context['periods'] or []
         data['form']['used_context'] = dict(used_context, lang=context.get('lang', 'en_US'))
         return self._print_report(cr, uid, ids, data, context=context)
-
-    # Overridden from account.common.account.report to select the opening period
-    #  as default start when filtering on periods
-    def onchange_filter(self, cr, uid, ids, filter='filter_no', fiscalyear_id=False, context=None):
-        res = {'value': {}}
-        if filter == 'filter_no':
-            res['value'] = {'period_from': False, 'period_to': False, 'date_from': False ,'date_to': False}
-        if filter == 'filter_date':
-            res['value'] = {'period_from': False, 'period_to': False, 'date_from': time.strftime('%Y-01-01'), 'date_to': time.strftime('%Y-%m-%d')}
-        if filter == 'filter_period' and fiscalyear_id:
-            start_period = end_period = False
-            cr.execute('''
-                SELECT * FROM (SELECT p.id
-                               FROM account_period p
-                               LEFT JOIN account_fiscalyear f ON (p.fiscalyear_id = f.id)
-                               WHERE f.id = %s
-                               ORDER BY p.date_start ASC, p.special DESC
-                               LIMIT 1) AS period_start
-                UNION ALL
-                SELECT * FROM (SELECT p.id
-                               FROM account_period p
-                               LEFT JOIN account_fiscalyear f ON (p.fiscalyear_id = f.id)
-                               WHERE f.id = %s
-                               AND p.date_start < NOW()
-                               AND p.special = false
-                               ORDER BY p.date_stop DESC
-                               LIMIT 1) AS period_stop''', (fiscalyear_id, fiscalyear_id))
-            periods =  [i[0] for i in cr.fetchall()]
-            if periods and len(periods) > 1:
-                start_period = periods[0]
-                end_period = periods[1]
-            res['value'] = {'period_from': start_period, 'period_to': end_period, 'date_from': False, 'date_to': False}
-        return res
 
 account_balance_report()
 
