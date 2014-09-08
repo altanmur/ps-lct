@@ -19,6 +19,7 @@
 #
 ##############################################################################
 
+import time
 from openerp.addons.account.wizard.account_report_common import account_common_report
 
 # Monkey patching so that we pick the opening period by default when we filter
