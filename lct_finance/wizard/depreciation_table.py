@@ -102,20 +102,21 @@ class depreciation_table(osv.osv_memory):
             if purchase_date > today:
                 continue
             purchase_value = float(asset.x_purchase_value) if purchase_date < datetime(2014,1,1) else asset.purchase_value
-            totcurr = an_dot = 0.0
-            pre_value = purchase_value
+            an_dot = 0.0
             m_deprec = [0.0]*12
             last_date = datetime(year=year-1, month=1, day=1)
             remaining_value = asset.purchase_value
+            last_year_last_date = datetime(year=year-1, month=1, day=1)
+            pre_value = asset.purchase_value
             if asset.depreciation_line_ids:
                 an_dot = asset.depreciation_line_ids[0].amount * 12.0
                 for line in asset.depreciation_line_ids:
                     deprec_date = datetime.strptime(line.depreciation_date,'%Y-%m-%d')
-                    if deprec_date.year > 2013 and deprec_date.year < year:
-                        purchase_value -= line.amount
+                    if deprec_date.year > 2013 and deprec_date.year < year and deprec_date > last_year_last_date:
+                        last_year_last_date = deprec_date
+                        pre_value = line.remaining_value
                     elif deprec_date.year == year and deprec_date < today:
                         m_deprec[deprec_date.month-1] = line.amount
-                        totcurr += line.amount
                         if deprec_date > last_date:
                             last_date = deprec_date
                             remaining_value = line.remaining_value
@@ -130,7 +131,7 @@ class depreciation_table(osv.osv_memory):
             sheet.write(i,11,str(int(100.0/(asset.category_id.method_number/12.0))) + "%",xl_module.line)
             sheet.write(i,12,xl_module.list_sum([[i,5,+1],[i,6,-1]]) if purchase_date.year < year else 0,xl_module.line)
             sheet.write(i,13,an_dot,xl_module.black_line)
-            sheet.write(i,14,totcurr,xl_module.black_red_line)
+            sheet.write(i,14,sum(m_deprec),xl_module.black_red_line)
             for j in range(0,11):
                 sheet.write(i,15+j,m_deprec[j],xl_module.blue_line)
             sheet.write(i,26,m_deprec[11],xl_module.blue_red_line)
