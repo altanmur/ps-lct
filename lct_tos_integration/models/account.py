@@ -34,6 +34,7 @@ class lct_container_number(osv.osv):
         'pricelist_qty': fields.integer('Quantity', help="Quantity used for pricelist computation"),
         'cont_operator': fields.char('Container operator'),
         'invoice_line_id': fields.many2one('account.invoice.line', string="Invoice line"),
+        'oog_coef': fields.float('Out of Gauge coefficient'),
     }
 
 
@@ -226,6 +227,10 @@ class account_invoice(osv.osv):
                 category_name, service_name = 'Import', 'Discharge'
             elif category == 'E':
                 category_name, service_name = 'Export', 'Load'
+            elif category == 'T':
+                category_name, service_name = 'Transshipment', 'Transshipment Discharge'
+            elif category == 'R':
+                category_name, service_name = 'Restowage & Shifting', 'Shifting from cell to cell (Restowage & Shifting)'
             else:
                 raise osv.except_osv(('Error'), ('Some information (category_id) could not be found on product'))
             category_id = self._get_product_info(cr, uid, 'lct.product.category', 'name', category_name, 'Category Type')
@@ -247,8 +252,8 @@ class account_invoice(osv.osv):
 
             product_domain = [(name, '=', eval(name)) for name in ['category_id', 'service_id', 'size_id', 'status_id', 'type_id']]
             product_ids = product_model.search(cr, uid, product_domain, context=context)
-            product = product_ids and product_model.browse(cr, uid, product_ids, context=context)[0] or False
-            if not product:
+            products = product_ids and [product_model.browse(cr, uid, product_ids, context=context)[0]] or False
+            if not products:
                 raise osv.except_osv(('Error'), ('No product could be found for this combination : '
                         '\n category_id : %s \n service_id : %s \n size_id : %s \n status_id : %s \n type_id : %s' % \
                         (category_name, service_name, size_size, status_name, type_name)))
@@ -256,36 +261,47 @@ class account_invoice(osv.osv):
                                 'name': self._get_elmnt_text(line, 'container_number'),
                                 'pricelist_qty': 1,
                                 'cont_operator': self._get_elmnt_text(line, 'container_operator_id'),
+                                'oog_coef': 3. if self._get_elmnt_text(line, 'oog') == "YES" else 1.,
                             })
-
-            if product.id in lines_vals:
-                lines_vals[product.id]['cont_nr_ids'].append(cont_nr)
-            else:
-                vals = {}
-                for field, tag in line_map.iteritems():
-                    if isinstance(tag, str):
-                        vals[field] = self._get_elmnt_text(line,tag)
-
-                account = product.property_account_income or (product.categ_id and product.categ_id.property_account_income_categ) or False
-                if account:
-                    vals['account_id'] = account.id
+            if self._get_elmnt_text(line, 'bundles') == "YES":
+                service_id = self._get_product_info(cr, uid, 'lct.product.service', 'name', 'Bundle', 'Service')
+                product_domain = [(name, '=', eval(name)) for name in ['category_id', 'service_id', 'size_id', 'status_id', 'type_id']]
+                product_ids = product_model.search(cr, uid, product_domain, context=context)
+                product = product_ids and product_model.browse(cr, uid, product_ids, context=context)[0] or False
+                if not products:
+                    raise osv.except_osv(('Error'), ('No product could be found for this combination : '
+                            '\n category_id : %s \n service_id : %s \n size_id : %s \n status_id : %s \n type_id : %s' % \
+                            (category_name, 'Bundle', size_size, status_name, type_name)))
+                products.append(product)
+            for product in products:
+                if product.id in lines_vals:
+                    lines_vals[product.id]['cont_nr_ids'].append(cont_nr)
                 else:
-                    raise osv.except_osv(('Error'), ('Could not find an income account on product %s ') % product.name)
-                vals.update({
-                    'product_id': product.id,
-                    'name' : product.name,
-                    'cont_nr_ids': [cont_nr],
-                })
-                lines_vals[product.id] = vals
+                    vals = {}
+                    for field, tag in line_map.iteritems():
+                        if isinstance(tag, str):
+                            vals[field] = self._get_elmnt_text(line,tag)
+
+                    account = product.property_account_income or (product.categ_id and product.categ_id.property_account_income_categ) or False
+                    if account:
+                        vals['account_id'] = account.id
+                    else:
+                        raise osv.except_osv(('Error'), ('Could not find an income account on product %s ') % product.name)
+                    vals.update({
+                        'product_id': product.id,
+                        'name' : product.name,
+                        'cont_nr_ids': [cont_nr],
+                    })
+                    lines_vals[product.id] = vals
 
         for vals in lines_vals.values():
             qty_tot = 0.0
             prices = []
-            qties = [cont_nr[2]['pricelist_qty'] for cont_nr in vals['cont_nr_ids']]
-            price = sum((qty*pricelist_model.price_get_multi(cr, uid, [pricelist.id], [(vals['product_id'], qty, partner.id)], context=context)[vals['product_id']][pricelist.id] for qty in qties))
+            oogs_by_qties = [(cont_nr[2]['oog_coef'], cont_nr[2]['pricelist_qty']) for cont_nr in vals['cont_nr_ids']]
+            price = sum((oog*qty*pricelist_model.price_get_multi(cr, uid, [pricelist.id], [(vals['product_id'], qty, partner.id)], context=context)[vals['product_id']][pricelist.id] for oog, qty in oogs_by_qties))
             vals.update({
-                'price_unit': price/len(qties),
-                'quantity': len(qties)
+                'price_unit': price/len(vals['cont_nr_ids']),
+                'quantity': len(vals['cont_nr_ids'])
                 })
 
         return [(0,0,vals) for vals in lines_vals.values()]

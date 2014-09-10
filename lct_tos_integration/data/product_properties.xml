@@ -47,7 +47,7 @@
             <field name="name">Transshipment</field>
         </record>
         <record id="lct_product_category_restowage" model="lct.product.category">
-            <field name="name">Restowage</field>
+            <field name="name">Restowage &amp; Shifting</field>
         </record>
         <record id="lct_product_size_20" model="lct.product.size">
             <field name="size">20</field>
