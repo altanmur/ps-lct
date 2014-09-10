@@ -1,0 +1,14 @@
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_res_partner_form_lct">
+            <field name="name">view.res.partner.form.lct</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="product.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <field name="property_product_pricelist" position="attributes">
+                    <attribute name="string">Customer Tariff Template</attribute>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>
