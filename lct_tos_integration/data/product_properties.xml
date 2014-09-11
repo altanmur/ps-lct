@@ -13,23 +13,17 @@
         <record id="lct_product_service_load" model="lct.product.service">
             <field name="name">Load</field>
         </record>
-        <record id="lct_product_service_transshipmentdischarge" model="lct.product.service">
-            <field name="name">Transshipment Discharge</field>
-        </record>
-        <record id="lct_product_service_transshipmentreload" model="lct.product.service">
-            <field name="name">Transshipment Reload</field>
-        </record>
-        <record id="lct_product_service_transshipmentstorage" model="lct.product.service">
-            <field name="name">Transshipment Storage</field>
+        <record id="lct_product_service_reload" model="lct.product.service">
+            <field name="name">Reload</field>
         </record>
         <record id="lct_product_service_shifting" model="lct.product.service">
-            <field name="name">Shifting from cell to cell (Restowage &amp; Shifting)</field>
+            <field name="name">Shifting from cell to cell</field>
         </record>
         <record id="lct_product_service_bundle" model="lct.product.service">
             <field name="name">Bundle</field>
         </record>
         <record id="lct_product_service_dischargereload" model="lct.product.service">
-            <field name="name">Discharge &amp; Reload (Restowage &amp; Shifting)</field>
+            <field name="name">Discharge &amp; Reload</field>
         </record>
         <record id="lct_product_service_storage" model="lct.product.service">
             <field name="name">Storage</field>
