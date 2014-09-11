@@ -11,7 +11,7 @@
             <field name="model" eval="'account.asset.depreciation.line'" />
             <field name="function" eval="'cron_post_lines'" />
             <field name="args" eval="''" />
-            <field name="nextcall" eval="time.strftime('%Y-%m-31 23:00:00')" />
+            <field name="nextcall" eval="time.strftime('%Y-%m-01 23:00:00')" />
         </record>
 
     </data>

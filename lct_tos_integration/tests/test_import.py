@@ -28,6 +28,10 @@ class TestImport(TransactionCase):
             outbound_path='test_outbound/transfer_complete'
         )
         self.config_id = self.ftp_config_model.create(cr, uid, config)
+        currency_id = self.registry('res.currency').search(cr, uid, [('name','=','XOF')])[0]
+        self.registry('res.company').write(cr, uid, 1, {'currency_id': currency_id})
+        self.registry('product.price.type').write(cr, uid, 1, {'currency_id': currency_id})
+        self.registry('product.price.type').write(cr, uid, 2, {'currency_id': currency_id})
 
     def test_only_one_active_config(self):
         cr, uid = self.cr, self.uid
@@ -65,7 +69,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             }),
         ]
-        product_id = product_model.search(cr, uid, [('name','=','GP REEFER 20 EXPORT FULL')])[0]
+        product_id = product_model.search(cr, uid, [('name','=','GP REEFERELECTRICITY 20 EXPORT FULL')])[0]
         product_model.write(cr, uid, [product_id], {'list_price': 16.})
         tariff_rate_vals.append(
             (0,0,{
@@ -82,7 +86,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             })
         )
-        product_id = product_model.search(cr, uid, [('name','=','GP REEFER 40 IMPORT FULL')])[0]
+        product_id = product_model.search(cr, uid, [('name','=','GP REEFERELECTRICITY 40 IMPORT FULL')])[0]
         product_model.write(cr, uid, [product_id], {'list_price': 58.})
         tariff_rate_vals.append(
             (0,0,{
@@ -215,10 +219,10 @@ class TestImport(TransactionCase):
         self.assertTrue(appoints[0].appoint_ref == 'LCT2014062400289', 'Importing should create an appointment with reference: LCT2014062400289')
         lines = sorted(appoints[0].invoice_line, key=lambda x: x.name.lower())
         self.assertTrue(len(lines) == 3)
-        self.assertTrue(lines[0].name == 'GP REEFER 20 EXPORT FULL')
+        self.assertTrue(lines[0].name == 'GP REEFERELECTRICITY 20 EXPORT FULL')
         self.assertTrue(lines[0].quantity == 1)
         self.assertTrue(lines[0].price_unit == 70.4)
-        self.assertTrue(lines[1].name == 'GP REEFER 40 IMPORT FULL')
+        self.assertTrue(lines[1].name == 'GP REEFERELECTRICITY 40 IMPORT FULL')
         self.assertTrue(lines[1].quantity == 1)
         self.assertTrue(lines[1].price_unit == 464.)
         self.assertTrue(lines[2].name == 'GP STORAGE 20 EXPORT FULL')
