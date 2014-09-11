@@ -19,6 +19,7 @@
 #
 ##############################################################################
 
+import account_common_report
 import balance_sheet
 import profit_loss
 import account_balance_report
