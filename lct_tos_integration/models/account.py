@@ -161,7 +161,7 @@ class account_invoice(osv.osv):
             product_properties = self._get_product_properties(cr, uid, line, line_map['product_map'], context=context)
             services = {
                 'Storage': self._get_elmnt_text(line, 'storage'),
-                'Reefer': self._get_elmnt_text(line, 'plugged_time'),
+                'Reefer electricity': self._get_elmnt_text(line, 'plugged_time'),
             }
             for service, quantity in services.iteritems():
                 if quantity and quantity.isdigit() and int(quantity) > 0:
@@ -228,9 +228,9 @@ class account_invoice(osv.osv):
             elif category == 'E':
                 category_name, service_name = 'Export', 'Load'
             elif category == 'T':
-                category_name, service_name = 'Transshipment', 'Transshipment Discharge'
+                category_name, service_name = 'Transshipment', 'Discharge'
             elif category == 'R':
-                category_name, service_name = 'Restowage & Shifting', 'Shifting from cell to cell (Restowage & Shifting)'
+                category_name, service_name = 'Restowage & Shifting', 'Shifting from cell to cell'
             else:
                 raise osv.except_osv(('Error'), ('Some information (category_id) could not be found on product'))
             category_id = self._get_product_info(cr, uid, 'lct.product.category', 'name', category_name, 'Category Type')
