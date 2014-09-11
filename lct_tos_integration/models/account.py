@@ -160,7 +160,7 @@ class account_invoice(osv.osv):
             product_properties = self._get_product_properties(cr, uid, line, line_map['product_map'], context=context)
             services = {
                 'Storage': self._get_elmnt_text(line, 'storage'),
-                'Reefer': self._get_elmnt_text(line, 'plugged_time'),
+                'Reefer electricity': self._get_elmnt_text(line, 'plugged_time'),
             }
             for service, quantity in services.iteritems():
                 if quantity and quantity.isdigit() and int(quantity) > 0:

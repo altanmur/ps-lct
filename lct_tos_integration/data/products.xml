@@ -583,194 +583,194 @@
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="gp_reefer_20_import_full" model="product.product">
-      <field name="name">GP REEFER 20 IMPORT FULL</field>
+    <record id="gp_reeferelectricity_20_import_full" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 20 IMPORT FULL</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="vh_reefer_20_import_full" model="product.product">
-      <field name="name">VH REEFER 20 IMPORT FULL</field>
+    <record id="vh_reeferelectricity_20_import_full" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 20 IMPORT FULL</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="pf_reefer_20_import_full" model="product.product">
-      <field name="name">PF REEFER 20 IMPORT FULL</field>
+    <record id="pf_reeferelectricity_20_import_full" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 20 IMPORT FULL</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="re_reefer_20_import_full" model="product.product">
-      <field name="name">RE REEFER 20 IMPORT FULL</field>
+    <record id="re_reeferelectricity_20_import_full" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 20 IMPORT FULL</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="gp_reefer_20_import_empty" model="product.product">
-      <field name="name">GP REEFER 20 IMPORT EMPTY</field>
+    <record id="gp_reeferelectricity_20_import_empty" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 20 IMPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="vh_reefer_20_import_empty" model="product.product">
-      <field name="name">VH REEFER 20 IMPORT EMPTY</field>
+    <record id="vh_reeferelectricity_20_import_empty" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 20 IMPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="pf_reefer_20_import_empty" model="product.product">
-      <field name="name">PF REEFER 20 IMPORT EMPTY</field>
+    <record id="pf_reeferelectricity_20_import_empty" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 20 IMPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="re_reefer_20_import_empty" model="product.product">
-      <field name="name">RE REEFER 20 IMPORT EMPTY</field>
+    <record id="re_reeferelectricity_20_import_empty" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 20 IMPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="gp_reefer_40_import_full" model="product.product">
-      <field name="name">GP REEFER 40 IMPORT FULL</field>
+    <record id="gp_reeferelectricity_40_import_full" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 40 IMPORT FULL</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="vh_reefer_40_import_full" model="product.product">
-      <field name="name">VH REEFER 40 IMPORT FULL</field>
+    <record id="vh_reeferelectricity_40_import_full" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 40 IMPORT FULL</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="pf_reefer_40_import_full" model="product.product">
-      <field name="name">PF REEFER 40 IMPORT FULL</field>
+    <record id="pf_reeferelectricity_40_import_full" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 40 IMPORT FULL</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="re_reefer_40_import_full" model="product.product">
-      <field name="name">RE REEFER 40 IMPORT FULL</field>
+    <record id="re_reeferelectricity_40_import_full" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 40 IMPORT FULL</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="gp_reefer_40_import_empty" model="product.product">
-      <field name="name">GP REEFER 40 IMPORT EMPTY</field>
+    <record id="gp_reeferelectricity_40_import_empty" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 40 IMPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="vh_reefer_40_import_empty" model="product.product">
-      <field name="name">VH REEFER 40 IMPORT EMPTY</field>
+    <record id="vh_reeferelectricity_40_import_empty" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 40 IMPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="pf_reefer_40_import_empty" model="product.product">
-      <field name="name">PF REEFER 40 IMPORT EMPTY</field>
+    <record id="pf_reeferelectricity_40_import_empty" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 40 IMPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="re_reefer_40_import_empty" model="product.product">
-      <field name="name">RE REEFER 40 IMPORT EMPTY</field>
+    <record id="re_reeferelectricity_40_import_empty" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 40 IMPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="gp_reefer_45_import_full" model="product.product">
-      <field name="name">GP REEFER 45 IMPORT FULL</field>
+    <record id="gp_reeferelectricity_45_import_full" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 45 IMPORT FULL</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="vh_reefer_45_import_full" model="product.product">
-      <field name="name">VH REEFER 45 IMPORT FULL</field>
+    <record id="vh_reeferelectricity_45_import_full" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 45 IMPORT FULL</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="pf_reefer_45_import_full" model="product.product">
-      <field name="name">PF REEFER 45 IMPORT FULL</field>
+    <record id="pf_reeferelectricity_45_import_full" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 45 IMPORT FULL</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="re_reefer_45_import_full" model="product.product">
-      <field name="name">RE REEFER 45 IMPORT FULL</field>
+    <record id="re_reeferelectricity_45_import_full" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 45 IMPORT FULL</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="gp_reefer_45_import_empty" model="product.product">
-      <field name="name">GP REEFER 45 IMPORT EMPTY</field>
+    <record id="gp_reeferelectricity_45_import_empty" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 45 IMPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="vh_reefer_45_import_empty" model="product.product">
-      <field name="name">VH REEFER 45 IMPORT EMPTY</field>
+    <record id="vh_reeferelectricity_45_import_empty" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 45 IMPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="pf_reefer_45_import_empty" model="product.product">
-      <field name="name">PF REEFER 45 IMPORT EMPTY</field>
+    <record id="pf_reeferelectricity_45_import_empty" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 45 IMPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="re_reefer_45_import_empty" model="product.product">
-      <field name="name">RE REEFER 45 IMPORT EMPTY</field>
+    <record id="re_reeferelectricity_45_import_empty" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 45 IMPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_empty"/>
@@ -2503,194 +2503,194 @@
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="gp_reefer_20_export_full" model="product.product">
-      <field name="name">GP REEFER 20 EXPORT FULL</field>
+    <record id="gp_reeferelectricity_20_export_full" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 20 EXPORT FULL</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="vh_reefer_20_export_full" model="product.product">
-      <field name="name">VH REEFER 20 EXPORT FULL</field>
+    <record id="vh_reeferelectricity_20_export_full" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 20 EXPORT FULL</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="pf_reefer_20_export_full" model="product.product">
-      <field name="name">PF REEFER 20 EXPORT FULL</field>
+    <record id="pf_reeferelectricity_20_export_full" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 20 EXPORT FULL</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="re_reefer_20_export_full" model="product.product">
-      <field name="name">RE REEFER 20 EXPORT FULL</field>
+    <record id="re_reeferelectricity_20_export_full" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 20 EXPORT FULL</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="gp_reefer_20_export_empty" model="product.product">
-      <field name="name">GP REEFER 20 EXPORT EMPTY</field>
+    <record id="gp_reeferelectricity_20_export_empty" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 20 EXPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="vh_reefer_20_export_empty" model="product.product">
-      <field name="name">VH REEFER 20 EXPORT EMPTY</field>
+    <record id="vh_reeferelectricity_20_export_empty" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 20 EXPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="pf_reefer_20_export_empty" model="product.product">
-      <field name="name">PF REEFER 20 EXPORT EMPTY</field>
+    <record id="pf_reeferelectricity_20_export_empty" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 20 EXPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="re_reefer_20_export_empty" model="product.product">
-      <field name="name">RE REEFER 20 EXPORT EMPTY</field>
+    <record id="re_reeferelectricity_20_export_empty" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 20 EXPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="gp_reefer_40_export_full" model="product.product">
-      <field name="name">GP REEFER 40 EXPORT FULL</field>
+    <record id="gp_reeferelectricity_40_export_full" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 40 EXPORT FULL</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="vh_reefer_40_export_full" model="product.product">
-      <field name="name">VH REEFER 40 EXPORT FULL</field>
+    <record id="vh_reeferelectricity_40_export_full" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 40 EXPORT FULL</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="pf_reefer_40_export_full" model="product.product">
-      <field name="name">PF REEFER 40 EXPORT FULL</field>
+    <record id="pf_reeferelectricity_40_export_full" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 40 EXPORT FULL</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="re_reefer_40_export_full" model="product.product">
-      <field name="name">RE REEFER 40 EXPORT FULL</field>
+    <record id="re_reeferelectricity_40_export_full" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 40 EXPORT FULL</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="gp_reefer_40_export_empty" model="product.product">
-      <field name="name">GP REEFER 40 EXPORT EMPTY</field>
+    <record id="gp_reeferelectricity_40_export_empty" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 40 EXPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="vh_reefer_40_export_empty" model="product.product">
-      <field name="name">VH REEFER 40 EXPORT EMPTY</field>
+    <record id="vh_reeferelectricity_40_export_empty" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 40 EXPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="pf_reefer_40_export_empty" model="product.product">
-      <field name="name">PF REEFER 40 EXPORT EMPTY</field>
+    <record id="pf_reeferelectricity_40_export_empty" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 40 EXPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="re_reefer_40_export_empty" model="product.product">
-      <field name="name">RE REEFER 40 EXPORT EMPTY</field>
+    <record id="re_reeferelectricity_40_export_empty" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 40 EXPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="gp_reefer_45_export_full" model="product.product">
-      <field name="name">GP REEFER 45 EXPORT FULL</field>
+    <record id="gp_reeferelectricity_45_export_full" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 45 EXPORT FULL</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="vh_reefer_45_export_full" model="product.product">
-      <field name="name">VH REEFER 45 EXPORT FULL</field>
+    <record id="vh_reeferelectricity_45_export_full" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 45 EXPORT FULL</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="pf_reefer_45_export_full" model="product.product">
-      <field name="name">PF REEFER 45 EXPORT FULL</field>
+    <record id="pf_reeferelectricity_45_export_full" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 45 EXPORT FULL</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="re_reefer_45_export_full" model="product.product">
-      <field name="name">RE REEFER 45 EXPORT FULL</field>
+    <record id="re_reeferelectricity_45_export_full" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 45 EXPORT FULL</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="gp_reefer_45_export_empty" model="product.product">
-      <field name="name">GP REEFER 45 EXPORT EMPTY</field>
+    <record id="gp_reeferelectricity_45_export_empty" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 45 EXPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="vh_reefer_45_export_empty" model="product.product">
-      <field name="name">VH REEFER 45 EXPORT EMPTY</field>
+    <record id="vh_reeferelectricity_45_export_empty" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 45 EXPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="pf_reefer_45_export_empty" model="product.product">
-      <field name="name">PF REEFER 45 EXPORT EMPTY</field>
+    <record id="pf_reeferelectricity_45_export_empty" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 45 EXPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="re_reefer_45_export_empty" model="product.product">
-      <field name="name">RE REEFER 45 EXPORT EMPTY</field>
+    <record id="re_reeferelectricity_45_export_empty" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 45 EXPORT EMPTY</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_empty"/>
@@ -4423,194 +4423,194 @@
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="gp_reefer_20_transshipment_full" model="product.product">
-      <field name="name">GP REEFER 20 TRANSSHIPMENT FULL</field>
+    <record id="gp_reeferelectricity_20_transshipment_full" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 20 TRANSSHIPMENT FULL</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="vh_reefer_20_transshipment_full" model="product.product">
-      <field name="name">VH REEFER 20 TRANSSHIPMENT FULL</field>
+    <record id="vh_reeferelectricity_20_transshipment_full" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 20 TRANSSHIPMENT FULL</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="pf_reefer_20_transshipment_full" model="product.product">
-      <field name="name">PF REEFER 20 TRANSSHIPMENT FULL</field>
+    <record id="pf_reeferelectricity_20_transshipment_full" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 20 TRANSSHIPMENT FULL</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="re_reefer_20_transshipment_full" model="product.product">
-      <field name="name">RE REEFER 20 TRANSSHIPMENT FULL</field>
+    <record id="re_reeferelectricity_20_transshipment_full" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 20 TRANSSHIPMENT FULL</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="gp_reefer_20_transshipment_empty" model="product.product">
-      <field name="name">GP REEFER 20 TRANSSHIPMENT EMPTY</field>
+    <record id="gp_reeferelectricity_20_transshipment_empty" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 20 TRANSSHIPMENT EMPTY</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="vh_reefer_20_transshipment_empty" model="product.product">
-      <field name="name">VH REEFER 20 TRANSSHIPMENT EMPTY</field>
+    <record id="vh_reeferelectricity_20_transshipment_empty" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 20 TRANSSHIPMENT EMPTY</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="pf_reefer_20_transshipment_empty" model="product.product">
-      <field name="name">PF REEFER 20 TRANSSHIPMENT EMPTY</field>
+    <record id="pf_reeferelectricity_20_transshipment_empty" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 20 TRANSSHIPMENT EMPTY</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="re_reefer_20_transshipment_empty" model="product.product">
-      <field name="name">RE REEFER 20 TRANSSHIPMENT EMPTY</field>
+    <record id="re_reeferelectricity_20_transshipment_empty" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 20 TRANSSHIPMENT EMPTY</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="gp_reefer_40_transshipment_full" model="product.product">
-      <field name="name">GP REEFER 40 TRANSSHIPMENT FULL</field>
+    <record id="gp_reeferelectricity_40_transshipment_full" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 40 TRANSSHIPMENT FULL</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="vh_reefer_40_transshipment_full" model="product.product">
-      <field name="name">VH REEFER 40 TRANSSHIPMENT FULL</field>
+    <record id="vh_reeferelectricity_40_transshipment_full" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 40 TRANSSHIPMENT FULL</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="pf_reefer_40_transshipment_full" model="product.product">
-      <field name="name">PF REEFER 40 TRANSSHIPMENT FULL</field>
+    <record id="pf_reeferelectricity_40_transshipment_full" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 40 TRANSSHIPMENT FULL</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="re_reefer_40_transshipment_full" model="product.product">
-      <field name="name">RE REEFER 40 TRANSSHIPMENT FULL</field>
+    <record id="re_reeferelectricity_40_transshipment_full" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 40 TRANSSHIPMENT FULL</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="gp_reefer_40_transshipment_empty" model="product.product">
-      <field name="name">GP REEFER 40 TRANSSHIPMENT EMPTY</field>
+    <record id="gp_reeferelectricity_40_transshipment_empty" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 40 TRANSSHIPMENT EMPTY</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="vh_reefer_40_transshipment_empty" model="product.product">
-      <field name="name">VH REEFER 40 TRANSSHIPMENT EMPTY</field>
+    <record id="vh_reeferelectricity_40_transshipment_empty" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 40 TRANSSHIPMENT EMPTY</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="pf_reefer_40_transshipment_empty" model="product.product">
-      <field name="name">PF REEFER 40 TRANSSHIPMENT EMPTY</field>
+    <record id="pf_reeferelectricity_40_transshipment_empty" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 40 TRANSSHIPMENT EMPTY</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="re_reefer_40_transshipment_empty" model="product.product">
-      <field name="name">RE REEFER 40 TRANSSHIPMENT EMPTY</field>
+    <record id="re_reeferelectricity_40_transshipment_empty" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 40 TRANSSHIPMENT EMPTY</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="gp_reefer_45_transshipment_full" model="product.product">
-      <field name="name">GP REEFER 45 TRANSSHIPMENT FULL</field>
+    <record id="gp_reeferelectricity_45_transshipment_full" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 45 TRANSSHIPMENT FULL</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="vh_reefer_45_transshipment_full" model="product.product">
-      <field name="name">VH REEFER 45 TRANSSHIPMENT FULL</field>
+    <record id="vh_reeferelectricity_45_transshipment_full" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 45 TRANSSHIPMENT FULL</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="pf_reefer_45_transshipment_full" model="product.product">
-      <field name="name">PF REEFER 45 TRANSSHIPMENT FULL</field>
+    <record id="pf_reeferelectricity_45_transshipment_full" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 45 TRANSSHIPMENT FULL</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="re_reefer_45_transshipment_full" model="product.product">
-      <field name="name">RE REEFER 45 TRANSSHIPMENT FULL</field>
+    <record id="re_reeferelectricity_45_transshipment_full" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 45 TRANSSHIPMENT FULL</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="gp_reefer_45_transshipment_empty" model="product.product">
-      <field name="name">GP REEFER 45 TRANSSHIPMENT EMPTY</field>
+    <record id="gp_reeferelectricity_45_transshipment_empty" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 45 TRANSSHIPMENT EMPTY</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="vh_reefer_45_transshipment_empty" model="product.product">
-      <field name="name">VH REEFER 45 TRANSSHIPMENT EMPTY</field>
+    <record id="vh_reeferelectricity_45_transshipment_empty" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 45 TRANSSHIPMENT EMPTY</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="pf_reefer_45_transshipment_empty" model="product.product">
-      <field name="name">PF REEFER 45 TRANSSHIPMENT EMPTY</field>
+    <record id="pf_reeferelectricity_45_transshipment_empty" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 45 TRANSSHIPMENT EMPTY</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="re_reefer_45_transshipment_empty" model="product.product">
-      <field name="name">RE REEFER 45 TRANSSHIPMENT EMPTY</field>
+    <record id="re_reeferelectricity_45_transshipment_empty" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 45 TRANSSHIPMENT EMPTY</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_empty"/>
@@ -6343,194 +6343,194 @@
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="gp_reefer_20_restowage_full" model="product.product">
-      <field name="name">GP REEFER 20 RESTOWAGE FULL</field>
+    <record id="gp_reeferelectricity_20_restowage_full" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 20 RESTOWAGE FULL</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="vh_reefer_20_restowage_full" model="product.product">
-      <field name="name">VH REEFER 20 RESTOWAGE FULL</field>
+    <record id="vh_reeferelectricity_20_restowage_full" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 20 RESTOWAGE FULL</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="pf_reefer_20_restowage_full" model="product.product">
-      <field name="name">PF REEFER 20 RESTOWAGE FULL</field>
+    <record id="pf_reeferelectricity_20_restowage_full" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 20 RESTOWAGE FULL</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="re_reefer_20_restowage_full" model="product.product">
-      <field name="name">RE REEFER 20 RESTOWAGE FULL</field>
+    <record id="re_reeferelectricity_20_restowage_full" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 20 RESTOWAGE FULL</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="gp_reefer_20_restowage_empty" model="product.product">
-      <field name="name">GP REEFER 20 RESTOWAGE EMPTY</field>
+    <record id="gp_reeferelectricity_20_restowage_empty" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 20 RESTOWAGE EMPTY</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="vh_reefer_20_restowage_empty" model="product.product">
-      <field name="name">VH REEFER 20 RESTOWAGE EMPTY</field>
+    <record id="vh_reeferelectricity_20_restowage_empty" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 20 RESTOWAGE EMPTY</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="pf_reefer_20_restowage_empty" model="product.product">
-      <field name="name">PF REEFER 20 RESTOWAGE EMPTY</field>
+    <record id="pf_reeferelectricity_20_restowage_empty" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 20 RESTOWAGE EMPTY</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="re_reefer_20_restowage_empty" model="product.product">
-      <field name="name">RE REEFER 20 RESTOWAGE EMPTY</field>
+    <record id="re_reeferelectricity_20_restowage_empty" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 20 RESTOWAGE EMPTY</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="gp_reefer_40_restowage_full" model="product.product">
-      <field name="name">GP REEFER 40 RESTOWAGE FULL</field>
+    <record id="gp_reeferelectricity_40_restowage_full" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 40 RESTOWAGE FULL</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="vh_reefer_40_restowage_full" model="product.product">
-      <field name="name">VH REEFER 40 RESTOWAGE FULL</field>
+    <record id="vh_reeferelectricity_40_restowage_full" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 40 RESTOWAGE FULL</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="pf_reefer_40_restowage_full" model="product.product">
-      <field name="name">PF REEFER 40 RESTOWAGE FULL</field>
+    <record id="pf_reeferelectricity_40_restowage_full" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 40 RESTOWAGE FULL</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="re_reefer_40_restowage_full" model="product.product">
-      <field name="name">RE REEFER 40 RESTOWAGE FULL</field>
+    <record id="re_reeferelectricity_40_restowage_full" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 40 RESTOWAGE FULL</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="gp_reefer_40_restowage_empty" model="product.product">
-      <field name="name">GP REEFER 40 RESTOWAGE EMPTY</field>
+    <record id="gp_reeferelectricity_40_restowage_empty" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 40 RESTOWAGE EMPTY</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="vh_reefer_40_restowage_empty" model="product.product">
-      <field name="name">VH REEFER 40 RESTOWAGE EMPTY</field>
+    <record id="vh_reeferelectricity_40_restowage_empty" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 40 RESTOWAGE EMPTY</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="pf_reefer_40_restowage_empty" model="product.product">
-      <field name="name">PF REEFER 40 RESTOWAGE EMPTY</field>
+    <record id="pf_reeferelectricity_40_restowage_empty" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 40 RESTOWAGE EMPTY</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="re_reefer_40_restowage_empty" model="product.product">
-      <field name="name">RE REEFER 40 RESTOWAGE EMPTY</field>
+    <record id="re_reeferelectricity_40_restowage_empty" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 40 RESTOWAGE EMPTY</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="gp_reefer_45_restowage_full" model="product.product">
-      <field name="name">GP REEFER 45 RESTOWAGE FULL</field>
+    <record id="gp_reeferelectricity_45_restowage_full" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 45 RESTOWAGE FULL</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="vh_reefer_45_restowage_full" model="product.product">
-      <field name="name">VH REEFER 45 RESTOWAGE FULL</field>
+    <record id="vh_reeferelectricity_45_restowage_full" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 45 RESTOWAGE FULL</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="pf_reefer_45_restowage_full" model="product.product">
-      <field name="name">PF REEFER 45 RESTOWAGE FULL</field>
+    <record id="pf_reeferelectricity_45_restowage_full" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 45 RESTOWAGE FULL</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="re_reefer_45_restowage_full" model="product.product">
-      <field name="name">RE REEFER 45 RESTOWAGE FULL</field>
+    <record id="re_reeferelectricity_45_restowage_full" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 45 RESTOWAGE FULL</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_full"/>
     </record>
-    <record id="gp_reefer_45_restowage_empty" model="product.product">
-      <field name="name">GP REEFER 45 RESTOWAGE EMPTY</field>
+    <record id="gp_reeferelectricity_45_restowage_empty" model="product.product">
+      <field name="name">GP REEFERELECTRICITY 45 RESTOWAGE EMPTY</field>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="vh_reefer_45_restowage_empty" model="product.product">
-      <field name="name">VH REEFER 45 RESTOWAGE EMPTY</field>
+    <record id="vh_reeferelectricity_45_restowage_empty" model="product.product">
+      <field name="name">VH REEFERELECTRICITY 45 RESTOWAGE EMPTY</field>
       <field name="type_id" ref="lct_product_type_vh"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="pf_reefer_45_restowage_empty" model="product.product">
-      <field name="name">PF REEFER 45 RESTOWAGE EMPTY</field>
+    <record id="pf_reeferelectricity_45_restowage_empty" model="product.product">
+      <field name="name">PF REEFERELECTRICITY 45 RESTOWAGE EMPTY</field>
       <field name="type_id" ref="lct_product_type_pf"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="re_reefer_45_restowage_empty" model="product.product">
-      <field name="name">RE REEFER 45 RESTOWAGE EMPTY</field>
+    <record id="re_reeferelectricity_45_restowage_empty" model="product.product">
+      <field name="name">RE REEFERELECTRICITY 45 RESTOWAGE EMPTY</field>
       <field name="type_id" ref="lct_product_type_re"/>
-      <field name="service_id" ref="lct_product_service_reefer"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_45"/>
       <field name="category_id" ref="lct_product_category_restowage"/>
       <field name="status_id" ref="lct_product_status_empty"/>
