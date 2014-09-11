@@ -326,7 +326,7 @@ class account_invoice(osv.osv):
             if isinstance(tag, str):
                 vals[field] = self._get_elmnt_text(invoice, tag)
         if not vals['partner_id'].isdigit():
-            raise osv.except_osv(('Error'), (invoice_map['partner_id'] + ' should be an integer'))
+            raise osv.except_osv(('Error'), (invoice_map['partner_id'] + ' should be a number'))
         partner = self.pool.get('res.partner').browse(cr, uid, int(vals['partner_id']), context=context)
         if partner.exists():
             vals['partner_id'] = partner.id
@@ -393,9 +393,9 @@ class account_invoice(osv.osv):
             except:
                 pass
             else:
-                product_ids = product_model.search(cr, uid, [('name', '=', 'Hatch cover move')], context=context)
+                product_ids = product_model.search(cr, uid, [('name', '=', 'Hatch Cover Move')], context=context)
                 if not product_ids:
-                    raise osv.except_osv(('Error'), ('No product found for "Hatch cover move"'))
+                    raise osv.except_osv(('Error'), ('No product found for "Hatch Cover Move"'))
                 product = product_model.browse(cr, uid, product_ids, context=context)[0]
                 line_vals = {
                     'product_id': product.id,
@@ -417,9 +417,9 @@ class account_invoice(osv.osv):
             except:
                 pass
             else:
-                product_ids = product_model.search(cr, uid, [('name', '=', 'Gearbox count')], context=context)
+                product_ids = product_model.search(cr, uid, [('name', '=', 'Gearbox Count')], context=context)
                 if not product_ids:
-                    raise osv.except_osv(('Error'), ('No product found for "Gearbox count"'))
+                    raise osv.except_osv(('Error'), ('No product found for "Gearbox Count"'))
                 product = product_model.browse(cr, uid, product_ids, context=context)[0]
                 line_vals = {
                     'product_id': product.id,
