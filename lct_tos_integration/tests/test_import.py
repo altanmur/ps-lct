@@ -52,7 +52,7 @@ class TestImport(TransactionCase):
         cr, uid = self.cr, self.uid
         pricelist_model = self.registry('product.pricelist')
         product_model = self.registry('product.product')
-        product_id = product_model.search(cr, uid, [('name','=','GP STORAGE 20 EXPORT FULL')])[0]
+        product_id = product_model.search(cr, uid, [('name','=','Export Storage 20 Full GP')])[0]
         product_model.write(cr, uid, [product_id], {'list_price': 50.})
         tariff_rate_vals = [
             (0,0,{
@@ -69,7 +69,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             }),
         ]
-        product_id = product_model.search(cr, uid, [('name','=','GP REEFERELECTRICITY 20 EXPORT FULL')])[0]
+        product_id = product_model.search(cr, uid, [('name','=','Export Reefer electricity 20 Full GP')])[0]
         product_model.write(cr, uid, [product_id], {'list_price': 16.})
         tariff_rate_vals.append(
             (0,0,{
@@ -86,7 +86,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             })
         )
-        product_id = product_model.search(cr, uid, [('name','=','GP REEFERELECTRICITY 40 IMPORT FULL')])[0]
+        product_id = product_model.search(cr, uid, [('name','=','Import Reefer electricity 40 Full GP')])[0]
         product_model.write(cr, uid, [product_id], {'list_price': 58.})
         tariff_rate_vals.append(
             (0,0,{
@@ -103,7 +103,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             })
         )
-        product_id = product_model.search(cr, uid, [('name','=','GP DISCHARGE 20 IMPORT FULL')])[0]
+        product_id = product_model.search(cr, uid, [('name','=','Import Discharge 20 Full GP')])[0]
         product_model.write(cr, uid, [product_id], {'list_price': 15.})
         tariff_rate_vals.append(
             (0,0,{
@@ -115,7 +115,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             })
         )
-        product_id = product_model.search(cr, uid, [('name','=','GP DISCHARGE 40 IMPORT FULL')])[0]
+        product_id = product_model.search(cr, uid, [('name','=','Import Discharge 40 Full GP')])[0]
         product_model.write(cr, uid, [product_id], {'list_price': 20.})
         tariff_rate_vals.append(
             (0,0,{
@@ -127,7 +127,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             })
         )
-        product_id = product_model.search(cr, uid, [('name','=','Gearbox count')])[0]
+        product_id = product_model.search(cr, uid, [('name','=','Gearbox Count')])[0]
         product_model.write(cr, uid, [product_id], {'list_price': 11.})
         tariff_rate_vals.append(
             (0,0,{
@@ -139,7 +139,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             })
         )
-        product_id = product_model.search(cr, uid, [('name','=','Hatch cover move')])[0]
+        product_id = product_model.search(cr, uid, [('name','=','Hatch Cover Move')])[0]
         product_model.write(cr, uid, [product_id], {'list_price': 13.})
         tariff_rate_vals.append(
             (0,0,{
@@ -213,21 +213,22 @@ class TestImport(TransactionCase):
         if data_ids:
             import_data_model.unlink(cr, uid, data_ids)
         ftp_config_model.button_import_ftp_data(cr, uid, [self.config_id])
-
+        data_ids = import_data_model.search(cr, uid, [])
         appoints = invoice_model.browse(cr, uid, invoice_model.search(cr, uid, [('state','=','draft'),('type2','=','appointment')], order='appoint_ref'))
         self.assertTrue(len(appoints) == 2, 'Importing should create 2 appointments')
         self.assertTrue(appoints[0].appoint_ref == 'LCT2014062400289', 'Importing should create an appointment with reference: LCT2014062400289')
         lines = sorted(appoints[0].invoice_line, key=lambda x: x.name.lower())
         self.assertTrue(len(lines) == 3)
-        self.assertTrue(lines[0].name == 'GP REEFERELECTRICITY 20 EXPORT FULL')
+        self.assertTrue(lines[0].name == 'Export Reefer electricity 20 Full GP')
         self.assertTrue(lines[0].quantity == 1)
         self.assertTrue(lines[0].price_unit == 70.4)
-        self.assertTrue(lines[1].name == 'GP REEFERELECTRICITY 40 IMPORT FULL')
-        self.assertTrue(lines[1].quantity == 1)
-        self.assertTrue(lines[1].price_unit == 464.)
-        self.assertTrue(lines[2].name == 'GP STORAGE 20 EXPORT FULL')
-        self.assertTrue(lines[2].quantity == 2)
-        self.assertTrue(lines[2].price_unit == 281.25)
+        self.assertTrue(lines[1].name == 'Export Storage 20 Full GP')
+        self.assertTrue(lines[1].quantity == 2)
+        self.assertTrue(lines[1].price_unit == 281.25)
+        self.assertTrue(lines[2].name == 'Import Reefer electricity 40 Full GP')
+        self.assertTrue(lines[2].quantity == 1)
+        self.assertTrue(lines[2].price_unit == 464.)
+
         self.assertTrue(appoints[1].appoint_ref == 'LCT2014070900019', 'Importing should create an appointment with reference: LCT2014070900019')
         self.assertTrue(len(appoints[1].invoice_line) == 0)
 
@@ -238,17 +239,15 @@ class TestImport(TransactionCase):
         lines = sorted(vessels[0].invoice_line, key=lambda x: x.name.lower())
         self.assertTrue(len(lines) == 4)
 
-        self.assertTrue(lines[0].name == 'Gearbox count')
+        self.assertTrue(lines[0].name == 'Gearbox Count')
         self.assertTrue(lines[0].quantity == 14)
         self.assertTrue(lines[0].price_unit == 7.7)
-        self.assertTrue(lines[1].name == 'GP DISCHARGE 20 IMPORT FULL')
-        self.assertTrue(lines[1].quantity == 1)
-        self.assertTrue(lines[1].price_unit == 11.25)
-        self.assertTrue(lines[2].name == 'GP DISCHARGE 40 IMPORT FULL')
+        self.assertTrue(lines[1].name == 'Hatch Cover Move')
+        self.assertTrue(lines[1].quantity == 6)
+        self.assertTrue(lines[1].price_unit == 7.8)
+        self.assertTrue(lines[2].name == 'Import Discharge 20 Full GP')
         self.assertTrue(lines[2].quantity == 1)
-        self.assertTrue(lines[2].price_unit == 10.)
-        self.assertTrue(lines[3].name == 'Hatch cover move')
-        self.assertTrue(lines[3].quantity == 6)
-        self.assertTrue(lines[3].price_unit == 7.8)
-
-
+        self.assertTrue(lines[2].price_unit == 11.25)
+        self.assertTrue(lines[3].name == 'Import Discharge 40 Full GP')
+        self.assertTrue(lines[3].quantity == 1)
+        self.assertTrue(lines[3].price_unit == 10.)

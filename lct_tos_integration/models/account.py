@@ -33,9 +33,26 @@ class lct_container_number(osv.osv):
         'date_start': fields.date('Arrival date'),
         'pricelist_qty': fields.integer('Quantity', help="Quantity used for pricelist computation"),
         'cont_operator': fields.char('Container operator'),
-        'invoice_line_id': fields.many2one('account.invoice.line', string="Invoice line"),
+        'invoice_line_id': fields.many2one('account.invoice.line', string="Invoice line", ondelete="cascade", required=True),
         'oog_coef': fields.float('Out of Gauge coefficient'),
+        'invoice_id': fields.related('invoice_line_id', 'invoice_id', string='Invoice'),
     }
+
+    _defaults = {
+        'oog_coef': 1.,
+    }
+
+    def _check_unique_invoice(self, cr, uid, ids, context=None):
+        for cont_nr in self.browse(cr, uid, ids, context=context):
+            other_nr_ids = self.search(cr, uid, [('name','=',cont_nr.name)], context=context)
+            other_nrs = self.browse(cr, uid, other_nr_ids, context=context)
+            if any((other_nr.invoice_id.id != cont_nr.invoice_id.id for other_nr in other_nrs)):
+                return False
+        return True
+
+    _constraints = [
+        (_check_unique_invoice, 'A container number can not math different invoices', ['name', 'invoice_id']),
+    ]
 
 
 class account_invoice_line(osv.osv):
@@ -113,11 +130,24 @@ class account_invoice(osv.osv):
                 raise osv.except_osv(('Error'), ('The following information (%s) was not found') % (label,))
         return ids[0]
 
+    def _product_category(self, category):
+        return 'Import' if category == 'I' else \
+                'Export' if category == 'E' else \
+                'Transshipment' if category == 'T' else \
+                'Restowage & Shifting' if category == 'R' else \
+                False
+
+    def _product_status(self, status):
+        return 'Full' if status == 'F' else \
+               'Empty' if status == 'E' else \
+               False
+
     def _get_product_properties(self, cr, uid, line, product_map, context=None):
         product_properties = {}
 
         category = self._get_elmnt_text(line, product_map['category_id'])
-        category_name = 'Import' if category == 'I' else 'Export' if category == 'E' else False
+        category_name = self._product_category(category)
+
         if not category_name:
             raise osv.except_osv(('Error'), ('Some information (category_id) could not be found on product'))
         product_properties['category_id'] = {
@@ -132,9 +162,7 @@ class account_invoice(osv.osv):
         }
 
         status = self._get_elmnt_text(line, product_map['status_id'])
-        status_name = 'Full' if status == 'F' \
-            else 'Empty' if status == 'E' \
-            else False
+        status_name = self._product_status(status)
         product_properties['status_id'] = {
             'name': status_name,
             'id': self._get_product_info(cr, uid, 'lct.product.status', 'name', status_name, 'Status')
@@ -202,15 +230,20 @@ class account_invoice(osv.osv):
                         lines_vals[product.id] = vals
 
         for vals in lines_vals.values():
-            qty_tot = 0.0
             qties = [cont_nr[2]['pricelist_qty'] for cont_nr in vals['cont_nr_ids']]
-            price = sum((qty*pricelist_model.price_get_multi(cr, uid, [pricelist.id], [(vals['product_id'], qty, partner.id)], context=context)[vals['product_id']][pricelist.id] for qty in qties))
             vals.update({
-                'price_unit': price/len(qties),
+                'price_unit': pricelist_model.tariff_price_get(cr, uid, partner.id, vals['product_id'], len(qties), qties, context=context),
                 'quantity': len(qties)
                 })
 
         return [(0,0,vals) for vals in lines_vals.values()]
+
+    def _vbl_service_by_category(self, category):
+        return ('Import', 'Discharge') if category == 'I' else \
+               ('Export', 'Load') if category == 'E' else \
+               ('Transshipment', 'Discharge') if category == 'T' else \
+               ('Restowage & Shifting', 'Shifting from cell to cell') if category == R'' else \
+               (False, False)
 
     def _get_vbl_lines(self, cr, uid, lines, line_map, partner, context=None):
         if len(lines) < 1:
@@ -221,17 +254,11 @@ class account_invoice(osv.osv):
         pricelist = partner.property_product_pricelist
 
         lines_vals = {}
+        category_name, service_name = ('', '')
         for line in lines.findall('line'):
             category = self._get_elmnt_text(line, line_map['product_map']['category_id'])
-            if category == 'I':
-                category_name, service_name = 'Import', 'Discharge'
-            elif category == 'E':
-                category_name, service_name = 'Export', 'Load'
-            elif category == 'T':
-                category_name, service_name = 'Transshipment', 'Discharge'
-            elif category == 'R':
-                category_name, service_name = 'Restowage & Shifting', 'Shifting from cell to cell'
-            else:
+            category_name, service_name = self._vbl_service_by_category(category)
+            if not category_name:
                 raise osv.except_osv(('Error'), ('Some information (category_id) could not be found on product'))
             category_id = self._get_product_info(cr, uid, 'lct.product.category', 'name', category_name, 'Category Type')
             service_id = self._get_product_info(cr, uid, 'lct.product.service', 'name', service_name, 'Service')
@@ -295,13 +322,10 @@ class account_invoice(osv.osv):
                     lines_vals[product.id] = vals
 
         for vals in lines_vals.values():
-            qty_tot = 0.0
-            prices = []
-            oogs_by_qties = [(cont_nr[2]['oog_coef'], cont_nr[2]['pricelist_qty']) for cont_nr in vals['cont_nr_ids']]
-            price = sum((oog*qty*pricelist_model.price_get_multi(cr, uid, [pricelist.id], [(vals['product_id'], qty, partner.id)], context=context)[vals['product_id']][pricelist.id] for oog, qty in oogs_by_qties))
+            qties = [cont_nr[2]['pricelist_qty'] for cont_nr in vals['cont_nr_ids']]
             vals.update({
-                'price_unit': price/len(vals['cont_nr_ids']),
-                'quantity': len(vals['cont_nr_ids'])
+                'price_unit': pricelist_model.tariff_price_get(cr, uid, partner.id, vals['product_id'], len(qties), qties, context=context),
+                'quantity': len(qties)
                 })
 
         return [(0,0,vals) for vals in lines_vals.values()]
@@ -342,7 +366,7 @@ class account_invoice(osv.osv):
             if isinstance(tag, str):
                 vals[field] = self._get_elmnt_text(invoice, tag)
         if not vals['partner_id'].isdigit():
-            raise osv.except_osv(('Error'), (invoice_map['partner_id'] + ' should be an integer'))
+            raise osv.except_osv(('Error'), (invoice_map['partner_id'] + ' should be a number'))
         partner = self.pool.get('res.partner').browse(cr, uid, int(vals['partner_id']), context=context)
         if partner.exists():
             vals['partner_id'] = partner.id
@@ -409,9 +433,9 @@ class account_invoice(osv.osv):
             except:
                 pass
             else:
-                product_ids = product_model.search(cr, uid, [('name', '=', 'Hatch cover move')], context=context)
+                product_ids = product_model.search(cr, uid, [('name', '=', 'Hatch Cover Move')], context=context)
                 if not product_ids:
-                    raise osv.except_osv(('Error'), ('No product found for "Hatch cover move"'))
+                    raise osv.except_osv(('Error'), ('No product found for "Hatch Cover Move"'))
                 product = product_model.browse(cr, uid, product_ids, context=context)[0]
                 line_vals = {
                     'product_id': product.id,
@@ -433,9 +457,9 @@ class account_invoice(osv.osv):
             except:
                 pass
             else:
-                product_ids = product_model.search(cr, uid, [('name', '=', 'Gearbox count')], context=context)
+                product_ids = product_model.search(cr, uid, [('name', '=', 'Gearbox Count')], context=context)
                 if not product_ids:
-                    raise osv.except_osv(('Error'), ('No product found for "Gearbox count"'))
+                    raise osv.except_osv(('Error'), ('No product found for "Gearbox Count"'))
                 product = product_model.browse(cr, uid, product_ids, context=context)[0]
                 line_vals = {
                     'product_id': product.id,

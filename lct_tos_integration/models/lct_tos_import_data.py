@@ -55,6 +55,7 @@ class lct_tos_import_data(osv.Model):
         if any((imp_data.status != 'pending') for imp_data in  imp_datas):
             raise osv.except_osv(('Error'),('You can only process pending data'))
 
+        yac_imp_datas = []
         inv_model = self.pool.get('account.invoice')
         for imp_data in imp_datas:
             cr.execute('SAVEPOINT SP')
@@ -79,12 +80,30 @@ class lct_tos_import_data(osv.Model):
                         'error': traceback.format_exc(),
                         }, context=context)
                     continue
+            elif re.match('^YAC_\d{6}_\d{6}\.xml$', filename):
+                yac_imp_datas.append(imp_data)
+                cr.execute('RELEASE SAVEPOINT SP')
+                continue
             else:
                 cr.execute('ROLLBACK TO SP')
                 error = 'Filename format not known.\nKnown formats are :\n    APP_YYMMDD_SEQ000.xml\n    VBL_YYMMDD_SEQ000.xml'
                 self.write(cr, uid, imp_data.id, {
                     'status': 'fail',
                     'error': error,
+                    }, context=context)
+                continue
+            self.write(cr, uid, imp_data.id, {'status': 'success'}, context=context)
+            cr.execute('RELEASE SAVEPOINT SP')
+
+        for imp_data in yac_imp_datas:
+            cr.execute('SAVEPOINT SP')
+            try:
+                inv_model.process_yac(cr, uid, imp_data.id, context=context)
+            except:
+                cr.execute('ROLLBACK TO SP')
+                self.write(cr, uid, imp_data.id, {
+                    'status': 'fail',
+                    'error': traceback.format_exc(),
                     }, context=context)
                 continue
             self.write(cr, uid, imp_data.id, {'status': 'success'}, context=context)

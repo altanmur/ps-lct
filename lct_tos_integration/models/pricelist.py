@@ -73,6 +73,23 @@ class product_pricelist_item(osv.Model):
 class product_pricelist(osv.Model):
     _inherit = 'product.pricelist'
 
+    def tariff_price_get(self, cr, uid, partner_id, product_id, quantity, pricelist_qties, context=None):
+        pricelist = self.pool.get('res.partner').browse(cr, uid, partner_id, context=context).property_product_pricelist
+        price_get = self.price_get_multi(cr, uid, [pricelist.id], [(product_id, quantity, partner_id)], context=context)
+        if not price_get.get('item_id', False):
+            return 0.
+        pricelist_item = self.pool.get('product.pricelist.item').browse(cr, uid, price_get['item_id'], context=context)
+        if pricelist_item.slab_rate:
+            if len(pricelist_qties) <= 0.:
+                return 0.0
+            price = sum((qty*self.price_get_multi(cr, uid, [pricelist.id], [(product_id, qty, partner_id)], context=context)[product_id][pricelist.id] for qty in pricelist_qties))
+            return price/len(pricelist_qties)
+        else:
+            if quantity <= 0.:
+                return 0.
+            price = price_get[product_id][pricelist.id]
+            return price/quantity
+
     def price_get_multi(self, cr, uid, pricelist_ids, products_by_qty_by_partner, context=None):
         """multi products 'price_get'.
            @param pricelist_ids:
@@ -250,7 +267,7 @@ class product_pricelist(osv.Model):
                         # exception here because it breaks the search
                         price = False
 
-                if price:
+                if price is not False:
                     results['item_id'] = res['id']
                     if 'uom' in context and not uom_price_already_computed:
                         product = products_dict[product_id]
