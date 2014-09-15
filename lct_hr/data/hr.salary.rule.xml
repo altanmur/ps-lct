@@ -442,7 +442,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = categories.BASIC + categories.ALW + categories.hr_salary_rule_category_pension_alw
+result = categories.BASIC + categories.ALW + categories.PENSION_ALW
             </field>
             <field name="condition_python">
 # Available variables:
