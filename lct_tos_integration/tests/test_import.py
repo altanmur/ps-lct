@@ -70,12 +70,12 @@ class TestImport(TransactionCase):
         t.connect(username="openerp", password="openerp")
         sftp = paramiko.SFTPClient.from_transport(t)
         log_path = "/home/ftp/data/openerp/" + self.config['outbound_path'] + '/logs/'
-        self.assertTrue(not sftp.listdir(log_path), 'Importing valid files should be successful')
+        self.assertFalse(sftp.listdir(log_path), 'Importing valid files should be successful')
 
     def test_import(self):
         cr, uid = self.cr, self.uid
         self._prepare_import()
-        inv_ids = self.invoice_model.search(cr, uid, ['|',('type2','=','vessel'),('type2','=','appointment')])
+        inv_ids = self.invoice_model.search(cr, uid, ['|',('type2','=','vessel'),('type2','=','appointment'),('state', '=', 'draft')])
         if inv_ids:
             self.invoice_model.unlink(cr, uid, inv_ids)
         self.ftp_config_model.button_import_ftp_data(cr, uid, [self.config_id])
