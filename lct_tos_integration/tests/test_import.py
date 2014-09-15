@@ -18,7 +18,7 @@ class TestImport(TransactionCase):
         self.config = config = dict(
             name="Config",
             active=True,
-            addr='192.168.0.11',
+            addr='10.10.0.9',
             user='openerp',
             psswd='Azerty01',
             inbound_path='test_inbound/transfer_complete',
@@ -42,7 +42,7 @@ class TestImport(TransactionCase):
             self.ftp_config_model.create(cr, uid, config2)
 
     def _prepare_import(self):
-        t = paramiko.Transport(("192.168.0.11", 22))
+        t = paramiko.Transport(("10.10.0.9", 22))
         t.connect(username="openerp", password="openerp")
         sftp = paramiko.SFTPClient.from_transport(t)
         outbound_path = "/home/ftp/data/openerp/" + self.config['outbound_path'] + '/'
@@ -66,7 +66,7 @@ class TestImport(TransactionCase):
                 sftp.put(xml_abs_file, outbound_path + xml_file)
 
     def _assertNoLogs(self):
-        t = paramiko.Transport(("192.168.0.11", 22))
+        t = paramiko.Transport(("10.10.0.9", 22))
         t.connect(username="openerp", password="openerp")
         sftp = paramiko.SFTPClient.from_transport(t)
         log_path = "/home/ftp/data/openerp/" + self.config['outbound_path'] + '/logs/'

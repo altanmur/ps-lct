@@ -17,7 +17,7 @@ class TestExport(TransactionCase):
         self.config = config = dict(
             name="Config",
             active=True,
-            addr='192.168.0.11',
+            addr='10.10.0.9',
             user='openerp',
             psswd='Azerty01',
             inbound_path='test_inbound/transfer_complete',
