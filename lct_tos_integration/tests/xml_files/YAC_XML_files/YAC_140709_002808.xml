@@ -16,7 +16,7 @@
         <to_location />
         <status>F</status>
         <category>E</category>
-        <container_size>45</container_size>
+        <container_size>40</container_size>
         <container_type_id>RE</container_type_id>
         <container_height>9.60</container_height>
         <container_hazardous_class_id>1.1A</container_hazardous_class_id>

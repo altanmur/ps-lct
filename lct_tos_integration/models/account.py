@@ -160,7 +160,7 @@ class account_invoice(osv.osv):
             product_properties = self._get_product_properties(cr, uid, line, line_map['product_map'], context=context)
             services = {
                 'Storage': self._get_elmnt_text(line, 'storage'),
-                'Reefer': self._get_elmnt_text(line, 'plugged_time'),
+                'Reefer electricity': self._get_elmnt_text(line, 'plugged_time'),
             }
             for service, quantity in services.iteritems():
                 if quantity and quantity.isdigit() and int(quantity) > 0:
@@ -257,6 +257,7 @@ class account_invoice(osv.osv):
                                 'pricelist_qty': 1,
                                 'cont_operator': self._get_elmnt_text(line, 'container_operator_id'),
                             })
+
             if product.id in lines_vals:
                 lines_vals[product.id]['cont_nr_ids'].append(cont_nr)
             else:
@@ -275,7 +276,7 @@ class account_invoice(osv.osv):
                     'name' : product.name,
                     'cont_nr_ids': [cont_nr],
                 })
-                lines_vals[product.name] = vals
+                lines_vals[product.id] = vals
 
         for vals in lines_vals.values():
             qty_tot = 0.0
@@ -325,7 +326,7 @@ class account_invoice(osv.osv):
             if isinstance(tag, str):
                 vals[field] = self._get_elmnt_text(invoice, tag)
         if not vals['partner_id'].isdigit():
-            raise osv.except_osv(('Error'), (invoice_map['partner_id'] + ' should be an integer'))
+            raise osv.except_osv(('Error'), (invoice_map['partner_id'] + ' should be a number'))
         partner = self.pool.get('res.partner').browse(cr, uid, int(vals['partner_id']), context=context)
         if partner.exists():
             vals['partner_id'] = partner.id
@@ -392,9 +393,9 @@ class account_invoice(osv.osv):
             except:
                 pass
             else:
-                product_ids = product_model.search(cr, uid, [('name', '=', 'Hatch cover move')], context=context)
+                product_ids = product_model.search(cr, uid, [('name', '=', 'Hatch Cover Move')], context=context)
                 if not product_ids:
-                    raise osv.except_osv(('Error'), ('No product found for "Hatch cover move"'))
+                    raise osv.except_osv(('Error'), ('No product found for "Hatch Cover Move"'))
                 product = product_model.browse(cr, uid, product_ids, context=context)[0]
                 line_vals = {
                     'product_id': product.id,
@@ -416,9 +417,9 @@ class account_invoice(osv.osv):
             except:
                 pass
             else:
-                product_ids = product_model.search(cr, uid, [('name', '=', 'Gearbox count')], context=context)
+                product_ids = product_model.search(cr, uid, [('name', '=', 'Gearbox Count')], context=context)
                 if not product_ids:
-                    raise osv.except_osv(('Error'), ('No product found for "Gearbox count"'))
+                    raise osv.except_osv(('Error'), ('No product found for "Gearbox Count"'))
                 product = product_model.browse(cr, uid, product_ids, context=context)[0]
                 line_vals = {
                     'product_id': product.id,
