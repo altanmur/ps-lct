@@ -26,6 +26,10 @@ class TestImport(TransactionCase):
             outbound_path='test_outbound/transfer_complete'
         )
         self.config_id = self.ftp_config_model.create(cr, uid, config)
+        currency_id = self.registry('res.currency').search(cr, uid, [('name','=','XOF')])[0]
+        self.registry('res.company').write(cr, uid, 1, {'currency_id': currency_id})
+        self.registry('product.price.type').write(cr, uid, 1, {'currency_id': currency_id})
+        self.registry('product.price.type').write(cr, uid, 2, {'currency_id': currency_id})
 
 
     def test_only_one_active_config(self):
