@@ -73,6 +73,29 @@ class yardActivity(osv.Model):
                 for line in lines.findall('line'):
                     new_yardact = {
                         'container_number': line.find('container_number').text,
+                        'date_activity': yardact.find('date').text,
+                        'container_operator_id': line.find('container_operator_id').text,
+                        'arrival_timestamp': line.find('arrival_timestamp').text,
+                        'departure_timestamp': line.find('departure_timestamp').text,
+                        'transaction_direction': line.find('transaction_direction').text,
+                        'yard_activity': line.find('yard_activity').text,
+                        'quantity': line.find('quantity').text,
+                        'from_location': line.find('from_location').text,
+                        'to_location': line.find('to_location').text,
+                        'status': line.find('status').text,
+                        'category': line.find('category').text,
+                        'container_size': line.find('container_size').text,
+                        'container_type_id': line.find('container_type_id').text,
+                        'container_height': line.find('container_height').text,
+                        'container_hazardous_class_id': line.find('container_hazardous_class_id').text,
+                        'active_reefer': line.find('active_reefer').text,
+                        'oog': line.find('oog').text,
+                        'bb': line.find('bb').text,
+                        'bundles': line.find('bundles').text,
+                        'plugged_time': line.find('plugged_time').text,
+                        'departure_mode_id': line.find('departure_mode_id').text,
+                        'special_handling_code_id': line.find('special_handling_code_id').text,
+                        'service_code_id': line.find('service_code_id').text,
                     }
                     yardactivity_ids.append(yardacti_model.create(cr, uid, new_yardact, context=context))
         return yardactivity_ids

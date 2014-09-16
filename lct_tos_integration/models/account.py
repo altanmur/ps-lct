@@ -412,8 +412,6 @@ class account_invoice(osv.osv):
         return appointment_ids
 
     def xml_to_vbl(self, cr, uid, imp_data_id, context=None):
-        import pudb
-        pudb.set_trace()
         imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
         content = re.sub('<\?xml.*\?>','',imp_data.content).replace(u"\ufeff","")
         vbillings = ET.fromstring(content)
