@@ -44,9 +44,9 @@ class lct_container_number(osv.osv):
 
     def _check_unique_invoice(self, cr, uid, ids, context=None):
         for cont_nr in self.browse(cr, uid, ids, context=context):
-            other_nr_ids = self.search(cr, uid, [('name','=',cont_nr.name)], context=context)
+            other_nr_ids = self.search(cr, uid, [('name','=',cont_nr.name), ('invoice_id', '!=', False)], context=context)
             other_nrs = self.browse(cr, uid, other_nr_ids, context=context)
-            if any((other_nr.invoice_id.id != cont_nr.invoice_id.id for other_nr in other_nrs)):
+            if other_nrs and any((other_nr.invoice_id.id != cont_nr.invoice_id.id for other_nr in other_nrs)):
                 return False
         return True
 
@@ -412,6 +412,8 @@ class account_invoice(osv.osv):
         return appointment_ids
 
     def xml_to_vbl(self, cr, uid, imp_data_id, context=None):
+        import pudb
+        pudb.set_trace()
         imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
         content = re.sub('<\?xml.*\?>','',imp_data.content).replace(u"\ufeff","")
         vbillings = ET.fromstring(content)

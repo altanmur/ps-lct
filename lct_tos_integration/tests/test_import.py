@@ -13,6 +13,7 @@ class TestImport(TransactionCase):
         super(TestImport, self).setUp()
         self.ftp_config_model = self.registry('ftp.config')
         self.invoice_model = self.registry('account.invoice')
+        self.yardact_model = self.registry('lct_tos_integration.yardactivity')
         self.partner_model = self.registry('res.partner')
         self.import_data_model = self.registry('lct.tos.import.data')
         cr, uid = self.cr, self.uid
@@ -197,6 +198,13 @@ class TestImport(TransactionCase):
             file_name = xml_file.split(os.sep)[-1]
             xml_files.append((file_name, f))
 
+        yac_dir = os.path.join(local_path_path, 'YAC_XML_files')
+        yac_files = [os.path.join(yac_dir, file_name) for file_name in  os.listdir(yac_dir)]
+        for xml_file in yac_files:
+            f = open(xml_file)
+            file_name = xml_file.split(os.sep)[-1]
+            xml_files.append((file_name, f))
+
         for xml_file in xml_files:
             iet.upload_file(ftp, xml_file[1], xml_file[0])
 
@@ -210,9 +218,12 @@ class TestImport(TransactionCase):
         inv_ids = self.invoice_model.search(cr, uid, ['|',('type2','=','vessel'),('type2','=','appointment'),('state', '=', 'draft')])
         if inv_ids:
             invoice_model.unlink(cr, uid, inv_ids)
+        vesselsbefore = len(invoice_model.search(cr, uid, [('state','=','draft'),('type2','=','vessel')], order='call_sign'))
+        nbryadbefore = len(self.yardact_model.search(cr, uid, [('state', 'in', ('draft', 'done'))]))
         data_ids = import_data_model.search(cr, uid, [])
         if data_ids:
             import_data_model.unlink(cr, uid, data_ids)
+
         ftp_config_model.button_import_ftp_data(cr, uid, [self.config_id])
         data_ids = import_data_model.search(cr, uid, [])
         appoints = invoice_model.browse(cr, uid, invoice_model.search(cr, uid, [('state','=','draft'),('type2','=','appointment')], order='appoint_ref'))
@@ -230,11 +241,14 @@ class TestImport(TransactionCase):
         self.assertTrue(lines[2].quantity == 1)
         self.assertTrue(lines[2].price_unit == 464.)
 
+        nbryadafter = len(self.yardact_model.search(cr, uid, [('state', 'in', ('draft', 'done'))]))
+        self.assertEqual(nbryadbefore + 128, nbryadafter, 'Importing should create 128 yard activities')
+
         self.assertTrue(appoints[1].appoint_ref == 'LCT2014070900019', 'Importing should create an appointment with reference: LCT2014070900019')
         self.assertTrue(len(appoints[1].invoice_line) == 0)
 
         vessels = invoice_model.browse(cr, uid, invoice_model.search(cr, uid, [('state','=','draft'),('type2','=','vessel')], order='call_sign'))
-        self.assertTrue(len(vessels) == 1, 'Importing should create 1 vessel billing')
+        self.assertEqual(len(vessels), vesselsbefore+1, 'Importing should create 1 vessel billing')
         self.assertTrue(vessels[0].call_sign == 'CALLSIGN000', 'Importing should create an appointment with reference: CALLSIGN000')
 
         lines = sorted(vessels[0].invoice_line, key=lambda x: x.name.lower())
