@@ -41,6 +41,7 @@
         'security/ir.model.access.csv',
         'views/lct_tos_import_data.xml',
         'data/actions.xml',
+        'views/pricelist.xml',
         ],
     'images': [],
     'demo': [],
