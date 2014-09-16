@@ -42,6 +42,7 @@
         'views/lct_tos_import_data.xml',
         'data/actions.xml',
         'views/pricelist.xml',
+        'views/res_partner.xml',
         ],
     'images': [],
     'demo': [],
