@@ -28,6 +28,7 @@ from datetime import datetime
 import io
 import traceback
 
+
 class ftp_config(osv.osv):
     _name="ftp.config"
 
@@ -57,53 +58,54 @@ class ftp_config(osv.osv):
             return []
 
         imp_data_model = self.pool.get('lct.tos.import.data')
-        config_obj = self.browse(cr, uid, config_ids, context=context)[0]
-        ftp = FTP(host=config_obj.addr, user=config_obj.user, passwd=config_obj.psswd)
-        ftp.cwd(config_obj.outbound_path)
-        archive_path = 'done'
-        if archive_path not in ftp.nlst():
-            ftp.mkd(archive_path)
-
         imp_data_ids = []
-        for filename in ftp.nlst():
-            if filename == archive_path:
-                continue
+        for config_obj in self.browse(cr, uid, config_ids, context=context):
+            ftp = FTP(host=config_obj.addr, user=config_obj.user, passwd=config_obj.psswd)
+            ftp.cwd(config_obj.outbound_path)
+            archive_path = 'done'
+            if archive_path not in ftp.nlst():
+                ftp.mkd(archive_path)
 
-            content = StringIO()
-            try:
-                ftp.retrlines('RETR ' + filename, content.write)
-            except:
-                imp_data_model.create(cr, uid, {
-                    'name': filename,
-                    'content': False,
-                    'status': 'fail',
-                    'error': traceback.format_exc(),
-                    }, context=context)
-                continue
+            for filename in ftp.nlst():
+                if filename == archive_path:
+                    continue
 
-            imp_data_ids.append(imp_data_model.create(cr, uid, {
-                'name': filename,
-                'content': content.getvalue(),
-                }, context=context))
+                content = StringIO()
+                try:
+                    ftp.retrlines('RETR ' + filename, content.write)
+                except:
+                    imp_data_model.create(cr, uid, {
+                            'name': filename,
+                            'content': False,
+                            'status': 'fail',
+                            'error': traceback.format_exc(),
+                        }, context=context)
+                    continue
 
-            toname = archive_path + '/' + filename
-            extension = ''
-            if '.' in filename[1:-1]:
-                extension =  "".join(['.', filename.split('.')[-1]])
-            toname_base = toname[:-(len(extension))]
+                imp_data_ids.append(imp_data_model.create(cr, uid, {
+                        'name': filename,
+                        'content': content.getvalue(),
+                    }, context=context))
 
-            n = 1
-            while toname in ftp.nlst(archive_path):
-                toname = "".join([toname_base, '-', str(n), extension])
-                n += 1
-            try:
-                ftp.rename(filename, toname)
-            except:
-                imp_data_model.write(cr, uid, imp_data_ids.pop(), {
-                    'status': 'fail',
-                    'error': traceback.format_exc(),
-                    }, context=context)
-                continue
+                toname = filename
+                extension = ''
+                if '.' in filename[1:-1]:
+                    extension =  "".join(['.', filename.split('.')[-1]])
+                toname_base = toname[:-(len(extension))]
+
+                n = 1
+                archive_files = [archive_file.replace('/done','') for archive_file in ftp.nlst(archive_path)]
+                while toname in archive_files :
+                    toname = "".join([toname_base, '-', str(n), extension])
+                    n += 1
+                try:
+                    ftp.rename(filename, "".join([archive_path, "/", toname]))
+                except:
+                    imp_data_model.write(cr, uid, imp_data_ids.pop(), {
+                        'status': 'fail',
+                        'error': traceback.format_exc(),
+                        }, context=context)
+                    continue
 
         cr.commit()
         imp_data_model.process_data(cr, uid, imp_data_ids, context=context)
@@ -113,6 +115,7 @@ class ftp_config(osv.osv):
 
     def cron_import_ftp_data(self, cr, uid, context=None):
         self._import_ftp_data(cr, uid, self.search(cr, uid, [('active','=',True)]), context=context)
+
 
     # Data Export
 
@@ -160,7 +163,7 @@ class ftp_config(osv.osv):
         invoice = invoice_model.browse(cr, uid, app_id, context=context)
         voucher = voucher_model.browse(cr, uid, payment_id, context=context)
         values = {
-            'customer_id': invoice.partner_id.name,
+            'customer_id': invoice.partner_id.id,
             'individual_customer': 'IND' if invoice.individual_cust else 'STD',
             'appointment_reference': invoice.appoint_ref,
             'appointment_date': invoice.appoint_date,
@@ -172,25 +175,21 @@ class ftp_config(osv.osv):
         self._dict_to_tree(values, ET.SubElement(root, 'appointment'))
         return root
 
-    def _write_xml_file(self, local_file, root):
-        with io.open(local_file, 'w+', encoding='utf-8') as f:
-            f.write(u'<?xml version="1.0" encoding="utf-8"?>')
-            f.write(ET.tostring(root, encoding='utf-8', pretty_print=True).decode('utf-8'))
+    def _xml_to_file(self, root):
+        f = StringIO()
+        f.write(u'<?xml version="1.0" encoding="utf-8"?>')
+        f.write(ET.tostring(root, encoding='utf-8', pretty_print=True).decode('utf-8'))
+        return f
 
-    def _upload_file(self, cr, uid, local_path, file_name, context=None):
-        local_file = local_path + file_name
-        try:
-            ftp_config_ids = self.search(cr, uid, [('active','=',True)], context=context)
-            ftp_config_id = ftp_config_ids and ftp_config_ids[0] or False
-            config_obj = self.browse(cr, uid, ftp_config_id, context=context)
-            ftp = FTP(host=config_obj.addr, user=config_obj.user, passwd=config_obj.psswd)
-            inbound_path =  config_obj.inbound_path.rstrip('/') + "/"
-            ftp.cwd(inbound_path)
-            with open(local_file, 'r') as f:
-                ftp.storlines('STOR ' + file_name, f)
-        except:
-            os.remove(local_file)
-            raise
+    def _upload_file(self, cr, uid, f, file_name, context=None):
+        ftp_config_ids = self.search(cr, uid, [('active','=',True)], context=context)
+        ftp_config_id = ftp_config_ids and ftp_config_ids[0] or False
+        config_obj = self.browse(cr, uid, ftp_config_id, context=context)
+        ftp = FTP(host=config_obj.addr, user=config_obj.user, passwd=config_obj.psswd)
+        inbound_path =  config_obj.inbound_path.rstrip(os.sep) + os.sep
+        ftp.cwd(inbound_path)
+        f.seek(0)
+        ftp.storlines('STOR ' + file_name, f)
 
     def export_partners(self, cr, uid, partner_ids, context=None):
         if not partner_ids:
@@ -202,19 +201,16 @@ class ftp_config(osv.osv):
 
         sequence = self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', 'sequence_partner_export', context=context)
 
-        local_path = __file__.split('models')[0] + "tmp/"
         file_name = 'CUS_' + datetime.today().strftime('%y%m%d') + '_' + sequence + '.xml'
-        self._write_xml_file(local_path + file_name, root)
-        self._upload_file(cr, uid, local_path, file_name, context=context)
+        f = self._xml_to_file(root)
+        self._upload_file(cr, uid, f, file_name, context=context)
         return partner_ids
 
     def export_app(self, cr, uid, app_id, payment_id, context=None):
         if not (app_id and payment_id):
             return []
         root = self._write_app_tree(cr, uid, app_id, payment_id, context=context)
-
         sequence = self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', 'sequence_appointment_validate_export', context=context)
-        local_path = __file__.split('models')[0] + "tmp/"
         file_name = 'APP_' + datetime.today().strftime('%y%m%d') + '_' + sequence + '.xml'
-        self._write_xml_file(local_path + file_name, root)
-        self._upload_file(cr, uid, local_path, file_name, context=context)
+        f = self._xml_to_file(root)
+        self._upload_file(cr, uid, f, file_name, context=context)

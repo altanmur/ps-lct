@@ -4,3 +4,4 @@ import product
 import res_partner
 import ir_sequence
 import lct_tos_import_data
+import pricelist
