@@ -31,7 +31,10 @@ class res_partner(osv.Model):
     }
 
     def _default_ref(self, cr, uid, context=None):
-        return self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', 'sequence_partner_ref', context=context)
+        try:
+            return self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', 'sequence_partner_ref', context=context)
+        except exception, e:
+            return False
 
     _defaults = {
         'ref': _default_ref,
