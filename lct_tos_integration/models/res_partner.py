@@ -30,6 +30,13 @@ class res_partner(osv.Model):
         'ref': fields.char('Customer key', size=64, select=1, required=True),
     }
 
+    def _default_ref(self, cr, uid, context=None):
+        return self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', 'sequence_partner_ref', context=context)
+
+    _defaults = {
+        'ref': _default_ref,
+    }
+
     def create(self, cr, uid, vals, context=None):
         partner_id = super(res_partner, self).create(cr, uid, vals, context=context)
         self.pool.get('ftp.config').export_partners(cr, uid, [partner_id], context=context)
