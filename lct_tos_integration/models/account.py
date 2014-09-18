@@ -418,8 +418,10 @@ class account_invoice(osv.osv):
         vbilling_ids = []
         product_model = self.pool.get('product.product')
         invoice_model = self.pool.get('account.invoice')
+        invoiceline_model = self.pool.get('account.invoice.line')
         pricelist_model = self.pool.get('product.pricelist')
         partner_model = self.pool.get('res.partner')
+        yard_model = self.pool.get('lct.tos.yardactivity')
         for vbilling in vbillings.findall('vbilling'):
             vbilling_vals = self._get_invoice_vals(cr, uid, vbilling, 'vbl', context=context)
             vbilling_vals['type2'] = 'vessel'
@@ -474,4 +476,12 @@ class account_invoice(osv.osv):
                     raise osv.except_osv(('Error'), ('Could not find an income account on product %s ') % product.name)
                 vbilling_vals['invoice_line'].append((0,0,line_vals))
             vbilling_ids.append(invoice_model.create(cr, uid, vbilling_vals, context=context))
+        #Add yard activities on created invoices
+        invoiceline_ids = invoiceline_model.search(cr, uid, [('invoice_id', 'in', vbilling_ids)], context=context)
+        for line in invoiceline_model.browse(cr, uid, invoiceline_ids, context=context):
+            for container in line.cont_nr_ids:
+                yard_ids = yard_model.search(cr, uid, ['container_number', '=', container.name], context=context)
+                yards = yard_model.browse(cr, uid, yard_ids, context=context)
+                for yard in yards:
+                    pass
         return vbilling_ids

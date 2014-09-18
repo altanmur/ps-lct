@@ -2,12 +2,34 @@
 <openerp>
     <data>
 
-        <record id="view_yard_activities_tree_lct" model="ir.ui.view">
-            <field name="name">view.yard.activities.tree.lct</field>
-            <field name="model">lct_tos_integration.yardactivity</field>
+        <record id="view_yard_activities_form_lct" model="ir.ui.view">
+            <field name="name">view.yard.activities.form.lct</field>
+            <field name="model">lct.tos.yardactivity</field>
             <field name="priority" eval="16"/>
             <field name="arch" type="xml">
-                <tree string="Yard activities" version="7.0" colors="blue:state=='draft'">
+                <form string="Yard activities" version="7.0">
+                    <header>
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <group col="4">
+                        <field name="container_number"/>
+                        <field name="date_activity"/>
+                        <field name="container_operator_id"/>
+                        <field name="arrival_timestamp"/>
+                        <field name="departure_timestamp"/>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_yard_activities_tree_lct" model="ir.ui.view">
+            <field name="name">view.yard.activities.tree.lct</field>
+            <field name="model">lct.tos.yardactivity</field>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+                <tree string="Yard activities" colors="blue:state=='draft'">
                     <field name="container_number"/>
                     <field name="date_activity"/>
                     <field name="container_operator_id"/>
@@ -20,14 +42,15 @@
 
         <record id="action_yard_activities" model="ir.actions.act_window">
             <field name="name">Yard activities</field>
-            <field name="res_model">lct_tos_integration.yardactivity</field>
-            <field name="view_mode">tree</field>
+            <field name="res_model">lct.tos.yardactivity</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
             <field name="help" type="html">
 				<p class="oe_view_nocontent_create">Create your first yard activity</p>
 			</field>
         </record>
 
-        <menuitem action="action_yard_activities" sequence="150" id="menu_action_yard_activities" parent="account.menu_finance_receivables"/>
+        <menuitem action="action_yard_activities" sequence="150" id="menu_action_yard_activities" parent="account.menu_finance_receivables" name="Yard activities"/>
 
 </data>
 </openerp>

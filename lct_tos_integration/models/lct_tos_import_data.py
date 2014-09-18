@@ -56,7 +56,7 @@ class lct_tos_import_data(osv.Model):
             raise osv.except_osv(('Error'),('You can only process pending data'))
 
         inv_model = self.pool.get('account.invoice')
-        yac_model = self.pool.get('lct_tos_integration.yardactivity')
+        yac_model = self.pool.get('lct.tos.yardactivity')
         for imp_data in imp_datas:
             cr.execute('SAVEPOINT SP')
             filename = imp_data.name

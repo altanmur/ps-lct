@@ -13,7 +13,7 @@ class TestImport(TransactionCase):
         super(TestImport, self).setUp()
         self.ftp_config_model = self.registry('ftp.config')
         self.invoice_model = self.registry('account.invoice')
-        self.yardact_model = self.registry('lct_tos_integration.yardactivity')
+        self.yardact_model = self.registry('lct.tos.yardactivity')
         self.partner_model = self.registry('res.partner')
         self.import_data_model = self.registry('lct.tos.import.data')
         cr, uid = self.cr, self.uid

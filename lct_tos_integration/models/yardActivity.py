@@ -26,7 +26,7 @@ import xml.etree.ElementTree as ET
 import re
 
 class yardActivity(osv.Model):
-    _name = "lct_tos_integration.yardactivity"
+    _name = "lct.tos.yardactivity"
     _rec_name  = 'container_number'
 
     _columns = {
@@ -54,9 +54,10 @@ class yardActivity(osv.Model):
         'departure_mode_id': fields.char('departure mode id'),
         'special_handling_code_id': fields.char('special handling code id'),
         'service_code_id': fields.char('service code id'),
-        'state': fields.selection([('draft','Draft'),
-                ('done','Done')],'State',required=True,readonly=True),
+        'state': fields.selection([('draft','Draft'),('done','Done')],'State',required=True,readonly=True),
     }
+
+
 
     _defaults = {
         'state' : 'draft',
@@ -67,7 +68,7 @@ class yardActivity(osv.Model):
         content = re.sub('<\?xml.*\?>','',imp_data.content).replace(u"\ufeff","")
         yardacts = ET.fromstring(content)
         yardactivity_ids = []
-        yardacti_model = self.pool.get("lct_tos_integration.yardactivity")
+        yardacti_model = self.pool.get("lct.tos.yardactivity")
         for yardact in yardacts.findall('yactivity'):
             for lines in yardact.findall('lines'):
                 for line in lines.findall('line'):
@@ -99,3 +100,13 @@ class yardActivity(osv.Model):
                     }
                     yardactivity_ids.append(yardacti_model.create(cr, uid, new_yardact, context=context))
         return yardactivity_ids
+
+    def button_create_invoice(self, cr, uid, yard_ids, context=None):
+        yards = self.browse(cr, uid, yard_ids, context=context)
+        invoicee_ids = []
+        for yard in yards:
+            invoicee_ids.append(yard.container_operator_id)
+        invoicee_ids = set(invoicee_ids)
+        #Create an invoice by container_operator_id
+
+        return True
