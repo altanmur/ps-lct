@@ -22,5 +22,12 @@
             <field name="number_increment">1</field>
             <field name="implementation">standard</field>
         </record>
+        <record id="sequence_partner_ref" model="ir.sequence">
+            <field name="name">Customer ref sequence</field>
+            <field name="active" eval="True"/>
+            <field name="padding">6</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">standard</field>
+        </record>
     </data>
 </openerp>

@@ -26,6 +26,10 @@ import traceback
 class res_partner(osv.Model):
     _inherit = 'res.partner'
 
+    _columns = {
+        'ref': fields.char('Customer key', size=64, select=1, required=True),
+    }
+
     def create(self, cr, uid, vals, context=None):
         partner_id = super(res_partner, self).create(cr, uid, vals, context=context)
         self.pool.get('ftp.config').export_partners(cr, uid, [partner_id], context=context)
