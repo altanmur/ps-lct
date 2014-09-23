@@ -17,17 +17,7 @@ class TestImport(TransactionCase):
         self.import_data_model = self.registry('lct.tos.import.data')
         cr, uid = self.cr, self.uid
         config_ids = self.ftp_config_model.search(cr, uid, [])
-        self.ftp_config_model.unlink(cr, uid, config_ids)
-        self.config = config = dict(
-            name="Config",
-            active=True,
-            addr='10.10.0.9',
-            user='openerp',
-            psswd='Azerty01',
-            inbound_path='test_inbound/transfer_complete',
-            outbound_path='test_outbound/transfer_complete'
-        )
-        self.config_id = self.ftp_config_model.create(cr, uid, config)
+        self.config = config = self.ftp_config_model.browse(cr, uid, config_ids)[0]
         currency_id = self.registry('res.currency').search(cr, uid, [('name','=','XOF')])[0]
         self.registry('res.company').write(cr, uid, 1, {'currency_id': currency_id})
         self.registry('product.price.type').write(cr, uid, 1, {'currency_id': currency_id})
@@ -210,7 +200,7 @@ class TestImport(TransactionCase):
         data_ids = import_data_model.search(cr, uid, [])
         if data_ids:
             import_data_model.unlink(cr, uid, data_ids)
-        ftp_config_model.button_import_ftp_data(cr, uid, [self.config_id])
+        ftp_config_model.button_import_ftp_data(cr, uid, [self.config.id])
 
         appoints = invoice_model.browse(cr, uid, invoice_model.search(cr, uid, [('type2','=','appointment'), ('id', 'not in', appoint_ids)], order='appoint_ref'))
         self.assertTrue(len(appoints) == 2, 'Importing should create 2 appointments')

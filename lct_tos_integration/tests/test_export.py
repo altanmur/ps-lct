@@ -16,18 +16,8 @@ class TestExport(TransactionCase):
         self.invoice_model = self.registry('account.invoice')
         cr, uid = self.cr, self.uid
         config_ids = self.ftp_config_model.search(cr, uid, [])
-        self.ftp_config_model.unlink(cr, uid, config_ids)
-        self.config = config = dict(
-            name="Config",
-            active=True,
-            addr='10.10.0.9',
-            user='openerp',
-            psswd='Azerty01',
-            inbound_path='test_inbound/transfer_complete',
-            outbound_path='test_outbound/transfer_complete'
-        )
-        self.config_id = self.ftp_config_model.create(cr, uid, config)
-        self.ftp = FTP(host=config['addr'],user=config['user'], passwd=config['psswd'])
+        self.config = self.ftp_config_model.browse(cr, uid, config_ids)[0]
+        self.ftp = FTP(host=self.config['addr'],user=self.config['user'], passwd=self.config['psswd'])
 
     def test_export(self):
         cr, uid = self.cr, self.uid
@@ -104,6 +94,6 @@ class TestExport(TransactionCase):
         ftp.cwd('/')
         ftp.cwd(config['outbound_path'])
         iet.upload_file(ftp, f, file_name)
-        self.ftp_config_model.button_import_ftp_data(cr, uid, [self.config_id])
+        self.ftp_config_model.button_import_ftp_data(cr, uid, [self.config.id])
         inv_id = inv_model.search(cr, uid, [('state','=','draft')])[0]
 
