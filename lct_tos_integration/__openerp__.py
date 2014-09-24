@@ -43,6 +43,7 @@
         'data/actions.xml',
         'views/pricelist.xml',
         'views/res_partner.xml',
+        'views/tos_menu.xml',
         ],
     'images': [],
     'demo': [],
