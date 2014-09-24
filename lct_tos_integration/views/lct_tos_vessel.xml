@@ -49,6 +49,5 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="lct_tos_vessel_menu" action="action_lct_tos_vessel" name="Vessels" parent="tos_integ_ftp_menu"/>
     </data>
 </openerp>

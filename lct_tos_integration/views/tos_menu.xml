@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<!-- Menu -->
+		<menuitem id="menu_lct_tos_integration_root" name="TOS" sequence="51"/>
+
+		<menuitem id="menu_lct_tos_integration_vessels" parent="menu_lct_tos_integration_root" name="Vessels" sequence="10"/>
+
+		<menuitem id="menu_lct_tos_integration_vessels_list" parent="menu_lct_tos_integration_vessels" name="Vessels" action="action_lct_tos_vessel" sequence="100"/>
+
+	</data>
+</openerp>
