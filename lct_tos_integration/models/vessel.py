@@ -29,10 +29,10 @@ class lct_tos_vessel(osv.Model):
     _columns = {
         'vessel_id': fields.char('ID'),
         'name': fields.char('Name'),
-        'call_sign': fields.char('Call sign'),
-        'lloyds_number': fields.char('lloyds number'),
-        'vessel_in_voyage_number': fields.char('vessel in voyage number'),
-        'vessel_out_voyage_number': fields.char('vessel out voyage number'),
+        'call_sign': fields.char('Call Sign'),
+        'lloyds_number': fields.char('Lloyds Number'),
+        'vessel_in_voyage_number': fields.char('vessel In Voyage Number'),
+        'vessel_out_voyage_number': fields.char('vessel Out Voyage Number'),
         'vessel_eta': fields.datetime('ETA'),
     }
 
