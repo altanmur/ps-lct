@@ -40,6 +40,7 @@
         'data/ir_sequences.xml',
         'security/ir.model.access.csv',
         'views/lct_tos_import_data.xml',
+        'views/lct_tos_vessel.xml',
         'data/actions.xml',
         'views/pricelist.xml',
         'views/res_partner.xml',
