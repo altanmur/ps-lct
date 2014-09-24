@@ -27,6 +27,7 @@ class product_product(osv.osv):
     _columns = {
         'service_id': fields.many2one('lct.product.service', 'Service'),
         'category_id': fields.many2one('lct.product.category', 'Category'),
+        'sub_category_id': fields.many2one('lct.product.sub.category', 'Sub-category'),
         'size_id': fields.many2one('lct.product.size', 'Size'),
         'status_id': fields.many2one('lct.product.status', 'Status'),
         'type_id': fields.many2one('lct.product.type', 'Type'),
@@ -42,6 +43,13 @@ class lct_product_service(osv.osv):
 
 class lct_product_category(osv.osv):
     _name = 'lct.product.category'
+
+    _columns = {
+        'name' : fields.char('Name'),
+    }
+
+class lct_product_sub_category(osv.osv):
+    _name = 'lct.product.sub.category'
 
     _columns = {
         'name' : fields.char('Name'),

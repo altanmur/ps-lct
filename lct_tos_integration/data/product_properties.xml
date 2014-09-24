@@ -58,5 +58,29 @@
     <record id="lct_product_size_40" model="lct.product.size">
       <field name="size">40</field>
     </record>
+    <record id="lct_product_category_dockage" model="lct.product.category">
+      <field name="name">Dockage</field>
+    </record>
+    <record id="lct_product_sub_category_loa_160_inf" model="lct.product.sub.category">
+      <field name="name">LOA 160m and below</field>
+    </record>
+    <record id="lct_product_sub_category_loa_160_360" model="lct.product.sub.category">
+      <field name="name">LOA 160m to 360m</field>
+    </record>
+    <record id="lct_product_sub_category_loa_360_sup" model="lct.product.sub.category">
+      <field name="name">LOA 360m and above</field>
+    </record>
+    <record id="lct_product_sub_category_local_import" model="lct.product.sub.category">
+      <field name="name">Local import</field>
+    </record>
+    <record id="lct_product_sub_category_transit_sahel" model="lct.product.sub.category">
+      <field name="name">Transit Sahel</field>
+    </record>
+    <record id="lct_product_sub_category_transit_coastal" model="lct.product.sub.category">
+      <field name="name">Transit coastal</field>
+    </record>
+    <record id="lct_product_sub_category_free_zone" model="lct.product.sub.category">
+      <field name="name">Free zone</field>
+    </record>
   </data>
 </openerp>

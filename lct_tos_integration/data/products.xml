@@ -711,5 +711,20 @@
       <field name="service_id" ref="lct_product_service_hatchcovermove"/>
       <field name="size_id" ref="lct_product_size_40"/>
     </record>
+    <record id="product_dockage_160_below" model="product.product">
+      <field name="name">Dockage LOA 160m and below</field>
+      <field name="category_id" ref="lct_product_category_dockage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_loa_160_inf"/>
+    </record>
+    <record id="product_dockage_160_360" model="product.product">
+      <field name="name">Dockage LOA 160m to 360m</field>
+      <field name="category_id" ref="lct_product_category_dockage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_loa_160_360"/>
+    </record>
+    <record id="product_dockage_360_above" model="product.product">
+      <field name="name">Dockage LOA 360m and above</field>
+      <field name="category_id" ref="lct_product_category_dockage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_loa_360_sup"/>
+    </record>
   </data>
 </openerp>
