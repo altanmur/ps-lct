@@ -9,6 +9,7 @@
             <field name="arch" type="xml">
                 <tree string="Product Services" editable="top">
                     <field name="name"/>
+                    <field name="parent_id"/>
                 </tree>
             </field>
         </record>
@@ -30,6 +31,7 @@
             <field name="arch" type="xml">
                 <tree string="Category" editable="top">
                     <field name="name"/>
+                    <field name="parent_id"/>
                 </tree>
             </field>
         </record>

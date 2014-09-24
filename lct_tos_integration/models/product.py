@@ -38,6 +38,7 @@ class lct_product_service(osv.osv):
 
     _columns = {
         'name' : fields.char('Name'),
+        'parent_id': fields.many2one('lct.product.category', 'Parent Category'),
     }
 
 class lct_product_category(osv.osv):
@@ -45,6 +46,7 @@ class lct_product_category(osv.osv):
 
     _columns = {
         'name' : fields.char('Name'),
+        'parent_id': fields.many2one('lct.product.category', 'Parent Category'),
     }
 
 class lct_product_size(osv.osv):
