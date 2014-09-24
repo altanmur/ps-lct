@@ -75,7 +75,7 @@ class TestExport(TransactionCase):
             'street': vals['street'] + ', ' + vals['street2'],
             'city': vals['city'],
             'zip': vals['zip'],
-            'country': country_model.browse(cr, uid, country_id).name,
+            'country': country_model.browse(cr, uid, country_id).code,
             'email': vals['email'],
             'website': vals['website'],
             'phone': vals['phone']
@@ -96,4 +96,3 @@ class TestExport(TransactionCase):
         iet.upload_file(ftp, f, file_name)
         self.ftp_config_model.button_import_ftp_data(cr, uid, [self.config.id])
         inv_id = inv_model.search(cr, uid, [('state','=','draft')])[0]
-
