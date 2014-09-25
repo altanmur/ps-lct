@@ -56,6 +56,7 @@ class lct_tos_import_data(osv.Model):
             raise osv.except_osv(('Error'),('You can only process pending data'))
 
         inv_model = self.pool.get('account.invoice')
+        vsl_model = self.pool.get('lct.tos.vessel')
         for imp_data in imp_datas:
             cr.execute('SAVEPOINT SP')
             filename = imp_data.name
@@ -72,6 +73,16 @@ class lct_tos_import_data(osv.Model):
             elif re.match('^APP_\d{6}_\d{6}\.xml$', filename):
                 try:
                     inv_model.xml_to_app(cr, uid, imp_data.id, context=context)
+                except:
+                    cr.execute('ROLLBACK TO SP')
+                    self.write(cr, uid, imp_data.id, {
+                        'status': 'fail',
+                        'error': traceback.format_exc(),
+                        }, context=context)
+                    continue
+            elif re.match('^VES_\d{6}_\d{6}\.xml$', filename):
+                try:
+                    vsl_model.xml_to_vessel(cr, uid, imp_data.id, context=context)
                 except:
                     cr.execute('ROLLBACK TO SP')
                     self.write(cr, uid, imp_data.id, {

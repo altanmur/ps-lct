@@ -15,6 +15,7 @@ class TestImport(TransactionCase):
         self.invoice_model = self.registry('account.invoice')
         self.partner_model = self.registry('res.partner')
         self.import_data_model = self.registry('lct.tos.import.data')
+        self.vsl_model = self.registry('lct.tos.vessel')
         cr, uid = self.cr, self.uid
         config_ids = self.ftp_config_model.search(cr, uid, [])
         self.config = config = self.ftp_config_model.browse(cr, uid, config_ids)[0]
@@ -186,6 +187,13 @@ class TestImport(TransactionCase):
             file_name = xml_file.split(os.sep)[-1]
             xml_files.append((file_name, f))
 
+        ves_dir = os.path.join(local_path_path, 'VES_XML_files')
+        ves_files = [os.path.join(ves_dir, file_name) for file_name in  os.listdir(ves_dir)]
+        for xml_file in ves_files:
+            f = open(xml_file)
+            file_name = xml_file.split(os.sep)[-1]
+            xml_files.append((file_name, f))
+
         for xml_file in xml_files:
             iet.upload_file(ftp, xml_file[1], xml_file[0])
 
@@ -195,6 +203,7 @@ class TestImport(TransactionCase):
         invoice_model, import_data_model = self.invoice_model, self.import_data_model
         product_model = self.registry('product.product')
         self._prepare_import()
+        vesselsbefore = len(self.vsl_model.search(cr, uid, []))
         vessel_ids = self.invoice_model.search(cr, uid, [('type2','=','vessel')])
         appoint_ids = self.invoice_model.search(cr, uid, [('type2','=','appointment')])
         data_ids = import_data_model.search(cr, uid, [])
@@ -240,3 +249,9 @@ class TestImport(TransactionCase):
         self.assertTrue(lines[3].quantity == 1)
         self.assertTrue(lines[3].price_unit == 10.)
 
+        vesselsafter = len(self.vsl_model.search(cr, uid, []))
+        self.assertEqual(vesselsbefore + 5, vesselsafter, 'Importing should create 5 Vessels')
+        self._prepare_import()
+        ftp_config_model.button_import_ftp_data(cr, uid, [self.config.id])
+        vesselsafter2 = len(self.vsl_model.search(cr, uid, []))
+        self.assertEqual(vesselsafter + 5, vesselsafter2, 'Importing should create 5 Vessels even if they exist')
