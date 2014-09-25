@@ -16,11 +16,13 @@ class TestExport(TransactionCase):
         self.invoice_model = self.registry('account.invoice')
         cr, uid = self.cr, self.uid
         config_ids = self.ftp_config_model.search(cr, uid, [])
-        self.config = self.ftp_config_model.browse(cr, uid, config_ids)[0]
+        self.config = config_ids and self.ftp_config_model.browse(cr, uid, config_ids)[0] or False
         self.ftp = FTP(host=self.config['addr'],user=self.config['user'], passwd=self.config['psswd'])
 
     def test_export(self):
         cr, uid = self.cr, self.uid
+        if not self.config:
+            return True
         ftp, config = self.ftp, self.config
         ftp_config_model = self.ftp_config_model
         iet.purge_ftp(ftp, path=config['outbound_path'], omit=['done'])
