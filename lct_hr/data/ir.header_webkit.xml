@@ -5,7 +5,6 @@
         <record id="lct_hr.ir_header_webkit_payslip" model="ir.header_webkit">
             <field name="name">Payslip Portrait</field>
             <field name="format">A4</field>
-            <field name="orientation">Landscape</field>
             <field name="orientation">Portrait</field>
         </record>
         <record id="lct_hr.ir_header_webkit_bank_info" model="ir.header_webkit">

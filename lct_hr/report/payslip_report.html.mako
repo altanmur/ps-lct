@@ -56,9 +56,8 @@
     </head>
     <body dir="ltr" style="max-width:21.0cm; margin-top:0.254cm; margin-bottom:0.254cm; margin-left:0.762cm; margin-right:0.762cm; writing-mode:lr-tb; ">
         %for payslip in context.get('payslips'):
-            <table height="21.0cm" border="0" cellspacing="0" cellpadding="0" class="ta1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ta1">
                 <colgroup>
-		    <col width="1" />
                     <col width="61" />
                     <col width="70" />
                     <col width="97" />
@@ -125,7 +124,7 @@
                             ${payslip.employee_id.start_date}
                         </p>
                     </td>
-                    <td colspan="4" style="text-align:left;width:2.937cm; " class="ce7">
+                    <td colspan="3" style="text-align:left;width:2.937cm; " class="ce7">
                         <p>
                             NOM &amp; PRENOMS
                         </p>
@@ -146,7 +145,7 @@
                             ${payslip.employee_id.reg_nbr}
                         </p>
                     </td>
-                    <td colspan="4" style="text-align:left;width:2.937cm; " class="ce7">
+                    <td colspan="3" style="text-align:left;width:2.937cm; " class="ce7">
                         <p>
                             ${payslip.employee_id.name}
                         </p>
@@ -263,7 +262,7 @@
                     <td colspan="5" style="text-align:left;width:1.958cm; " class="ce3">
 
                     </td>
-                    <td colspan="4" rowspan="3" style="text-align:left;width:2.937cm; " class="ce9">
+                    <td colspan="3" rowspan="3" style="text-align:left;width:2.937cm; " class="ce9">
 
                     </td>
                 </tr>
@@ -411,7 +410,6 @@
                 <!-- -->
                 %else:
                 <tr class="ro2">
-		    <td></td>
                     <td style="text-align:left;width:1.958cm; " class="ce7">
                         <p>
                             ${line.code}
@@ -610,7 +608,6 @@
 
 
                 <tr class="ro2">
-		    <td></td>
                     <td colspan="3" style="text-align:left;width:1.958cm; " class="ce9">
                         <p>
                             Montants
@@ -886,9 +883,9 @@
                     <td colspan="5" rowspan="2" style="font-weight:bold;text-align:center;width:3.133cm;" class="ce12">
                         <p>
                             Signature de l'employé
-                        </p>		        
+                        </p>
                     </td>
-                </tr>		
+                </tr>
                 <tr class="ro2" style="height: 4cm">
 		    <td></td>
                 </tr>
