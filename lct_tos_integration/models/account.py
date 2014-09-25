@@ -314,9 +314,9 @@ class account_invoice(osv.osv):
         sub_category_id = False
         if vals['loa'] <= 160:
             sub_category_id = sub_category_model.search(cr, uid, [('name', '=', 'LOA 160m and below')], context=context)
-        elif vals['loa'] > 160 and vals['loa'] <= 360:
+        elif vals['loa'] > 160 and vals['loa'] < 360:
             sub_category_id = sub_category_model.search(cr, uid, [('name', '=', 'LOA 160m to 360m')], context=context)
-        elif vals['loa'] > 360:
+        elif vals['loa'] >= 360:
             sub_category_id = sub_category_model.search(cr, uid, [('name', '=', 'LOA 360m and above')], context=context)
         if not sub_category_id:
             raise osv.except_osv(('Error'), ('Cannot find sub category for the VCL'))

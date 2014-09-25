@@ -144,7 +144,7 @@
         <menuitem action="action_invoice_appointment" sequence="151" id="menu_action_invoice_appointment" parent="account.menu_finance_receivables"/>
 
         <record id="action_invoice_dockage" model="ir.actions.act_window">
-            <field name="name">Vessel Dockage</field>
+            <field name="name">Vessel Dockages</field>
             <field name="res_model">account.invoice</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
