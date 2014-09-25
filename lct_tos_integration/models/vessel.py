@@ -31,8 +31,8 @@ class lct_tos_vessel(osv.Model):
         'name': fields.char('Name'),
         'call_sign': fields.char('Call Sign'),
         'lloyds_number': fields.char('Lloyds Number'),
-        'vessel_in_voyage_number': fields.char('vessel In Voyage Number'),
-        'vessel_out_voyage_number': fields.char('vessel Out Voyage Number'),
+        'vessel_in_voyage_number': fields.char('Vessel In Voyage Number'),
+        'vessel_out_voyage_number': fields.char('Vessel Out Voyage Number'),
         'vessel_eta': fields.datetime('ETA'),
     }
 
