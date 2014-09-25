@@ -18,7 +18,7 @@ class TestImport(TransactionCase):
         self.vsl_model = self.registry('lct.tos.vessel')
         cr, uid = self.cr, self.uid
         config_ids = self.ftp_config_model.search(cr, uid, [])
-        self.config = config = self.ftp_config_model.browse(cr, uid, config_ids)[0]
+        self.config = config = config_ids and self.ftp_config_model.browse(cr, uid, config_ids)[0] or False
         currency_id = self.registry('res.currency').search(cr, uid, [('name','=','XOF')])[0]
         self.registry('res.company').write(cr, uid, 1, {'currency_id': currency_id})
         self.registry('product.price.type').write(cr, uid, 1, {'currency_id': currency_id})
@@ -26,6 +26,8 @@ class TestImport(TransactionCase):
 
     def test_only_one_active_config(self):
         cr, uid = self.cr, self.uid
+        if not self.config:
+            return True
         config2 = dict(
             name="Config2",
             active=True,
@@ -142,6 +144,42 @@ class TestImport(TransactionCase):
                 'base': 1,
             })
         )
+        product_id = product_model.search(cr, uid, [('name','=','Dockage LOA 160m and below')])[0]
+        product_model.write(cr, uid, [product_id], {'list_price': 13.})
+        tariff_rate_vals.append(
+            (0,0,{
+                'product_id': product_id,
+                'min_quantity': 0,
+                'sequence': 1,
+                'slab_rate': False,
+                'price_discount': -0.0,
+                'base': 1,
+            })
+        )
+        product_id = product_model.search(cr, uid, [('name','=','Dockage LOA 160m to 360m')])[0]
+        product_model.write(cr, uid, [product_id], {'list_price': 13.})
+        tariff_rate_vals.append(
+            (0,0,{
+                'product_id': product_id,
+                'min_quantity': 0,
+                'sequence': 1,
+                'slab_rate': False,
+                'price_discount': -0.0,
+                'base': 1,
+            })
+        )
+        product_id = product_model.search(cr, uid, [('name','=','Dockage LOA 360m and above')])[0]
+        product_model.write(cr, uid, [product_id], {'list_price': 13.})
+        tariff_rate_vals.append(
+            (0,0,{
+                'product_id': product_id,
+                'min_quantity': 0,
+                'sequence': 1,
+                'slab_rate': False,
+                'price_discount': -0.0,
+                'base': 1,
+            })
+        )
         tariff_vals = [
             (0,0,{
                 'name': 'Test Tariff',
@@ -194,11 +232,20 @@ class TestImport(TransactionCase):
             file_name = xml_file.split(os.sep)[-1]
             xml_files.append((file_name, f))
 
+        vcl_dir = os.path.join(local_path_path, 'VCL_XML_files')
+        vcl_files = [os.path.join(vcl_dir, file_name) for file_name in  os.listdir(vcl_dir)]
+        for xml_file in vcl_files:
+            f = iet.set_dockage_customer(open(xml_file), self.partner_id)
+            file_name = xml_file.split(os.sep)[-1]
+            xml_files.append((file_name, f))
+
         for xml_file in xml_files:
             iet.upload_file(ftp, xml_file[1], xml_file[0])
 
     def test_import(self):
         cr, uid = self.cr, self.uid
+        if not self.config:
+            return True
         ftp_config_model = self.ftp_config_model
         invoice_model, import_data_model = self.invoice_model, self.import_data_model
         product_model = self.registry('product.product')
@@ -255,3 +302,26 @@ class TestImport(TransactionCase):
         ftp_config_model.button_import_ftp_data(cr, uid, [self.config.id])
         vesselsafter2 = len(self.vsl_model.search(cr, uid, []))
         self.assertEqual(vesselsafter + 5, vesselsafter2, 'Importing should create 5 Vessels even if they exist')
+
+    def test_02_vessel_dockage(self):
+        cr, uid = self.cr, self.uid
+        if not self.config:
+            return True
+        ftp_config_model = self.ftp_config_model
+        invoice_model, import_data_model = self.invoice_model, self.import_data_model
+        product_model = self.registry('product.product')
+
+        self._prepare_import()
+        dockage_ids = self.invoice_model.search(cr, uid, [('type2','=','dockage')])
+        data_ids = import_data_model.search(cr, uid, [])
+        if data_ids:
+            import_data_model.unlink(cr, uid, data_ids)
+        ftp_config_model.button_import_ftp_data(cr, uid, [self.config.id])
+
+        dockages = invoice_model.browse(cr, uid, invoice_model.search(cr, uid, [('type2','=','dockage'), ('id', 'not in', dockage_ids)], order='appoint_ref'))
+        self.assertEquals(len(dockages), 2)
+        for dockage in dockages:
+            self.assertEquals(len(dockage.invoice_line), 1)
+            for line in dockage.invoice_line:
+                self.assertEquals(line.quantity, 1)
+                self.assertEquals(line.price_unit, 13.0)

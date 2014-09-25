@@ -11,7 +11,7 @@
                 </xpath>
                 <xpath expr="//field[@name='type']" position="after">
                     <field name="category_id" widget="selection"/>
-                    <field name="sub_category_id" widget="seleciton"/>
+                    <field name="sub_category_id" widget="selection"/>
                     <field name="service_id" widget="selection"/>
                     <field name="size_id" widget="selection"/>
                     <field name="status_id" widget="selection"/>
