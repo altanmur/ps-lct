@@ -17,6 +17,8 @@ class TestExport(TransactionCase):
         cr, uid = self.cr, self.uid
         config_ids = self.ftp_config_model.search(cr, uid, [])
         self.config = config_ids and self.ftp_config_model.browse(cr, uid, config_ids)[0] or False
+        if not self.config:
+            return True
         self.ftp = FTP(host=self.config['addr'],user=self.config['user'], passwd=self.config['psswd'])
 
     def test_export(self):
