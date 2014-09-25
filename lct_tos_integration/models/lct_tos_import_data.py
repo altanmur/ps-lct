@@ -79,6 +79,16 @@ class lct_tos_import_data(osv.Model):
                         'error': traceback.format_exc(),
                         }, context=context)
                     continue
+            elif re.match('^VCL_\d{6}_\d{6}\.xml$', filename):
+                try:
+                    inv_model.xml_to_vcl(cr, uid, imp_data.id, context=context)
+                except:
+                    cr.execute('ROLLBACK TO SP')
+                    self.write(cr, uid, imp_data.id, {
+                        'status': 'fail',
+                        'error': traceback.format_exc(),
+                        }, context=context)
+                    continue
             else:
                 cr.execute('ROLLBACK TO SP')
                 error = 'Filename format not known.\nKnown formats are :\n    APP_YYMMDD_SEQ000.xml\n    VBL_YYMMDD_SEQ000.xml'

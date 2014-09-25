@@ -24,6 +24,15 @@ def set_vbilling_customer(xml_file, partner_id):
     f.write(ET.tostring(tree, pretty_print=True))
     return f
 
+def set_dockage_customer(xml_file, partner_id):
+    tree = ET.parse(xml_file)
+    root = tree.getroot()
+    for dockage in root.findall('call'):
+        dockage.find('vessel_operator_id').text = str(partner_id)
+    f = StringIO()
+    f.write(ET.tostring(tree, pretty_print=True))
+    return f
+
 def purge_ftp(ftp, path='', omit=[]):
     files = ftp.nlst(path)
     if path:
