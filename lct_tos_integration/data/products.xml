@@ -3,9 +3,11 @@
   <data>
     <record id="hatch_cover_move" model="product.product">
       <field name="name">Hatch Cover Move</field>
+      <field name="service_id" ref="lct_product_service_hatchcovermove"/>
     </record>
     <record id="gearbox_count" model="product.product">
       <field name="name">Gearbox Count</field>
+      <field name="service_id" ref="lct_product_service_gearboxcount"/>
     </record>
     <record id="import_discharge_20_full_gp" model="product.product">
       <field name="name">Import Discharge 20 Full GP</field>

@@ -359,7 +359,7 @@ class account_invoice(osv.osv):
                         'type_id': 'container_type',
                     },
                 },
-            } 
+            }
         elif invoice_type == 'vbl':
             invoice_map = {
                 'partner_id': 'vessel_operator_id',
@@ -410,7 +410,7 @@ class account_invoice(osv.osv):
             invoice_line = self._get_vbl_lines(cr, uid, invoice.find('lines'), invoice_map['line_map'], partner, context=context)
         elif invoice_type == 'vcl':
             invoice_line = self._get_vcl_lines(cr, uid, vals, partner, context=context)
-        
+
         account = partner.property_account_receivable
         if account:
             vals['account_id'] = account.id
@@ -453,6 +453,7 @@ class account_invoice(osv.osv):
         invoice_model = self.pool.get('account.invoice')
         pricelist_model = self.pool.get('product.pricelist')
         partner_model = self.pool.get('res.partner')
+        imd_model = self.pool.get('ir.model.data')
         for vbilling in vbillings.findall('vbilling'):
             vbilling_vals = self._get_invoice_vals(cr, uid, vbilling, 'vbl', context=context)
             vbilling_vals['type2'] = 'vessel'
@@ -466,7 +467,9 @@ class account_invoice(osv.osv):
             except:
                 pass
             else:
-                product_ids = product_model.search(cr, uid, [('name', '=', 'Hatch Cover Move')], context=context)
+                imd_id = imd_model.search(cr, uid, [('module','=','lct_tos_integration'), ('name','=','lct_product_service_hatchcovermove')], context=context)[0]
+                hcm_service_id = imd_model.browse(cr, uid, imd_id, context=context).res_id
+                product_ids = product_model.search(cr, uid, [('service_id', '=', hcm_service_id)], context=context)
                 if not product_ids:
                     raise osv.except_osv(('Error'), ('No product found for "Hatch Cover Move"'))
                 product = product_model.browse(cr, uid, product_ids, context=context)[0]
@@ -490,7 +493,9 @@ class account_invoice(osv.osv):
             except:
                 pass
             else:
-                product_ids = product_model.search(cr, uid, [('name', '=', 'Gearbox Count')], context=context)
+                imd_id = imd_model.search(cr, uid, [('module','=','lct_tos_integration'), ('name','=','lct_product_service_gearboxcount')], context=context)[0]
+                gc_service_id = imd_model.browse(cr, uid, imd_id, context=context).res_id
+                product_ids = product_model.search(cr, uid, [('service_id', '=', gc_service_id)], context=context)
                 if not product_ids:
                     raise osv.except_osv(('Error'), ('No product found for "Gearbox Count"'))
                 product = product_model.browse(cr, uid, product_ids, context=context)[0]
