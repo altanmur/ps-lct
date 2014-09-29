@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <openerp>
   <data>
+    <!-- CATEGORY -->
     <record id="lct_product_category_import" model="lct.product.category">
       <field name="name">Import</field>
     </record>
@@ -13,26 +14,98 @@
     <record id="lct_product_category_restowageshifting" model="lct.product.category">
       <field name="name">Restowage &amp; Shifting</field>
     </record>
-    <record id="lct_product_status_full" model="lct.product.status">
-      <field name="name">Full</field>
+    <record id="lct_product_category_special_handling" model="lct.product.category">
+      <field name="name">Special handling code</field>
     </record>
-    <record id="lct_product_status_empty" model="lct.product.status">
-      <field name="name">Empty</field>
+    <record id="lct_product_category_stuff_charges" model="lct.product.category">
+      <field name="name">Stuff charges</field>
     </record>
-    <record id="lct_product_type_gp" model="lct.product.type">
-      <field name="name">GP</field>
+    <record id="lct_product_category_renominations" model="lct.product.category">
+      <field name="name">Re-nominations</field>
     </record>
+    <record id="lct_product_category_amendment_charges" model="lct.product.category">
+      <field name="name">Amendment charges</field>
+    </record>
+    <record id="lct_product_category_inspection" model="lct.product.category">
+      <field name="name">Inspection</field>
+    </record>
+    <record id="lct_product_category_services" model="lct.product.category">
+      <field name="name">Services</field>
+    </record>
+    <record id="lct_product_category_seal_number" model="lct.product.category">
+      <field name="name">Seal number</field>
+    </record>
+    <record id="lct_product_category_container_shift" model="lct.product.category">
+      <field name="name">Container shift</field>
+    </record>
+    <record id="lct_product_category_seal" model="lct.product.category">
+      <field name="name">Seal</field>
+    </record>
+    <record id="lct_product_category_placards" model="lct.product.category">
+      <field name="name">Placards</field>
+    </record>
+    <record id="lct_product_category_dockage" model="lct.product.category">
+      <field name="name">Dockage</field>
+    </record>
+
+
+    <!-- SERVICE -->
     <record id="lct_product_service_discharge" model="lct.product.service">
       <field name="name">Discharge</field>
     </record>
     <record id="lct_product_service_load" model="lct.product.service">
       <field name="name">Load</field>
     </record>
+    <record id="lct_product_service_restow" model="lct.product.service">
+      <field name="name">Restow</field>
+    </record>
+    <record id="lct_product_service_inspection" model="lct.product.service">
+      <field name="name">Inspection</field>
+    </record>
+    <record id="lct_product_service_pretrip_inspection" model="lct.product.service">
+      <field name="name">Pre-trip inspection</field>
+    </record>
+    <record id="lct_product_service_scanning" model="lct.product.service">
+      <field name="name">Scanning</field>
+    </record>
     <record id="lct_product_service_storage" model="lct.product.service">
       <field name="name">Storage</field>
     </record>
+    <record id="lct_product_service_repaired" model="lct.product.service">
+      <field name="name">Repaired</field>
+    </record>
+    <record id="lct_product_service_pti" model="lct.product.service">
+      <field name="name">PTI</field>
+    </record>
+    <record id="lct_product_service_umcc_inspection" model="lct.product.service">
+      <field name="name">UMCC: Inspection</field>
+    </record>
     <record id="lct_product_service_reload" model="lct.product.service">
       <field name="name">Reload</field>
+    </record>
+    <record id="lct_product_service_washing" model="lct.product.service">
+      <field name="name">Washing</field>
+    </record>
+    <record id="lct_product_service_cfs" model="lct.product.service">
+      <field name="name">CFS</field>
+    </record>
+    <record id="lct_product_service_cleaning" model="lct.product.service">
+      <field name="name">Cleaning</field>
+    </record>
+    <record id="lct_product_service_customs" model="lct.product.service">
+      <field name="name">Customs</field>
+    </record>
+    <record id="lct_product_service_delivery_examination" model="lct.product.service">
+      <field name="name">Delivery for examination</field>
+    </record>
+    <record id="lct_product_service_direct_delivery" model="lct.product.service">
+      <field name="name">Direct delivery</field>
+    </record>
+    <record id="lct_product_service_stevedoring_charges" model="lct.product.service">
+      <field name="name">Stevedoring charges</field>
+    </record>
+    <record id="lct_product_service_shore_handling" model="lct.product.service">
+      <field name="name">Shore handling</field>
     </record>
     <record id="lct_product_service_reeferelectricity" model="lct.product.service">
       <field name="name">Reefer electricity</field>
@@ -52,15 +125,36 @@
     <record id="lct_product_service_gearboxcount" model="lct.product.service">
       <field name="name">Gearbox Count</field>
     </record>
+    <record id="lct_product_service_oog" model="lct.product.service">
+      <field name="name">oog</field>
+    </record>
+
+
+    <!-- STATUS -->
+    <record id="lct_product_status_full" model="lct.product.status">
+      <field name="name">Full</field>
+    </record>
+    <record id="lct_product_status_empty" model="lct.product.status">
+      <field name="name">Empty</field>
+    </record>
+
+
+    <!-- TYPE -->
+    <record id="lct_product_type_gp" model="lct.product.type">
+      <field name="name">GP</field>
+    </record>
+
+
+    <!-- SIZE -->
     <record id="lct_product_size_20" model="lct.product.size">
       <field name="size">20</field>
     </record>
     <record id="lct_product_size_40" model="lct.product.size">
       <field name="size">40</field>
     </record>
-    <record id="lct_product_category_dockage" model="lct.product.category">
-      <field name="name">Dockage</field>
-    </record>
+
+
+    <!-- SUB-CATEGORY -->
     <record id="lct_product_sub_category_loa_160_inf" model="lct.product.sub.category">
       <field name="name">LOA 160m and below</field>
     </record>
