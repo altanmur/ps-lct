@@ -98,11 +98,8 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td style="text-align:left;width:1.958cm; " class="ce2">
-
-                    </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce11" rowspan="4">
-                            <img src="data:image/png;base64,${company.logo}" style="height: 1cm; width: 3.6cm;"/>
+                    <td style="text-align:left;width:4.225cm; " class="ce2" colspan="2">
+                            <img src="data:image/png;base64,${company.logo}" style="height: 1cm;"/>
                     </td>
                     <td style="text-align:left;width:3.133cm; " class="ce11">
 
@@ -259,18 +256,17 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td colspan="3" style="text-align:left;width:1.958cm; " class="ce5">
+                    <td colspan="3" style="text-align:left !important ;width:1.958cm; " class="ce5">
                         <p>
                             N° Employeur:
                         </p>
                     </td>
                     <td style="text-align:left;width:2.267cm; " class="ce11">
-
-                    </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce14">
                         <p>
                             17295
                         </p>
+                    </td>
+                    <td style="text-align:left;width:2.267cm; " class="ce14">
                     </td>
                     <td colspan="3" rowspan="2" style="text-align:left;width:3.133cm; " class="ce9">
                         <p>
@@ -279,19 +275,17 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td colspan="3" style="text-align:left;width:1.958cm; " class="ce5">
+                    <td colspan="3" style="text-align:left !important ;width:1.958cm; " class="ce5">
                         <p>
                             NIF:
                         </p>
                     </td>
                     <td style="text-align:left;width:2.267cm; " class="ce11">
-
-                    </td>
-
-                    <td style="text-align:left;width:2.267cm; " class="ce14">
                         <p>
                             090164 W
                         </p>
+                    </td>
+                    <td style="text-align:left;width:2.267cm; " class="ce14">
                     </td>
                 </tr>
                 <tr class="ro2">
