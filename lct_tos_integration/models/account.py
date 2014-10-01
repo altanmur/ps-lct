@@ -492,15 +492,29 @@ class account_invoice(osv.osv):
             id2 = self._merge_vbls(cr, uid, ids[n_ids/2:], context=context)
             return self._merge_vbl_pair(cr, uid, id1, id2, context=context)
 
-    def _group_vbl_by_partner(self, cr, uid, ids, context=None):
-        vbl_by_partner = {}
+    def _group_vbl_by_partner(self, cr, uid, ids, auto=False, context=None):
+        if not ids:
+            return []
+        vbl_by_currency_by_partner = {}
         for vbl in self.browse(cr, uid, ids, context=context):
-            if vbl.partner_id.id in vbl_by_partner:
-                vbl_by_partner[vbl.partner_id.id].append(vbl.id)
+            partner_id = vbl.partner_id.id
+            currency_id = vbl.currency_id.id
+            if partner_id in vbl_by_currency_by_partner:
+                if currency_id in vbl_by_currency_by_partner[partner_id]:
+                    vbl_by_currency_by_partner[partner_id][currency_id].append(vbl.id)
+                else:
+                    vbl_by_currency_by_partner[partner_id][currency_id] = [vbl.id]
             else:
-                vbl_by_partner[vbl.partner_id.id] = [vbl.id]
-        for vbl_ids in vbl_by_partner.values():
-            self._merge_vbls(cr, uid, vbl_ids, context=context)
+                vbl_by_currency_by_partner[partner_id] = {currency_id : [vbl.id]}
+        if not auto:
+            if len(vbl_by_currency_by_partner) > 1:
+                raise osv.except_osv(('Error'), ("You can't group invoices with different customers"))
+            elif len(vbl_by_currency_by_partner.values()[0]) > 1:
+                raise osv.except_osv(('Error'), ("You can't group invoices with different currencies"))
+        import ipdb; ipdb.set_trace()
+        for vbl_by_currency in vbl_by_currency_by_partner.values():
+            for vbl_ids in vbl_by_currency.values():
+                self._merge_vbls(cr, uid, vbl_ids, context=context)
 
     def group_invoices(self, cr, uid, ids, context=None):
         vbl_ids = self.search(cr, uid, [('id','in',ids), ('type2','=','vessel')], context=context)
