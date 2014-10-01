@@ -42,13 +42,8 @@
             .ce7 { padding:0.071cm; font-family:Arial; border-bottom-style:none; background-color:transparent; border-left-width:1px; border-left-style:solid; border-left-color:#000000; border-right-width:1px; border-right-style:solid; border-right-color:#000000; border-top-style:none; vertical-align:top; text-align:center ! important; margin-left:0cm; writing-mode:page; font-size:6pt; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
             .ce8 { padding:0.071cm; font-family:Arial; border-bottom-style:none; background-color:transparent; border-left-width:1px; border-left-style:solid; border-left-color:#000000; border-right-width:1px; border-right-style:solid; border-right-color:#000000; border-top-style:none; vertical-align:top; text-align:center ! important; margin-left:0cm; writing-mode:page; font-size:6pt; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
             .ce9 { padding:0.071cm; font-family:Arial; background-color:transparent; border-width:1px; border-style:solid; border-color:#000000; vertical-align:top; text-align:center ! important; margin-left:0cm; writing-mode:page; font-size:6pt; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
-            .co1 { width:1.958cm; }
-            .co2 { width:2.267cm; }
-            .co3 { width:3.133cm; }
-            .co4 { width:2.937cm; }
             .ro1 { height:0.423cm; }
             .ro2 { height:0.423cm; }
-            .ro3 { height:0.423cm; }
             .T1 { font-family:Arial; font-size:6pt; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
             <!-- ODF styles with no properties representable as CSS -->
             { }
@@ -57,187 +52,174 @@
     <body dir="ltr" style="max-width:21.0cm; margin-top:0.254cm; margin-bottom:0.254cm; margin-left:0.762cm; margin-right:0.762cm; writing-mode:lr-tb; ">
         %for payslip in context.get('payslips'):
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ta1">
-                <colgroup>
-                    <col width="61" />
-                    <col width="70" />
-                    <col width="97" />
-                    <col width="70" />
-                    <col width="70" />
-                    <col width="70" />
-                    <col width="97" />
-                    <col width="70" />
-                    <col width="91" />
-                    <col width="97" />
-                    <col width="70" />
-                </colgroup>
                 <tr class="ro1">
-                    <td colspan="3" style="text-align:left;width:1.958cm; " class="ce1">
+                    <td colspan="3" style="text-align:left " class="ce1">
                         <p>
                             BULLETIN DE PAIE
                         </p>
                     </td>
-                    <td colspan="1" style="text-align:right;width:3.133cm; " class="ce10">
+                    <td colspan="1" style="text-align:right" class="ce10">
                         <p>
                             Période:
                         </p>
                     </td>
-                    <td colspan="3" style="text-align:left;width:2.267cm; " class="ce12">
+                    <td colspan="3" style="text-align:left" class="ce12">
                         <p>
                             ${payslip.date_from} - ${payslip.date_to}
                         </p>
                     </td>
-                    <td colspan="2" style="text-align:right;width:3.133cm; " class="ce10">
+                    <td colspan="2" style="text-align:right" class="ce10">
                         <p>
                             Date de paiement:
                         </p>
                     </td>
-                    <td colspan="2" style="text-align:left;width:2.267cm; " class="ce12">
+                    <td colspan="2" style="text-align:left" class="ce12">
                         <p>
                             ${payslip.date_to}
                         </p>
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td style="text-align:left;width:4.225cm; " class="ce2" colspan="2">
+                    <td style="text-align:left" class="ce2" colspan="2">
                             <img src="data:image/png;base64,${company.logo}" style="height: 1cm;"/>
                     </td>
-                    <td style="text-align:left;width:3.133cm; " class="ce11">
+                    <td style="text-align:left" class="ce11">
 
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce14" colspan="2">
+                    <td style="text-align:left" class="ce14" colspan="2">
                         <p>
                             Lomé Container Terminal S.A.
                         </p>
                     </td>
-                    <td colspan="2" style="text-align:left;width:3.133cm; " class="ce11">
+                    <td colspan="2" style="text-align:left" class="ce11">
                         <p>
                             Date d'embauche:
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce13">
+                    <td style="text-align:left;" class="ce13">
                         <p>
                             ${payslip.employee_id.start_date}
                         </p>
                     </td>
-                    <td colspan="3" style="text-align:left;width:2.937cm; " class="ce7">
+                    <td colspan="3" style="text-align:left;" class="ce7">
                         <p>
                             NOM &amp; PRENOMS
                         </p>
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td colspan="5" rowspan="2" style="text-align:left;width:1.958cm; " class="ce3">
+                    <td colspan="5" rowspan="2" style="text-align:left;" class="ce3">
 
                     </td>
-                    <td colspan="2" style="text-align:left;width:3.133cm; " class="ce11">
+                    <td colspan="2" style="text-align:left;" class="ce11">
                         <p>
                             Matricule:
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce13">
+                    <td style="text-align:left;" class="ce13">
                         <p>
                             ${payslip.employee_id.reg_nbr}
                         </p>
                     </td>
-                    <td colspan="3" style="text-align:left;width:2.937cm; " class="ce7">
+                    <td colspan="3" style="text-align:left;" class="ce7">
                         <p>
                             ${payslip.employee_id.name}
                         </p>
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td style="text-align:left;width:3.133cm; " class="ce11">
+                    <td style="text-align:left;" class="ce11">
                         <p>
                             Catégorie:
                         </p>
                     </td>
-                    <td colspan="2" style="text-align:left;width:2.267cm; " class="ce13">
+                    <td colspan="2" style="text-align:left;" class="ce13">
                         <p>
                             ${payslip.contract_id.category}
                         </p>
                     </td>
-                    <td colspan="3" style="text-align:left;width:2.937cm; " class="ce8">
+                    <td colspan="3" style="text-align:left;" class="ce8">
                         <p>
                             ADRESSE
                         </p>
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td colspan="5" style="text-align:left;width:1.958cm; " class="ce4">
+                    <td colspan="5" style="text-align:left;" class="ce4">
                         <p>
                             Zone Portuaire Rte A3 Akodessewa
                         </p>
                     </td>
-                    <td colspan="2" style="text-align:left;width:3.133cm; " class="ce11">
+                    <td colspan="2" style="text-align:left;" class="ce11">
                         <p>
                             Classe
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce13">
+                    <td style="text-align:left;" class="ce13">
                         <p>
                             ${payslip.contract_id.hr_class}
                         </p>
                     </td>
-                    <td colspan="3" style="text-align:left;width:2.937cm; " class="ce8">
+                    <td colspan="3" style="text-align:left;" class="ce8">
                         <p>
                             S/C LCT 09 BP 9103 LOME
                         </p>
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td colspan="5" style="text-align:left;width:1.958cm; " class="ce4">
+                    <td colspan="5" style="text-align:left;" class="ce4">
                         <p>
                             Immeuble MSC TOGO
                         </p>
                     </td>
-                    <td style="text-align:left;width:3.133cm; " class="ce11">
+                    <td style="text-align:left;" class="ce11">
                         <p>
                             Echelon:
                         </p>
                     </td>
-                    <td colspan="2" style="text-align:left;width:2.267cm; " class="ce13">
+                    <td colspan="2" style="text-align:left;" class="ce13">
                         <p>
                             ${payslip.contract_id.echelon}
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.937cm; " class="ce9">
+                    <td style="text-align:left;" class="ce9">
                         <p>
                             N° CNSS
                         </p>
                     </td>
-                    <td style="text-align:left;width:3.133cm; " class="ce9">
+                    <td style="text-align:left;" class="ce9">
                         <p>
                             ANCIENNETE
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce9">
+                    <td style="text-align:left;" class="ce9">
                         <p>
                             HORAIRE
                         </p>
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td colspan="5" style="text-align:left;width:1.958cm; " class="ce4">
+                    <td colspan="5" style="text-align:left;" class="ce4">
                         <p>
                             09 BP 9103 Lomé
                         </p>
                     </td>
-                    <td colspan="3" rowspan="2" style="text-align:left;width:3.133cm; " class="ce9">
+                    <td colspan="3" rowspan="2" style="text-align:left;" class="ce9">
                         <p>
                             Emploi Occupé
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.937cm; " class="ce9">
+                    <td style="text-align:left;" class="ce9">
                         <p>
                             ${payslip.employee_id.cnss_nbr}
                         </p>
                     </td>
-                    <td style="text-align:left;width:3.133cm; " class="ce9">
+                    <td style="text-align:left;" class="ce9">
                         <p>
                             ${'%dA %dM %dJ' % payslip.employee_id.get_seniority_ymd()}
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce9">
+                    <td style="text-align:left;" class="ce9">
                         %if payslip.contract_id and payslip.contract_id.working_hours:
                         <p>
                             ${payslip.contract_id.working_hours.name}
@@ -248,75 +230,75 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td colspan="5" style="text-align:left;width:1.958cm; " class="ce3">
+                    <td colspan="5" style="text-align:left;" class="ce3">
 
                     </td>
-                    <td colspan="3" rowspan="3" style="text-align:left;width:2.937cm; " class="ce9">
+                    <td colspan="3" rowspan="3" style="text-align:left;" class="ce9">
 
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td colspan="3" style="text-align:left !important ;width:1.958cm; " class="ce5">
+                    <td colspan="3" style="text-align:left !important;" class="ce5">
                         <p>
                             N° Employeur:
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce11">
+                    <td style="text-align:left;" class="ce11">
                         <p>
                             17295
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce14">
+                    <td style="text-align:left;" class="ce14">
                     </td>
-                    <td colspan="3" rowspan="2" style="text-align:left;width:3.133cm; " class="ce9">
+                    <td colspan="3" rowspan="2" style="text-align:left;" class="ce9">
                         <p>
                             ${payslip.employee_id.job_id.name}
                         </p>
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td colspan="3" style="text-align:left !important ;width:1.958cm; " class="ce5">
+                    <td colspan="3" style="text-align:left !important;" class="ce5">
                         <p>
                             NIF:
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce11">
+                    <td style="text-align:left;" class="ce11">
                         <p>
                             090164 W
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce14">
+                    <td style="text-align:left;" class="ce14">
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td colspan="3" style="text-align:left;width:1.958cm; " class="ce6">
+                    <td colspan="3" style="text-align:left;" class="ce6">
                         <p>
                             Convention collective:
                         </p>
                     </td>
-                    <td colspan="5" style="text-align:left;width:2.267cm; " class="ce12">
+                    <td colspan="5" style="text-align:left;" class="ce12">
                         <p>
                             Convention collective Interprofessionelle du Togo
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.937cm; " class="ce10">
+                    <td style="text-align:left;" class="ce10">
                         <p>
                             Département:
                         </p>
                     </td>
-                    <td colspan="2" style="text-align:left;width:3.133cm; " class="ce12">
+                    <td colspan="2" style="text-align:left;" class="ce12">
                         <p>
                             ${payslip.employee_id.department_id.name}
                         </p>
                     </td>
                 </tr>
                 <tr class="ro1">
-                    <td rowspan="2" style="text-align:left;width:1.958cm; " class="ce1">
+                    <td rowspan="2" style="text-align:left;width:0.75cm; " class="ce1">
                         <p>
                             N°
                         </p>
                     </td>
-                    <td colspan="2" rowspan="2" style="text-align:left;width:2.267cm; " class="ce1">
+                    <td colspan="2" rowspan="2" style="text-align:left;width:4cm; " class="ce1">
                         <p>
                             Désignation
                         </p>
@@ -331,12 +313,12 @@
                             BASE
                         </p>
                     </td>
-                    <td colspan="3" style="text-align:left;width:2.267cm; " class="ce1">
+                    <td colspan="3" style="text-align:left;" class="ce1">
                         <p>
                             PART SALARIALE
                         </p>
                     </td>
-                    <td colspan="3" style="text-align:left;width:2.937cm; " class="ce1">
+                    <td colspan="3" style="text-align:left;" class="ce1">
                         <p>
                             PART PATRONALE
                         </p>
@@ -390,12 +372,12 @@
                 <!-- -->
                 %else:
                 <tr class="ro2">
-                    <td style="text-align:left;width:1.958cm; " class="ce7">
+                    <td style="text-align:left;" class="ce7">
                         <p>
                             ${line.code}
                         </p>
                     </td>
-                    <td colspan="2" style="text-align:left;width:2.267cm; " class="ce3">
+                    <td colspan="2" style="text-align:left;" class="ce3">
                         %if line.category_id.code in ['GROSS', 'TOTAL_EMPLOYEE_CONTRIB','TOTAL_EMPLOYER_CONTRIB','OTHER_DED_TOT']:
                         <p style="font-weight:bold">
                             ${line.name}
@@ -406,7 +388,7 @@
                         </p>
                         %endif
                     </td>
-                    <td style="text-align:right; width:2.267cm; " class="ce3">
+                    <td style="text-align:right;" class="ce3">
                         <p>
                             <!-- For now, leave empty. Will be used in Phase 2 when timesheeting is implemented. -->
                             <!-- ${context.get('payslips').get(payslip).get('worked_days')} -->
@@ -415,170 +397,170 @@
 
                     <!-- From here on, it depends on which line we're printing, exactly... -->
                     %if line.category_id.code in ['GROSS']:
-                        <td style="text-align:left;width:2.267cm; " class="ce3">
+                        <td style="text-align:left;" class="ce3">
 
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:right; width:3.133cm; " class="ce15">
+                        <td style="text-align:right;" class="ce15">
                             <p style="font-weight: bold">
                                 ${'{0:,.0f}'.format(line.total).replace(',', '.')}
                             </p>
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:left" class="ce15">
 
                         </td>
-                        <td style="text-align:left;width:2.937cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:left;width:3.133cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
                     %elif line.category_id.code in ['TOTAL_EMPLOYEE_CONTRIB','OTHER_DED_TOT']:
-                        <td style="text-align:left;width:2.267cm; " class="ce3">
+                        <td style="text-align:left;" class="ce3">
 
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:right; width:3.133cm; " class="ce15">
+                        <td style="text-align:right;" class="ce15">
 
                         </td>
-                        <td style="text-align:right;width:2.267cm; " class="ce15">
+                        <td style="text-align:right;" class="ce15">
                             <p style="font-weight: bold">
                                 ${'{0:,.0f}'.format(line.total).replace(',', '.')}
                             </p>
                         </td>
-                        <td style="text-align:left;width:2.937cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:left;width:3.133cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
                     %elif line.category_id.code in ['TOTAL_EMPLOYER_CONTRIB']:
-                        <td style="text-align:left;width:2.267cm; " class="ce3">
+                        <td style="text-align:left;" class="ce3">
 
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:right; width:3.133cm; " class="ce15">
+                        <td style="text-align:right;" class="ce15">
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:left;width:2.937cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:left;width:3.133cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:right;width:2.267cm; " class="ce15">
+                        <td style="text-align:right;" class="ce15">
                             <p style="font-weight: bold">
                                 ${'{0:,.0f}'.format(line.total).replace(',', '.')}
                             </p>
                         </td>
                     %elif line.category_id.code in ['CNSS']:
-                        <td style="text-align:right;width:2.267cm; " class="ce3">
+                        <td style="text-align:right;" class="ce3">
                             <p>
                                 ${'{0:,.0f}'.format(line.amount).replace(',', '.')}
                             </p>
                         </td>
-                        <td style="text-align:right;width:2.267cm; " class="ce15">
+                        <td style="text-align:right;" class="ce15">
                             <p>
                                 ${line.amount_percentage}%
                             </p>
                         </td>
-                        <td style="text-align:right; width:3.133cm; " class="ce15">
+                        <td style="text-align:right;" class="ce15">
                         </td>
-                        <td style="text-align:right;width:2.267cm; " class="ce15">
+                        <td style="text-align:right;" class="ce15">
                             <p>
                                 ${'{0:,.0f}'.format(line.total).replace(',', '.')}
                             </p>
                         </td>
-                        <td style="text-align:left;width:2.937cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:left;width:3.133cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
                         </td>
                     %elif line.category_id.code in ['TCS', 'IRPP', 'OTHER_DED']:
-                        <td style="text-align:left;width:2.267cm; " class="ce3">
+                        <td style="text-align:left;" class="ce3">
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
                         </td>
-                        <td style="text-align:right; width:3.133cm; " class="ce15">
+                        <td style="text-align:right;" class="ce15">
                         </td>
-                        <td style="text-align:right;width:2.267cm; " class="ce15">
+                        <td style="text-align:right;" class="ce15">
                             <p>
                                 ${'{0:,.0f}'.format(line.total).replace(',', '.')}
                             </p>
                         </td>
-                        <td style="text-align:left;width:2.937cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:left;width:3.133cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
                         </td>
                     %elif line.category_id.code in ['EMPLOYER_CONTRIB']:
-                        <td style="text-align:right;width:2.267cm; " class="ce3">
+                        <td style="text-align:right;" class="ce3">
                             <p>
                                 ${'{0:,.0f}'.format(line.amount).replace(',', '.')}
                             </p>
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:right; width:3.133cm; " class="ce15">
+                        <td style="text-align:right;" class="ce15">
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
                         </td>
-                        <td style="text-align:right;width:2.937cm; " class="ce15">
+                        <td style="text-align:right;" class="ce15">
                             <p>
                                 ${line.amount_percentage}%
                             </p>
                         </td>
-                        <td style="text-align:left;width:3.133cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:right;width:2.267cm; " class="ce15">
+                        <td style="text-align:right;" class="ce15">
                             <p>
                                 ${'{0:,.0f}'.format(line.total).replace(',', '.')}
                             </p>
                         </td>
                     % else:
-                        <td style="text-align:left;width:2.267cm; " class="ce3">
+                        <td style="text-align:left;" class="ce3">
 
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:right; width:3.133cm; " class="ce15">
+                        <td style="text-align:right;" class="ce15">
                             <p>
                                 ${'{0:,.0f}'.format(line.total).replace(',', '.')}
                             </p>
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:left;width:2.937cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:left;width:3.133cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
-                        <td style="text-align:left;width:2.267cm; " class="ce15">
+                        <td style="text-align:left;" class="ce15">
 
                         </td>
                     %endif
@@ -588,27 +570,27 @@
 
 
                 <tr class="ro2">
-                    <td colspan="3" style="text-align:left;width:1.958cm; " class="ce9">
+                    <td colspan="3" style="text-align:left;" class="ce9">
                         <p>
                             Montants
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce9">
+                    <td style="text-align:left;" class="ce9">
                         <p>
                             de la période
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce9">
+                    <td style="text-align:left;" class="ce9">
                         <p>
                             de l'année
                         </p>
                     </td>
-                    <td colspan="4" style="text-align:left;width:2.267cm; " class="ce9">
+                    <td colspan="4" style="text-align:left;" class="ce9">
                         <p>
                             Net à payer:
                         </p>
                     </td>
-                    <td colspan="2" style="text-align:right; width:3.133cm; " class="ce9">
+                    <td colspan="2" style="text-align:right;" class="ce9">
                         <p>
                             <!-- 1454000 -->
                             ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('net_salary')).replace(',', '.')}
@@ -616,28 +598,22 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td style="text-align:left;width:3.133cm; " class="ce2">
+                    <td colspan="3" style="text-align:left;" class="ce2">
                         <p>
                             Heures Travaillées
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce11">
-
-                    </td>
-                    <td style="text-align:left;width:1.958cm; " class="ce11">
-
-                    </td>
-                    <td style="text-align:right;width:2.267cm; " class="ce11">
+                    <td style="text-align:right;" class="ce11">
                         <p>
                             ${context.get('payslips').get(payslip).get('worked_hours')}
                         </p>
                     </td>
-                    <td style="text-align:right; width:2.267cm; " class="ce13">
+                    <td style="text-align:right;" class="ce13">
                         <p>
                             ${context.get('payslips').get(payslip).get('worked_hours_year')}
                         </p>
                     </td>
-                    <td colspan="3" style="text-align:left;width:2.267cm; " class="ce8">
+                    <td colspan="3" style="text-align:left;" class="ce8">
                         <p>
                             MODE DE REGLEMENT
                         </p>
@@ -647,28 +623,22 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td style="text-align:left;width:3.133cm; " class="ce2">
+                    <td colspan="3" style="text-align:left;" class="ce2">
                         <p>
                             Salaire brut
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce11">
-
-                    </td>
-                    <td style="text-align:left;width:1.958cm; " class="ce11">
-
-                    </td>
-                    <td style="text-align:right;width:2.267cm; " class="ce11">
+                    <td style="text-align:right;" class="ce11">
                         <p>
                             ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('gross')).replace(',', '.')}
                         </p>
                     </td>
-                    <td style="text-align:right; width:2.267cm; " class="ce13">
+                    <td style="text-align:right;" class="ce13">
                         <p>
                             ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('gross_year')).replace(',', '.')}
                         </p>
                     </td>
-                    <td colspan="3" style="text-align:left;width:2.267cm; " class="ce7">
+                    <td colspan="3" style="text-align:left;" class="ce7">
                         <p>
                             Virement bancaire
                         </p>
@@ -681,33 +651,27 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td style="text-align:left;width:3.133cm; " class="ce2">
+                    <td colspan="3" style="text-align:left;" class="ce2">
                         <p>
                             Charges salariales
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce11">
-
-                    </td>
-                    <td style="text-align:left;width:1.958cm; " class="ce11">
-
-                    </td>
-                    <td style="text-align:right;width:2.267cm; " class="ce11">
+                    <td style="text-align:right;" class="ce11">
                         <p>
                             ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('salarial_costs')).replace(',', '.')}
                         </p>
                     </td>
-                    <td style="text-align:right; width:2.267cm; " class="ce13">
+                    <td style="text-align:right;" class="ce13">
                         <p>
                             ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('salarial_costs_year')).replace(',', '.')}
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce2">
+                    <td style="text-align:left;" class="ce2">
                         <p>
                             Banque
                         </p>
                     </td>
-                    <td colspan="2" style="text-align:left;width:3.133cm; " class="ce13">
+                    <td colspan="2" style="text-align:left;" class="ce13">
                         <p>
                             ${payslip.employee_id.bank_name}
                         </p>
@@ -720,33 +684,27 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td style="text-align:left;width:3.133cm; " class="ce2">
+                    <td colspan="3" style="text-align:left;" class="ce2">
                         <p>
                             Charges patronales
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce11">
-
-                    </td>
-                    <td style="text-align:left;width:1.958cm; " class="ce11">
-
-                    </td>
-                    <td style="text-align:right;width:2.267cm; " class="ce11">
+                    <td style="text-align:right;" class="ce11">
                         <p>
                             ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('patronal_costs')).replace(',', '.')}
                         </p>
                     </td>
-                    <td style="text-align:right; width:2.267cm; " class="ce13">
+                    <td style="text-align:right;" class="ce13">
                         <p>
                             ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('patronal_costs_year')).replace(',', '.')}
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce2">
+                    <td style="text-align:left;" class="ce2">
                         <p>
                             Cpte n°
                         </p>
                     </td>
-                    <td colspan="2" style="text-align:left;width:3.133cm; " class="ce13">
+                    <td colspan="2" style="text-align:left;" class="ce13">
                         <p>
                             ${payslip.employee_id.acc_number}
                         </p>
@@ -762,31 +720,25 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td style="text-align:left;width:3.133cm; " class="ce2">
+                    <td colspan="3" style="text-align:left;" class="ce2">
                         <p>
                             Salaire net
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce11">
-
-                    </td>
-                    <td style="text-align:left;width:1.958cm; " class="ce11">
-
-                    </td>
-                    <td style="text-align:right;width:2.267cm; " class="ce11">
+                    <td style="text-align:right;" class="ce11">
                         <p>
                             ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('net_salary')).replace(',', '.')}
                         </p>
                     </td>
-                    <td style="text-align:right; width:2.267cm; " class="ce13">
+                    <td style="text-align:right;" class="ce13">
                         <p>
                             ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('net_salary_year')).replace(',', '.')}
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce11">
+                    <td style="text-align:left;" class="ce11">
 
                     </td>
-                    <td colspan="2" rowspan="2" style="text-align:left;width:3.133cm; " class="ce13">
+                    <td colspan="2" rowspan="2" style="text-align:left;" class="ce13">
 
                     </td>
                     <td rowspan="2" class="ce2"></td>
@@ -802,38 +754,32 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td style="text-align:left;width:3.133cm; " class="ce2">
+                    <td colspan="3" style="text-align:left;" class="ce2">
                         <p>
                             Avantage en nature
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce11">
-
-                    </td>
-                    <td style="text-align:left;width:1.958cm; " class="ce11">
-
-                    </td>
-                    <td style="text-align:right;width:2.267cm; " class="ce11">
+                    <td style="text-align:right;" class="ce11">
                         <p>
                             ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('benefits_in_kind')).replace(',', '.')}
                         </p>
                     </td>
-                    <td style="text-align:right; width:2.267cm; " class="ce13">
+                    <td style="text-align:right;" class="ce13">
                         <p>
                             ${'{0:,.0f}'.format(context.get('payslips').get(payslip).get('benefits_in_kind_year')).replace(',', '.')}
                         </p>
                     </td>
-                    <td style="text-align:left;width:2.267cm; " class="ce11">
+                    <td style="text-align:left;" class="ce11">
 
                     </td>
                 </tr>
                 <tr class="ro2">
-                    <td colspan="2" rowspan="3" style="text-align:left;width:1.958cm; " class="ce10">
+                    <td colspan="2" rowspan="3" style="text-align:left;" class="ce10">
                         <p>
                             Commentaire:
                         </p>
                     </td>
-                    <td colspan="9" rowspan="3" style="text-align:left;width:3.133cm; " class="ce12">
+                    <td colspan="9" rowspan="3" style="text-align:left;" class="ce12">
 
                     </td>
                 </tr>
@@ -844,7 +790,7 @@
 		    <td></td>
                 </tr>
                 <tr class="ro2">
-                    <td colspan="4" rowspan="2" style="font-weight:bold;text-align:center;width:1.958cm; " class="ce10">
+                    <td colspan="4" rowspan="2" style="font-weight:bold;text-align:center;" class="ce10">
                         <p>
                             Signature et cachet de l'employeur
                         </p>
@@ -852,7 +798,7 @@
                     </td>
 		    <td colspan="2" rowspan="2" style="font-weight:bold; text-align:center">
 		    </td>
-                    <td colspan="5" rowspan="2" style="font-weight:bold;text-align:center;width:3.133cm;" class="ce12">
+                    <td colspan="5" rowspan="2" style="font-weight:bold;text-align:center;" class="ce12">
                         <p>
                             Signature de l'employé
                         </p>
@@ -862,7 +808,7 @@
 		    <td></td>
                 </tr>
                 <tr class="ro1">
-                    <td colspan="11" style="text-align:left;width:1.958cm; " class="ce1">
+                    <td colspan="11" style="text-align:left;" class="ce1">
                         <p>
                             Pour vous aider à faire valoir vos droits, conservez ce bulletin de paye sans limitation de durée
                         </p>
