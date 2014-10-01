@@ -477,6 +477,8 @@ class account_invoice(osv.osv):
                 line_id = line.id
             invoice_line_model.write(cr, uid, [line_id], {'invoice_id': vbl1.id}, context=context)
         self.unlink(cr, uid, [vbl2.id], context=context)
+        date_invoice = datetime.today().strftime('%Y-%m-%d'),
+        self.write(cr, uid, [vbl1.id], {'date_invoice': date_invoice}, context=context)
         return vbl1.id
 
     def _merge_vbls(self, cr, uid, ids, context=None):
@@ -511,7 +513,6 @@ class account_invoice(osv.osv):
                 raise osv.except_osv(('Error'), ("You can't group invoices with different customers"))
             elif len(vbl_by_currency_by_partner.values()[0]) > 1:
                 raise osv.except_osv(('Error'), ("You can't group invoices with different currencies"))
-        import ipdb; ipdb.set_trace()
         for vbl_by_currency in vbl_by_currency_by_partner.values():
             for vbl_ids in vbl_by_currency.values():
                 self._merge_vbls(cr, uid, vbl_ids, context=context)
