@@ -71,7 +71,6 @@
                     <col width="70" />
                 </colgroup>
                 <tr class="ro1">
-		    <td></td>
                     <td colspan="3" style="text-align:left;width:1.958cm; " class="ce1">
                         <p>
                             BULLETIN DE PAIE
@@ -99,7 +98,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td style="text-align:left;width:1.958cm; " class="ce2">
 
                     </td>
@@ -131,7 +129,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td colspan="5" rowspan="2" style="text-align:left;width:1.958cm; " class="ce3">
 
                     </td>
@@ -152,7 +149,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td style="text-align:left;width:3.133cm; " class="ce11">
                         <p>
                             Catégorie:
@@ -170,7 +166,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td colspan="5" style="text-align:left;width:1.958cm; " class="ce4">
                         <p>
                             Zone Portuaire Rte A3 Akodessewa
@@ -193,7 +188,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		  <td></td>
                     <td colspan="5" style="text-align:left;width:1.958cm; " class="ce4">
                         <p>
                             Immeuble MSC TOGO
@@ -226,7 +220,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td colspan="5" style="text-align:left;width:1.958cm; " class="ce4">
                         <p>
                             09 BP 9103 Lomé
@@ -258,7 +251,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td colspan="5" style="text-align:left;width:1.958cm; " class="ce3">
 
                     </td>
@@ -267,7 +259,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td colspan="3" style="text-align:left;width:1.958cm; " class="ce5">
                         <p>
                             N° Employeur:
@@ -288,7 +279,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td colspan="3" style="text-align:left;width:1.958cm; " class="ce5">
                         <p>
                             NIF:
@@ -305,7 +295,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td colspan="3" style="text-align:left;width:1.958cm; " class="ce6">
                         <p>
                             Convention collective:
@@ -328,7 +317,6 @@
                     </td>
                 </tr>
                 <tr class="ro1">
-		    <td></td>
                     <td rowspan="2" style="text-align:left;width:1.958cm; " class="ce1">
                         <p>
                             N°
@@ -361,7 +349,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td style="text-align:left;width:2.267cm; " class="ce1">
                         <p>
                             TAUX
@@ -396,7 +383,6 @@
 
 		<!-- Add placeholder for payslip -->
 		<tr class="ro2">
-		<td style="height:12cm" rowspan="${len(context.get('payslips').get(payslip).get('lines'))+1}"></td>
 		<td class="ce15"></td>
 		<td class="ce15" colspan="2"></td>
 		%for i in range(8):
@@ -636,7 +622,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td style="text-align:left;width:3.133cm; " class="ce2">
                         <p>
                             Heures Travaillées
@@ -668,7 +653,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td style="text-align:left;width:3.133cm; " class="ce2">
                         <p>
                             Salaire brut
@@ -703,7 +687,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td style="text-align:left;width:3.133cm; " class="ce2">
                         <p>
                             Charges salariales
@@ -743,7 +726,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td style="text-align:left;width:3.133cm; " class="ce2">
                         <p>
                             Charges patronales
@@ -786,7 +768,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td style="text-align:left;width:3.133cm; " class="ce2">
                         <p>
                             Salaire net
@@ -827,7 +808,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td style="text-align:left;width:3.133cm; " class="ce2">
                         <p>
                             Avantage en nature
@@ -854,7 +834,6 @@
                     </td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td colspan="2" rowspan="3" style="text-align:left;width:1.958cm; " class="ce10">
                         <p>
                             Commentaire:
@@ -871,7 +850,6 @@
 		    <td></td>
                 </tr>
                 <tr class="ro2">
-		    <td></td>
                     <td colspan="4" rowspan="2" style="font-weight:bold;text-align:center;width:1.958cm; " class="ce10">
                         <p>
                             Signature et cachet de l'employeur
@@ -890,7 +868,6 @@
 		    <td></td>
                 </tr>
                 <tr class="ro1">
-		    <td></td>
                     <td colspan="11" style="text-align:left;width:1.958cm; " class="ce1">
                         <p>
                             Pour vous aider à faire valoir vos droits, conservez ce bulletin de paye sans limitation de durée
