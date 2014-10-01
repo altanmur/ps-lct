@@ -62,7 +62,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             }),
         ]
-        product_id = product_model.search(cr, uid, [('name','=','Export Reefer electricity 20 Full GP')])[0]
+        product_id = product_model.search(cr, uid, [('name','=','Export Reefer electricity 20')])[0]
         product_model.write(cr, uid, [product_id], {'list_price': 16.})
         tariff_rate_vals.append(
             (0,0,{
@@ -79,7 +79,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             })
         )
-        product_id = product_model.search(cr, uid, [('name','=','Import Reefer electricity 40 Full GP')])[0]
+        product_id = product_model.search(cr, uid, [('name','=','Import Reefer electricity 40')])[0]
         product_model.write(cr, uid, [product_id], {'list_price': 58.})
         tariff_rate_vals.append(
             (0,0,{
@@ -259,7 +259,7 @@ class TestImport(TransactionCase):
         ftp_config_model.button_import_ftp_data(cr, uid, [self.config.id])
 
         appoints = invoice_model.browse(cr, uid, invoice_model.search(cr, uid, [('type2','=','appointment'), ('id', 'not in', appoint_ids)], order='appoint_ref'))
-        self.assertTrue(len(appoints) == 2, 'Importing should create 2 appointments')
+        self.assertEqual(len(appoints), 2, 'Importing should create 2 appointments')
         self.assertTrue(appoints[0].appoint_ref == 'LCT2014062400289', 'Importing should create an appointment with reference: LCT2014062400289')
         lines = sorted(appoints[0].invoice_line, key=lambda x: x.name.lower())
         self.assertTrue(len(lines) == 3)

@@ -33,7 +33,7 @@ class lct_tos_import_data(osv.Model):
 
     _columns = {
         'name': fields.char('File name', readonly=True),
-        'content': fields.text('File content', readonly=True),
+        'content': fields.text('File content'),
         'type': fields.selection([('xml','xml')], string='File type'),
         'status': fields.selection([('fail','Failed to process'),('success','Processed'),('pending','Pending')], string='Status', readonly=True, required=True),
         'create_date': fields.date(string='Import date', readonly=True),
