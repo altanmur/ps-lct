@@ -1,730 +1,1626 @@
 <?xml version="1.0"?>
 <openerp>
   <data>
-    <record id="hatch_cover_move" model="product.product">
-      <field name="name">Hatch Cover Move</field>
+    <record id="dockage_loa160mandbelow" model="product.product">
+      <field name="name">Dockage LOA 160m and below</field>
+      <field name="category_id" ref="lct_product_category_dockage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_loa160mandbelow"/>
     </record>
-    <record id="gearbox_count" model="product.product">
-      <field name="name">Gearbox Count</field>
+    <record id="dockage_loa160mto360m" model="product.product">
+      <field name="name">Dockage LOA 160m to 360m</field>
+      <field name="category_id" ref="lct_product_category_dockage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_loa160mto360m"/>
+    </record>
+    <record id="dockage_loa360mandabove" model="product.product">
+      <field name="name">Dockage LOA 360m and above</field>
+      <field name="category_id" ref="lct_product_category_dockage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_loa360mandabove"/>
     </record>
     <record id="import_discharge_20_full_gp" model="product.product">
       <field name="name">Import Discharge 20 Full GP</field>
       <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_discharge"/>
-      <field name="size_id" ref="lct_product_size_20"/>
     </record>
-    <record id="import_discharge_20_empty_gp" model="product.product">
-      <field name="name">Import Discharge 20 Empty GP</field>
+    <record id="import_discharge_20_full_reeferdg" model="product.product">
+      <field name="name">Import Discharge 20 Full Reefer/DG</field>
       <field name="category_id" ref="lct_product_category_import"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
       <field name="service_id" ref="lct_product_service_discharge"/>
       <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_discharge_20_empty" model="product.product">
+      <field name="name">Import Discharge 20 Empty</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
     </record>
     <record id="import_discharge_40_full_gp" model="product.product">
       <field name="name">Import Discharge 40 Full GP</field>
       <field name="category_id" ref="lct_product_category_import"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
       <field name="service_id" ref="lct_product_service_discharge"/>
       <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="import_discharge_40_empty_gp" model="product.product">
-      <field name="name">Import Discharge 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_import"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
+      <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_discharge_40_full_reeferdg" model="product.product">
+      <field name="name">Import Discharge 40 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
       <field name="service_id" ref="lct_product_service_discharge"/>
       <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="import_storage_20_full_gp" model="product.product">
-      <field name="name">Import Storage 20 Full GP</field>
-      <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_storage"/>
-      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
     </record>
-    <record id="import_storage_20_empty_gp" model="product.product">
-      <field name="name">Import Storage 20 Empty GP</field>
+    <record id="import_discharge_40_empty" model="product.product">
+      <field name="name">Import Discharge 40 Empty</field>
       <field name="category_id" ref="lct_product_category_import"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_storage"/>
-      <field name="size_id" ref="lct_product_size_20"/>
-    </record>
-    <record id="import_storage_40_full_gp" model="product.product">
-      <field name="name">Import Storage 40 Full GP</field>
-      <field name="category_id" ref="lct_product_category_import"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
       <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="import_storage_40_empty_gp" model="product.product">
-      <field name="name">Import Storage 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_import"/>
       <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_storage"/>
-      <field name="size_id" ref="lct_product_size_40"/>
     </record>
-    <record id="import_reeferelectricity_20_full_gp" model="product.product">
-      <field name="name">Import Reefer electricity 20 Full GP</field>
+    <record id="import_storage_localimport_20_gp" model="product.product">
+      <field name="name">Import Storage Local import 20 GP</field>
       <field name="category_id" ref="lct_product_category_import"/>
-      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_20"/>
       <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_storage_localimport_20_reeferdg" model="product.product">
+      <field name="name">Import Storage Local import 20 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_storage_localimport_40_gp" model="product.product">
+      <field name="name">Import Storage Local import 40 GP</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_storage_localimport_40_reeferdg" model="product.product">
+      <field name="name">Import Storage Local import 40 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_storage_transitsahel_20_gp" model="product.product">
+      <field name="name">Import Storage Transit Sahel 20 GP</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_storage_transitsahel_20_reeferdg" model="product.product">
+      <field name="name">Import Storage Transit Sahel 20 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_storage_transitsahel_40_gp" model="product.product">
+      <field name="name">Import Storage Transit Sahel 40 GP</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_storage_transitsahel_40_reeferdg" model="product.product">
+      <field name="name">Import Storage Transit Sahel 40 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_storage_transitcoastal_20_gp" model="product.product">
+      <field name="name">Import Storage Transit coastal 20 GP</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_storage_transitcoastal_20_reeferdg" model="product.product">
+      <field name="name">Import Storage Transit coastal 20 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_storage_transitcoastal_40_gp" model="product.product">
+      <field name="name">Import Storage Transit coastal 40 GP</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_storage_transitcoastal_40_reeferdg" model="product.product">
+      <field name="name">Import Storage Transit coastal 40 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_storage_freezone_20_gp" model="product.product">
+      <field name="name">Import Storage Free zone 20 GP</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_storage_freezone_20_reeferdg" model="product.product">
+      <field name="name">Import Storage Free zone 20 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_storage_freezone_40_gp" model="product.product">
+      <field name="name">Import Storage Free zone 40 GP</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_storage_freezone_40_reeferdg" model="product.product">
+      <field name="name">Import Storage Free zone 40 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_stevedoringcharges_localimport_20_gp" model="product.product">
+      <field name="name">Import Stevedoring charges Local import 20 GP</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_stevedoringcharges_localimport_20_reeferdg" model="product.product">
+      <field name="name">Import Stevedoring charges Local import 20 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_stevedoringcharges_localimport_40_gp" model="product.product">
+      <field name="name">Import Stevedoring charges Local import 40 GP</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_stevedoringcharges_localimport_40_reeferdg" model="product.product">
+      <field name="name">Import Stevedoring charges Local import 40 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_stevedoringcharges_transitsahel_20_gp" model="product.product">
+      <field name="name">Import Stevedoring charges Transit Sahel 20 GP</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_stevedoringcharges_transitsahel_20_reeferdg" model="product.product">
+      <field name="name">Import Stevedoring charges Transit Sahel 20 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_stevedoringcharges_transitsahel_40_gp" model="product.product">
+      <field name="name">Import Stevedoring charges Transit Sahel 40 GP</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_stevedoringcharges_transitsahel_40_reeferdg" model="product.product">
+      <field name="name">Import Stevedoring charges Transit Sahel 40 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_stevedoringcharges_transitcoastal_20_gp" model="product.product">
+      <field name="name">Import Stevedoring charges Transit coastal 20 GP</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_stevedoringcharges_transitcoastal_20_reeferdg" model="product.product">
+      <field name="name">Import Stevedoring charges Transit coastal 20 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_stevedoringcharges_transitcoastal_40_gp" model="product.product">
+      <field name="name">Import Stevedoring charges Transit coastal 40 GP</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_stevedoringcharges_transitcoastal_40_reeferdg" model="product.product">
+      <field name="name">Import Stevedoring charges Transit coastal 40 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_stevedoringcharges_freezone_20_gp" model="product.product">
+      <field name="name">Import Stevedoring charges Free zone 20 GP</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_stevedoringcharges_freezone_20_reeferdg" model="product.product">
+      <field name="name">Import Stevedoring charges Free zone 20 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_stevedoringcharges_freezone_40_gp" model="product.product">
+      <field name="name">Import Stevedoring charges Free zone 40 GP</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_stevedoringcharges_freezone_40_reeferdg" model="product.product">
+      <field name="name">Import Stevedoring charges Free zone 40 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_shorehandling_localimport_20_gatedelivery" model="product.product">
+      <field name="name">Import Shore handling Local import 20 Gate Delivery</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gatedelivery"/>
+    </record>
+    <record id="import_shorehandling_localimport_20_cfs" model="product.product">
+      <field name="name">Import Shore handling Local import 20 CFS</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="import_shorehandling_localimport_40_gatedelivery" model="product.product">
+      <field name="name">Import Shore handling Local import 40 Gate Delivery</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gatedelivery"/>
+    </record>
+    <record id="import_shorehandling_localimport_40_cfs" model="product.product">
+      <field name="name">Import Shore handling Local import 40 CFS</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="import_shorehandling_transitsahel_20_gatedelivery" model="product.product">
+      <field name="name">Import Shore handling Transit Sahel 20 Gate Delivery</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gatedelivery"/>
+    </record>
+    <record id="import_shorehandling_transitsahel_20_cfs" model="product.product">
+      <field name="name">Import Shore handling Transit Sahel 20 CFS</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="import_shorehandling_transitsahel_40_gatedelivery" model="product.product">
+      <field name="name">Import Shore handling Transit Sahel 40 Gate Delivery</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gatedelivery"/>
+    </record>
+    <record id="import_shorehandling_transitsahel_40_cfs" model="product.product">
+      <field name="name">Import Shore handling Transit Sahel 40 CFS</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="import_shorehandling_transitcoastal_20_gatedelivery" model="product.product">
+      <field name="name">Import Shore handling Transit coastal 20 Gate Delivery</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gatedelivery"/>
+    </record>
+    <record id="import_shorehandling_transitcoastal_20_cfs" model="product.product">
+      <field name="name">Import Shore handling Transit coastal 20 CFS</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="import_shorehandling_transitcoastal_40_gatedelivery" model="product.product">
+      <field name="name">Import Shore handling Transit coastal 40 Gate Delivery</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gatedelivery"/>
+    </record>
+    <record id="import_shorehandling_transitcoastal_40_cfs" model="product.product">
+      <field name="name">Import Shore handling Transit coastal 40 CFS</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="import_shorehandling_freezone_20_gatedelivery" model="product.product">
+      <field name="name">Import Shore handling Free zone 20 Gate Delivery</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gatedelivery"/>
+    </record>
+    <record id="import_shorehandling_freezone_20_cfs" model="product.product">
+      <field name="name">Import Shore handling Free zone 20 CFS</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="import_shorehandling_freezone_40_gatedelivery" model="product.product">
+      <field name="name">Import Shore handling Free zone 40 Gate Delivery</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gatedelivery"/>
+    </record>
+    <record id="import_shorehandling_freezone_40_cfs" model="product.product">
+      <field name="name">Import Shore handling Free zone 40 CFS</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="import_reeferelectricity_20" model="product.product">
+      <field name="name">Import Reefer electricity 20</field>
+      <field name="category_id" ref="lct_product_category_import"/>
       <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
     </record>
-    <record id="import_reeferelectricity_20_empty_gp" model="product.product">
-      <field name="name">Import Reefer electricity 20 Empty GP</field>
+    <record id="import_reeferelectricity_40" model="product.product">
+      <field name="name">Import Reefer electricity 40</field>
       <field name="category_id" ref="lct_product_category_import"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
-      <field name="size_id" ref="lct_product_size_20"/>
-    </record>
-    <record id="import_reeferelectricity_40_full_gp" model="product.product">
-      <field name="name">Import Reefer electricity 40 Full GP</field>
-      <field name="category_id" ref="lct_product_category_import"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
       <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
     </record>
-    <record id="import_reeferelectricity_40_empty_gp" model="product.product">
-      <field name="name">Import Reefer electricity 40 Empty GP</field>
+    <record id="import_reeferelectricity_20" model="product.product">
+      <field name="name">Import Reefer electricity 20</field>
       <field name="category_id" ref="lct_product_category_import"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+    </record>
+    <record id="import_reeferelectricity_40" model="product.product">
+      <field name="name">Import Reefer electricity 40</field>
+      <field name="category_id" ref="lct_product_category_import"/>
       <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
     </record>
-    <record id="import_bundle_20_full_gp" model="product.product">
-      <field name="name">Import Bundle 20 Full GP</field>
+    <record id="import_reeferelectricity_20" model="product.product">
+      <field name="name">Import Reefer electricity 20</field>
       <field name="category_id" ref="lct_product_category_import"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_bundle"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
     </record>
-    <record id="import_bundle_20_empty_gp" model="product.product">
-      <field name="name">Import Bundle 20 Empty GP</field>
+    <record id="import_reeferelectricity_40" model="product.product">
+      <field name="name">Import Reefer electricity 40</field>
       <field name="category_id" ref="lct_product_category_import"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_bundle"/>
-      <field name="size_id" ref="lct_product_size_20"/>
-    </record>
-    <record id="import_bundle_40_full_gp" model="product.product">
-      <field name="name">Import Bundle 40 Full GP</field>
-      <field name="category_id" ref="lct_product_category_import"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_bundle"/>
-      <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="import_bundle_40_empty_gp" model="product.product">
-      <field name="name">Import Bundle 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_import"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_bundle"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
     </record>
     <record id="export_load_20_full_gp" model="product.product">
       <field name="name">Export Load 20 Full GP</field>
       <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_load"/>
-      <field name="size_id" ref="lct_product_size_20"/>
     </record>
-    <record id="export_load_20_empty_gp" model="product.product">
-      <field name="name">Export Load 20 Empty GP</field>
+    <record id="export_load_20_full_reeferdg" model="product.product">
+      <field name="name">Export Load 20 Full Reefer/DG</field>
       <field name="category_id" ref="lct_product_category_export"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
       <field name="service_id" ref="lct_product_service_load"/>
       <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_load_20_empty" model="product.product">
+      <field name="name">Export Load 20 Empty</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
     </record>
     <record id="export_load_40_full_gp" model="product.product">
       <field name="name">Export Load 40 Full GP</field>
       <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_load"/>
-      <field name="size_id" ref="lct_product_size_40"/>
     </record>
-    <record id="export_load_40_empty_gp" model="product.product">
-      <field name="name">Export Load 40 Empty GP</field>
+    <record id="export_load_40_full_reeferdg" model="product.product">
+      <field name="name">Export Load 40 Full Reefer/DG</field>
       <field name="category_id" ref="lct_product_category_export"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
       <field name="service_id" ref="lct_product_service_load"/>
       <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_load_40_empty" model="product.product">
+      <field name="name">Export Load 40 Empty</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
     </record>
     <record id="export_storage_20_full_gp" model="product.product">
       <field name="name">Export Storage 20 Full GP</field>
       <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_storage"/>
-      <field name="size_id" ref="lct_product_size_20"/>
     </record>
-    <record id="export_storage_20_empty_gp" model="product.product">
-      <field name="name">Export Storage 20 Empty GP</field>
+    <record id="export_storage_20_full_reeferdg" model="product.product">
+      <field name="name">Export Storage 20 Full Reefer/DG</field>
       <field name="category_id" ref="lct_product_category_export"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
       <field name="service_id" ref="lct_product_service_storage"/>
       <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_storage_20_empty" model="product.product">
+      <field name="name">Export Storage 20 Empty</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
     </record>
     <record id="export_storage_40_full_gp" model="product.product">
       <field name="name">Export Storage 40 Full GP</field>
       <field name="category_id" ref="lct_product_category_export"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
       <field name="service_id" ref="lct_product_service_storage"/>
       <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="export_storage_40_empty_gp" model="product.product">
-      <field name="name">Export Storage 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_export"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
+      <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="export_storage_40_full_reeferdg" model="product.product">
+      <field name="name">Export Storage 40 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
       <field name="service_id" ref="lct_product_service_storage"/>
       <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="export_reeferelectricity_20_full_gp" model="product.product">
-      <field name="name">Export Reefer electricity 20 Full GP</field>
-      <field name="category_id" ref="lct_product_category_export"/>
       <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_storage_40_empty" model="product.product">
+      <field name="name">Export Storage 40 Empty</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="export_reeferelectricity_20" model="product.product">
+      <field name="name">Export Reefer electricity 20</field>
+      <field name="category_id" ref="lct_product_category_export"/>
       <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
     </record>
-    <record id="export_reeferelectricity_20_empty_gp" model="product.product">
-      <field name="name">Export Reefer electricity 20 Empty GP</field>
+    <record id="export_reeferelectricity_40" model="product.product">
+      <field name="name">Export Reefer electricity 40</field>
       <field name="category_id" ref="lct_product_category_export"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
-      <field name="size_id" ref="lct_product_size_20"/>
-    </record>
-    <record id="export_reeferelectricity_40_full_gp" model="product.product">
-      <field name="name">Export Reefer electricity 40 Full GP</field>
-      <field name="category_id" ref="lct_product_category_export"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
       <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
     </record>
-    <record id="export_reeferelectricity_40_empty_gp" model="product.product">
-      <field name="name">Export Reefer electricity 40 Empty GP</field>
+    <record id="export_reeferelectricity_20" model="product.product">
+      <field name="name">Export Reefer electricity 20</field>
       <field name="category_id" ref="lct_product_category_export"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+    </record>
+    <record id="export_reeferelectricity_40" model="product.product">
+      <field name="name">Export Reefer electricity 40</field>
+      <field name="category_id" ref="lct_product_category_export"/>
       <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
     </record>
-    <record id="export_bundle_20_full_gp" model="product.product">
-      <field name="name">Export Bundle 20 Full GP</field>
+    <record id="export_reeferelectricity_20" model="product.product">
+      <field name="name">Export Reefer electricity 20</field>
       <field name="category_id" ref="lct_product_category_export"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_bundle"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
     </record>
-    <record id="export_bundle_20_empty_gp" model="product.product">
-      <field name="name">Export Bundle 20 Empty GP</field>
+    <record id="export_reeferelectricity_40" model="product.product">
+      <field name="name">Export Reefer electricity 40</field>
       <field name="category_id" ref="lct_product_category_export"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_bundle"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+    </record>
+    <record id="export_shorehandling_localimport_20_gatereceive" model="product.product">
+      <field name="name">Export Shore handling Local import 20 Gate Receive</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
       <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gatereceive"/>
     </record>
-    <record id="export_bundle_40_full_gp" model="product.product">
-      <field name="name">Export Bundle 40 Full GP</field>
+    <record id="export_shorehandling_localimport_20_cfs" model="product.product">
+      <field name="name">Export Shore handling Local import 20 CFS</field>
       <field name="category_id" ref="lct_product_category_export"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_bundle"/>
-      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
     </record>
-    <record id="export_bundle_40_empty_gp" model="product.product">
-      <field name="name">Export Bundle 40 Empty GP</field>
+    <record id="export_shorehandling_localimport_40_gatereceive" model="product.product">
+      <field name="name">Export Shore handling Local import 40 Gate Receive</field>
       <field name="category_id" ref="lct_product_category_export"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_bundle"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
       <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gatereceive"/>
+    </record>
+    <record id="export_shorehandling_localimport_40_cfs" model="product.product">
+      <field name="name">Export Shore handling Local import 40 CFS</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="export_shorehandling_transitsahel_20_gatereceive" model="product.product">
+      <field name="name">Export Shore handling Transit Sahel 20 Gate Receive</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gatereceive"/>
+    </record>
+    <record id="export_shorehandling_transitsahel_20_cfs" model="product.product">
+      <field name="name">Export Shore handling Transit Sahel 20 CFS</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="export_shorehandling_transitsahel_40_gatereceive" model="product.product">
+      <field name="name">Export Shore handling Transit Sahel 40 Gate Receive</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gatereceive"/>
+    </record>
+    <record id="export_shorehandling_transitsahel_40_cfs" model="product.product">
+      <field name="name">Export Shore handling Transit Sahel 40 CFS</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="export_shorehandling_transitcoastal_20_gatereceive" model="product.product">
+      <field name="name">Export Shore handling Transit coastal 20 Gate Receive</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gatereceive"/>
+    </record>
+    <record id="export_shorehandling_transitcoastal_20_cfs" model="product.product">
+      <field name="name">Export Shore handling Transit coastal 20 CFS</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="export_shorehandling_transitcoastal_40_gatereceive" model="product.product">
+      <field name="name">Export Shore handling Transit coastal 40 Gate Receive</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gatereceive"/>
+    </record>
+    <record id="export_shorehandling_transitcoastal_40_cfs" model="product.product">
+      <field name="name">Export Shore handling Transit coastal 40 CFS</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="export_shorehandling_freezone_20_gatereceive" model="product.product">
+      <field name="name">Export Shore handling Free zone 20 Gate Receive</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gatereceive"/>
+    </record>
+    <record id="export_shorehandling_freezone_20_cfs" model="product.product">
+      <field name="name">Export Shore handling Free zone 20 CFS</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="export_shorehandling_freezone_40_gatereceive" model="product.product">
+      <field name="name">Export Shore handling Free zone 40 Gate Receive</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gatereceive"/>
+    </record>
+    <record id="export_shorehandling_freezone_40_cfs" model="product.product">
+      <field name="name">Export Shore handling Free zone 40 CFS</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="export_stevedoringcharges_localimport_20_gp" model="product.product">
+      <field name="name">Export Stevedoring charges Local import 20 GP</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="export_stevedoringcharges_localimport_20_reeferdg" model="product.product">
+      <field name="name">Export Stevedoring charges Local import 20 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_stevedoringcharges_localimport_40_gp" model="product.product">
+      <field name="name">Export Stevedoring charges Local import 40 GP</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="export_stevedoringcharges_localimport_40_reeferdg" model="product.product">
+      <field name="name">Export Stevedoring charges Local import 40 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_stevedoringcharges_transitsahel_20_gp" model="product.product">
+      <field name="name">Export Stevedoring charges Transit Sahel 20 GP</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="export_stevedoringcharges_transitsahel_20_reeferdg" model="product.product">
+      <field name="name">Export Stevedoring charges Transit Sahel 20 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_stevedoringcharges_transitsahel_40_gp" model="product.product">
+      <field name="name">Export Stevedoring charges Transit Sahel 40 GP</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="export_stevedoringcharges_transitsahel_40_reeferdg" model="product.product">
+      <field name="name">Export Stevedoring charges Transit Sahel 40 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_stevedoringcharges_transitcoastal_20_gp" model="product.product">
+      <field name="name">Export Stevedoring charges Transit coastal 20 GP</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="export_stevedoringcharges_transitcoastal_20_reeferdg" model="product.product">
+      <field name="name">Export Stevedoring charges Transit coastal 20 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_stevedoringcharges_transitcoastal_40_gp" model="product.product">
+      <field name="name">Export Stevedoring charges Transit coastal 40 GP</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="export_stevedoringcharges_transitcoastal_40_reeferdg" model="product.product">
+      <field name="name">Export Stevedoring charges Transit coastal 40 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_stevedoringcharges_freezone_20_gp" model="product.product">
+      <field name="name">Export Stevedoring charges Free zone 20 GP</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="export_stevedoringcharges_freezone_20_reeferdg" model="product.product">
+      <field name="name">Export Stevedoring charges Free zone 20 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_stevedoringcharges_freezone_40_gp" model="product.product">
+      <field name="name">Export Stevedoring charges Free zone 40 GP</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="export_stevedoringcharges_freezone_40_reeferdg" model="product.product">
+      <field name="name">Export Stevedoring charges Free zone 40 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
     </record>
     <record id="transshipment_discharge_20_full_gp" model="product.product">
       <field name="name">Transshipment Discharge 20 Full GP</field>
       <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_discharge"/>
-      <field name="size_id" ref="lct_product_size_20"/>
     </record>
-    <record id="transshipment_discharge_20_empty_gp" model="product.product">
-      <field name="name">Transshipment Discharge 20 Empty GP</field>
+    <record id="transshipment_discharge_20_full_reeferdg" model="product.product">
+      <field name="name">Transshipment Discharge 20 Full Reefer/DG</field>
       <field name="category_id" ref="lct_product_category_transshipment"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
       <field name="service_id" ref="lct_product_service_discharge"/>
       <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="transshipment_discharge_20_empty" model="product.product">
+      <field name="name">Transshipment Discharge 20 Empty</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
     </record>
     <record id="transshipment_discharge_40_full_gp" model="product.product">
       <field name="name">Transshipment Discharge 40 Full GP</field>
       <field name="category_id" ref="lct_product_category_transshipment"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
       <field name="service_id" ref="lct_product_service_discharge"/>
       <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="transshipment_discharge_40_empty_gp" model="product.product">
-      <field name="name">Transshipment Discharge 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_transshipment"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
+      <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="transshipment_discharge_40_full_reeferdg" model="product.product">
+      <field name="name">Transshipment Discharge 40 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="service_id" ref="lct_product_service_discharge"/>
       <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="transshipment_storage_20_full_gp" model="product.product">
-      <field name="name">Transshipment Storage 20 Full GP</field>
-      <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_storage"/>
-      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
     </record>
-    <record id="transshipment_storage_20_empty_gp" model="product.product">
-      <field name="name">Transshipment Storage 20 Empty GP</field>
+    <record id="transshipment_discharge_40_empty" model="product.product">
+      <field name="name">Transshipment Discharge 40 Empty</field>
       <field name="category_id" ref="lct_product_category_transshipment"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_storage"/>
-      <field name="size_id" ref="lct_product_size_20"/>
-    </record>
-    <record id="transshipment_storage_40_full_gp" model="product.product">
-      <field name="name">Transshipment Storage 40 Full GP</field>
-      <field name="category_id" ref="lct_product_category_transshipment"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
       <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="transshipment_storage_40_empty_gp" model="product.product">
-      <field name="name">Transshipment Storage 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_storage"/>
-      <field name="size_id" ref="lct_product_size_40"/>
     </record>
     <record id="transshipment_reload_20_full_gp" model="product.product">
       <field name="name">Transshipment Reload 20 Full GP</field>
       <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_reload"/>
+      <field name="size_id" ref="lct_product_size_20"/>
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reload"/>
-      <field name="size_id" ref="lct_product_size_20"/>
     </record>
-    <record id="transshipment_reload_20_empty_gp" model="product.product">
-      <field name="name">Transshipment Reload 20 Empty GP</field>
+    <record id="transshipment_reload_20_full_reeferdg" model="product.product">
+      <field name="name">Transshipment Reload 20 Full Reefer/DG</field>
       <field name="category_id" ref="lct_product_category_transshipment"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
       <field name="service_id" ref="lct_product_service_reload"/>
       <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="transshipment_reload_20_empty" model="product.product">
+      <field name="name">Transshipment Reload 20 Empty</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_reload"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
     </record>
     <record id="transshipment_reload_40_full_gp" model="product.product">
       <field name="name">Transshipment Reload 40 Full GP</field>
       <field name="category_id" ref="lct_product_category_transshipment"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
       <field name="service_id" ref="lct_product_service_reload"/>
       <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="transshipment_reload_40_empty_gp" model="product.product">
-      <field name="name">Transshipment Reload 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_transshipment"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
+      <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="transshipment_reload_40_full_reeferdg" model="product.product">
+      <field name="name">Transshipment Reload 40 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="service_id" ref="lct_product_service_reload"/>
       <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
     </record>
-    <record id="transshipment_reeferelectricity_20_full_gp" model="product.product">
-      <field name="name">Transshipment Reefer electricity 20 Full GP</field>
+    <record id="transshipment_reload_40_empty" model="product.product">
+      <field name="name">Transshipment Reload 40 Empty</field>
       <field name="category_id" ref="lct_product_category_transshipment"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
-      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="service_id" ref="lct_product_service_reload"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
     </record>
-    <record id="transshipment_reeferelectricity_20_empty_gp" model="product.product">
-      <field name="name">Transshipment Reefer electricity 20 Empty GP</field>
+    <record id="transshipment_storage_20_full_gp" model="product.product">
+      <field name="name">Transshipment Storage 20 Full GP</field>
       <field name="category_id" ref="lct_product_category_transshipment"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
-      <field name="size_id" ref="lct_product_size_20"/>
-    </record>
-    <record id="transshipment_reeferelectricity_40_full_gp" model="product.product">
-      <field name="name">Transshipment Reefer electricity 40 Full GP</field>
-      <field name="category_id" ref="lct_product_category_transshipment"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
-      <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="transshipment_reeferelectricity_40_empty_gp" model="product.product">
-      <field name="name">Transshipment Reefer electricity 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_transshipment"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
-      <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="transshipment_bundle_20_full_gp" model="product.product">
-      <field name="name">Transshipment Bundle 20 Full GP</field>
-      <field name="category_id" ref="lct_product_category_transshipment"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_bundle"/>
-      <field name="size_id" ref="lct_product_size_20"/>
-    </record>
-    <record id="transshipment_bundle_20_empty_gp" model="product.product">
-      <field name="name">Transshipment Bundle 20 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_transshipment"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_bundle"/>
-      <field name="size_id" ref="lct_product_size_20"/>
-    </record>
-    <record id="transshipment_bundle_40_full_gp" model="product.product">
-      <field name="name">Transshipment Bundle 40 Full GP</field>
-      <field name="category_id" ref="lct_product_category_transshipment"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_bundle"/>
-      <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="transshipment_bundle_40_empty_gp" model="product.product">
-      <field name="name">Transshipment Bundle 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_transshipment"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_bundle"/>
-      <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="restowageshifting_discharge_20_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Discharge 20 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_discharge"/>
-      <field name="size_id" ref="lct_product_size_20"/>
-    </record>
-    <record id="restowageshifting_discharge_20_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Discharge 20 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_discharge"/>
-      <field name="size_id" ref="lct_product_size_20"/>
-    </record>
-    <record id="restowageshifting_discharge_40_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Discharge 40 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_discharge"/>
-      <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="restowageshifting_discharge_40_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Discharge 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_discharge"/>
-      <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="restowageshifting_load_20_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Load 20 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_load"/>
-      <field name="size_id" ref="lct_product_size_20"/>
-    </record>
-    <record id="restowageshifting_load_20_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Load 20 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_load"/>
-      <field name="size_id" ref="lct_product_size_20"/>
-    </record>
-    <record id="restowageshifting_load_40_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Load 40 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_load"/>
-      <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="restowageshifting_load_40_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Load 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_load"/>
-      <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="restowageshifting_storage_20_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Storage 20 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
       <field name="service_id" ref="lct_product_service_storage"/>
       <field name="size_id" ref="lct_product_size_20"/>
-    </record>
-    <record id="restowageshifting_storage_20_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Storage 20 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
+      <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="transshipment_storage_20_full_reeferdg" model="product.product">
+      <field name="name">Transshipment Storage 20 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="service_id" ref="lct_product_service_storage"/>
       <field name="size_id" ref="lct_product_size_20"/>
-    </record>
-    <record id="restowageshifting_storage_40_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Storage 40 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
       <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="transshipment_storage_20_empty" model="product.product">
+      <field name="name">Transshipment Storage 20 Empty</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="transshipment_storage_40_full_gp" model="product.product">
+      <field name="name">Transshipment Storage 40 Full GP</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="service_id" ref="lct_product_service_storage"/>
       <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="restowageshifting_storage_40_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Storage 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
+      <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="transshipment_storage_40_full_reeferdg" model="product.product">
+      <field name="name">Transshipment Storage 40 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="service_id" ref="lct_product_service_storage"/>
       <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="restowageshifting_reload_20_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Reload 20 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
       <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reload"/>
-      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
     </record>
-    <record id="restowageshifting_reload_20_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Reload 20 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reload"/>
-      <field name="size_id" ref="lct_product_size_20"/>
-    </record>
-    <record id="restowageshifting_reload_40_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Reload 40 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reload"/>
+    <record id="transshipment_storage_40_empty" model="product.product">
+      <field name="name">Transshipment Storage 40 Empty</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
       <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="restowageshifting_reload_40_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Reload 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
       <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reload"/>
-      <field name="size_id" ref="lct_product_size_40"/>
     </record>
-    <record id="restowageshifting_reeferelectricity_20_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Reefer electricity 20 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
+    <record id="transshipment_reeferelectricity_20" model="product.product">
+      <field name="name">Transshipment Reefer electricity 20</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
     </record>
-    <record id="restowageshifting_reeferelectricity_20_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Reefer electricity 20 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
-      <field name="size_id" ref="lct_product_size_20"/>
-    </record>
-    <record id="restowageshifting_reeferelectricity_40_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Reefer electricity 40 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
+    <record id="transshipment_reeferelectricity_40" model="product.product">
+      <field name="name">Transshipment Reefer electricity 40</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
     </record>
-    <record id="restowageshifting_reeferelectricity_40_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Reefer electricity 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
+    <record id="transshipment_reeferelectricity_20" model="product.product">
+      <field name="name">Transshipment Reefer electricity 20</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+    </record>
+    <record id="transshipment_reeferelectricity_40" model="product.product">
+      <field name="name">Transshipment Reefer electricity 40</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_40"/>
     </record>
-    <record id="restowageshifting_shiftingfromcelltocell_20_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Shifting from cell to cell 20 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_shiftingfromcelltocell"/>
+    <record id="transshipment_reeferelectricity_20" model="product.product">
+      <field name="name">Transshipment Reefer electricity 20</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
       <field name="size_id" ref="lct_product_size_20"/>
     </record>
-    <record id="restowageshifting_shiftingfromcelltocell_20_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Shifting from cell to cell 20 Empty GP</field>
+    <record id="transshipment_reeferelectricity_40" model="product.product">
+      <field name="name">Transshipment Reefer electricity 40</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+    </record>
+    <record id="restowageshifting_restow_20_full" model="product.product">
+      <field name="name">Restowage &amp; Shifting Restow 20 Full</field>
       <field name="category_id" ref="lct_product_category_restowageshifting"/>
+      <field name="service_id" ref="lct_product_service_restow"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="restowageshifting_restow_20_empty" model="product.product">
+      <field name="name">Restowage &amp; Shifting Restow 20 Empty</field>
+      <field name="category_id" ref="lct_product_category_restowageshifting"/>
+      <field name="service_id" ref="lct_product_service_restow"/>
+      <field name="size_id" ref="lct_product_size_20"/>
       <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_shiftingfromcelltocell"/>
+    </record>
+    <record id="restowageshifting_restow_40_full" model="product.product">
+      <field name="name">Restowage &amp; Shifting Restow 40 Full</field>
+      <field name="category_id" ref="lct_product_category_restowageshifting"/>
+      <field name="service_id" ref="lct_product_service_restow"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+    </record>
+    <record id="restowageshifting_restow_40_empty" model="product.product">
+      <field name="name">Restowage &amp; Shifting Restow 40 Empty</field>
+      <field name="category_id" ref="lct_product_category_restowageshifting"/>
+      <field name="service_id" ref="lct_product_service_restow"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="specialhandlingcode_scanning_20" model="product.product">
+      <field name="name">Special handling code Scanning 20</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_scanning"/>
       <field name="size_id" ref="lct_product_size_20"/>
     </record>
-    <record id="restowageshifting_shiftingfromcelltocell_40_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Shifting from cell to cell 40 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_shiftingfromcelltocell"/>
+    <record id="specialhandlingcode_scanning_40" model="product.product">
+      <field name="name">Special handling code Scanning 40</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_scanning"/>
       <field name="size_id" ref="lct_product_size_40"/>
     </record>
-    <record id="restowageshifting_shiftingfromcelltocell_40_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Shifting from cell to cell 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_shiftingfromcelltocell"/>
-      <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="restowageshifting_dischargereload_20_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Discharge &amp; Reload 20 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_dischargereload"/>
+    <record id="specialhandlingcode_cfs_20" model="product.product">
+      <field name="name">Special handling code CFS 20</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_20"/>
     </record>
-    <record id="restowageshifting_dischargereload_20_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Discharge &amp; Reload 20 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_dischargereload"/>
+    <record id="specialhandlingcode_cfs_40" model="product.product">
+      <field name="name">Special handling code CFS 40</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_cfs"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+    </record>
+    <record id="specialhandlingcode_cleaning_20" model="product.product">
+      <field name="name">Special handling code Cleaning 20</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_cleaning"/>
       <field name="size_id" ref="lct_product_size_20"/>
     </record>
-    <record id="restowageshifting_dischargereload_40_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Discharge &amp; Reload 40 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_dischargereload"/>
+    <record id="specialhandlingcode_cleaning_40" model="product.product">
+      <field name="name">Special handling code Cleaning 40</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_cleaning"/>
       <field name="size_id" ref="lct_product_size_40"/>
     </record>
-    <record id="restowageshifting_dischargereload_40_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Discharge &amp; Reload 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_dischargereload"/>
-      <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="restowageshifting_bundle_20_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Bundle 20 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_bundle"/>
+    <record id="specialhandlingcode_customs_20" model="product.product">
+      <field name="name">Special handling code Customs 20</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_customs"/>
       <field name="size_id" ref="lct_product_size_20"/>
     </record>
-    <record id="restowageshifting_bundle_20_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Bundle 20 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_bundle"/>
+    <record id="specialhandlingcode_customs_40" model="product.product">
+      <field name="name">Special handling code Customs 40</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_customs"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+    </record>
+    <record id="specialhandlingcode_directdelivery_20" model="product.product">
+      <field name="name">Special handling code Direct delivery 20</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_directdelivery"/>
       <field name="size_id" ref="lct_product_size_20"/>
     </record>
-    <record id="restowageshifting_bundle_40_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Bundle 40 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_bundle"/>
+    <record id="specialhandlingcode_directdelivery_40" model="product.product">
+      <field name="name">Special handling code Direct delivery 40</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_directdelivery"/>
       <field name="size_id" ref="lct_product_size_40"/>
     </record>
-    <record id="restowageshifting_bundle_40_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Bundle 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
+    <record id="specialhandlingcode_deliveryforexamination_20" model="product.product">
+      <field name="name">Special handling code Delivery for examination 20</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_deliveryforexamination"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+    </record>
+    <record id="specialhandlingcode_deliveryforexamination_40" model="product.product">
+      <field name="name">Special handling code Delivery for examination 40</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_deliveryforexamination"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+    </record>
+    <record id="specialhandlingcode_inspection_20" model="product.product">
+      <field name="name">Special handling code Inspection 20</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_inspection"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+    </record>
+    <record id="specialhandlingcode_inspection_40" model="product.product">
+      <field name="name">Special handling code Inspection 40</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_inspection"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+    </record>
+    <record id="specialhandlingcode_pretripinspection_20" model="product.product">
+      <field name="name">Special handling code Pre-trip inspection 20</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_pretripinspection"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+    </record>
+    <record id="specialhandlingcode_pretripinspection_40" model="product.product">
+      <field name="name">Special handling code Pre-trip inspection 40</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_pretripinspection"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+    </record>
+    <record id="specialhandlingcode_repaired_20" model="product.product">
+      <field name="name">Special handling code Repaired 20</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_repaired"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+    </record>
+    <record id="specialhandlingcode_repaired_40" model="product.product">
+      <field name="name">Special handling code Repaired 40</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_repaired"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+    </record>
+    <record id="specialhandlingcode_umccinspection_20" model="product.product">
+      <field name="name">Special handling code UMCC: Inspection 20</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_umccinspection"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+    </record>
+    <record id="specialhandlingcode_umccinspection_40" model="product.product">
+      <field name="name">Special handling code UMCC: Inspection 40</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_umccinspection"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+    </record>
+    <record id="specialhandlingcode_washing_20" model="product.product">
+      <field name="name">Special handling code Washing 20</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_washing"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+    </record>
+    <record id="specialhandlingcode_washing_40" model="product.product">
+      <field name="name">Special handling code Washing 40</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="service_id" ref="lct_product_service_washing"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+    </record>
+    <record id="stuffcharges_20_full_gp" model="product.product">
+      <field name="name">Stuff charges 20 Full GP</field>
+      <field name="category_id" ref="lct_product_category_stuffcharges"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="stuffcharges_20_full_reeferdg" model="product.product">
+      <field name="name">Stuff charges 20 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_stuffcharges"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="stuffcharges_20_empty" model="product.product">
+      <field name="name">Stuff charges 20 Empty</field>
+      <field name="category_id" ref="lct_product_category_stuffcharges"/>
+      <field name="size_id" ref="lct_product_size_20"/>
       <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_bundle"/>
-      <field name="size_id" ref="lct_product_size_40"/>
     </record>
-    <record id="restowageshifting_hatchcovermove_20_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Hatch Cover Move 20 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
+    <record id="stuffcharges_40_full_gp" model="product.product">
+      <field name="name">Stuff charges 40 Full GP</field>
+      <field name="category_id" ref="lct_product_category_stuffcharges"/>
+      <field name="size_id" ref="lct_product_size_40"/>
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="stuffcharges_40_full_reeferdg" model="product.product">
+      <field name="name">Stuff charges 40 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_stuffcharges"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="stuffcharges_40_empty" model="product.product">
+      <field name="name">Stuff charges 40 Empty</field>
+      <field name="category_id" ref="lct_product_category_stuffcharges"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="stripcharges_20_full_gp" model="product.product">
+      <field name="name">Strip charges 20 Full GP</field>
+      <field name="category_id" ref="lct_product_category_stripcharges"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="stripcharges_20_full_reeferdg" model="product.product">
+      <field name="name">Strip charges 20 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_stripcharges"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="stripcharges_20_empty" model="product.product">
+      <field name="name">Strip charges 20 Empty</field>
+      <field name="category_id" ref="lct_product_category_stripcharges"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="stripcharges_40_full_gp" model="product.product">
+      <field name="name">Strip charges 40 Full GP</field>
+      <field name="category_id" ref="lct_product_category_stripcharges"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="stripcharges_40_full_reeferdg" model="product.product">
+      <field name="name">Strip charges 40 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_stripcharges"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="stripcharges_40_empty" model="product.product">
+      <field name="name">Strip charges 40 Empty</field>
+      <field name="category_id" ref="lct_product_category_stripcharges"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="renominations_20_full_gp" model="product.product">
+      <field name="name">Re-nominations 20 Full GP</field>
+      <field name="category_id" ref="lct_product_category_renominations"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="renominations_20_full_reeferdg" model="product.product">
+      <field name="name">Re-nominations 20 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_renominations"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="renominations_20_empty" model="product.product">
+      <field name="name">Re-nominations 20 Empty</field>
+      <field name="category_id" ref="lct_product_category_renominations"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="renominations_40_full_gp" model="product.product">
+      <field name="name">Re-nominations 40 Full GP</field>
+      <field name="category_id" ref="lct_product_category_renominations"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="renominations_40_full_reeferdg" model="product.product">
+      <field name="name">Re-nominations 40 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_renominations"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="renominations_40_empty" model="product.product">
+      <field name="name">Re-nominations 40 Empty</field>
+      <field name="category_id" ref="lct_product_category_renominations"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="amendmentcharges_20_full_gp" model="product.product">
+      <field name="name">Amendment charges 20 Full GP</field>
+      <field name="category_id" ref="lct_product_category_amendmentcharges"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="amendmentcharges_20_full_reeferdg" model="product.product">
+      <field name="name">Amendment charges 20 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_amendmentcharges"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="amendmentcharges_20_empty" model="product.product">
+      <field name="name">Amendment charges 20 Empty</field>
+      <field name="category_id" ref="lct_product_category_amendmentcharges"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="amendmentcharges_40_full_gp" model="product.product">
+      <field name="name">Amendment charges 40 Full GP</field>
+      <field name="category_id" ref="lct_product_category_amendmentcharges"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="amendmentcharges_40_full_reeferdg" model="product.product">
+      <field name="name">Amendment charges 40 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_amendmentcharges"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="amendmentcharges_40_empty" model="product.product">
+      <field name="name">Amendment charges 40 Empty</field>
+      <field name="category_id" ref="lct_product_category_amendmentcharges"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="inspection_20_full_gp" model="product.product">
+      <field name="name">Inspection 20 Full GP</field>
+      <field name="category_id" ref="lct_product_category_inspection"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="inspection_20_full_reeferdg" model="product.product">
+      <field name="name">Inspection 20 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_inspection"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="inspection_20_empty" model="product.product">
+      <field name="name">Inspection 20 Empty</field>
+      <field name="category_id" ref="lct_product_category_inspection"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="inspection_40_full_gp" model="product.product">
+      <field name="name">Inspection 40 Full GP</field>
+      <field name="category_id" ref="lct_product_category_inspection"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="inspection_40_full_reeferdg" model="product.product">
+      <field name="name">Inspection 40 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_inspection"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="inspection_40_empty" model="product.product">
+      <field name="name">Inspection 40 Empty</field>
+      <field name="category_id" ref="lct_product_category_inspection"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="services_pti_20_full_gp" model="product.product">
+      <field name="name">Services PTI 20 Full GP</field>
+      <field name="category_id" ref="lct_product_category_services"/>
+      <field name="service_id" ref="lct_product_service_pti"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="services_pti_20_full_reeferdg" model="product.product">
+      <field name="name">Services PTI 20 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_services"/>
+      <field name="service_id" ref="lct_product_service_pti"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="services_pti_20_empty" model="product.product">
+      <field name="name">Services PTI 20 Empty</field>
+      <field name="category_id" ref="lct_product_category_services"/>
+      <field name="service_id" ref="lct_product_service_pti"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="services_pti_40_full_gp" model="product.product">
+      <field name="name">Services PTI 40 Full GP</field>
+      <field name="category_id" ref="lct_product_category_services"/>
+      <field name="service_id" ref="lct_product_service_pti"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="services_pti_40_full_reeferdg" model="product.product">
+      <field name="name">Services PTI 40 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_services"/>
+      <field name="service_id" ref="lct_product_service_pti"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="services_pti_40_empty" model="product.product">
+      <field name="name">Services PTI 40 Empty</field>
+      <field name="category_id" ref="lct_product_category_services"/>
+      <field name="service_id" ref="lct_product_service_pti"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="sealnumber_20_full_gp" model="product.product">
+      <field name="name">Seal number 20 Full GP</field>
+      <field name="category_id" ref="lct_product_category_sealnumber"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="sealnumber_20_full_reeferdg" model="product.product">
+      <field name="name">Seal number 20 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_sealnumber"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="sealnumber_20_empty" model="product.product">
+      <field name="name">Seal number 20 Empty</field>
+      <field name="category_id" ref="lct_product_category_sealnumber"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="sealnumber_40_full_gp" model="product.product">
+      <field name="name">Seal number 40 Full GP</field>
+      <field name="category_id" ref="lct_product_category_sealnumber"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="sealnumber_40_full_reeferdg" model="product.product">
+      <field name="name">Seal number 40 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_sealnumber"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="sealnumber_40_empty" model="product.product">
+      <field name="name">Seal number 40 Empty</field>
+      <field name="category_id" ref="lct_product_category_sealnumber"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="containershift_20_full_gp" model="product.product">
+      <field name="name">Container shift 20 Full GP</field>
+      <field name="category_id" ref="lct_product_category_containershift"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="containershift_20_full_reeferdg" model="product.product">
+      <field name="name">Container shift 20 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_containershift"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="containershift_20_empty" model="product.product">
+      <field name="name">Container shift 20 Empty</field>
+      <field name="category_id" ref="lct_product_category_containershift"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="containershift_40_full_gp" model="product.product">
+      <field name="name">Container shift 40 Full GP</field>
+      <field name="category_id" ref="lct_product_category_containershift"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="containershift_40_full_reeferdg" model="product.product">
+      <field name="name">Container shift 40 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_containershift"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="containershift_40_empty" model="product.product">
+      <field name="name">Container shift 40 Empty</field>
+      <field name="category_id" ref="lct_product_category_containershift"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="seal_20_full_gp" model="product.product">
+      <field name="name">Seal 20 Full GP</field>
+      <field name="category_id" ref="lct_product_category_seal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="seal_20_full_reeferdg" model="product.product">
+      <field name="name">Seal 20 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_seal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="seal_20_empty" model="product.product">
+      <field name="name">Seal 20 Empty</field>
+      <field name="category_id" ref="lct_product_category_seal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="seal_40_full_gp" model="product.product">
+      <field name="name">Seal 40 Full GP</field>
+      <field name="category_id" ref="lct_product_category_seal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="seal_40_full_reeferdg" model="product.product">
+      <field name="name">Seal 40 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_seal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="seal_40_empty" model="product.product">
+      <field name="name">Seal 40 Empty</field>
+      <field name="category_id" ref="lct_product_category_seal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="placards_20_full_gp" model="product.product">
+      <field name="name">Placards 20 Full GP</field>
+      <field name="category_id" ref="lct_product_category_placards"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="placards_20_full_reeferdg" model="product.product">
+      <field name="name">Placards 20 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_placards"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="placards_20_empty" model="product.product">
+      <field name="name">Placards 20 Empty</field>
+      <field name="category_id" ref="lct_product_category_placards"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="placards_40_full_gp" model="product.product">
+      <field name="name">Placards 40 Full GP</field>
+      <field name="category_id" ref="lct_product_category_placards"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="placards_40_full_reeferdg" model="product.product">
+      <field name="name">Placards 40 Full Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_placards"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="placards_40_empty" model="product.product">
+      <field name="name">Placards 40 Empty</field>
+      <field name="category_id" ref="lct_product_category_placards"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="hatchcovermove" model="product.product">
+      <field name="name">Hatch Cover Move</field>
       <field name="service_id" ref="lct_product_service_hatchcovermove"/>
-      <field name="size_id" ref="lct_product_size_20"/>
     </record>
-    <record id="restowageshifting_hatchcovermove_20_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Hatch Cover Move 20 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_hatchcovermove"/>
-      <field name="size_id" ref="lct_product_size_20"/>
+    <record id="gearboxcount" model="product.product">
+      <field name="name">Gearbox Count</field>
+      <field name="service_id" ref="lct_product_service_gearboxcount"/>
     </record>
-    <record id="restowageshifting_hatchcovermove_40_full_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Hatch Cover Move 40 Full GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_full"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_hatchcovermove"/>
-      <field name="size_id" ref="lct_product_size_40"/>
+    <record id="bundle" model="product.product">
+      <field name="name">Bundle</field>
+      <field name="service_id" ref="lct_product_service_bundle"/>
     </record>
-    <record id="restowageshifting_hatchcovermove_40_empty_gp" model="product.product">
-      <field name="name">Restowage &amp; Shifting Hatch Cover Move 40 Empty GP</field>
-      <field name="category_id" ref="lct_product_category_restowageshifting"/>
-      <field name="status_id" ref="lct_product_status_empty"/>
-      <field name="type_id" ref="lct_product_type_gp"/>
-      <field name="service_id" ref="lct_product_service_hatchcovermove"/>
-      <field name="size_id" ref="lct_product_size_40"/>
-    </record>
-    <record id="product_dockage_160_below" model="product.product">
-      <field name="name">Dockage LOA 160m and below</field>
-      <field name="category_id" ref="lct_product_category_dockage"/>
-      <field name="sub_category_id" ref="lct_product_sub_category_loa_160_inf"/>
-    </record>
-    <record id="product_dockage_160_360" model="product.product">
-      <field name="name">Dockage LOA 160m to 360m</field>
-      <field name="category_id" ref="lct_product_category_dockage"/>
-      <field name="sub_category_id" ref="lct_product_sub_category_loa_160_360"/>
-    </record>
-    <record id="product_dockage_360_above" model="product.product">
-      <field name="name">Dockage LOA 360m and above</field>
-      <field name="category_id" ref="lct_product_category_dockage"/>
-      <field name="sub_category_id" ref="lct_product_sub_category_loa_360_sup"/>
+    <record id="oog" model="product.product">
+      <field name="name">oog</field>
+      <field name="service_id" ref="lct_product_service_oog"/>
     </record>
   </data>
 </openerp>

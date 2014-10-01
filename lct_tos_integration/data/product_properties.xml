@@ -14,16 +14,19 @@
     <record id="lct_product_category_restowageshifting" model="lct.product.category">
       <field name="name">Restowage &amp; Shifting</field>
     </record>
-    <record id="lct_product_category_special_handling" model="lct.product.category">
+    <record id="lct_product_category_specialhandlingcode" model="lct.product.category">
       <field name="name">Special handling code</field>
     </record>
-    <record id="lct_product_category_stuff_charges" model="lct.product.category">
+    <record id="lct_product_category_stuffcharges" model="lct.product.category">
       <field name="name">Stuff charges</field>
+    </record>
+    <record id="lct_product_category_stripcharges" model="lct.product.category">
+      <field name="name">Strip charges</field>
     </record>
     <record id="lct_product_category_renominations" model="lct.product.category">
       <field name="name">Re-nominations</field>
     </record>
-    <record id="lct_product_category_amendment_charges" model="lct.product.category">
+    <record id="lct_product_category_amendmentcharges" model="lct.product.category">
       <field name="name">Amendment charges</field>
     </record>
     <record id="lct_product_category_inspection" model="lct.product.category">
@@ -32,10 +35,10 @@
     <record id="lct_product_category_services" model="lct.product.category">
       <field name="name">Services</field>
     </record>
-    <record id="lct_product_category_seal_number" model="lct.product.category">
+    <record id="lct_product_category_sealnumber" model="lct.product.category">
       <field name="name">Seal number</field>
     </record>
-    <record id="lct_product_category_container_shift" model="lct.product.category">
+    <record id="lct_product_category_containershift" model="lct.product.category">
       <field name="name">Container shift</field>
     </record>
     <record id="lct_product_category_seal" model="lct.product.category">
@@ -62,7 +65,7 @@
     <record id="lct_product_service_inspection" model="lct.product.service">
       <field name="name">Inspection</field>
     </record>
-    <record id="lct_product_service_pretrip_inspection" model="lct.product.service">
+    <record id="lct_product_service_pretripinspection" model="lct.product.service">
       <field name="name">Pre-trip inspection</field>
     </record>
     <record id="lct_product_service_scanning" model="lct.product.service">
@@ -77,7 +80,7 @@
     <record id="lct_product_service_pti" model="lct.product.service">
       <field name="name">PTI</field>
     </record>
-    <record id="lct_product_service_umcc_inspection" model="lct.product.service">
+    <record id="lct_product_service_umccinspection" model="lct.product.service">
       <field name="name">UMCC: Inspection</field>
     </record>
     <record id="lct_product_service_reload" model="lct.product.service">
@@ -95,16 +98,16 @@
     <record id="lct_product_service_customs" model="lct.product.service">
       <field name="name">Customs</field>
     </record>
-    <record id="lct_product_service_delivery_examination" model="lct.product.service">
+    <record id="lct_product_service_deliveryforexamination" model="lct.product.service">
       <field name="name">Delivery for examination</field>
     </record>
-    <record id="lct_product_service_direct_delivery" model="lct.product.service">
+    <record id="lct_product_service_directdelivery" model="lct.product.service">
       <field name="name">Direct delivery</field>
     </record>
-    <record id="lct_product_service_stevedoring_charges" model="lct.product.service">
+    <record id="lct_product_service_stevedoringcharges" model="lct.product.service">
       <field name="name">Stevedoring charges</field>
     </record>
-    <record id="lct_product_service_shore_handling" model="lct.product.service">
+    <record id="lct_product_service_shorehandling" model="lct.product.service">
       <field name="name">Shore handling</field>
     </record>
     <record id="lct_product_service_reeferelectricity" model="lct.product.service">
@@ -143,6 +146,18 @@
     <record id="lct_product_type_gp" model="lct.product.type">
       <field name="name">GP</field>
     </record>
+    <record id="lct_product_type_reeferdg" model="lct.product.type">
+      <field name="name">Reefer/DG</field>
+    </record>
+    <record id="lct_product_type_gatedelivery" model="lct.product.type">
+      <field name="name">Gate Delivery</field>
+    </record>
+    <record id="lct_product_type_cfs" model="lct.product.type">
+      <field name="name">CFS</field>
+    </record>
+    <record id="lct_product_type_gatereceive" model="lct.product.type">
+      <field name="name">Gate Receive</field>
+    </record>
 
 
     <!-- SIZE -->
@@ -155,25 +170,25 @@
 
 
     <!-- SUB-CATEGORY -->
-    <record id="lct_product_sub_category_loa_160_inf" model="lct.product.sub.category">
+    <record id="lct_product_sub_category_loa160mandbelow" model="lct.product.sub.category">
       <field name="name">LOA 160m and below</field>
     </record>
-    <record id="lct_product_sub_category_loa_160_360" model="lct.product.sub.category">
+    <record id="lct_product_sub_category_loa160mto360m" model="lct.product.sub.category">
       <field name="name">LOA 160m to 360m</field>
     </record>
-    <record id="lct_product_sub_category_loa_360_sup" model="lct.product.sub.category">
+    <record id="lct_product_sub_category_loa360mandabove" model="lct.product.sub.category">
       <field name="name">LOA 360m and above</field>
     </record>
-    <record id="lct_product_sub_category_local_import" model="lct.product.sub.category">
+    <record id="lct_product_sub_category_localimport" model="lct.product.sub.category">
       <field name="name">Local import</field>
     </record>
-    <record id="lct_product_sub_category_transit_sahel" model="lct.product.sub.category">
+    <record id="lct_product_sub_category_transitsahel" model="lct.product.sub.category">
       <field name="name">Transit Sahel</field>
     </record>
-    <record id="lct_product_sub_category_transit_coastal" model="lct.product.sub.category">
+    <record id="lct_product_sub_category_transitcoastal" model="lct.product.sub.category">
       <field name="name">Transit coastal</field>
     </record>
-    <record id="lct_product_sub_category_free_zone" model="lct.product.sub.category">
+    <record id="lct_product_sub_category_freezone" model="lct.product.sub.category">
       <field name="name">Free zone</field>
     </record>
   </data>
