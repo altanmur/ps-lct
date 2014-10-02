@@ -147,13 +147,13 @@ class account_invoice(osv.osv):
             raise osv.except_osv(('Error'), ('Some information (category_id) could not be found on product'))
         product_properties['category_id'] = {
             'name': category_name,
-            'id': self._get_product_info(cr, uid, 'lct.product.category', 'name', category_name, 'Category')
+            'id': category_name and self._get_product_info(cr, uid, 'lct.product.category', 'name', category_name, 'Category') or False
         }
 
         size_size = int(self._get_elmnt_text(line, product_map['size_id']))
         product_properties['size_id'] = {
             'name': size_size,
-            'id': self._get_product_info(cr, uid, 'lct.product.size', 'size', size_size, 'Size')
+            'id': size_size and self._get_product_info(cr, uid, 'lct.product.size', 'size', size_size, 'Size') or False
         }
 
         status = self._get_elmnt_text(line, product_map['status_id'])
@@ -162,13 +162,13 @@ class account_invoice(osv.osv):
             else False
         product_properties['status_id'] = {
             'name': status_name,
-            'id': self._get_product_info(cr, uid, 'lct.product.status', 'name', status_name, 'Status')
+            'id': status_name and self._get_product_info(cr, uid, 'lct.product.status', 'name', status_name, 'Status') or False
         }
 
         type_name = self._get_elmnt_text(line, product_map['type_id'])
         product_properties['type_id'] = {
             'name': type_name,
-            'id': self._get_product_info(cr, uid, 'lct.product.type', 'name', type_name, 'Type')
+            'id': type_name and self._get_product_info(cr, uid, 'lct.product.type', 'name', type_name, 'Type') or False
         }
 
         return product_properties
