@@ -78,7 +78,7 @@ class account_account(osv.osv):
         #get all the necessary accounts
         children_and_consolidated = self._get_children_and_consol(cr, uid, ids, context=context)
         #compute for each account the balance/debit/credit from the move lines
-        null_result = dict((fn, 0.0) for fn in field_names)
+        null_result = dict((fn, 0.0) for fn in field_names + ['balance'])
         accounts = dict([(x, null_result.copy()) for x in children_and_consolidated])
         res = {}
         if children_and_consolidated:

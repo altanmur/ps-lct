@@ -442,7 +442,7 @@ result = rules.NET &gt; categories.NET * 0.10
 # worked_days: object containing the computed worked days.
 # inputs: object containing the computed inputs.
 # Note: returned value have to be set in the variable 'result'
-result = categories.BASIC + categories.ALW + 0.75 * employee.pension_allowance
+result = categories.BASIC + categories.ALW + categories.PENSION_ALW
             </field>
             <field name="condition_python">
 # Available variables:
@@ -1225,7 +1225,7 @@ result = rules.NET &gt; categories.NET * 0.10
             <field name="amount_select">percentage</field>
             <field name="active">True</field>
             <field name="appears_on_payslip"></field>
-            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="category_id" ref="lct_hr.hr_salary_rule_category_pension_alw"/>
             <field name="code">1010</field>
             <field name="register_id"></field>
             <field name="note"></field>

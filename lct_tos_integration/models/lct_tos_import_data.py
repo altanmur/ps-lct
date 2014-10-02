@@ -52,7 +52,7 @@ class lct_tos_import_data(osv.Model):
             return []
 
         imp_datas = self.browse(cr, uid, ids, context=context)
-        if any([(imp_data.status != 'pending') for imp_data in  imp_datas]):
+        if any((imp_data.status != 'pending') for imp_data in  imp_datas):
             raise osv.except_osv(('Error'),('You can only process pending data'))
 
         inv_model = self.pool.get('account.invoice')
@@ -64,7 +64,7 @@ class lct_tos_import_data(osv.Model):
                     inv_model.xml_to_vbl(cr, uid, imp_data.id, context=context)
                 except:
                     cr.execute('ROLLBACK TO SP')
-                    imp_data_model.write(cr, uid, imp_data.id, {
+                    self.write(cr, uid, imp_data.id, {
                         'status': 'fail',
                         'error': traceback.format_exc(),
                         }, context=context)
