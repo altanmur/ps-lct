@@ -44,10 +44,10 @@ class product_product(osv.osv):
                 domain.append(('id','in',ids))
 
         new_properties = dict(properties)
-        for prop, value in properties.iter_items():
-            new_ids = self.search(cr, uid, domain + (prop, '=', value), context=context)
+        for prop, value in properties.iteritems():
+            new_ids = self.search(cr, uid, domain + [(prop, '=', value)], context=context)
             del new_properties[prop]
-            product_id = self._product_by_properties(self, cr, uid, new_properties, new_ids, context=context)
+            product_id = self._product_by_properties(cr, uid, new_properties, new_ids, context=context)
             if product_id:
                 return product_id
         return False
