@@ -359,7 +359,7 @@ class account_invoice(osv.osv):
                         'type_id': 'container_type',
                     },
                 },
-            } 
+            }
         elif invoice_type == 'vbl':
             invoice_map = {
                 'partner_id': 'vessel_operator_id',
@@ -410,7 +410,7 @@ class account_invoice(osv.osv):
             invoice_line = self._get_vbl_lines(cr, uid, invoice.find('lines'), invoice_map['line_map'], partner, context=context)
         elif invoice_type == 'vcl':
             invoice_line = self._get_vcl_lines(cr, uid, vals, partner, context=context)
-        
+
         account = partner.property_account_receivable
         if account:
             vals['account_id'] = account.id
