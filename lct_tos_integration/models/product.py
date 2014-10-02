@@ -33,6 +33,33 @@ class product_product(osv.osv):
         'type_id': fields.many2one('lct.product.type', 'Type'),
     }
 
+    def _product_by_properties(self, cr, uid, properties, ids=None, context=None):
+        domain = []
+        if ids is not None:
+            if not ids:
+                return False
+            elif len(ids) == 1:
+                return ids[0]
+            else:
+                domain.append(('id','in',ids))
+
+        new_properties = dict(properties)
+        for prop, value in properties.iteritems():
+            new_ids = self.search(cr, uid, domain + [(prop, '=', value)], context=context)
+            del new_properties[prop]
+            product_id = self._product_by_properties(cr, uid, new_properties, new_ids, context=context)
+            if product_id:
+                return product_id
+        return False
+
+    def get_products_by_properties(self, cr, uid, properties, context=None):
+        new_properties = dict(properties)
+        if not new_properties.pop('service_ids', False):
+            return [self._product_by_properties(cr, uid, new_properties, context=context)]
+        product_ids = []
+        for service_id in properties['service_ids']:
+            product_ids.append(self._product_by_properties(cr, uid, dict(new_properties, service_id=service_id), context=context))
+        return product_ids
 
 class lct_product_service(osv.osv):
     _name = 'lct.product.service'
