@@ -30,4 +30,6 @@ access_lct_container_number_sale_user,lct.container.number sale user,model_lct_c
 access_lct_container_number_sale_manager,lct.container.number salemanager,model_lct_container_number,base.group_sale_manager,1,1,1,1
 access_lct_container_number_hr_expense_user,lct.container.number hr expense user,model_lct_container_number,base.group_hr_user,1,1,1,1
 access_lct_ftp_config_employee,ftp.config employee,model_ftp_config,base.group_user,0,0,0,0
-access_lct_tos_import_data_employee,lct.tos.import.data employee,model_lct_tos_import_data,base.group_user,0,0,0,0
+access_lct_tos_import_data_employee,lct.tos.import.data employee,model_lct_tos_import_data,base.group_user,1,0,0,0
+access_lct_tos_vessel_sale_user,lct.tos.vessel sale user,model_lct_tos_vessel,base.group_sale_salesman,1,0,0,0
+access_lct_tos_vessel_sale_manager,lct.tos.vessel salemanager,model_lct_tos_vessel,base.group_sale_manager,1,1,1,1

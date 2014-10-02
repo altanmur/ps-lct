@@ -11,5 +11,6 @@
     <departure_time>2014-06-18 10:38:00</departure_time>
     <berthing_time>2014-06-18 10:18:00</berthing_time>
     <off_window>NO</off_window>
+    <loa>75</loa>
   </call>
 </calls>

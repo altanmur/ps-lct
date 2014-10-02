@@ -16,11 +16,15 @@ class TestExport(TransactionCase):
         self.invoice_model = self.registry('account.invoice')
         cr, uid = self.cr, self.uid
         config_ids = self.ftp_config_model.search(cr, uid, [])
-        self.config = self.ftp_config_model.browse(cr, uid, config_ids)[0]
+        self.config = config_ids and self.ftp_config_model.browse(cr, uid, config_ids)[0] or False
+        if not self.config:
+            return True
         self.ftp = FTP(host=self.config['addr'],user=self.config['user'], passwd=self.config['psswd'])
 
     def test_export(self):
         cr, uid = self.cr, self.uid
+        if not self.config:
+            return True
         ftp, config = self.ftp, self.config
         ftp_config_model = self.ftp_config_model
         iet.purge_ftp(ftp, path=config['outbound_path'], omit=['done'])
@@ -75,7 +79,7 @@ class TestExport(TransactionCase):
             'street': vals['street'] + ', ' + vals['street2'],
             'city': vals['city'],
             'zip': vals['zip'],
-            'country': country_model.browse(cr, uid, country_id).name,
+            'country': country_model.browse(cr, uid, country_id).code,
             'email': vals['email'],
             'website': vals['website'],
             'phone': vals['phone']
@@ -96,4 +100,3 @@ class TestExport(TransactionCase):
         iet.upload_file(ftp, f, file_name)
         self.ftp_config_model.button_import_ftp_data(cr, uid, [self.config.id])
         inv_id = inv_model.search(cr, uid, [('state','=','draft')])[0]
-

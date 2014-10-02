@@ -82,7 +82,8 @@ class account_invoice(osv.osv):
     _columns = {
         'type2': fields.selection([
             ('vessel','Vessel Billing'),
-            ('appointment','Appointment')
+            ('appointment','Appointment'),
+            ('dockage', 'Vessel Dockage')
             ], 'Type of invoice'),
         'call_sign': fields.char('Call sign'),
         'lloyds_nr': fields.char('Lloyds number'),
@@ -94,6 +95,10 @@ class account_invoice(osv.osv):
         'appoint_date': fields.datetime('Appointment date'),
         'invoice_line_vessel': fields.related('invoice_line', type='one2many', relation='account.invoice.line', string="Invoice lines"),
         'invoice_line_appoint': fields.related('invoice_line', type='one2many', relation='account.invoice.line', string="Invoice lines"),
+        'voyage_number_in': fields.char('Voyage Number In'),
+        'voyage_number_out': fields.char('Voyage Number Out'),
+        'off_window': fields.boolean('OFF window'),
+        'loa': fields.integer('LOA'),
     }
 
     def _get_elmnt_text(self, elmnt, tag):
@@ -121,13 +126,13 @@ class account_invoice(osv.osv):
             raise osv.except_osv(('Error'), ('Some information (category_id) could not be found on product'))
         product_properties['category_id'] = {
             'name': category_name,
-            'id': self._get_product_info(cr, uid, 'lct.product.category', 'name', category_name, 'Category')
+            'id': category_name and self._get_product_info(cr, uid, 'lct.product.category', 'name', category_name, 'Category') or False
         }
 
         size_size = int(self._get_elmnt_text(line, product_map['size_id']))
         product_properties['size_id'] = {
             'name': size_size,
-            'id': self._get_product_info(cr, uid, 'lct.product.size', 'size', size_size, 'Size')
+            'id': size_size and self._get_product_info(cr, uid, 'lct.product.size', 'size', size_size, 'Size') or False
         }
 
         status = self._get_elmnt_text(line, product_map['status_id'])
@@ -136,13 +141,13 @@ class account_invoice(osv.osv):
             else False
         product_properties['status_id'] = {
             'name': status_name,
-            'id': self._get_product_info(cr, uid, 'lct.product.status', 'name', status_name, 'Status')
+            'id': status_name and self._get_product_info(cr, uid, 'lct.product.status', 'name', status_name, 'Status') or False
         }
 
         type_name = self._get_elmnt_text(line, product_map['type_id'])
         product_properties['type_id'] = {
             'name': type_name,
-            'id': self._get_product_info(cr, uid, 'lct.product.type', 'name', type_name, 'Type')
+            'id': type_name and self._get_product_info(cr, uid, 'lct.product.type', 'name', type_name, 'Type') or False
         }
 
         return product_properties
@@ -290,37 +295,101 @@ class account_invoice(osv.osv):
 
         return [(0,0,vals) for vals in lines_vals.values()]
 
-    def _get_invoice_vals(self, cr, uid, invoice, invoice_type, context=None):
-        invoice_map = {
-            'partner_id': 'customer_id',
-            'appoint_ref': 'appointment_reference',
-            'appoint_date': 'appointment_date',
-            'date_due': 'pay_through_date',
-            'line_map':  {
-                'product_map':{
-                    'category_id': 'category',
-                    'size_id': 'container_size',
-                    'status_id': 'status',
-                    'type_id': 'container_type',
-                },
-            },
-        } if invoice_type == 'app' \
-        else {
-            'partner_id': 'vessel_operator_id',
-            'call_sign': 'call_sign',
-            'lloyds_nr': 'lloyds_number',
-            'vessel_ID': 'vessel_id',
-            'berth_time': 'berthing_time',
-            'dep_time': 'departure_time',
-            'line_map':  {
-                'product_map':{
-                    'category_id': 'transaction_category_id',
-                    'size_id': 'container_size',
-                    'status_id': 'container_status',
-                    'type_id': 'container_type_id',
-                },
-            },
+    def _get_vcl_lines(self, cr, uid, vals, partner, context=None):
+        product_model = self.pool.get('product.product')
+        pricelist_model = self.pool.get('product.pricelist')
+        category_model = self.pool.get('lct.product.category')
+        sub_category_model = self.pool.get('lct.product.sub.category')
+
+        pricelist = partner.property_product_pricelist
+
+        category_id = category_model.search(cr, uid, [('name', '=', 'Dockage')], context=context)
+        if len(category_id) != 1:
+            raise osv.except_osv(('Error'), ('The category "Dockage" doesnt exist'))
+        category_id = category_id[0]
+
+        if not vals['loa']:
+            raise osv.except_osv(('Error'), ('There is no loa defined for the VCL'))
+        vals['loa'] = int(vals['loa'])
+        sub_category_id = False
+        if vals['loa'] <= 160:
+            sub_category_id = sub_category_model.search(cr, uid, [('name', '=', 'LOA 160m and below')], context=context)
+        elif vals['loa'] > 160 and vals['loa'] < 360:
+            sub_category_id = sub_category_model.search(cr, uid, [('name', '=', 'LOA 160m to 360m')], context=context)
+        elif vals['loa'] >= 360:
+            sub_category_id = sub_category_model.search(cr, uid, [('name', '=', 'LOA 360m and above')], context=context)
+        if not sub_category_id:
+            raise osv.except_osv(('Error'), ('Cannot find sub category for the VCL'))
+        sub_category_id = sub_category_id[0]
+
+        product_ids = product_model.search(cr, uid, [('category_id', '=', category_id), ('sub_category_id', '=', sub_category_id)], context=context)
+        if not product_ids:
+            raise osv.except_osv(('Error'), ('No product could be found for this VCL'))
+        product = product_model.browse(cr, uid, product_ids, context=context)[0]
+
+        account = product.property_account_income or (product.categ_id and product.categ_id.property_account_income_categ) or False
+        if not account:
+            raise osv.except_osv(('Error'), ('Could not find an income account on product %s ') % product.name)
+
+        price_unit = pricelist_model.price_get_multi(cr, uid, [pricelist.id], [(product.id, 1, partner.id)], context=context)[product.id][pricelist.id]
+
+        line = {
+            'quantity': 1,
+            'price_unit': price_unit,
+            'product_id': product.id,
+            'name': product.name,
+            'account_id': account.id,
         }
+        return [(0,0,line)]
+
+
+    def _get_invoice_vals(self, cr, uid, invoice, invoice_type, context=None):
+        invoice_map = {}
+        if invoice_type == 'app':
+            invoice_map = {
+                'partner_id': 'customer_id',
+                'appoint_ref': 'appointment_reference',
+                'appoint_date': 'appointment_date',
+                'date_due': 'pay_through_date',
+                'line_map':  {
+                    'product_map':{
+                        'category_id': 'category',
+                        'size_id': 'container_size',
+                        'status_id': 'status',
+                        'type_id': 'container_type',
+                    },
+                },
+            } 
+        elif invoice_type == 'vbl':
+            invoice_map = {
+                'partner_id': 'vessel_operator_id',
+                'call_sign': 'call_sign',
+                'lloyds_nr': 'lloyds_number',
+                'vessel_ID': 'vessel_id',
+                'berth_time': 'berthing_time',
+                'dep_time': 'departure_time',
+                'line_map':  {
+                    'product_map':{
+                        'category_id': 'transaction_category_id',
+                        'size_id': 'container_size',
+                        'status_id': 'container_status',
+                        'type_id': 'container_type_id',
+                    },
+                },
+            }
+        elif invoice_type == 'vcl':
+            invoice_map = {
+                'partner_id': 'vessel_operator_id',
+                'call_sign': 'call_sign',
+                'lloyds_nr': 'lloyds_number',
+                'vessel_ID': 'vessel_id',
+                'berth_time': 'berthing_time',
+                'dep_time': 'departure_time',
+                'voyage_number_in': 'voyage_number_in',
+                'voyage_number_out': 'voyage_number_out',
+                'loa': 'loa',
+                'off_window': 'off_window',
+            }
         vals = {}
         for field, tag in invoice_map.iteritems():
             if isinstance(tag, str):
@@ -334,10 +403,14 @@ class account_invoice(osv.osv):
         else:
             raise osv.except_osv(('Error'), ('No customer with this name (%s) was found' % vals['partner_id'] ))
 
-        invoice_line = self._get_app_lines(cr, uid, invoice.find('lines'), invoice_map['line_map'], partner, context=context) \
-                if invoice_type == 'app' \
-                else self._get_vbl_lines(cr, uid, invoice.find('lines'), invoice_map['line_map'], partner, context=context)
-
+        invoice_line = []
+        if invoice_type == 'app':
+            invoice_line = self._get_app_lines(cr, uid, invoice.find('lines'), invoice_map['line_map'], partner, context=context)
+        elif invoice_type == 'vbl':
+            invoice_line = self._get_vbl_lines(cr, uid, invoice.find('lines'), invoice_map['line_map'], partner, context=context)
+        elif invoice_type == 'vcl':
+            invoice_line = self._get_vcl_lines(cr, uid, vals, partner, context=context)
+        
         account = partner.property_account_receivable
         if account:
             vals['account_id'] = account.id
@@ -435,3 +508,20 @@ class account_invoice(osv.osv):
                 vbilling_vals['invoice_line'].append((0,0,line_vals))
             vbilling_ids.append(invoice_model.create(cr, uid, vbilling_vals, context=context))
         return vbilling_ids
+
+    def xml_to_vcl(self, cr, uid, imp_data_id, context=None):
+        imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
+        content = re.sub('<\?xml.*\?>','',imp_data.content).replace(u"\ufeff","")
+        vdockages = ET.fromstring(content)
+        vdockage_ids = []
+
+        invoice_model = self.pool.get('account.invoice')
+        for dockage in vdockages.findall('call'):
+            dockage_vals = self._get_invoice_vals(cr, uid, dockage, 'vcl', context=context)
+            dockage_vals['type2'] = 'dockage'
+            if dockage_vals['off_window'] == 'YES':
+                dockage_vals['off_window'] = True
+            else:
+                dockage_vals['off_window'] = False
+            vdockage_ids.append(invoice_model.create(cr, uid, dockage_vals, context=context))
+        return vdockage_ids

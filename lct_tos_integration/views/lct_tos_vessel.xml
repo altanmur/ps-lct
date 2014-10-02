@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+        <record id="view_lct_tos_vessel_form" model="ir.ui.view">
+            <field name="name">lct.tos.vessel.form</field>
+            <field name="model">lct.tos.vessel</field>
+            <field name="arch" type="xml">
+                <form string="Vessels" version="7.0" create="0">
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <group colspan="2" col="2">
+                                <field name="vessel_id" />
+                                <field name="name" />
+                                <field name="call_sign" />
+                                <field name="lloyds_number" />
+                            </group>
+                            <group colspan="2" col="2">
+                                <field name="vessel_in_voyage_number"/>
+                                <field name="vessel_out_voyage_number"/>
+                                <field name="vessel_eta"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_lct_tos_vessel_tree" model="ir.ui.view">
+            <field name="name">lct.tos.vessel.tree</field>
+            <field name="model">lct.tos.vessel</field>
+            <field name="arch" type="xml">
+                <tree string="Vesseles" version="7.0">
+                    <field name="vessel_id" />
+                    <field name="name" />
+                    <field name="call_sign" />
+                    <field name="lloyds_number" />
+                    <field name="vessel_in_voyage_number"/>
+                    <field name="vessel_out_voyage_number"/>
+                    <field name="vessel_eta"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="action_lct_tos_vessel" model="ir.actions.act_window">
+            <field name="name">LCT TOS vessels</field>
+            <field name="res_model">lct.tos.vessel</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+</openerp>

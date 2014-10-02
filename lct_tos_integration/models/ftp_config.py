@@ -150,7 +150,7 @@ class ftp_config(osv.osv):
                 'street': (partner.street + ( (', ' + partner.street2) if partner.street2 else '') if partner.street else '') or False,
                 'city': partner.city,
                 'zip': partner.zip,
-                'country': partner.country_id and partner.country_id.name,
+                'country': partner.country_id and partner.country_id.code,
                 'email': partner.email,
                 'website': partner.website,
                 'phone': partner.phone or partner.mobile or False
