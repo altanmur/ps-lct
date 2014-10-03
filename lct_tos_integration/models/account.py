@@ -646,7 +646,7 @@ class account_invoice(osv.osv):
             account = partner.property_account_receivable
             if not account:
                 raise osv.except_osv(('Error'), ('No account receivable could be found on cutomer %s' % partner.name))
-
+            pricelist_id = partner.property_product_pricelist.id
             invoice_vals = {
                 'partner_id': partner_id,
                 'account_id': account.id,
@@ -661,13 +661,18 @@ class account_invoice(osv.osv):
                 account = product.property_account_income or (product.categ_id and product.categ_id.property_account_income_categ) or False
                 if not account:
                     raise osv.except_osv(('Error'), ('Could not find an income account on product %s ') % product.name)
-                quantity = sum([cont_nr.quantity for cont_nr in cont_nr_model.browse(cr, uid, cont_nr_ids)])
+                cont_nrs = cont_nr_model.browse(cr, uid, cont_nr_ids)
+                quantities = [cont_nr.quantity for cont_nr in cont_nrs]
+                pricelist_qties = [cont_nr.pricelist_qty for cont_nr in cont_nrs]
+                quantity = sum(quantities)
+                price =  sum((pricelist_qty*pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)[product_id][pricelist_id] for pricelist_qty in pricelist_qties))
                 line_vals.update({
                     'product_id': product_id,
                     'name': product.name,
                     'account_id': account.id,
                     'partner_id': partner_id,
                     'quantity': quantity,
+                    'price_unit': price/quantity,
                 })
                 line_id = invoice_line_model.create(cr, uid, line_vals, context=context)
                 cont_nr_model.write(cr, uid, cont_nr_ids, {'invoice_line_id': line_id}, context=context)
