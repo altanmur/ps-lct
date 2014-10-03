@@ -64,6 +64,7 @@ class lct_tos_import_data(osv.Model):
                 try:
                     inv_model.xml_to_vbl(cr, uid, imp_data.id, context=context)
                 except:
+                    raise
                     cr.execute('ROLLBACK TO SP')
                     self.write(cr, uid, imp_data.id, {
                         'status': 'fail',

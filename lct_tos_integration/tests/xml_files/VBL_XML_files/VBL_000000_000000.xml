@@ -12,7 +12,7 @@
     <lines>
       <line>
         <container_number>AAAA0000001</container_number>
-        <container_operator_id>THO</container_operator_id>
+        <container_operator_id></container_operator_id>
         <restow_reason/>
         <transaction_category_id>I</transaction_category_id>
         <container_size>20</container_size>
@@ -28,7 +28,7 @@
       </line>
       <line>
         <container_number>AAAA0000002</container_number>
-        <container_operator_id>THO</container_operator_id>
+        <container_operator_id></container_operator_id>
         <restow_reason/>
         <transaction_category_id>I</transaction_category_id>
         <container_size>40</container_size>
