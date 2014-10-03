@@ -196,29 +196,30 @@ class account_invoice(osv.osv):
 
         product_model = self.pool.get('product.product')
         pricelist_model = self.pool.get('product.pricelist')
+        imd_model = self.pool.get('ir.model.data')
+
+        module = 'lct_tos_integration'
+
         pricelist = partner.property_product_pricelist
 
         lines_vals = {}
         for line in lines.findall('line'):
             product_properties = self._get_product_properties(cr, uid, line, line_map['product_map'], context=context)
+            for prop, value in product_properties.iteritems():
+                product_properties[prop] = value['id']
             services = {
-                'Storage': self._get_elmnt_text(line, 'storage'),
-                'Reefer electricity': self._get_elmnt_text(line, 'plugged_time'),
+                'lct_product_service_storage': self._xml_get_digit(line, 'storage'),
+                'lct_product_service_reeferelectricity': self._xml_get_digit(line, 'plugged_time'),
             }
             for service, quantity in services.iteritems():
-                if quantity and quantity.isdigit() and int(quantity) > 0:
-                    product_properties['service_id'] = {
-                        'name': service,
-                        'id': self._get_product_info(cr, uid, 'lct.product.service', 'name', service, 'Status')
-                    }
-                    product_domain = [(name, '=', product_properties[name]['id']) for name in ['category_id', 'size_id', 'status_id', 'type_id', 'service_id']]
-                    product_ids = product_model.search(cr, uid, product_domain, context=context)
-                    product = product_ids and product_model.browse(cr, uid, product_ids, context=context)[0] or False
-                    if not product:
+                if quantity > 0:
+                    product_properties['service_ids'] = [imd_model.get_record_id(cr, uid, module, service)]
+                    product_ids = product_model.get_products_by_properties(cr, uid, product_properties, context=context)
+                    if not product_ids:
                         raise osv.except_osv(('Error'), ('No product could be found for this combination : '
                                 '\n category_id : %s \n service_id : %s \n size_id : %s \n status_id : %s \n type_id : %s' % \
-                                tuple(product_properties[name]['name'] for name in ['category_id',  'service_id', 'size_id', 'status_id', 'type_id'])))
-
+                                tuple(product_properties[name] for name in ['category_id',  'service_id', 'size_id', 'status_id', 'type_id'])))
+                    product = product_model.browse(cr, uid, product_ids[0], context=context)
                     cont_nr = (0, 0, {
                                 'name': self._get_elmnt_text(line, 'container_number'),
                                 'pricelist_qty': int(quantity),
@@ -301,7 +302,6 @@ class account_invoice(osv.osv):
         }
         return [(0,0,line)]
 
-
     def _get_invoice_vals(self, cr, uid, invoice, invoice_type, context=None):
         invoice_map = {}
         if invoice_type == 'app':
@@ -341,7 +341,6 @@ class account_invoice(osv.osv):
         partner = self.pool.get('res.partner').browse(cr, uid, int(vals['partner_id']), context=context)
         if partner.exists():
             vals['partner_id'] = partner.id
-
         else:
             raise osv.except_osv(('Error'), ('No customer with this name (%s) was found' % vals['partner_id'] ))
 
