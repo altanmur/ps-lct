@@ -524,6 +524,8 @@ class account_invoice(osv.osv):
         cont_nr_model = self.pool.get('lct.container.number')
         product_model = self.pool.get('product.product')
 
+        date_invoice = datetime.today().strftime('%Y-%m-%d')
+
         invoice_ids = []
         for partner_id, invoice in invoice_lines.iteritems():
             partner = partner_model.browse(cr, uid, partner_id, context=context)
@@ -534,6 +536,7 @@ class account_invoice(osv.osv):
             invoice_vals = {
                 'partner_id': partner_id,
                 'account_id': account.id,
+                'date_invoice': date_invoice,
             }
             invoice_ids.append(invoice_model.create(cr, uid, invoice_vals, context=context))
             line_vals = {
