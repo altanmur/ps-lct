@@ -401,7 +401,7 @@ class account_invoice(osv.osv):
             service_ids = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_load')]
         elif category == 'T':
             category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_category_transshipment')
-            service_ids = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_discharge'), imd_model.get_record_id(cr, uid, 'lct_product_service_reload')]
+            service_ids = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_discharge'), imd_model.get_record_id(cr, uid, module, 'lct_product_service_reload')]
         elif category == 'R':
             category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_category_restowageshifting')
             service_ids = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_restow')]
