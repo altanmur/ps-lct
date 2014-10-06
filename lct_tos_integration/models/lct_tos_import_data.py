@@ -55,6 +55,7 @@ class lct_tos_import_data(osv.Model):
         if any((imp_data.status != 'pending') for imp_data in  imp_datas):
             raise osv.except_osv(('Error'),('You can only process pending data'))
 
+        yac_data_ids = []
         inv_model = self.pool.get('account.invoice')
         vsl_model = self.pool.get('lct.tos.vessel')
         for imp_data in imp_datas:
@@ -64,7 +65,6 @@ class lct_tos_import_data(osv.Model):
                 try:
                     inv_model.xml_to_vbl(cr, uid, imp_data.id, context=context)
                 except:
-                    raise
                     cr.execute('ROLLBACK TO SP')
                     self.write(cr, uid, imp_data.id, {
                         'status': 'fail',
@@ -101,6 +101,8 @@ class lct_tos_import_data(osv.Model):
                         'error': traceback.format_exc(),
                         }, context=context)
                     continue
+            elif re.match('^YAC_\d{6}_\d{6}\.xml$', filename):
+                yac_data_ids.append(imp_data.id)
             else:
                 cr.execute('ROLLBACK TO SP')
                 error = 'Filename format not known.\nKnown formats are :\n    APP_YYMMDD_SEQ000.xml\n    VBL_YYMMDD_SEQ000.xml'
@@ -111,3 +113,22 @@ class lct_tos_import_data(osv.Model):
                 continue
             self.write(cr, uid, imp_data.id, {'status': 'success'}, context=context)
             cr.execute('RELEASE SAVEPOINT SP')
+
+        if yac_data_ids and self.search(cr, uid, [('status','!=','success'),('id','not in',yac_data_ids)], context=context):
+            error = 'Yard activities cannot be processed while other imported files are still pending or have failed to process'
+            self.write(cr, uid, yac_data_ids, {
+                    'status': 'fail',
+                    'error': error,
+                }, context=context)
+
+        else:
+            for yac_data_id in yac_data_ids:
+                try:
+                    inv_model.xml_to_yac(cr, uid, yac_data_id, context=context)
+                except:
+                    cr.execute('ROLLBACK TO SP')
+                    self.write(cr, uid, yac_data_id, {
+                        'status': 'fail',
+                        'error': traceback.format_exc(),
+                        }, context=context)
+                    continue
