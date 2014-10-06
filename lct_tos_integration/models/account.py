@@ -414,7 +414,7 @@ class account_invoice(osv.osv):
         module = 'lct_tos_integration'
         if status == 'F':
             status_id = imd_model.get_record_id(cr, uid, module, 'lct_product_status_full')
-        elif satus == 'E':
+        elif status == 'E':
             status_id = imd_model.get_record_id(cr, uid, module, 'lct_product_status_empty')
         else:
             status_id = False
