@@ -123,6 +123,7 @@ class lct_tos_import_data(osv.Model):
 
         else:
             for yac_data_id in yac_data_ids:
+                cr.execute('SAVEPOINT SP')
                 try:
                     inv_model.xml_to_yac(cr, uid, yac_data_id, context=context)
                 except:
@@ -132,3 +133,5 @@ class lct_tos_import_data(osv.Model):
                         'error': traceback.format_exc(),
                         }, context=context)
                     continue
+                self.write(cr, uid, yac_data_id, {'status': 'success'}, context=context)
+                cr.execute('RELEASE SAVEPOINT SP')
