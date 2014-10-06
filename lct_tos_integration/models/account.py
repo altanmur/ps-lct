@@ -489,6 +489,8 @@ class account_invoice(osv.osv):
                 pricelist_qty = 1
 
                 category = self._get_elmnt_text(line, 'transaction_category_id')
+                if category == 'R':
+                    partner_id = self._get_partner(cr, uid, vbilling, 'vessel_operator_id', context=context)
                 category_id, service_ids = self._get_vbl_category_service(cr, uid, category)
 
                 size = self._get_elmnt_text(line, 'container_size')
