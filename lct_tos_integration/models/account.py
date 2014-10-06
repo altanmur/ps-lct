@@ -105,7 +105,8 @@ class account_invoice(osv.osv):
         'type2': fields.selection([
             ('vessel','Vessel Billing'),
             ('appointment','Appointment'),
-            ('dockage', 'Vessel Dockage')
+            ('dockage', 'Vessel Dockage'),
+            ('yactivity', 'Yard Activity'),
             ], 'Type of invoice'),
         'call_sign': fields.char('Call sign'),
         'lloyds_nr': fields.char('Lloyds number'),
@@ -194,7 +195,7 @@ class account_invoice(osv.osv):
         imd_model = self.pool.get('ir.model.data')
         if status == 'F':
             xml_id = 'lct_product_status_full'
-        elif satus == 'E':
+        elif status == 'E':
             xml_id = 'lct_product_status_empty'
         else:
             return False
@@ -670,7 +671,7 @@ class account_invoice(osv.osv):
             xml_id = 'lct_product_category_placards'
         else:
             return False
-        return imd_model.get_record(cr, uid, 'lct_tos_integration', xml_id)
+        return imd_model.get_record_id(cr, uid, 'lct_tos_integration', xml_id)
 
 
     def _get_yac_service(self, cr, uid, service):
@@ -694,7 +695,11 @@ class account_invoice(osv.osv):
         return imd_model.get_record_id(cr, uid, 'lct_tos_integration', xml_id)
 
     def xml_to_yac(self, cr, uid, imp_data_id, context=None):
-        imp_data = self.pool.get('lct_tos_import_data').browse(cr, uid, imp_data_id, context=context)
+        product_model = self.pool.get('product.product')
+        cont_nr_model = self.pool.get('lct.container.number')
+        invoice_model = self.pool.get('account.invoice')
+
+        imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
         content = re.sub('<\?xml.*\?>','',imp_data.content).replace(u"\ufeff","")
         yactivities = ET.fromstring(content)
         yactivity_ids = []
@@ -745,7 +750,8 @@ class account_invoice(osv.osv):
                         invoice_lines[partner_id][product_id] = []
                     cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals), context=context)
                     invoice_lines[partner_id][product_id].append(cont_nr_id)
-
+        invoice_ids = self._create_invoices(cr, uid, invoice_lines, context=context)
+        invoice_model.write(cr, uid, invoice_ids, {'type2': 'yactivity'})
 
 
 
