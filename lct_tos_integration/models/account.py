@@ -39,7 +39,10 @@ class lct_container_number(osv.osv):
         'vessel_ID': fields.char('Vessel ID'),
         'berth_time': fields.datetime('Berthing time'),
         'dep_time': fields.datetime('Departure time'),
+        'dep_timestamp': fields.datetime('Departure Timestamp'),
+        'arr_timestamp': fields.datetime('Arrival Timestamp'),
         'invoice_line_id': fields.many2one('account.invoice.line', string="Invoice line"),
+        'type2': fields.related('invoice_line_id', 'invoice_id', 'type2', type='char', string="Invoice Type", readonly=True),
     }
 
 
@@ -704,12 +707,12 @@ class account_invoice(osv.osv):
         yactivities = ET.fromstring(content)
         yactivity_ids = []
 
+        invoice_lines = {}
         for yactivity in yactivities.findall('yactivity'):
             lines = yactivity.find('lines')
             if lines is None:
                 continue
 
-            invoice_lines = {}
             for line in lines.findall('line'):
                 partner_id = self._get_partner(cr, uid, line, 'container_operator_id', context=context)
                 if partner_id not in invoice_lines:
@@ -728,8 +731,11 @@ class account_invoice(osv.osv):
                 status = self._get_elmnt_text(line, 'status')
                 status_id = self._get_status(cr, uid, status)
 
-                p_type = self._get_elmnt_text(line, 'container_type_id')
-                type_id = self._get_yac_type(cr, uid, p_type)
+                if status != 'E':
+                    p_type = self._get_elmnt_text(line, 'container_type_id')
+                    type_id = self._get_yac_type(cr, uid, p_type)
+                else:
+                    type_id = False
 
                 properties = {
                     'category_id': category_id,
@@ -743,6 +749,8 @@ class account_invoice(osv.osv):
                     'name': self._get_elmnt_text(line, 'container_number'),
                     'quantity': 1,
                     'pricelist_qty': 1,
+                    'arr_timestamp': self._get_elmnt_text(line, 'arrival_timestamp'),
+                    'dep_timestamp': self._get_elmnt_text(line, 'departure_timestamp'),
                 }
                 product_ids = product_model.get_products_by_properties(cr, uid, properties, context=context)
                 for product_id in product_ids:
