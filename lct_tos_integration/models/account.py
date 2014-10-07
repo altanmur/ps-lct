@@ -33,6 +33,11 @@ class lct_container_number(osv.osv):
         'date_start': fields.date('Arrival date'),
         'pricelist_qty': fields.integer('Quantity', help="Quantity used for pricelist computation"),
         'cont_operator': fields.char('Container operator'),
+        'call_sign': fields.char('Call sign'),
+        'lloyds_nr': fields.char('Lloyds number'),
+        'vessel_ID': fields.char('Vessel ID'),
+        'berth_time': fields.datetime('Berthing time'),
+        'dep_time': fields.datetime('Departure time'),
         'invoice_line_id': fields.many2one('account.invoice.line', string="Invoice line"),
     }
 
@@ -44,6 +49,22 @@ class account_invoice_line(osv.osv):
         'cont_nr_ids': fields.one2many('lct.container.number', 'invoice_line_id', 'Containers'),
         'book_nr': fields.char('Booking number'),
     }
+
+    def _merge_vbl_line_pair(self, cr, uid, id1, id2, context=None):
+        cont_nr_model = self.pool.get('lct.container.number')
+        line1, line2 = self.browse(cr, uid, [id1, id2], context=context)
+        cont_nr_model.write(cr, uid, [cont_nr.id for cont_nr in line2.cont_nr_ids],
+                            {'invoice_line_id': line1.id}, context=context)
+        quantities = [line1.quantity, line2.quantity]
+        prices = [line1.price_unit, line2.price_unit]
+        quantity = sum(quantities)
+        price_unit = (prices[0]*quantities[0] + prices[1]*quantities[1])/quantity
+        self.write(cr, uid, [line1.id], {
+                        'quantity': quantity,
+                        'price_unit': price_unit,
+                   }, context=context)
+        self.unlink(cr, uid, [line2.id], context=context)
+        return line1.id
 
 
 class account_voucher(osv.osv):
@@ -444,6 +465,64 @@ class account_invoice(osv.osv):
             appointment_ids.append(invoice_model.create(cr, uid, appointment_vals, context=context))
         return appointment_ids
 
+    def _merge_vbl_pair(self, cr, uid, id1, id2, context=None):
+        invoice_line_model = self.pool.get('account.invoice.line')
+        vbl1, vbl2 = self.browse(cr, uid, [id1, id2], context=context)
+        new_lines = dict([(line.product_id.id, line) for line in vbl1.invoice_line])
+        for line in vbl2.invoice_line:
+            product_id = line.product_id.id
+            if product_id in new_lines:
+                line_id = invoice_line_model._merge_vbl_line_pair(cr, uid, new_lines[product_id].id, line.id, context=context)
+            else:
+                line_id = line.id
+            invoice_line_model.write(cr, uid, [line_id], {'invoice_id': vbl1.id}, context=context)
+        self.unlink(cr, uid, [vbl2.id], context=context)
+        date_invoice = datetime.today().strftime('%Y-%m-%d'),
+        self.write(cr, uid, [vbl1.id], {'date_invoice': date_invoice}, context=context)
+        return vbl1.id
+
+    def _merge_vbls(self, cr, uid, ids, context=None):
+        n_ids = len(ids)
+        if n_ids < 1:
+            return False
+        elif n_ids == 1:
+            return ids[0]
+        elif n_ids == 2:
+            return self._merge_vbl_pair(cr, uid, ids[0], ids[1], context=context)
+        else:
+            id1 = self._merge_vbls(cr, uid, ids[:n_ids/2], context=context)
+            id2 = self._merge_vbls(cr, uid, ids[n_ids/2:], context=context)
+            return self._merge_vbl_pair(cr, uid, id1, id2, context=context)
+
+    def _group_vbl_by_partner(self, cr, uid, ids, auto=False, context=None):
+        if not ids:
+            return []
+        vbl_by_currency_by_partner = {}
+        for vbl in self.browse(cr, uid, ids, context=context):
+            partner_id = vbl.partner_id.id
+            currency_id = vbl.currency_id.id
+            if partner_id in vbl_by_currency_by_partner:
+                if currency_id in vbl_by_currency_by_partner[partner_id]:
+                    vbl_by_currency_by_partner[partner_id][currency_id].append(vbl.id)
+                else:
+                    vbl_by_currency_by_partner[partner_id][currency_id] = [vbl.id]
+            else:
+                vbl_by_currency_by_partner[partner_id] = {currency_id : [vbl.id]}
+        if not auto:
+            if len(vbl_by_currency_by_partner) > 1:
+                raise osv.except_osv(('Error'), ("You can't group invoices with different customers"))
+            elif len(vbl_by_currency_by_partner.values()[0]) > 1:
+                raise osv.except_osv(('Error'), ("You can't group invoices with different currencies"))
+        for vbl_by_currency in vbl_by_currency_by_partner.values():
+            for vbl_ids in vbl_by_currency.values():
+                self._merge_vbls(cr, uid, vbl_ids, context=context)
+
+    def group_invoices(self, cr, uid, ids, context=None):
+        vbl_ids = self.search(cr, uid, [('id','in',ids), ('type2','=','vessel')], context=context)
+        if len(ids) > len(vbl_ids):
+            raise osv.except_osv(('Error'), "You can only group invoices of type Vessel Billing")
+        self._group_vbl_by_partner(cr, uid, vbl_ids, context=context)
+
     def xml_to_vbl(self, cr, uid, imp_data_id, context=None):
         imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
         content = re.sub('<\?xml.*\?>','',imp_data.content).replace(u"\ufeff","")
@@ -528,3 +607,16 @@ class account_invoice(osv.osv):
                 raise osv.except_osv(('Error'), ('Another Vessel Dockage with the same voyage number in and same departure time already exists.'))
             vdockage_ids.append(invoice_model.create(cr, uid, dockage_vals, context=context))
         return vdockage_ids
+
+class account_invoice_group(osv.osv_memory):
+    _name = 'account.invoice.group'
+
+    def invoice_group(self, cr, uid, ids, context=None):
+        context = context or {}
+        invoice_model = self.pool.get('account.invoice')
+        invoice_ids = context.get('active_ids', [])
+        if invoice_model.search(cr, uid, [('id','in',invoice_ids), ('state','not in',['draft','proforma','proforma2'])], context=context):
+            raise osv.except_osv(('Warning!'), ("You can only group invoices if they are in 'Draft' or 'Pro-Forma' state."))
+
+        invoice_model.group_invoices(cr, uid, invoice_ids, context=context)
+        return {'type': 'ir.actions.act_window_close'}
