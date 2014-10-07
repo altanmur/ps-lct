@@ -482,8 +482,6 @@ class account_invoice(osv.osv):
                 continue
             for line in lines.findall('line'):
                 partner_id = self._get_partner(cr, uid, line, 'container_operator_id', context=context)
-                if partner_id not in invoice_lines:
-                    invoice_lines[partner_id] = {}
 
                 cont_nr_vals['name'] = self._get_elmnt_text(line, 'container_number')
                 pricelist_qty = 1
@@ -510,6 +508,10 @@ class account_invoice(osv.osv):
                     'type_id': type_id,
                 }
                 product_ids = product_model.get_products_by_properties(cr, uid, properties, context=context)
+
+                if partner_id not in invoice_lines:
+                    invoice_lines[partner_id] = {}
+
                 for product_id in product_ids:
                     if product_id not in invoice_lines[partner_id]:
                         invoice_lines[partner_id][product_id] = []
