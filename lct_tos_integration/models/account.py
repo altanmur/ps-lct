@@ -139,7 +139,7 @@ class account_invoice(osv.osv):
                 raise osv.except_osv(('Error'), ('The following information (%s) was not found') % (label,))
         return ids[0]
 
-    def _get_product_properties(self, cr, uid, line, product_map, context=None):
+    def _get_app_product_properties(self, cr, uid, line, product_map, context=None):
         product_properties = {}
 
         category = self._get_elmnt_text(line, product_map['category_id'])
@@ -171,6 +171,17 @@ class account_invoice(osv.osv):
             'name': type_name,
             'id': type_name and self._get_product_info(cr, uid, 'lct.product.type', 'name', type_name, 'Type') or False
         }
+
+        subcategory_tag = line.find(product_map['sub_category_id'])
+        if subcategory_tag is None:
+            subcategory_name = False
+        else:
+            subcategory_name = subcategory_tag.text
+        product_properties['type_id'] = {
+            'name': subcategory_name,
+            'id': subcategory_name and self._get_product_info(cr, uid, 'lct.product.sub.category', 'name', subcategory_name, 'Subcategory') or False
+        }
+
 
         return product_properties
 
@@ -204,7 +215,7 @@ class account_invoice(osv.osv):
 
         lines_vals = {}
         for line in lines.findall('line'):
-            product_properties = self._get_product_properties(cr, uid, line, line_map['product_map'], context=context)
+            product_properties = self._get_app_product_properties(cr, uid, line, line_map['product_map'], context=context)
             for prop, value in product_properties.iteritems():
                 product_properties[prop] = value['id']
             services = {
@@ -217,8 +228,8 @@ class account_invoice(osv.osv):
                     product_ids = product_model.get_products_by_properties(cr, uid, product_properties, context=context)
                     if not product_ids:
                         raise osv.except_osv(('Error'), ('No product could be found for this combination : '
-                                '\n category_id : %s \n service_id : %s \n size_id : %s \n status_id : %s \n type_id : %s' % \
-                                tuple(product_properties[name] for name in ['category_id',  'service_id', 'size_id', 'status_id', 'type_id'])))
+                                '\n category_id : %s \n service_ids : %s \n size_id : %s \n status_id : %s \n type_id : %s' % \
+                                tuple(product_properties[name] for name in ['category_id',  'service_ids', 'size_id', 'status_id', 'type_id'])))
                     product = product_model.browse(cr, uid, product_ids[0], context=context)
                     cont_nr = (0, 0, {
                                 'name': self._get_elmnt_text(line, 'container_number'),
@@ -316,6 +327,7 @@ class account_invoice(osv.osv):
                         'size_id': 'container_size',
                         'status_id': 'status',
                         'type_id': 'container_type',
+                        'sub_category_id': 'sub_category',
                     },
                 },
             }
