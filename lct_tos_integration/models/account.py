@@ -519,8 +519,8 @@ class account_invoice(osv.osv):
 
     def group_invoices(self, cr, uid, ids, context=None):
         vbl_ids = self.search(cr, uid, [('id','in',ids), ('type2','=','vessel')], context=context)
-        if len(ids) > len(vbl_ids):
-            raise osv.except_osv(('Error'), "You can only group invoices of type Vessel Billing")
+        if vbl_ids and len(ids) > len(vbl_ids):
+            raise osv.except_osv(('Error'), "You can only group invoices of the same type")
         self._group_vbl_by_partner(cr, uid, vbl_ids, context=context)
 
     def xml_to_vbl(self, cr, uid, imp_data_id, context=None):
