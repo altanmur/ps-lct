@@ -139,52 +139,6 @@ class account_invoice(osv.osv):
                 raise osv.except_osv(('Error'), ('The following information (%s) was not found') % (label,))
         return ids[0]
 
-    def _get_app_product_properties(self, cr, uid, line, product_map, context=None):
-        product_properties = {}
-
-        category = self._get_elmnt_text(line, product_map['category_id'])
-        category_name = 'Import' if category == 'I' else 'Export' if category == 'E' else False
-        if not category_name:
-            raise osv.except_osv(('Error'), ('Some information (category_id) could not be found on product'))
-        product_properties['category_id'] = {
-            'name': category_name,
-            'id': category_name and self._get_product_info(cr, uid, 'lct.product.category', 'name', category_name, 'Category') or False
-        }
-
-        size_size = int(self._get_elmnt_text(line, product_map['size_id']))
-        product_properties['size_id'] = {
-            'name': size_size,
-            'id': size_size and self._get_product_info(cr, uid, 'lct.product.size', 'size', size_size, 'Size') or False
-        }
-
-        status = self._get_elmnt_text(line, product_map['status_id'])
-        status_name = 'Full' if status == 'F' \
-            else 'Empty' if status == 'E' \
-            else False
-        product_properties['status_id'] = {
-            'name': status_name,
-            'id': status_name and self._get_product_info(cr, uid, 'lct.product.status', 'name', status_name, 'Status') or False
-        }
-
-        type_name = self._get_elmnt_text(line, product_map['type_id'])
-        product_properties['type_id'] = {
-            'name': type_name,
-            'id': type_name and self._get_product_info(cr, uid, 'lct.product.type', 'name', type_name, 'Type') or False
-        }
-
-        subcategory_tag = line.find(product_map['sub_category_id'])
-        if subcategory_tag is None:
-            subcategory_name = False
-        else:
-            subcategory_name = subcategory_tag.text
-        product_properties['type_id'] = {
-            'name': subcategory_name,
-            'id': subcategory_name and self._get_product_info(cr, uid, 'lct.product.sub.category', 'name', subcategory_name, 'Subcategory') or False
-        }
-
-
-        return product_properties
-
     def _get_partner(self, cr, uid, elmnt, tag, context=None):
         partner_id = self._get_elmnt_text(elmnt, tag)
         if not partner_id.isdigit():
@@ -200,71 +154,6 @@ class account_invoice(osv.osv):
         except:
             res = 0
         return res
-
-    def _get_app_lines(self, cr, uid, lines, line_map, partner, context=None):
-        if len(lines) < 1:
-            return []
-
-        product_model = self.pool.get('product.product')
-        pricelist_model = self.pool.get('product.pricelist')
-        imd_model = self.pool.get('ir.model.data')
-
-        module = 'lct_tos_integration'
-
-        pricelist = partner.property_product_pricelist
-
-        lines_vals = {}
-        for line in lines.findall('line'):
-            product_properties = self._get_app_product_properties(cr, uid, line, line_map['product_map'], context=context)
-            for prop, value in product_properties.iteritems():
-                product_properties[prop] = value['id']
-            services = {
-                'lct_product_service_storage': self._xml_get_digit(line, 'storage'),
-                'lct_product_service_reeferelectricity': self._xml_get_digit(line, 'plugged_time'),
-            }
-            for service, quantity in services.iteritems():
-                if quantity > 0:
-                    product_properties['service_ids'] = [imd_model.get_record_id(cr, uid, module, service)]
-                    product_ids = product_model.get_products_by_properties(cr, uid, product_properties, context=context)
-                    if not product_ids:
-                        raise osv.except_osv(('Error'), ('No product could be found for this combination : '
-                                '\n category_id : %s \n service_ids : %s \n size_id : %s \n status_id : %s \n type_id : %s' % \
-                                tuple(product_properties[name] for name in ['category_id',  'service_ids', 'size_id', 'status_id', 'type_id'])))
-                    product = product_model.browse(cr, uid, product_ids[0], context=context)
-                    cont_nr = (0, 0, {
-                                'name': self._get_elmnt_text(line, 'container_number'),
-                                'pricelist_qty': int(quantity),
-                                'cont_operator': self._get_elmnt_text(line, 'container_operator'),
-                            })
-                    if product.id in lines_vals:
-                        lines_vals[product.id]['cont_nr_ids'].append(cont_nr)
-                    else:
-                        vals = {}
-                        for field, tag in line_map.iteritems():
-                            if isinstance(tag, str):
-                                vals[field] = self._get_elmnt_text(line, tag)
-                        account = product.property_account_income or (product.categ_id and product.categ_id.property_account_income_categ) or False
-                        if account:
-                            vals['account_id'] = account.id
-                        else:
-                            raise osv.except_osv(('Error'), ('Could not find an income account on product %s ') % product.name)
-                        vals.update({
-                            'product_id': product.id,
-                            'name' : product.name,
-                            'cont_nr_ids': [cont_nr],
-                        })
-                        lines_vals[product.id] = vals
-
-        for vals in lines_vals.values():
-            qty_tot = 0.0
-            qties = [cont_nr[2]['pricelist_qty'] for cont_nr in vals['cont_nr_ids']]
-            price = sum((qty*pricelist_model.price_get_multi(cr, uid, [pricelist.id], [(vals['product_id'], qty, partner.id)], context=context)[vals['product_id']][pricelist.id] for qty in qties))
-            vals.update({
-                'price_unit': price/len(qties),
-                'quantity': len(qties)
-                })
-
-        return [(0,0,vals) for vals in lines_vals.values()]
 
     def _get_vcl_lines(self, cr, uid, vals, partner, context=None):
         product_model = self.pool.get('product.product')
@@ -315,23 +204,7 @@ class account_invoice(osv.osv):
 
     def _get_invoice_vals(self, cr, uid, invoice, invoice_type, context=None):
         invoice_map = {}
-        if invoice_type == 'app':
-            invoice_map = {
-                'partner_id': 'customer_id',
-                'appoint_ref': 'appointment_reference',
-                'appoint_date': 'appointment_date',
-                'date_due': 'pay_through_date',
-                'line_map':  {
-                    'product_map':{
-                        'category_id': 'category',
-                        'size_id': 'container_size',
-                        'status_id': 'status',
-                        'type_id': 'container_type',
-                        'sub_category_id': 'sub_category',
-                    },
-                },
-            }
-        elif invoice_type == 'vcl':
+        if invoice_type == 'vcl':
             invoice_map = {
                 'partner_id': 'vessel_operator_id',
                 'call_sign': 'call_sign',
@@ -357,9 +230,7 @@ class account_invoice(osv.osv):
             raise osv.except_osv(('Error'), ('No customer with this name (%s) was found' % vals['partner_id'] ))
 
         invoice_line = []
-        if invoice_type == 'app':
-            invoice_line = self._get_app_lines(cr, uid, invoice.find('lines'), invoice_map['line_map'], partner, context=context)
-        elif invoice_type == 'vcl':
+        if invoice_type == 'vcl':
             invoice_line = self._get_vcl_lines(cr, uid, vals, partner, context=context)
 
         account = partner.property_account_receivable
@@ -379,24 +250,267 @@ class account_invoice(osv.osv):
 
     # APP
 
+    def _get_app_type_service(self, cr, uid, line):
+        p_type = self._get_elmnt_text(line, 'container_type')
+        if p_type == 'GP':
+            type_xml_id = 'lct_product_type_gp'
+            service_xml_id = 'lct_product_service_stevedoringcharges'
+        elif p_type == 'RE':
+            type_xml_id = 'lct_product_type_reeferdg'
+            service_xml_id = 'lct_product_service_stevedoringcharges'
+        elif p_type == 'NO':
+            type_xml_id = 'lct_product_type_gatereceive'
+            service_xml_id = 'lct_product_service_shorehandling'
+        elif p_type == 'YES':
+            type_xml_id = 'lct_product_type_cfs'
+            service_xml_id = 'lct_product_service_shorehandling'
+        else:
+            return (False, False)
+
+        imd_model = self.pool.get('ir.model.data')
+        type_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', type_xml_id)
+        service_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', service_xml_id)
+        return (type_id, service_id)
+
+    def _get_app_size(self, cr, uid, line):
+        size = self._get_elmnt_text(line, 'container_size')
+        if size == '20':
+            xml_id = 'lct_product_size_20'
+        elif size == '40':
+            xml_id = 'lct_product_size_40'
+        else:
+            return False
+        return self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', xml_id)
+
+    def _get_app_sub_category(self, cr, uid, line):
+        sub_category = line.find('sub_category')
+        if sub_category is None or not sub_category.text:
+            xml_id = 'lct_product_sub_category_localimport'
+        else:
+            sub_category = sub_category.text
+            if sub_category == 'T1':
+                xml_id = 'lct_product_sub_category_transitsahel'
+            elif sub_category == 'T2':
+                xml_id = 'lct_product_sub_category_transitcoastal'
+            elif sub_category == 'FZ':
+                xml_id = 'lct_product_sub_category_freezone'
+            else:
+                xml_id = 'lct_product_sub_category_localimport'
+        return self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', xml_id)
+
+    def _get_app_import_storage(self, line):
+        storage = line.find('storage')
+        if storage is not None:
+            storage = storage.text
+            if storage and storage.isdigit():
+                return int(storage)
+        return 0
+
+    def _get_app_import_plugged_time(self, line):
+        active_reefer = self._get_elmnt_text(line, 'active_reefer')
+        if active_reefer == 'YES':
+            plugged_time = self._get_elmnt_text(line, 'plugged_time')
+            if plugged_time is not None:
+                plugged_time = plugged_time.text
+                if plugged_time and plugged_time.isdigit():
+                    return int(plugged_time)
+        return 0
+
+    def _get_app_import_line_quantities_by_products(self, cr, uid, line, context=None):
+        imd_model = self.pool.get('ir.model.data')
+        module = 'lct_tos_integration'
+
+        category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_category_import')
+        quantities_by_services = {}
+
+        storage = self._get_app_import_storage(line)
+        if storage > 0:
+            service_id = imd_model.get_record_id(cr, uid, module, 'lct_product_service_storage')
+            quantities_by_services[service_id] = storage
+
+        plugged_time = self._get_app_import_plugged_time(line)
+        if plugged_time > 0:
+            service_id = imd_model.get_record_id(cr, uid, module, 'lct_product_service_reeferelectricity')
+            quantities_by_services[service_id] = plugged_time
+
+        type_id, service_id = self._get_app_type_service(cr, uid, line)
+        quantities_by_services[service_id] = 1
+
+        size_id = self._get_app_size(cr, uid, line)
+        sub_category_id = self._get_app_sub_category(cr, uid, line)
+
+        properties = {
+            'category_id': category_id,
+            'type_id': type_id,
+            'size_id': size_id,
+            'status_id': False,
+            'sub_category_id': sub_category_id,
+        }
+
+        quantities_by_products = {}
+        for service_id, quantity in quantities_by_services.iteritems():
+            properties['service_ids'] = [service_id]
+            product_id = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, context=context)[0]
+            quantities_by_products[product_id] = quantity
+
+        return quantities_by_products
+
+    def _get_app_export_line_quantities_by_products(self, cr, uid, line, context=None):
+        category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_export')
+        type_id, service_id = self._get_app_type_service(cr, uid, line)
+        size_id = self._get_app_size(cr, uid, line)
+        sub_category_id = self._get_app_sub_category(cr, uid, line)
+
+        properties = {
+            'category_id': category_id,
+            'type_id': type_id,
+            'size_id': size_id,
+            'status_id': False,
+            'sub_category_id': sub_category_id,
+            'service_ids': [service_id],
+        }
+
+        product_id = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, context=context)[0]
+        quantities_by_products = {product_id: 1}
+
+        return quantities_by_products
+
+    def _get_shc_service(self, cr, uid, shc):
+        if shc == 'SCC':
+            xml_id = 'lct_product_service_scanning'
+        elif shc == 'CFS':
+            xml_id = 'lct_product_service_cfs'
+        elif shc == 'CLN':
+            xml_id = 'lct_product_service_cleaning'
+        elif shc == 'CUS':
+            xml_id = 'lct_product_service_customs'
+        elif shc == 'DDA':
+            xml_id = 'lct_product_service_directdelivery'
+        elif shc == 'EXM':
+            xml_id = 'lct_product_service_deliveryforexamination'
+        elif shc == 'INS':
+            xml_id = 'lct_product_service_inspection'
+        elif shc == 'PTI':
+            xml_id = 'lct_product_service_pretripinspection'
+        elif shc == 'REP':
+            xml_id = 'lct_product_service_repaired'
+        elif shc == 'UMC':
+            xml_id = 'lct_product_service_umccinspection'
+        elif shc == 'WAS':
+            xml_id = 'lct_product_service_washing'
+        else:
+            raise osv.except_osv(('Error'), ('Could not find a service for this special handling code: %s' % shc))
+
+        return self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', xml_id)
+
+    def _get_shc_product(self, cr, uid, line, context=None):
+        shc = line.find('special_handling_code_id')
+        if shc is None:
+            return False
+
+        service_id = self._get_shc_service(cr, uid, shc.text)
+        if not service_id:
+            return False
+
+        category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_specialhandlingcode')
+        size_id = self._get_app_size(cr, uid, line)
+
+        properties = {
+            'category_id': category_id,
+            'service_ids': [service_id],
+            'size_id': size_id,
+        }
+        return self.pool.get('product.product').get_products_by_properties(cr, uid, properties, context=context)[0]
+
+    def _create_app(self, cr, uid, appointment, context=None):
+        imd_model = self.pool.get('ir.model.data')
+        product_model = self.pool.get('product.product')
+        cont_nr_model = self.pool.get('lct.container.number')
+        invoice_line_model = self.pool.get('account.invoice.line')
+        partner_model = self.pool.get('res.partner')
+        pricelist_model = self.pool.get('product.pricelist')
+
+        ind_cust = self._get_elmnt_text(appointment, 'individual_customer')
+        partner_id = self._get_partner(cr, uid, appointment, 'customer_id', context=context)
+        partner = partner_model.browse(cr, uid, partner_id, context=context)
+        account = partner.property_account_receivable
+        if not account:
+            raise osv.except_osv(('Error'), ('No account receivable could be found on customer %s' % partner.name))
+        date_invoice = datetime.today().strftime('%Y-%m-%d')
+
+        app_vals = {
+            'individual_cust': True if ind_cust == 'IND' else False,
+            'partner_id': self._get_partner(cr, uid, appointment, 'customer_id', context=context),
+            'appoint_ref': self._get_elmnt_text(appointment, 'appointment_reference'),
+            'appoint_date': self._get_elmnt_text(appointment, 'appointment_date'),
+            'date_due': self._get_elmnt_text(appointment, 'pay_through_date'),
+            'account_id': account.id,
+            'date_invoice': date_invoice,
+            'type2': 'appointment',
+        }
+
+        app_id = self.create(cr, uid, app_vals, context=context)
+
+        pricelist_id = partner.property_product_pricelist.id
+
+        lines = appointment.find('lines')
+        if lines is None:
+            return app_id
+
+        invoice_lines = {}
+        for line in lines.findall('line'):
+            category = self._get_elmnt_text(line, 'category')
+            if category == 'I':
+                quantities_by_products = self._get_app_import_line_quantities_by_products(cr, uid, line, context=context)
+            elif category == 'E':
+                quantities_by_products = self._get_app_export_line_quantities_by_products(cr, uid, line, context=context)
+            shc_product_id = self._get_shc_product(cr, uid, line, context=context)
+            if shc_product_id:
+                quantities_by_products[shc_product_id] = 1
+            import ipdb; ipdb.set_trace()
+
+            cont_nr_vals = {
+                'name': self._get_elmnt_text(line, 'container_number'),
+                'cont_operator': self._get_elmnt_text(line, 'container_operator'),
+            }
+            for product_id, quantity in quantities_by_products.iteritems():
+                if product_id not in invoice_lines:
+                    invoice_lines[product_id] = []
+                cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=quantity, quantity=1), context=context)
+                invoice_lines[product_id].append(cont_nr_id)
+
+        for product_id, cont_nr_ids in  invoice_lines.iteritems():
+            product = product_model.browse(cr, uid, product_id, context=context)
+            account = product.property_account_income or (product.categ_id and product.categ_id.property_account_income_categ) or False
+            if not account:
+                raise osv.except_osv(('Error'), ('Could not find an income account on product %s ') % product.name)
+            cont_nrs = cont_nr_model.browse(cr, uid, cont_nr_ids, context=context)
+            quantities = [cont_nr.quantity for cont_nr in cont_nrs]
+            pricelist_qties = [cont_nr.pricelist_qty for cont_nr in cont_nrs]
+            quantity = sum(quantities)
+            price = 0.
+            for pricelist_qty in pricelist_qties:
+                price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
+                price += pricelist_qty*price_multi[product_id][pricelist_id]
+            line_vals = {
+                'invoice_id': app_id,
+                'product_id': product_id,
+                'name': product.name,
+                'account_id': account.id,
+                'partner_id': partner_id,
+                'quantity': quantity,
+                'price_unit': price/quantity,
+            }
+            line_id = invoice_line_model.create(cr, uid, line_vals, context=context)
+            cont_nr_model.write(cr, uid, cont_nr_ids, {'invoice_line_id': line_id}, context=context)
+
     def xml_to_app(self, cr, uid, imp_data_id, context=None):
         imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
         content = re.sub('<\?xml.*\?>','',imp_data.content).replace(u"\ufeff","")
         appointments = ET.fromstring(content)
-        appointment_ids = []
-        invoice_model = self.pool.get('account.invoice')
-        for appointment in appointments.findall('appointment'):
-            appointment_vals = self._get_invoice_vals(cr, uid, appointment, 'app', context=context)
-            appointment_vals['type2'] = 'appointment'
-            individual = {
-                'IND': True,
-                'STD': False,
-            }.get(self._get_elmnt_text(appointment, 'individual_customer'), None)
-            if individual is None:
-                raise osv.except_osv(('Error'), ('Invalid text in tag "individual_customer"'))
-            appointment_vals['individual_cust'] = individual
-            appointment_ids.append(invoice_model.create(cr, uid, appointment_vals, context=context))
-        return appointment_ids
+
+        for appointment in appointments:
+            self._create_app(cr, uid, appointment, context=context)
 
 
     # VBL

@@ -39,7 +39,7 @@
         <bb>NO</bb>
         <bundles>NO</bundles>
         <plugged_time/>
-        <special_handling_code_id>TE4</special_handling_code_id>
+        <special_handling_code_id>SCC</special_handling_code_id>
         <service_code_id/>
       </line>
       <line>
@@ -71,7 +71,7 @@
         <bb>NO</bb>
         <bundles>NO</bundles>
         <plugged_time/>
-        <special_handling_code_id>TE4</special_handling_code_id>
+        <special_handling_code_id>WAS</special_handling_code_id>
         <service_code_id/>
       </line>
     </lines>

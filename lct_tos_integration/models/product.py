@@ -69,6 +69,11 @@ class product_product(osv.osv):
                     product_id = False
             else:
                 product_id = self._product_by_properties(cr, uid, properties, context=context)
+            if not product_id:
+                error = 'Could not find a product with this combination of properties: '
+                for prop, value in properties.iteritems():
+                    error += prop + ': id=' + value
+                raise osv.except_osv(('Error'), (error))
             product_ids.append(product_id)
 
         return product_ids
