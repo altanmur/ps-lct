@@ -53,12 +53,24 @@ class product_product(osv.osv):
         return False
 
     def get_products_by_properties(self, cr, uid, properties, context=None):
-        new_properties = dict(properties)
-        if not new_properties.pop('service_ids', False):
-            return [self._product_by_properties(cr, uid, new_properties, context=context)]
+        properties = dict(properties)
+        service_ids = properties.pop('service_ids', False)
+        if not service_ids:
+            service_ids = [False]
+
         product_ids = []
-        for service_id in properties['service_ids']:
-            product_ids.append(self._product_by_properties(cr, uid, dict(new_properties, service_id=service_id), context=context))
+        for service_id in service_ids:
+            properties['service_id'] = service_id
+            product_id = self.search(cr, uid, [(prop, '=', prop_id) for prop, prop_id in properties.iteritems()])
+            if product_id:
+                if len(product_id):
+                    product_id = product_id[0]
+                else:
+                    product_id = False
+            else:
+                product_id = self._product_by_properties(cr, uid, properties, context=context)
+            product_ids.append(product_id)
+
         return product_ids
 
 class lct_product_service(osv.osv):

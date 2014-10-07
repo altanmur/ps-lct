@@ -45,7 +45,9 @@ class TestImport(TransactionCase):
         cr, uid = self.cr, self.uid
         pricelist_model = self.registry('product.pricelist')
         product_model = self.registry('product.product')
-        product_id = product_model.search(cr, uid, [('name','=','Export Storage 20 Full GP')])[0]
+        imd_model = self.registry('ir.model.data')
+
+        product_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'export_storage_20_full_gp')
         product_model.write(cr, uid, [product_id], {'list_price': 50.})
         tariff_rate_vals = [
             (0,0,{
@@ -62,7 +64,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             }),
         ]
-        product_id = product_model.search(cr, uid, [('name','=','Export Reefer electricity 20')])[0]
+        product_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'export_reeferelectricity_20')
         product_model.write(cr, uid, [product_id], {'list_price': 16.})
         tariff_rate_vals.append(
             (0,0,{
@@ -79,7 +81,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             })
         )
-        product_id = product_model.search(cr, uid, [('name','=','Import Reefer electricity 40')])[0]
+        product_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'import_reeferelectricity_40')
         product_model.write(cr, uid, [product_id], {'list_price': 58.})
         tariff_rate_vals.append(
             (0,0,{
@@ -96,7 +98,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             })
         )
-        product_id = product_model.search(cr, uid, [('name','=','Import Discharge 20 Full GP')])[0]
+        product_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'import_discharge_20_full_gp')
         product_model.write(cr, uid, [product_id], {'list_price': 15.})
         tariff_rate_vals.append(
             (0,0,{
@@ -108,7 +110,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             })
         )
-        product_id = product_model.search(cr, uid, [('name','=','Import Discharge 40 Full GP')])[0]
+        product_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'import_discharge_40_full_gp')
         product_model.write(cr, uid, [product_id], {'list_price': 20.})
         tariff_rate_vals.append(
             (0,0,{
@@ -120,7 +122,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             })
         )
-        product_id = product_model.search(cr, uid, [('name','=','Gearbox Count')])[0]
+        product_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'gearboxcount')
         product_model.write(cr, uid, [product_id], {'list_price': 11.})
         tariff_rate_vals.append(
             (0,0,{
@@ -132,7 +134,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             })
         )
-        product_id = product_model.search(cr, uid, [('name','=','Hatch Cover Move')])[0]
+        product_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'hatchcovermove')
         product_model.write(cr, uid, [product_id], {'list_price': 13.})
         tariff_rate_vals.append(
             (0,0,{
@@ -144,7 +146,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             })
         )
-        product_id = product_model.search(cr, uid, [('name','=','Dockage LOA 160m and below')])[0]
+        product_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'dockage_loa160mandbelow')
         product_model.write(cr, uid, [product_id], {'list_price': 13.})
         tariff_rate_vals.append(
             (0,0,{
@@ -156,7 +158,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             })
         )
-        product_id = product_model.search(cr, uid, [('name','=','Dockage LOA 160m to 360m')])[0]
+        product_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'dockage_loa160mto360m')
         product_model.write(cr, uid, [product_id], {'list_price': 13.})
         tariff_rate_vals.append(
             (0,0,{
@@ -168,7 +170,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             })
         )
-        product_id = product_model.search(cr, uid, [('name','=','Dockage LOA 360m and above')])[0]
+        product_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'dockage_loa360mandabove')
         product_model.write(cr, uid, [product_id], {'list_price': 13.})
         tariff_rate_vals.append(
             (0,0,{
@@ -257,19 +259,18 @@ class TestImport(TransactionCase):
         if data_ids:
             import_data_model.unlink(cr, uid, data_ids)
         ftp_config_model.button_import_ftp_data(cr, uid, [self.config.id])
-
         appoints = invoice_model.browse(cr, uid, invoice_model.search(cr, uid, [('type2','=','appointment'), ('id', 'not in', appoint_ids)], order='appoint_ref'))
         self.assertEqual(len(appoints), 2, 'Importing should create 2 appointments')
         self.assertTrue(appoints[0].appoint_ref == 'LCT2014062400289', 'Importing should create an appointment with reference: LCT2014062400289')
         lines = sorted(appoints[0].invoice_line, key=lambda x: x.name.lower())
         self.assertTrue(len(lines) == 3)
-        self.assertTrue(lines[0].name == 'Export Reefer electricity 20 Full GP')
+        self.assertTrue(lines[0].name == 'Export Reefer electricity 20')
         self.assertTrue(lines[0].quantity == 1)
         self.assertTrue(lines[0].price_unit == 70.4)
         self.assertTrue(lines[1].name == 'Export Storage 20 Full GP')
         self.assertTrue(lines[1].quantity == 2)
         self.assertTrue(lines[1].price_unit == 281.25)
-        self.assertTrue(lines[2].name == 'Import Reefer electricity 40 Full GP')
+        self.assertTrue(lines[2].name == 'Import Reefer electricity 40')
         self.assertTrue(lines[2].quantity == 1)
         self.assertTrue(lines[2].price_unit == 464.)
 
@@ -278,10 +279,9 @@ class TestImport(TransactionCase):
 
         vessels = invoice_model.browse(cr, uid, invoice_model.search(cr, uid, [('type2','=','vessel'), ('id', 'not in', vessel_ids)], order='call_sign'))
         self.assertTrue(len(vessels) == 1, 'Importing should create 1 vessel billing')
-        self.assertTrue(vessels[0].call_sign == 'CALLSIGN000', 'Importing should create an appointment with reference: CALLSIGN000')
 
         lines = sorted(vessels[0].invoice_line, key=lambda x: x.name.lower())
-        self.assertTrue(len(lines) == 4)
+        self.assertEqual(len(lines), 4)
 
         self.assertTrue(lines[0].name == 'Gearbox Count')
         self.assertTrue(lines[0].quantity == 14)
