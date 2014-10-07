@@ -41,6 +41,7 @@ class lct_container_number(osv.osv):
         'dep_time': fields.datetime('Departure time'),
         'dep_timestamp': fields.datetime('Departure Timestamp'),
         'arr_timestamp': fields.datetime('Arrival Timestamp'),
+        'plugged_time': fields.integer('Plugged Time'),
         'invoice_line_id': fields.many2one('account.invoice.line', string="Invoice line"),
         'type2': fields.related('invoice_line_id', 'invoice_id', 'type2', type='char', string="Invoice Type", readonly=True),
     }
@@ -751,6 +752,7 @@ class account_invoice(osv.osv):
                     'pricelist_qty': 1,
                     'arr_timestamp': self._get_elmnt_text(line, 'arrival_timestamp'),
                     'dep_timestamp': self._get_elmnt_text(line, 'departure_timestamp'),
+                    'plugged_time': self._get_elmnt_text(line, 'plugged_time'),
                 }
                 product_ids = product_model.get_products_by_properties(cr, uid, properties, context=context)
                 for product_id in product_ids:
