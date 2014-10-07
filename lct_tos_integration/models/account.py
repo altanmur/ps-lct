@@ -523,5 +523,8 @@ class account_invoice(osv.osv):
                 dockage_vals['off_window'] = True
             else:
                 dockage_vals['off_window'] = False
+            if 'voyage_number_in' in dockage_vals and dockage_vals['voyage_number_in'] and 'dep_time' in dockage_vals and dockage_vals['dep_time'] \
+                and self.search(cr, uid, [('voyage_number_in', '=', dockage_vals['voyage_number_in']), ('dep_time', '=', dockage_vals['dep_time'])], context=context):
+                raise osv.except_osv(('Error'), ('Another Vessel Dockage with the same voyage number in and same departure time already exists.'))
             vdockage_ids.append(invoice_model.create(cr, uid, dockage_vals, context=context))
         return vdockage_ids
