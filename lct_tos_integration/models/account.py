@@ -497,9 +497,11 @@ class account_invoice(osv.osv):
                 status = self._get_elmnt_text(line, 'container_status')
                 status_id = self._get_vbl_status(cr, uid, status)
 
-                p_type = self._get_elmnt_text(line, 'container_type_id')
-                type_id = self._get_vbl_type(cr, uid, p_type)
-
+                if status != 'E':
+                    p_type = self._get_elmnt_text(line, 'container_type_id')
+                    type_id = self._get_vbl_type(cr, uid, p_type)
+                else:
+                    type_id = False
                 properties = {
                     'category_id': category_id,
                     'service_ids': service_ids,
@@ -507,7 +509,7 @@ class account_invoice(osv.osv):
                     'status_id': status_id,
                     'type_id': type_id,
                 }
-                product_ids = product_model.get_products_by_properties(cr, uid, properties, context=context)
+                product_ids = product_model.get_products_by_properties(cr, uid, dict(properties), context=context)
 
                 if partner_id not in invoice_lines:
                     invoice_lines[partner_id] = {}

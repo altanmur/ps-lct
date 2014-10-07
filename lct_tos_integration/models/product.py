@@ -67,7 +67,7 @@ class product_product(osv.osv):
                 else:
                     product_id = False
             else:
-                product_id = self._product_by_properties(cr, uid, properties, context=context)
+                product_id = self._product_by_properties(cr, uid, dict(properties), context=context)
             product_ids.append(product_id)
 
         return product_ids
