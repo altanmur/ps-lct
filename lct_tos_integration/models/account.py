@@ -677,7 +677,6 @@ class account_invoice(osv.osv):
             return False
         return imd_model.get_record_id(cr, uid, 'lct_tos_integration', xml_id)
 
-
     def _get_yac_service(self, cr, uid, service):
         imd_model = self.pool.get('ir.model.data')
         if service == 'PTI':
@@ -722,9 +721,12 @@ class account_invoice(osv.osv):
                 yard_activity = self._get_elmnt_text(line, 'yard_activity')
                 category_id = self._get_yac_category(cr, uid, yard_activity)
 
-                service_ids = []
-                for service_code_id in line.findall('service_code_id'):
-                    service_ids.append(self._get_yac_service(cr, uid, service_code_id.text))
+                if yard_activity == 'SERVI':
+                    service_ids = []
+                    for service_code_id in line.findall('service_code_id'):
+                        service_ids.append(self._get_yac_service(cr, uid, service_code_id.text))
+                else:
+                    service_ids = [False]
 
                 size = self._get_elmnt_text(line, 'container_size')
                 size_id = self._get_size(cr, uid, size)
@@ -745,6 +747,7 @@ class account_invoice(osv.osv):
                     'status_id': status_id,
                     'type_id': type_id,
                 }
+                product_ids = product_model.get_products_by_properties(cr, uid, properties, context=context)
 
                 cont_nr_vals = {
                     'name': self._get_elmnt_text(line, 'container_number'),
@@ -754,7 +757,6 @@ class account_invoice(osv.osv):
                     'dep_timestamp': self._get_elmnt_text(line, 'departure_timestamp'),
                     'plugged_time': self._get_elmnt_text(line, 'plugged_time'),
                 }
-                product_ids = product_model.get_products_by_properties(cr, uid, properties, context=context)
                 for product_id in product_ids:
                     if product_id not in invoice_lines[partner_id]:
                         invoice_lines[partner_id][product_id] = []
