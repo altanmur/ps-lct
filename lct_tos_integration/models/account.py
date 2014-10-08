@@ -309,7 +309,7 @@ class account_invoice(osv.osv):
     def _get_app_import_plugged_time(self, line):
         active_reefer = self._get_elmnt_text(line, 'active_reefer')
         if active_reefer == 'YES':
-            plugged_time = self._get_elmnt_text(line, 'plugged_time')
+            plugged_time = line.find('plugged_time')
             if plugged_time is not None:
                 plugged_time = plugged_time.text
                 if plugged_time and plugged_time.isdigit():
