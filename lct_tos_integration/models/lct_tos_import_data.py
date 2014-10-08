@@ -55,22 +55,14 @@ class lct_tos_import_data(osv.Model):
         if any((imp_data.status != 'pending') for imp_data in  imp_datas):
             raise osv.except_osv(('Error'),('You can only process pending data'))
 
-        yac_data_ids = []
+        vbl_data_ids = []
         inv_model = self.pool.get('account.invoice')
         vsl_model = self.pool.get('lct.tos.vessel')
         for imp_data in imp_datas:
             cr.execute('SAVEPOINT SP')
             filename = imp_data.name
             if re.match('^VBL_\d{6}_\d{6}\.xml$', filename):
-                try:
-                    inv_model.xml_to_vbl(cr, uid, imp_data.id, context=context)
-                except:
-                    cr.execute('ROLLBACK TO SP')
-                    self.write(cr, uid, imp_data.id, {
-                        'status': 'fail',
-                        'error': traceback.format_exc(),
-                        }, context=context)
-                    continue
+                vbl_data_ids.append(imp_data.id)
             elif re.match('^APP_\d{6}_\d{6}\.xml$', filename):
                 try:
                     inv_model.xml_to_app(cr, uid, imp_data.id, context=context)
@@ -102,7 +94,17 @@ class lct_tos_import_data(osv.Model):
                         }, context=context)
                     continue
             elif re.match('^YAC_\d{6}_\d{6}\.xml$', filename):
-                yac_data_ids.append(imp_data.id)
+                try:
+                    inv_model.xml_to_yac(cr, uid, yac_data_id, context=context)
+                except:
+                    cr.execute('ROLLBACK TO SP')
+                    self.write(cr, uid, yac_data_id, {
+                        'status': 'fail',
+                        'error': traceback.format_exc(),
+                        }, context=context)
+                    continue
+                self.write(cr, uid, yac_data_id, {'status': 'success'}, context=context)
+                cr.execute('RELEASE SAVEPOINT SP')
             else:
                 cr.execute('ROLLBACK TO SP')
                 error = 'Filename format not known.\nKnown formats are :\n    APP_YYMMDD_SEQ000.xml\n    VBL_YYMMDD_SEQ000.xml'
@@ -114,24 +116,22 @@ class lct_tos_import_data(osv.Model):
             self.write(cr, uid, imp_data.id, {'status': 'success'}, context=context)
             cr.execute('RELEASE SAVEPOINT SP')
 
-        if yac_data_ids and self.search(cr, uid, [('status','!=','success'),('id','not in',yac_data_ids)], context=context):
-            error = 'Yard activities cannot be processed while other imported files are still pending or have failed to process'
-            self.write(cr, uid, yac_data_ids, {
-                    'status': 'fail',
-                    'error': error,
-                }, context=context)
 
+        if vbl_data_ids and self.search(cr, uid, [('status', '!=', 'success'), ('id', 'not in', vbl_data_ids)], context=context):
+            self.write(cr, uid, vbl_data_ids, {
+                'status': 'fail',
+                'error': "You can't import vessel billings while other imported files are in status 'fail' or 'pending'",
+                }, context=context)
         else:
-            for yac_data_id in yac_data_ids:
+            for vbl_data_id in vbl_data_ids:
                 cr.execute('SAVEPOINT SP')
                 try:
-                    inv_model.xml_to_yac(cr, uid, yac_data_id, context=context)
+                    inv_model.xml_to_vbl(cr, uid, vbl_data_id, context=context)
                 except:
                     cr.execute('ROLLBACK TO SP')
-                    self.write(cr, uid, yac_data_id, {
+                    self.write(cr, uid, vbl_data_id, {
                         'status': 'fail',
                         'error': traceback.format_exc(),
                         }, context=context)
-                    continue
-                self.write(cr, uid, yac_data_id, {'status': 'success'}, context=context)
+                self.write(cr, uid, vbl_data_id, {'status': 'success'}, context=context)
                 cr.execute('RELEASE SAVEPOINT SP')
