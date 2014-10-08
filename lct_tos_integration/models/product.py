@@ -53,6 +53,7 @@ class product_product(osv.osv):
         return False
 
     def get_products_by_properties(self, cr, uid, properties, context=None):
+        properties = dict(properties)
         service_ids = properties.pop('service_ids', False)
         if not service_ids:
             service_ids = [False]
