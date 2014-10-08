@@ -43,7 +43,8 @@ class lct_container_number(osv.osv):
         'arr_timestamp': fields.datetime('Arrival Timestamp'),
         'plugged_time': fields.integer('Plugged Time'),
         'invoice_line_id': fields.many2one('account.invoice.line', string="Invoice line"),
-        'type2': fields.related('invoice_line_id', 'invoice_id', 'type2', type='char', string="Invoice Type", readonly=True),
+        'type2': fields.related('invoice_line_id', 'invoice_id', 'type2', type='char', string="Invoice Type", readonly=True, store=True),
+        'vbl_cont_nr_id': fields.many2one('account.invoice.line', string="Vessel Billing Container", help='Corresponding vessel billing line if correspondance has been established', store=True),
     }
 
 
@@ -502,7 +503,8 @@ class account_invoice(osv.osv):
             for line in lines.findall('line'):
                 partner_id = self._get_partner(cr, uid, line, 'container_operator_id', context=context)
 
-                cont_nr_vals['name'] = self._get_elmnt_text(line, 'container_number')
+                cont_nr_name = self._get_elmnt_text(line, 'container_number')
+                cont_nr_vals['name'] = cont_nr_name
                 pricelist_qty = 1
 
                 category = self._get_elmnt_text(line, 'transaction_category_id')
@@ -773,13 +775,24 @@ class account_invoice(osv.osv):
                 }
                 product_ids = product_model.get_products_by_properties(cr, uid, properties, context=context)
 
+                if yard_activity == 'EXPST':
+                    arr_timestamp = self._get_elmnt_text(line, 'arrival_timestamp')
+                    dep_timestamp = self._get_elmnt_text(line, 'departure_timestamp')
+                else:
+                    arr_timestamp = dep_timestamp = False
+
+                if yard_activity == 'REEFE':
+                    plugged_time = self._get_elmnt_text(line, 'plugged_time')
+                else:
+                    plugged_time = False
+
                 cont_nr_vals = {
                     'name': self._get_elmnt_text(line, 'container_number'),
                     'quantity': 1,
                     'pricelist_qty': 1,
-                    'arr_timestamp': self._get_elmnt_text(line, 'arrival_timestamp'),
-                    'dep_timestamp': self._get_elmnt_text(line, 'departure_timestamp'),
-                    'plugged_time': self._get_elmnt_text(line, 'plugged_time'),
+                    'arr_timestamp': arr_timestamp,
+                    'dep_timestamp': dep_timestamp,
+                    'plugged_time': plugged_time,
                 }
                 for product_id in product_ids:
                     if product_id not in invoice_lines[partner_id]:
