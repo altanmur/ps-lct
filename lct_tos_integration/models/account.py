@@ -405,7 +405,7 @@ class account_invoice(osv.osv):
 
     def _get_shc_product(self, cr, uid, line, context=None):
         shc = line.find('special_handling_code_id')
-        if shc is None:
+        if shc is None or not shc.text:
             return False
 
         service_id = self._get_shc_service(cr, uid, shc.text)
