@@ -719,6 +719,8 @@ class account_invoice(osv.osv):
                     invoice_lines[partner_id] = {}
 
                 yard_activity = self._get_elmnt_text(line, 'yard_activity')
+                if yard_activity in ['EXPST', 'REEFE']:
+                    continue
                 category_id = self._get_yac_category(cr, uid, yard_activity)
 
                 if yard_activity == 'SERVI':
