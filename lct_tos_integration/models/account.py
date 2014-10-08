@@ -484,9 +484,8 @@ class account_invoice(osv.osv):
             if not account:
                 raise osv.except_osv(('Error'), ('Could not find an income account on product %s ') % product.name)
             cont_nrs = cont_nr_model.browse(cr, uid, cont_nr_ids, context=context)
-            quantities = [cont_nr.quantity for cont_nr in cont_nrs]
             pricelist_qties = [cont_nr.pricelist_qty for cont_nr in cont_nrs]
-            quantity = sum(quantities)
+            quantity = sum(pricelist_qties)
             price = 0.
             for pricelist_qty in pricelist_qties:
                 price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
