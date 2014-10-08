@@ -467,7 +467,6 @@ class account_invoice(osv.osv):
             shc_product_id = self._get_shc_product(cr, uid, line, context=context)
             if shc_product_id:
                 quantities_by_products[shc_product_id] = 1
-            import ipdb; ipdb.set_trace()
 
             cont_nr_vals = {
                 'name': self._get_elmnt_text(line, 'container_number'),
