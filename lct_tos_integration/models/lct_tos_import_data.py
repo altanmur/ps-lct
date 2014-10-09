@@ -95,16 +95,14 @@ class lct_tos_import_data(osv.Model):
                     continue
             elif re.match('^YAC_\d{6}_\d{6}\.xml$', filename):
                 try:
-                    inv_model.xml_to_yac(cr, uid, yac_data_id, context=context)
+                    inv_model.xml_to_yac(cr, uid, imp_data.id, context=context)
                 except:
                     cr.execute('ROLLBACK TO SP')
-                    self.write(cr, uid, yac_data_id, {
+                    self.write(cr, uid, imp_data.id, {
                         'status': 'fail',
                         'error': traceback.format_exc(),
                         }, context=context)
                     continue
-                self.write(cr, uid, yac_data_id, {'status': 'success'}, context=context)
-                cr.execute('RELEASE SAVEPOINT SP')
             else:
                 cr.execute('ROLLBACK TO SP')
                 error = 'Filename format not known.\nKnown formats are :\n    APP_YYMMDD_SEQ000.xml\n    VBL_YYMMDD_SEQ000.xml'

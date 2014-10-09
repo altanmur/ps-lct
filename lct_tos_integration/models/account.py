@@ -39,12 +39,7 @@ class lct_container_number(osv.osv):
         'vessel_ID': fields.char('Vessel ID'),
         'berth_time': fields.datetime('Berthing time'),
         'dep_time': fields.datetime('Departure time'),
-        'dep_timestamp': fields.datetime('Departure Timestamp'),
-        'arr_timestamp': fields.datetime('Arrival Timestamp'),
-        'plugged_time': fields.integer('Plugged Time'),
         'invoice_line_id': fields.many2one('account.invoice.line', string="Invoice line"),
-        'type2': fields.related('invoice_line_id', 'invoice_id', 'type2', type='char', string="Invoice Type", readonly=True, store=True),
-        'vbl_cont_nr_id': fields.many2one('account.invoice.line', string="Vessel Billing Container", help='Corresponding vessel billing line if correspondance has been established', store=True),
     }
 
 
@@ -727,6 +722,7 @@ class account_invoice(osv.osv):
         product_model = self.pool.get('product.product')
         cont_nr_model = self.pool.get('lct.container.number')
         invoice_model = self.pool.get('account.invoice')
+        pending_yac_model = self.pool.get('lct.pending.yard.activity')
 
         imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
         content = re.sub('<\?xml.*\?>','',imp_data.content).replace(u"\ufeff","")
@@ -746,7 +742,9 @@ class account_invoice(osv.osv):
 
                 yard_activity = self._get_elmnt_text(line, 'yard_activity')
                 if yard_activity in ['EXPST', 'REEFE']:
+                    pending_yac_model.create_activity(cr, uid, line, context=context)
                     continue
+
                 category_id = self._get_yac_category(cr, uid, yard_activity)
 
                 if yard_activity == 'SERVI':
