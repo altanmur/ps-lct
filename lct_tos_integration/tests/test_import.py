@@ -134,7 +134,7 @@ class TestImport(TransactionCase):
                 'base': 1,
             })
         )
-        product_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'hatchcovermove')
+        product_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'hatchcovermoves')
         product_model.write(cr, uid, [product_id], {'list_price': 13.})
         tariff_rate_vals.append(
             (0,0,{
