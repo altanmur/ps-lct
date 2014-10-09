@@ -67,10 +67,10 @@ class lct_pending_yard_activity(osv.osv):
         yac_type = self._get_elmnt_text(line, 'yard_activity')
         if yac_type == 'EXPST':
             vals['type'] = 'expst'
-            vals['dep_timestamp'] = self._get_elmnt_text(line, 'departure_timestamp')
-            vals['arr_timestamp'] = self._get_elmnt_text(line, 'arrival_timestamp')
         elif yac_type == 'REEFE':
             vals['type'] = 'reefe'
-            vals['plugged_time'] = self._get_elmnt_digit(line, 'plugged_time')
+        vals['dep_timestamp'] = self._get_elmnt_text(line, 'departure_timestamp')
+        vals['arr_timestamp'] = self._get_elmnt_text(line, 'arrival_timestamp')
+        vals['plugged_time'] = self._get_elmnt_digit(line, 'plugged_time')
 
         self.create(cr, uid, vals, context=context)

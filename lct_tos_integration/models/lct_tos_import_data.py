@@ -114,7 +114,6 @@ class lct_tos_import_data(osv.Model):
             self.write(cr, uid, imp_data.id, {'status': 'success'}, context=context)
             cr.execute('RELEASE SAVEPOINT SP')
 
-
         if vbl_data_ids and self.search(cr, uid, [('status', '!=', 'success'), ('id', 'not in', vbl_data_ids)], context=context):
             self.write(cr, uid, vbl_data_ids, {
                 'status': 'fail',
@@ -126,6 +125,12 @@ class lct_tos_import_data(osv.Model):
                 try:
                     inv_model.xml_to_vbl(cr, uid, vbl_data_id, context=context)
                 except:
+
+
+                    raise
+
+
+
                     cr.execute('ROLLBACK TO SP')
                     self.write(cr, uid, vbl_data_id, {
                         'status': 'fail',

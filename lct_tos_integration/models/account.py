@@ -177,7 +177,7 @@ class account_invoice(osv.osv):
 
     def _get_partner(self, cr, uid, elmnt, tag, context=None):
         partner_id = self._get_elmnt_text(elmnt, tag)
-        if not partner_id.isdigit():
+        if not partner_id or not partner_id.isdigit():
             raise osv.except_osv(('Error'), (tag + ' should be a number'))
         partner_id = int(partner_id)
         if not self.pool.get('res.partner').search(cr, uid, [('id','=',partner_id)]):
@@ -449,6 +449,7 @@ class account_invoice(osv.osv):
         partner_model = self.pool.get('res.partner')
         cont_nr_model = self.pool.get('lct.container.number')
         imd_model = self.pool.get('ir.model.data')
+        pending_yac_model = self.pool.get('lct.pending.yard.activity')
         module = 'lct_tos_integration'
 
         imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
@@ -460,10 +461,11 @@ class account_invoice(osv.osv):
             partner_id = self._get_partner(cr, uid, vbilling, 'vessel_operator_id')
             partner = partner_model.browse(cr, uid, partner_id, context=context)
 
+            vessel_ID = self._get_elmnt_text(vbilling, 'vessel_id')
             cont_nr_vals ={
                 'call_sign': self._get_elmnt_text(vbilling, 'call_sign'),
                 'lloyds_nr': self._get_elmnt_text(vbilling, 'lloyds_number'),
-                'vessel_ID': self._get_elmnt_text(vbilling, 'vessel_id'),
+                'vessel_ID': vessel_ID,
                 'berth_time': self._get_elmnt_text(vbilling, 'berthing_time'),
                 'dep_time': self._get_elmnt_text(vbilling, 'departure_time'),
             }
@@ -533,6 +535,45 @@ class account_invoice(osv.osv):
                         invoice_lines[partner_id][product_id] = []
                     cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=1, quantity=1), context=context)
                     invoice_lines[partner_id][product_id].append(cont_nr_id)
+                if category in ['E', 'T']:
+                    domain = [('vessel_ID', '=', vessel_ID), ('name', '=', cont_nr_name), ('status', '=', 'pending')]
+                    pending_yac_ids = pending_yac_model.search(cr, uid, domain, context=context)
+
+                    reefe_properties = dict(properties)
+                    expst_properties = dict(properties)
+
+                    reefe_properties['service_ids'] = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_reeferelectricity')]
+                    reefe_properties['status_id'] = False
+                    reefe_properties['type_id'] = False
+                    expst_properties['service_ids'] = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_storage')]
+
+                    reefe_product_id = product_model.get_products_by_properties(cr, uid, reefe_properties, context=context)[0]
+                    expst_product_id = product_model.get_products_by_properties(cr, uid, expst_properties, context=context)[0]
+
+                    reefe_qties = []
+                    expst_qties = []
+                    for pending_yac in pending_yac_model.browse(cr, uid, pending_yac_ids, context=context):
+                        if pending_yac.type == 'reefe':
+                            reefe_qties.append(pending_yac.plugged_time)
+                        elif pending_yac.type == 'expst':
+                            dep_date = datetime.strptime(pending_yac.dep_timestamp, "%Y-%m-%d %H:%M:%S").date()
+                            arr_date = datetime.strptime(pending_yac.arr_timestamp, "%Y-%m-%d %H:%M:%S").date()
+                            expst_qties.append((dep_date - arr_date).days + 1)
+                    if reefe_qties:
+                        if reefe_product_id not in invoice_lines[partner_id]:
+                            invoice_lines[partner_id][reefe_product_id] = []
+                        for quantity in reefe_qties:
+                            cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=quantity, quantity=quantity), context=context)
+                            invoice_lines[partner_id][reefe_product_id].append(cont_nr_id)
+                    if expst_qties:
+                        if expst_product_id not in invoice_lines[partner_id]:
+                            invoice_lines[partner_id][expst_product_id] = []
+                        for quantity in expst_qties:
+                            cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=quantity, quantity=quantity), context=context)
+                            invoice_lines[partner_id][expst_product_id].append(cont_nr_id)
+
+                    pending_yac_model.write(cr, uid, pending_yac_ids, {'status': 'processed'}, context=context)
+
         invoice_ids = self._create_invoices(cr, uid, invoice_lines, context=context)
         invoice_model.write(cr, uid, invoice_ids, {'type2': 'vessel'})
 

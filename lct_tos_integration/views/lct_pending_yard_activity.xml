@@ -6,6 +6,7 @@
             <field name="arch" type="xml">
                 <tree string="Pending Yard Activities" version="7.0" create="0" edit="0" colors="black:status=='processed';blue:status=='pending'">
                     <field name="name"/>
+                    <field name="vessel_ID"/>
                     <field name="type"/>
                     <field name="plugged_time"/>
                     <field name="dep_timestamp"/>
