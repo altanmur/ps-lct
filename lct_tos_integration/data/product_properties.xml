@@ -122,8 +122,8 @@
     <record id="lct_product_service_bundle" model="lct.product.service">
       <field name="name">Bundle</field>
     </record>
-    <record id="lct_product_service_hatchcovermove" model="lct.product.service">
-      <field name="name">Hatch Cover Move</field>
+    <record id="lct_product_service_hatchcovermoves" model="lct.product.service">
+      <field name="name">Hatch Cover Moves</field>
     </record>
     <record id="lct_product_service_gearboxcount" model="lct.product.service">
       <field name="name">Gearbox Count</field>
