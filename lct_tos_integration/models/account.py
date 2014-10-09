@@ -777,15 +777,14 @@ class account_invoice(osv.osv):
                 continue
 
             for line in lines.findall('line'):
-                partner_id = self._get_partner(cr, uid, line, 'container_operator_id', context=context)
-                if partner_id not in invoice_lines:
-                    invoice_lines[partner_id] = {}
-
                 yard_activity = self._get_elmnt_text(line, 'yard_activity')
                 if yard_activity in ['EXPST', 'REEFE']:
                     pending_yac_model.create_activity(cr, uid, line, context=context)
                     continue
 
+                partner_id = self._get_partner(cr, uid, line, 'container_operator_id', context=context)
+                if partner_id not in invoice_lines:
+                    invoice_lines[partner_id] = {}
                 category_id = self._get_yac_category(cr, uid, yard_activity)
 
                 if yard_activity == 'SERVI':
