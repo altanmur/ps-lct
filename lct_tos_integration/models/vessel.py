@@ -42,14 +42,19 @@ class lct_tos_vessel(osv.Model):
         vessels = ET.fromstring(content)
         vsl_ids = []
         for vessel in vessels.findall('vessel'):
+            vessel_id = vessel.find('vessel_id').text
+            vessel_eta = vessel.find('vessel_eta').text
+            if self.search(cr, uid, [('vessel_id','=',vessel_id), ('vessel_eta','=',vessel_eta)], context=context):
+                raise osv.except_osv(('Error'), ('Another vessel with the same ID and ETA already exists.'))
+
             new_vessel = {
-                'vessel_id': vessel.find('vessel_id').text,
+                'vessel_id': vessel_id,
                 'name': vessel.find('name').text,
                 'call_sign': vessel.find('call_sign').text,
                 'lloyds_number': vessel.find('lloyds_number').text,
                 'vessel_in_voyage_number': vessel.find('vessel_in_voyage_number').text,
                 'vessel_out_voyage_number': vessel.find('vessel_out_voyage_number').text,
-                'vessel_eta': vessel.find('vessel_eta').text,
+                'vessel_eta': vessel_eta,
             }
             vsl_ids.append(self.create(cr, uid, new_vessel, context=context))
         return vsl_ids

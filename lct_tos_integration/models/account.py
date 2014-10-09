@@ -426,7 +426,7 @@ class account_invoice(osv.osv):
             service_ids = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_load')]
         elif category == 'T':
             category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_category_transshipment')
-            service_ids = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_discharge'), imd_model.get_record_id(cr, uid, 'lct_product_service_reload')]
+            service_ids = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_discharge'), imd_model.get_record_id(cr, uid, module, 'lct_product_service_reload')]
         elif category == 'R':
             category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_category_restowageshifting')
             service_ids = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_restow')]
@@ -464,7 +464,6 @@ class account_invoice(osv.osv):
         for vbilling in vbillings.findall('vbilling'):
             partner_id = self._get_partner(cr, uid, vbilling, 'vessel_operator_id')
             partner = partner_model.browse(cr, uid, partner_id, context=context)
-            pricelist_id = partner.property_product_pricelist
 
             cont_nr_vals ={
                 'call_sign': self._get_elmnt_text(vbilling, 'call_sign'),
@@ -476,7 +475,10 @@ class account_invoice(osv.osv):
             n_hcm = self._xml_get_digit(vbilling, 'hatchcovers_moves')
             if n_hcm > 0:
                 service_id = imd_model.get_record_id(cr, uid, module, 'lct_product_service_hatchcovermove')
-                product_id = product_model.search(cr, uid, [('service_id','=',service_id)], context=context)[0]
+                product_id = product_model.search(cr, uid, [('service_id', '=', service_id)], context=context)
+                if not product_id:
+                    raise osv.except_osv(('Error'), ('The product "Hatch Cover Moves" cannot be found.'))
+                product_id = product_id[0]
                 vals = dict(cont_nr_vals, pricelist_qty=n_hcm, quantity=n_hcm)
                 cont_nr_id = cont_nr_model.create(cr, uid, vals, context=context)
                 invoice_lines[partner_id] = {product_id: [cont_nr_id]}
@@ -484,7 +486,10 @@ class account_invoice(osv.osv):
             n_gbc = self._xml_get_digit(vbilling, 'gearbox_count')
             if n_gbc > 0:
                 service_id = imd_model.get_record_id(cr, uid, module, 'lct_product_service_gearboxcount')
-                product_id = product_model.search(cr, uid, [('service_id','=',service_id)], context=context)[0]
+                product_id = product_model.search(cr, uid, [('service_id', '=', service_id)], context=context)
+                if not product_id:
+                    raise osv.except_osv(('Error'), ('The product "Gearbox Count" cannot be found.'))
+                product_id = product_id[0]
                 vals = dict(cont_nr_vals, pricelist_qty=n_gbc, quantity=n_gbc)
                 cont_nr_id = cont_nr_model.create(cr, uid, vals, context=context)
                 if partner_id not in invoice_lines:
@@ -497,13 +502,13 @@ class account_invoice(osv.osv):
                 continue
             for line in lines.findall('line'):
                 partner_id = self._get_partner(cr, uid, line, 'container_operator_id', context=context)
-                if partner_id not in invoice_lines:
-                    invoice_lines[partner_id] = {}
 
                 cont_nr_vals['name'] = self._get_elmnt_text(line, 'container_number')
                 pricelist_qty = 1
 
                 category = self._get_elmnt_text(line, 'transaction_category_id')
+                if category == 'R':
+                    partner_id = self._get_partner(cr, uid, vbilling, 'vessel_operator_id', context=context)
                 category_id, service_ids = self._get_vbl_category_service(cr, uid, category)
 
                 size = self._get_elmnt_text(line, 'container_size')
@@ -512,9 +517,11 @@ class account_invoice(osv.osv):
                 status = self._get_elmnt_text(line, 'container_status')
                 status_id = self._get_status(cr, uid, status)
 
-                p_type = self._get_elmnt_text(line, 'container_type_id')
-                type_id = self._get_vbl_type(cr, uid, p_type)
-
+                if status != 'E':
+                    p_type = self._get_elmnt_text(line, 'container_type_id')
+                    type_id = self._get_vbl_type(cr, uid, p_type)
+                else:
+                    type_id = False
                 properties = {
                     'category_id': category_id,
                     'service_ids': service_ids,
@@ -599,6 +606,8 @@ class account_invoice(osv.osv):
                 line_id = line.id
             invoice_line_model.write(cr, uid, [line_id], {'invoice_id': vbl1.id}, context=context)
         self.unlink(cr, uid, [vbl2.id], context=context)
+        date_invoice = datetime.today().strftime('%Y-%m-%d'),
+        self.write(cr, uid, [vbl1.id], {'date_invoice': date_invoice}, context=context)
         return vbl1.id
 
     def _merge_vbls(self, cr, uid, ids, context=None):
@@ -614,21 +623,36 @@ class account_invoice(osv.osv):
             id2 = self._merge_vbls(cr, uid, ids[n_ids/2:], context=context)
             return self._merge_vbl_pair(cr, uid, id1, id2, context=context)
 
-    def _group_vbl_by_partner(self, cr, uid, ids, context=None):
-        vbl_by_partner = {}
+    def _group_vbl_by_partner(self, cr, uid, ids, auto=False, context=None):
+        if not ids:
+            return []
+        vbl_by_currency_by_partner = {}
         for vbl in self.browse(cr, uid, ids, context=context):
-            if vbl.partner_id.id in vbl_by_partner:
-                vbl_by_partner[vbl.partner_id.id].append(vbl.id)
+            partner_id = vbl.partner_id.id
+            currency_id = vbl.currency_id.id
+            if partner_id in vbl_by_currency_by_partner:
+                if currency_id in vbl_by_currency_by_partner[partner_id]:
+                    vbl_by_currency_by_partner[partner_id][currency_id].append(vbl.id)
+                else:
+                    vbl_by_currency_by_partner[partner_id][currency_id] = [vbl.id]
             else:
-                vbl_by_partner[vbl.partner_id.id] = [vbl.id]
-        for vbl_ids in vbl_by_partner.values():
-            self._merge_vbls(cr, uid, vbl_ids, context=context)
+                vbl_by_currency_by_partner[partner_id] = {currency_id : [vbl.id]}
+        if not auto:
+            if len(vbl_by_currency_by_partner) > 1:
+                raise osv.except_osv(('Error'), ("You can't group invoices with different customers"))
+            elif len(vbl_by_currency_by_partner.values()[0]) > 1:
+                raise osv.except_osv(('Error'), ("You can't group invoices with different currencies"))
+        for vbl_by_currency in vbl_by_currency_by_partner.values():
+            for vbl_ids in vbl_by_currency.values():
+                self._merge_vbls(cr, uid, vbl_ids, context=context)
 
 
     # GROUP INVOICES
 
     def group_invoices(self, cr, uid, ids, context=None):
         vbl_ids = self.search(cr, uid, [('id','in',ids), ('type2','=','vessel')], context=context)
+        if len(ids) > len(vbl_ids):
+            raise osv.except_osv(('Error'), "You can only group invoices of type Vessel Billing")
         self._group_vbl_by_partner(cr, uid, vbl_ids, context=context)
 
 
@@ -648,6 +672,9 @@ class account_invoice(osv.osv):
                 dockage_vals['off_window'] = True
             else:
                 dockage_vals['off_window'] = False
+            if 'voyage_number_in' in dockage_vals and dockage_vals['voyage_number_in'] and 'dep_time' in dockage_vals and dockage_vals['dep_time'] \
+                and self.search(cr, uid, [('voyage_number_in', '=', dockage_vals['voyage_number_in']), ('dep_time', '=', dockage_vals['dep_time'])], context=context):
+                raise osv.except_osv(('Error'), ('Another Vessel Dockage with the same voyage number in and same departure time already exists.'))
             vdockage_ids.append(invoice_model.create(cr, uid, dockage_vals, context=context))
         return vdockage_ids
 
@@ -773,6 +800,7 @@ class account_invoice_group(osv.osv_memory):
     _name = 'account.invoice.group'
 
     def invoice_group(self, cr, uid, ids, context=None):
+        context = context or {}
         invoice_model = self.pool.get('account.invoice')
         invoice_ids = context.get('active_ids', [])
         if invoice_model.search(cr, uid, [('id','in',invoice_ids), ('state','not in',['draft','proforma','proforma2'])], context=context):
