@@ -53,8 +53,8 @@ class lct_pending_yard_activity(osv.osv):
 
     def _get_elmnt_digit(self, line, tag):
         text = self._get_elmnt_text(line, tag)
-        if not text.isdigit():
-            raise osv.except_osv(('Error'), ('Impossible to convert text in tag %s: %s' % (tag, text)))
+        if not text or not text.isdigit():
+            return False
         return int(text)
 
     def create_activity(self, cr, uid, line, context=None):
