@@ -126,9 +126,11 @@ class lct_tos_import_data(osv.Model):
                     inv_model.xml_to_vbl(cr, uid, vbl_data_id, context=context)
                 except:
                     cr.execute('ROLLBACK TO SP')
+                    error = traceback.format_exc()
                     self.write(cr, uid, vbl_data_id, {
                         'status': 'fail',
-                        'error': traceback.format_exc(),
+                        'error': error,
                         }, context=context)
-                self.write(cr, uid, vbl_data_id, {'status': 'success'}, context=context)
-                cr.execute('RELEASE SAVEPOINT SP')
+                else:
+                    self.write(cr, uid, vbl_data_id, {'status': 'success'}, context=context)
+                    cr.execute('RELEASE SAVEPOINT SP')
