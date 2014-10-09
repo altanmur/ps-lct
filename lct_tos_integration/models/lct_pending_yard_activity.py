@@ -26,11 +26,11 @@ class lct_pending_yard_activity(osv.osv):
     _name = 'lct.pending.yard.activity'
 
     _columns = {
-        'name': fields.char('Container Number', required=True),
+        'name': fields.char('Container number', required=True),
         'vessel_ID': fields.char('Vessel ID', required=True),
         'plugged_time': fields.integer('Plugged time'),
         'dep_timestamp': fields.datetime('Departure timestamp'),
-        'arr_timestamp': fields.datetime('Arrival Timestamp'),
+        'arr_timestamp': fields.datetime('Arrival timestamp'),
         'type': fields.selection([
                 ('expst', 'Storage'),
                 ('reefe', 'Reefer Electricity'),
