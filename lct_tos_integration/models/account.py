@@ -816,24 +816,10 @@ class account_invoice(osv.osv):
                 }
                 product_ids = product_model.get_products_by_properties(cr, uid, properties, context=context)
 
-                if yard_activity == 'EXPST':
-                    arr_timestamp = self._get_elmnt_text(line, 'arrival_timestamp')
-                    dep_timestamp = self._get_elmnt_text(line, 'departure_timestamp')
-                else:
-                    arr_timestamp = dep_timestamp = False
-
-                if yard_activity == 'REEFE':
-                    plugged_time = self._get_elmnt_text(line, 'plugged_time')
-                else:
-                    plugged_time = False
-
                 cont_nr_vals = {
                     'name': self._get_elmnt_text(line, 'container_number'),
                     'quantity': 1,
                     'pricelist_qty': 1,
-                    'arr_timestamp': arr_timestamp,
-                    'dep_timestamp': dep_timestamp,
-                    'plugged_time': plugged_time,
                 }
                 for product_id in product_ids:
                     if product_id not in invoice_lines[partner_id]:
