@@ -687,10 +687,13 @@ class account_invoice(osv.osv):
     def group_invoices(self, cr, uid, ids, context=None):
         vbl_ids = self.search(cr, uid, [('id','in',ids), ('type2','=','vessel')], context=context)
         yac_ids = self.search(cr, uid, [('id','in',ids), ('type2','=','yactivity')], context=context)
-        if len(ids) > len(yac_ids + vbl_ids):
-            raise osv.except_osv(('Error'), "You can only group invoices of type Vessel Billing")
-        self._group_invoices_by_partner(cr, uid, vbl_ids, context=context)
-        self._group_invoices_by_partner(cr, uid, yac_ids, context=context)
+        if len(ids) == len(yac_ids):
+            self._group_invoices_by_partner(cr, uid, yac_ids, context=context)
+        elif len(ids) == len(vbl_ids):
+            self._group_invoices_by_partner(cr, uid, vbl_ids, context=context)
+        else:
+            raise osv.except_osv(('Error'), "You can only group invoices of the same type")
+
 
 
     # VCL
