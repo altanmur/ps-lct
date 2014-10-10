@@ -403,24 +403,23 @@ class account_invoice(osv.osv):
 
         return self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', xml_id)
 
-    def _get_shc_product(self, cr, uid, line, context=None):
-        shc = line.find('special_handling_code_id')
-        if shc is None or not shc.text:
-            return False
-
-        service_id = self._get_shc_service(cr, uid, shc.text)
-        if not service_id:
-            return False
-
+    def _get_shc_products(self, cr, uid, line, context=None):
         category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_specialhandlingcode')
         size_id = self._get_app_size(cr, uid, line)
 
         properties = {
             'category_id': category_id,
-            'service_ids': [service_id],
             'size_id': size_id,
         }
-        return self.pool.get('product.product').get_products_by_properties(cr, uid, properties, context=context)[0]
+        service_ids = []
+        for shc in line.findall('special_handling_code_id'):
+            if shc is None or not shc.text:
+                continue
+            service_ids.append(self._get_shc_service(cr, uid, shc.text))
+
+        properties['service_ids'] = service_ids
+        return self.pool.get('product.product').get_products_by_properties(cr, uid, properties, context=context)
+
 
     def _create_app(self, cr, uid, appointment, context=None):
         imd_model = self.pool.get('ir.model.data')
@@ -464,9 +463,8 @@ class account_invoice(osv.osv):
                 quantities_by_products = self._get_app_import_line_quantities_by_products(cr, uid, line, context=context)
             elif category == 'E':
                 quantities_by_products = self._get_app_export_line_quantities_by_products(cr, uid, line, context=context)
-            shc_product_id = self._get_shc_product(cr, uid, line, context=context)
-            if shc_product_id:
-                quantities_by_products[shc_product_id] = 1
+
+            shc_product_ids = self._get_shc_products(cr, uid, line, context=context)
 
             cont_nr_vals = {
                 'name': self._get_elmnt_text(line, 'container_number'),
@@ -477,6 +475,12 @@ class account_invoice(osv.osv):
                     invoice_lines[product_id] = []
                 cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=quantity, quantity=1), context=context)
                 invoice_lines[product_id].append(cont_nr_id)
+
+            for shc_product_id in shc_product_ids:
+                if shc_product_id not in invoice_lines:
+                    invoice_lines[shc_product_id] = []
+                cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=1, quantity=1), context=context)
+                invoice_lines[shc_product_id].append(cont_nr_id)
 
         for product_id, cont_nr_ids in  invoice_lines.iteritems():
             product = product_model.browse(cr, uid, product_id, context=context)
