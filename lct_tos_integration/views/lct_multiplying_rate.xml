@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record id="view_multiplying_rate_tree" model="ir.ui.view">
+            <field name="name">view.multiplying.rate.tree</field>
+            <field name="model">lct.multiplying.rate</field>
+            <field name="arch" type="xml">
+                <tree string="Multiplying Rate" version="7.0" colors="black:active==True;red:active=='False'" editable="top">
+                    <field name="name"/>
+                    <field name="multiplying_rate"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_multiplying_rate_search" model="ir.ui.view">
+            <field name="name">view.multiplying.rate.search</field>
+            <field name="model">lct.multiplying.rate</field>
+            <field name="arch" type="xml">
+                <search string="Search Multiplying Rate">
+                    <filter name="inactive_multi_rate" string="Inactive" domain="[('active', '=', 0)]"/>
+                    <filter name="all_multi_rate" string="Active &amp; Inactive" domain="['|', ('active', '=', 0), ('active', '=', 1)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_lct_multiplying_rate" model="ir.actions.act_window">
+            <field name="name">Tariffs</field>
+            <field name="res_model">lct.multiplying.rate</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="lct_multiplying_rate_menu" action="action_lct_multiplying_rate" name="Tariffs" parent="base.menu_config" sequence="201"/>
+    </data>
+</openerp>

@@ -45,6 +45,7 @@
         'views/pricelist.xml',
         'views/res_partner.xml',
         'views/tos_menu.xml',
+        'views/lct_multiplying_rate.xml'
         ],
     'images': [],
     'demo': [],
