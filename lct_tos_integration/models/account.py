@@ -250,7 +250,7 @@ class account_invoice(osv.osv):
 
     # APP
 
-    def _get_app_type_service(self, cr, uid, line):
+    def _get_app_type_service_by_type(self, cr, uid, line):
         p_type = self._get_elmnt_text(line, 'container_type')
         if p_type == 'GP':
             type_xml_id = 'lct_product_type_gp'
@@ -258,10 +258,28 @@ class account_invoice(osv.osv):
         elif p_type == 'RE':
             type_xml_id = 'lct_product_type_reeferdg'
             service_xml_id = 'lct_product_service_stevedoringcharges'
-        elif p_type == 'NO':
+        else:
+            return (False, False)
+        # elif p_type == 'NO':
+        #     type_xml_id = 'lct_product_type_gatereceive'
+        #     service_xml_id = 'lct_product_service_shorehandling'
+        # elif p_type == 'YES':
+        #     type_xml_id = 'lct_product_type_cfs'
+        #     service_xml_id = 'lct_product_service_shorehandling'
+        # else:
+        #     return (False, False)
+
+        imd_model = self.pool.get('ir.model.data')
+        type_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', type_xml_id)
+        service_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', service_xml_id)
+        return (type_id, service_id)
+
+    def _get_app_type_service_by_cfs_activity(self, cr, uid, line):
+        cfs_activity = self._get_elmnt_text(line, 'cfs_activity')
+        if cfs_activity == 'NO':
             type_xml_id = 'lct_product_type_gatereceive'
             service_xml_id = 'lct_product_service_shorehandling'
-        elif p_type == 'YES':
+        elif cfs_activity == 'YES':
             type_xml_id = 'lct_product_type_cfs'
             service_xml_id = 'lct_product_service_shorehandling'
         else:
@@ -271,6 +289,7 @@ class account_invoice(osv.osv):
         type_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', type_xml_id)
         service_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', service_xml_id)
         return (type_id, service_id)
+
 
     def _get_app_size(self, cr, uid, line):
         size = self._get_elmnt_text(line, 'container_size')
@@ -320,38 +339,41 @@ class account_invoice(osv.osv):
         imd_model = self.pool.get('ir.model.data')
         module = 'lct_tos_integration'
 
+        type_quantities_by_services = {}
+
         category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_category_import')
-        quantities_by_services = {}
+        size_id = self._get_app_size(cr, uid, line)
+        sub_category_id = self._get_app_sub_category(cr, uid, line)
+
+        type_id, service_id = self._get_app_type_service_by_type(cr, uid, line)
+        type_quantities_by_services[service_id] = (type_id, 1)
 
         storage = self._get_app_import_storage(line)
         if storage > 0:
             service_id = imd_model.get_record_id(cr, uid, module, 'lct_product_service_storage')
-            quantities_by_services[service_id] = storage
+            type_quantities_by_services[service_id] = (type_id, storage)
 
         plugged_time = self._get_app_import_plugged_time(line)
         if plugged_time > 0:
             service_id = imd_model.get_record_id(cr, uid, module, 'lct_product_service_reeferelectricity')
-            quantities_by_services[service_id] = plugged_time
+            type_quantities_by_services[service_id] = (type_id, plugged_time)
 
-        type_id, service_id = self._get_app_type_service(cr, uid, line)
-        quantities_by_services[service_id] = 1
-
-        size_id = self._get_app_size(cr, uid, line)
-        sub_category_id = self._get_app_sub_category(cr, uid, line)
+        type_id, service_id = self._get_app_type_service_by_cfs_activity(cr, uid, line)
+        type_quantities_by_services[service_id] = (type_id, 1)
 
         properties = {
             'category_id': category_id,
-            'type_id': type_id,
             'size_id': size_id,
             'status_id': False,
             'sub_category_id': sub_category_id,
         }
 
         quantities_by_products = {}
-        for service_id, quantity in quantities_by_services.iteritems():
+        for service_id, type_quantity in type_quantities_by_services.iteritems():
             properties['service_ids'] = [service_id]
+            properties['type_id'] = type_quantity[0]
             product_id = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, context=context)[0]
-            quantities_by_products[product_id] = quantity
+            quantities_by_products[product_id] = type_quantity[1]
 
         return quantities_by_products
 
