@@ -21,6 +21,8 @@
 
 from openerp.osv import fields, osv
 
+from datetime import datetime
+
 
 class lct_pending_yard_activity(osv.osv):
     _name = 'lct.pending.yard.activity'
@@ -45,10 +47,13 @@ class lct_pending_yard_activity(osv.osv):
         'status': 'pending',
     }
 
-    def _get_elmnt_text(self, line, tag):
+    def _get_elmnt_text(self, line, tag, raise_on_failure=False):
         elmnt = line.find(tag)
         if elmnt is None:
-            raise osv.except_osv(('Error'), ('Could not find tag %s on a yard activity line' % tag))
+            if raise_on_failure:
+                raise osv.except_osv(('Error'), ('Could not find tag %s on a yard activity line' % tag))
+            else:
+                return False
         return elmnt.text
 
     def _get_elmnt_digit(self, line, tag):
@@ -64,13 +69,19 @@ class lct_pending_yard_activity(osv.osv):
             'vessel_ID': self._get_elmnt_text(line, 'vessel_id'),
         }
 
-        yac_type = self._get_elmnt_text(line, 'yard_activity')
+        yac_type = self._get_elmnt_text(line, 'yard_activity', raise_on_failure=True)
         if yac_type == 'EXPST':
             vals['type'] = 'expst'
         elif yac_type == 'REEFE':
             vals['type'] = 'reefe'
-        vals['dep_timestamp'] = self._get_elmnt_text(line, 'departure_timestamp')
-        vals['arr_timestamp'] = self._get_elmnt_text(line, 'arrival_timestamp')
+        dep_timestamp = self._get_elmnt_text(line, 'departure_timestamp')
+        arr_timestamp = self._get_elmnt_text(line, 'arrival_timestamp')
+        dep_time = datetime.strptime(dep_timestamp, "%Y-%m-%d %H:%M:%S")
+        arr_time = datetime.strptime(arr_timestamp, "%Y-%m-%d %H:%M:%S")
+        if dep_time < arr_time:
+            raise osv.except_osv(('Error'), ('Departure timestamp should be greater than the arrival timestamp'))
+        vals['dep_timestamp'] = dep_timestamp
+        vals['arr_timestamp'] = arr_timestamp
         vals['plugged_time'] = self._get_elmnt_digit(line, 'plugged_time')
 
         self.create(cr, uid, vals, context=context)
