@@ -260,14 +260,6 @@ class account_invoice(osv.osv):
             service_xml_id = 'lct_product_service_stevedoringcharges'
         else:
             return (False, False)
-        # elif p_type == 'NO':
-        #     type_xml_id = 'lct_product_type_gatereceive'
-        #     service_xml_id = 'lct_product_service_shorehandling'
-        # elif p_type == 'YES':
-        #     type_xml_id = 'lct_product_type_cfs'
-        #     service_xml_id = 'lct_product_service_shorehandling'
-        # else:
-        #     return (False, False)
 
         imd_model = self.pool.get('ir.model.data')
         type_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', type_xml_id)
@@ -304,7 +296,7 @@ class account_invoice(osv.osv):
     def _get_app_sub_category(self, cr, uid, line):
         sub_category = line.find('sub_category')
         if sub_category is None or not sub_category.text:
-            xml_id = 'lct_product_sub_category_localimport'
+            return False
         else:
             sub_category = sub_category.text
             if sub_category == 'T1':
@@ -314,7 +306,7 @@ class account_invoice(osv.osv):
             elif sub_category == 'FZ':
                 xml_id = 'lct_product_sub_category_freezone'
             else:
-                xml_id = 'lct_product_sub_category_localimport'
+                return False
         return self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', xml_id)
 
     def _get_app_import_storage(self, line):
@@ -343,9 +335,12 @@ class account_invoice(osv.osv):
 
         category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_category_import')
         size_id = self._get_app_size(cr, uid, line)
-        sub_category_id = self._get_app_sub_category(cr, uid, line)
-
+        sub_category_id = self._get_app_import_sub_category(cr, uid, line)
         type_id, service_id = self._get_app_type_service_by_type(cr, uid, line)
+        if not sub_category_id:
+            sub_category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_sub_category_localimport')
+            type_id = False
+
         type_quantities_by_services[service_id] = (type_id, 1)
 
         storage = self._get_app_import_storage(line)
@@ -381,7 +376,10 @@ class account_invoice(osv.osv):
         category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_export')
         type_id, service_id = self._get_app_type_service(cr, uid, line)
         size_id = self._get_app_size(cr, uid, line)
-        sub_category_id = self._get_app_sub_category(cr, uid, line)
+        sub_category_id = self._get_app_import_sub_category(cr, uid, line)
+        type_id, service_id = self._get_app_type_service_by_type(cr, uid, line)
+        if not sub_category_id:
+            type_id = False
 
         properties = {
             'category_id': category_id,
