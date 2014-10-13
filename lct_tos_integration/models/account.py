@@ -533,7 +533,7 @@ class account_invoice(osv.osv):
                     error += ', '.join([key + ': ' + str(val) for key, val in properties.iteritems()])
                     raise osv.except_osv(('Error'), (error))
 
-                bundle = self._get_elmnt_text(line, 'bundle')
+                bundle = self._get_elmnt_text(line, 'bundles')
                 if bundle=='YES':
                     product_ids.append(imd_model.get_record_id(cr, uid, module, 'bundle'))
 
@@ -826,7 +826,7 @@ class account_invoice(osv.osv):
                     'type_id': type_id,
                 }
                 product_ids = product_model.get_products_by_properties(cr, uid, properties, context=context)
-                bundle = self._get_elmnt_text(line, 'bundle')
+                bundle = self._get_elmnt_text(line, 'bundles')
                 if bundle=='YES':
                     product_ids.append(imd_model.get_record_id(cr, uid, module, 'bundle'))
                 cont_nr_vals = {
