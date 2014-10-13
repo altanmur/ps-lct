@@ -532,6 +532,11 @@ class account_invoice(osv.osv):
                     error  = 'One or more product(s) could not be found with these combinations: '
                     error += ', '.join([key + ': ' + str(val) for key, val in properties.iteritems()])
                     raise osv.except_osv(('Error'), (error))
+
+                bundle = self._get_elmnt_text(line, 'bundle')
+                if bundle=='YES':
+                    product_ids.append(imd_model.get_record_id(cr, uid, module, 'bundle'))
+
                 if partner_id not in invoice_lines:
                     invoice_lines[partner_id] = {}
                 for product_id in product_ids:
@@ -768,6 +773,9 @@ class account_invoice(osv.osv):
         cont_nr_model = self.pool.get('lct.container.number')
         invoice_model = self.pool.get('account.invoice')
         pending_yac_model = self.pool.get('lct.pending.yard.activity')
+        imd_model = self.pool.get('ir.model.data')
+
+        module = 'lct_tos_integration'
 
         imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
         content = re.sub('<\?xml.*\?>','',imp_data.content).replace(u"\ufeff","")
@@ -818,7 +826,9 @@ class account_invoice(osv.osv):
                     'type_id': type_id,
                 }
                 product_ids = product_model.get_products_by_properties(cr, uid, properties, context=context)
-
+                bundle = self._get_elmnt_text(line, 'bundle')
+                if bundle=='YES':
+                    product_ids.append(imd_model.get_record_id(cr, uid, module, 'bundle'))
                 cont_nr_vals = {
                     'name': self._get_elmnt_text(line, 'container_number'),
                     'quantity': 1,
