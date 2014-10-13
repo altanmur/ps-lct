@@ -244,16 +244,13 @@ class account_invoice(osv.osv):
                         raise osv.except_osv(('Error'), ('No product could be found for this combination : '
                                 '\n category_id : %s \n service_id : %s \n size_id : %s \n status_id : %s \n type_id : %s' % \
                                 tuple(product_properties[name]['name'] for name in ['category_id',  'service_id', 'size_id', 'status_id', 'type_id'])))
-                    cont_oog = line.find('oog')
-                    if cont_oog and cont_oog.text == 'true':
-                        cont_oog = True
-                    else:
-                        cont_oog = False
+                    oog = self._get_elmnt_text(line, 'oog')
+                    oog = True if oog=='YES' else False
                     cont_nr = (0, 0, {
                                 'name': self._get_elmnt_text(line, 'container_number'),
                                 'pricelist_qty': int(quantity),
                                 'cont_operator': self._get_elmnt_text(line, 'container_operator'),
-                                'oog': cont_oog,
+                                'oog': oog,
                             })
                     if product.id in lines_vals:
                         lines_vals[product.id]['cont_nr_ids'].append(cont_nr)
@@ -546,7 +543,7 @@ class account_invoice(osv.osv):
                 }
 
                 oog = self._get_elmnt_text(line, 'oog')
-                oog = True if oog=='true' else False
+                oog = True if oog=='YES' else False
 
                 product_ids = product_model.get_products_by_properties(cr, uid, dict(properties), context=context)
                 if not all(product_ids):
@@ -805,7 +802,7 @@ class account_invoice(osv.osv):
                 product_ids = product_model.get_products_by_properties(cr, uid, properties, context=context)
 
                 oog = self._get_elmnt_text(line, 'oog')
-                oog = True if oog=='true' else False
+                oog = True if oog=='YES' else False
 
                 cont_nr_vals = {
                     'name': self._get_elmnt_text(line, 'container_number'),
