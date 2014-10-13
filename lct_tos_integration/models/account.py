@@ -603,7 +603,7 @@ class account_invoice(osv.osv):
                     pricelist_qty = cont_nr.pricelist_qty
                     rate = cont_nr.oog and mult_rate or 1.
                     price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
-                    price += pricelist_qty*price_multi[product_id][pricelist_id]
+                    price += rate*pricelist_qty*price_multi[product_id][pricelist_id]
 
                 line_vals.update({
                     'product_id': product_id,
