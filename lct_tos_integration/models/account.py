@@ -39,11 +39,7 @@ class lct_container_number(osv.osv):
         'vessel_ID': fields.char('Vessel ID'),
         'berth_time': fields.datetime('Berthing time'),
         'dep_time': fields.datetime('Departure time'),
-        'dep_timestamp': fields.datetime('Departure Timestamp'),
-        'arr_timestamp': fields.datetime('Arrival Timestamp'),
-        'plugged_time': fields.integer('Plugged Time'),
         'invoice_line_id': fields.many2one('account.invoice.line', string="Invoice line"),
-        'type2': fields.related('invoice_line_id', 'invoice_id', 'type2', type='char', string="Invoice Type", readonly=True),
     }
 
 
@@ -181,7 +177,7 @@ class account_invoice(osv.osv):
 
     def _get_partner(self, cr, uid, elmnt, tag, context=None):
         partner_id = self._get_elmnt_text(elmnt, tag)
-        if not partner_id.isdigit():
+        if not partner_id or not partner_id.isdigit():
             raise osv.except_osv(('Error'), (tag + ' should be a number'))
         partner_id = int(partner_id)
         if not self.pool.get('res.partner').search(cr, uid, [('id','=',partner_id)]):
@@ -435,7 +431,6 @@ class account_invoice(osv.osv):
             service_ids = [False]
         return (category_id, service_ids)
 
-
     def _get_vbl_type(self, cr, uid, p_type):
         imd_model = self.pool.get('ir.model.data')
         module = 'lct_tos_integration'
@@ -454,6 +449,7 @@ class account_invoice(osv.osv):
         partner_model = self.pool.get('res.partner')
         cont_nr_model = self.pool.get('lct.container.number')
         imd_model = self.pool.get('ir.model.data')
+        pending_yac_model = self.pool.get('lct.pending.yard.activity')
         module = 'lct_tos_integration'
 
         imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
@@ -465,10 +461,11 @@ class account_invoice(osv.osv):
             partner_id = self._get_partner(cr, uid, vbilling, 'vessel_operator_id')
             partner = partner_model.browse(cr, uid, partner_id, context=context)
 
+            vessel_ID = self._get_elmnt_text(vbilling, 'vessel_id')
             cont_nr_vals ={
                 'call_sign': self._get_elmnt_text(vbilling, 'call_sign'),
                 'lloyds_nr': self._get_elmnt_text(vbilling, 'lloyds_number'),
-                'vessel_ID': self._get_elmnt_text(vbilling, 'vessel_id'),
+                'vessel_ID': vessel_ID,
                 'berth_time': self._get_elmnt_text(vbilling, 'berthing_time'),
                 'dep_time': self._get_elmnt_text(vbilling, 'departure_time'),
             }
@@ -503,7 +500,8 @@ class account_invoice(osv.osv):
             for line in lines.findall('line'):
                 partner_id = self._get_partner(cr, uid, line, 'container_operator_id', context=context)
 
-                cont_nr_vals['name'] = self._get_elmnt_text(line, 'container_number')
+                cont_nr_name = self._get_elmnt_text(line, 'container_number')
+                cont_nr_vals['name'] = cont_nr_name
                 pricelist_qty = 1
 
                 category = self._get_elmnt_text(line, 'transaction_category_id')
@@ -534,11 +532,52 @@ class account_invoice(osv.osv):
                     error  = 'One or more product(s) could not be found with these combinations: '
                     error += ', '.join([key + ': ' + str(val) for key, val in properties.iteritems()])
                     raise osv.except_osv(('Error'), (error))
+                if partner_id not in invoice_lines:
+                    invoice_lines[partner_id] = {}
                 for product_id in product_ids:
                     if product_id not in invoice_lines[partner_id]:
                         invoice_lines[partner_id][product_id] = []
                     cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=1, quantity=1), context=context)
                     invoice_lines[partner_id][product_id].append(cont_nr_id)
+                if category in ['E', 'T']:
+                    domain = [('vessel_ID', '=', vessel_ID), ('name', '=', cont_nr_name), ('status', '=', 'pending')]
+                    pending_yac_ids = pending_yac_model.search(cr, uid, domain, context=context)
+
+                    reefe_properties = dict(properties)
+                    expst_properties = dict(properties)
+
+                    reefe_properties['service_ids'] = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_reeferelectricity')]
+                    reefe_properties['status_id'] = False
+                    reefe_properties['type_id'] = False
+                    expst_properties['service_ids'] = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_storage')]
+
+                    reefe_product_id = product_model.get_products_by_properties(cr, uid, reefe_properties, context=context)[0]
+                    expst_product_id = product_model.get_products_by_properties(cr, uid, expst_properties, context=context)[0]
+
+                    reefe_qties = []
+                    expst_qties = []
+                    for pending_yac in pending_yac_model.browse(cr, uid, pending_yac_ids, context=context):
+                        if pending_yac.type == 'reefe':
+                            reefe_qties.append(pending_yac.plugged_time)
+                        elif pending_yac.type == 'expst':
+                            dep_date = datetime.strptime(pending_yac.dep_timestamp, "%Y-%m-%d %H:%M:%S").date()
+                            arr_date = datetime.strptime(pending_yac.arr_timestamp, "%Y-%m-%d %H:%M:%S").date()
+                            expst_qties.append((dep_date - arr_date).days + 1)
+                    if reefe_qties:
+                        if reefe_product_id not in invoice_lines[partner_id]:
+                            invoice_lines[partner_id][reefe_product_id] = []
+                        for quantity in reefe_qties:
+                            cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=quantity, quantity=quantity), context=context)
+                            invoice_lines[partner_id][reefe_product_id].append(cont_nr_id)
+                    if expst_qties:
+                        if expst_product_id not in invoice_lines[partner_id]:
+                            invoice_lines[partner_id][expst_product_id] = []
+                        for quantity in expst_qties:
+                            cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=quantity, quantity=quantity), context=context)
+                            invoice_lines[partner_id][expst_product_id].append(cont_nr_id)
+
+                    pending_yac_model.write(cr, uid, pending_yac_ids, {'status': 'processed'}, context=context)
+
         invoice_ids = self._create_invoices(cr, uid, invoice_lines, context=context)
         invoice_model.write(cr, uid, invoice_ids, {'type2': 'vessel'})
 
@@ -728,6 +767,7 @@ class account_invoice(osv.osv):
         product_model = self.pool.get('product.product')
         cont_nr_model = self.pool.get('lct.container.number')
         invoice_model = self.pool.get('account.invoice')
+        pending_yac_model = self.pool.get('lct.pending.yard.activity')
 
         imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
         content = re.sub('<\?xml.*\?>','',imp_data.content).replace(u"\ufeff","")
@@ -741,13 +781,14 @@ class account_invoice(osv.osv):
                 continue
 
             for line in lines.findall('line'):
+                yard_activity = self._get_elmnt_text(line, 'yard_activity')
+                if yard_activity in ['EXPST', 'REEFE']:
+                    pending_yac_model.create_activity(cr, uid, line, context=context)
+                    continue
+
                 partner_id = self._get_partner(cr, uid, line, 'container_operator_id', context=context)
                 if partner_id not in invoice_lines:
                     invoice_lines[partner_id] = {}
-
-                yard_activity = self._get_elmnt_text(line, 'yard_activity')
-                if yard_activity in ['EXPST', 'REEFE']:
-                    continue
                 category_id = self._get_yac_category(cr, uid, yard_activity)
 
                 if yard_activity == 'SERVI':
@@ -782,9 +823,6 @@ class account_invoice(osv.osv):
                     'name': self._get_elmnt_text(line, 'container_number'),
                     'quantity': 1,
                     'pricelist_qty': 1,
-                    'arr_timestamp': self._get_elmnt_text(line, 'arrival_timestamp'),
-                    'dep_timestamp': self._get_elmnt_text(line, 'departure_timestamp'),
-                    'plugged_time': self._get_elmnt_text(line, 'plugged_time'),
                 }
                 for product_id in product_ids:
                     if product_id not in invoice_lines[partner_id]:

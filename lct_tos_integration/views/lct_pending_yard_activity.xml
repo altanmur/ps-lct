@@ -1,0 +1,43 @@
+<openerp>
+    <data>
+        <record id="view_lct_pending_yard_activity_tree" model="ir.ui.view">
+            <field name="name">lct.pending.yard.activity.tree</field>
+            <field name="model">lct.pending.yard.activity</field>
+            <field name="arch" type="xml">
+                <tree string="Pending Yard Activities" version="7.0" create="0" edit="0" colors="black:status=='processed';blue:status=='pending'">
+                    <field name="name"/>
+                    <field name="vessel_ID"/>
+                    <field name="type"/>
+                    <field name="plugged_time"/>
+                    <field name="dep_timestamp"/>
+                    <field name="arr_timestamp"/>
+                    <field name="status" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_lct_pending_yard_activities_search_lct" model="ir.ui.view">
+            <field name="name">lct.pending.yard.activity.search</field>
+            <field name="model">lct.pending.yard.activity</field>
+            <field name="arch" type="xml">
+                <search string="Search LCT TOS imported files">
+                    <filter name="type_expst" string="Storage" domain="[('type', '=', 'expst')]" />
+                    <filter name="type_reefe" string="Reefer Electricity" domain="[('type', '=', 'reefe')]" />
+                    <separator/>
+                    <filter name="status_pending" string="Pending" domain="[('status','=','pending')]" />
+                    <filter name="status_processed" string="Processed" domain="[('status','=','processed')]" />
+                </search>
+            </field>
+        </record>
+
+        <record id="action_lct_pending_yard_activity" model="ir.actions.act_window">
+            <field name="name">Pending Yard Activities</field>
+            <field name="res_model">lct.pending.yard.activity</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="context">{"search_default_status_pending":1}</field>
+        </record>
+
+        <menuitem id="lct_pending_yard_activities_menu" action="action_lct_pending_yard_activity" name="Pending Yard Activities" parent="tos_integ_ftp_menu"/>
+    </data>
+</openerp>
