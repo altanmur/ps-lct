@@ -44,6 +44,7 @@ class lct_container_number(osv.osv):
         'plugged_time': fields.integer('Plugged Time'),
         'invoice_line_id': fields.many2one('account.invoice.line', string="Invoice line"),
         'type2': fields.related('invoice_line_id', 'invoice_id', 'type2', type='char', string="Invoice Type", readonly=True),
+        'oog': fields.boolean('OOG'),
     }
 
 
@@ -243,11 +244,16 @@ class account_invoice(osv.osv):
                         raise osv.except_osv(('Error'), ('No product could be found for this combination : '
                                 '\n category_id : %s \n service_id : %s \n size_id : %s \n status_id : %s \n type_id : %s' % \
                                 tuple(product_properties[name]['name'] for name in ['category_id',  'service_id', 'size_id', 'status_id', 'type_id'])))
-
+                    cont_oog = line.find('oog')
+                    if cont_oog and cont_oog.text == 'true':
+                        cont_oog = True
+                    else:
+                        cont_oog = False
                     cont_nr = (0, 0, {
                                 'name': self._get_elmnt_text(line, 'container_number'),
                                 'pricelist_qty': int(quantity),
                                 'cont_operator': self._get_elmnt_text(line, 'container_operator'),
+                                'oog': cont_oog,
                             })
                     if product.id in lines_vals:
                         lines_vals[product.id]['cont_nr_ids'].append(cont_nr)
@@ -268,10 +274,19 @@ class account_invoice(osv.osv):
                         })
                         lines_vals[product.id] = vals
 
+        mult_rate_model = self.pool.get('lct.multiplying.rate')
+        mult_rate_ids = mult_rate_model.search(cr, uid, [('active', '=', True)], context=context)
+        mult_rate = mult_rate_ids and mult_rate_model.browse(cr, uid, mult_rate_ids[0], context=context).multiplying_rate
+
         for vals in lines_vals.values():
-            qty_tot = 0.0
-            qties = [cont_nr[2]['pricelist_qty'] for cont_nr in vals['cont_nr_ids']]
-            price = sum((qty*pricelist_model.price_get_multi(cr, uid, [pricelist.id], [(vals['product_id'], qty, partner.id)], context=context)[vals['product_id']][pricelist.id] for qty in qties))
+            price = 0
+            for cont_nr in vals['cont_nr_ids']:
+                cont_nr = cont_nr[2]
+                qty = cont_nr['pricelist_qty']
+                oog = cont_nr['oog']
+                rate = oog and mult_rate or 1.
+                price += rate*qty*pricelist_model.price_get_multi(cr, uid, [pricelist.id], [(vals['product_id'], qty, partner.id)], context=context)[vals['product_id']][pricelist.id]
+
             vals.update({
                 'price_unit': price/len(qties),
                 'quantity': len(qties)
@@ -529,15 +544,21 @@ class account_invoice(osv.osv):
                     'status_id': status_id,
                     'type_id': type_id,
                 }
+
+                oog = self._get_elmnt_text(line, 'oog')
+                oog = True if oog=='true' else False
+
                 product_ids = product_model.get_products_by_properties(cr, uid, dict(properties), context=context)
                 if not all(product_ids):
                     error  = 'One or more product(s) could not be found with these combinations: '
                     error += ', '.join([key + ': ' + str(val) for key, val in properties.iteritems()])
                     raise osv.except_osv(('Error'), (error))
+                if partner_id not in invoice_lines:
+                    invoice_lines[partner_id] = {}
                 for product_id in product_ids:
                     if product_id not in invoice_lines[partner_id]:
                         invoice_lines[partner_id][product_id] = []
-                    cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=1, quantity=1), context=context)
+                    cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=1, quantity=1, oog=oog), context=context)
                     invoice_lines[partner_id][product_id].append(cont_nr_id)
         invoice_ids = self._create_invoices(cr, uid, invoice_lines, context=context)
         invoice_model.write(cr, uid, invoice_ids, {'type2': 'vessel'})
@@ -549,6 +570,10 @@ class account_invoice(osv.osv):
         invoice_line_model = self.pool.get('account.invoice.line')
         cont_nr_model = self.pool.get('lct.container.number')
         product_model = self.pool.get('product.product')
+        mult_rate_model = self.pool.get('lct.multiplying.rate')
+
+        mult_rate_ids = mult_rate_model.search(cr, uid, [('active', '=', True)], context=context)
+        mult_rate = mult_rate_ids and mult_rate_model.browse(cr, uid, mult_rate_ids[0], context=context).multiplying_rate or 1.
 
         date_invoice = datetime.today().strftime('%Y-%m-%d')
 
@@ -575,10 +600,11 @@ class account_invoice(osv.osv):
                     raise osv.except_osv(('Error'), ('Could not find an income account on product %s ') % product.name)
                 cont_nrs = cont_nr_model.browse(cr, uid, cont_nr_ids, context=context)
                 quantities = [cont_nr.quantity for cont_nr in cont_nrs]
-                pricelist_qties = [cont_nr.pricelist_qty for cont_nr in cont_nrs]
                 quantity = sum(quantities)
                 price = 0.
-                for pricelist_qty in pricelist_qties:
+                for cont_nr in cont_nrs:
+                    pricelist_qty = cont_nr.pricelist_qty
+                    rate = cont_nr.oog and mult_rate or 1.
                     price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
                     price += pricelist_qty*price_multi[product_id][pricelist_id]
 
@@ -778,6 +804,9 @@ class account_invoice(osv.osv):
                 }
                 product_ids = product_model.get_products_by_properties(cr, uid, properties, context=context)
 
+                oog = self._get_elmnt_text(line, 'oog')
+                oog = True if oog=='true' else False
+
                 cont_nr_vals = {
                     'name': self._get_elmnt_text(line, 'container_number'),
                     'quantity': 1,
@@ -785,6 +814,7 @@ class account_invoice(osv.osv):
                     'arr_timestamp': self._get_elmnt_text(line, 'arrival_timestamp'),
                     'dep_timestamp': self._get_elmnt_text(line, 'departure_timestamp'),
                     'plugged_time': self._get_elmnt_text(line, 'plugged_time'),
+                    'oog': oog,
                 }
                 for product_id in product_ids:
                     if product_id not in invoice_lines[partner_id]:
