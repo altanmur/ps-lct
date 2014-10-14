@@ -449,10 +449,10 @@ class account_invoice(osv.osv):
 
     def _prepare_invoice_line(self, invoice_lines, partner_id, vessel_ID, product_id):
         if partner_id not in invoice_lines:
-            invoice_lines[partner_id] = {}
-        if vessel_ID not in invoice_lines[partner_id]:
-            invoice_lines[partner_id][vessel_ID] = {}
-        if product_id not in invoice_lines[partner_id][vessel_ID]:
+            invoice_lines[partner_id] = {vessel_ID: {product_id: []}}
+        elif vessel_ID not in invoice_lines[partner_id]:
+            invoice_lines[partner_id][vessel_ID] = {product_id: []}
+        elif product_id not in invoice_lines[partner_id][vessel_ID]:
             invoice_lines[partner_id][vessel_ID][product_id] = []
 
     def xml_to_vbl(self, cr, uid, imp_data_id, context=None):
@@ -690,28 +690,34 @@ class account_invoice(osv.osv):
             id2 = self._merge_invoices(cr, uid, ids[n_ids/2:], context=context)
             return self._merge_invoice_pair(cr, uid, id1, id2, context=context)
 
+
+
+    # TODO: Change this method to group only when invoices have the same Vessel id
     def _group_invoices_by_partner(self, cr, uid, ids, auto=False, context=None):
         if not ids:
             return []
-        invoice_by_currency_by_partner = {}
         invoice_by_currency_by_vessel_id_by_partner = {}
         for invoice in self.browse(cr, uid, ids, context=context):
             partner_id = invoice.partner_id.id
             currency_id = invoice.currency_id.id
             vessel_ID = invoice.vessel_ID
-            if partner_id in invoice_by_currency_by_partner:
-                if currency_id in invoice_by_currency_by_partner[partner_id]:
-                    invoice_by_currency_by_partner[partner_id][currency_id].append(invoice.id)
-                else:
-                    invoice_by_currency_by_partner[partner_id][currency_id] = [invoice.id]
-            else:
-                invoice_by_currency_by_partner[partner_id] = {currency_id : [invoice.id]}
+            if partner_id not in invoice_by_currency_by_vessel_id_by_partner:
+                invoice_by_currency_by_vessel_id_by_partner[partner_id] = {vessel_ID: {currency_id: []}}
+            elif vessel_ID not in invoice_by_currency_by_vessel_id_by_partner[partner_id]:
+                invoice_by_currency_by_vessel_id_by_partner[partner_id][vessel_ID] = {currency_id: []}
+            elif currency_id not in invoice_by_currency_by_vessel_id_by_partner[partner_id][vessel_ID]:
+                invoice_by_currency_by_vessel_id_by_partner[partner_id][vessel_ID][currency_id] = []
+            invoice_by_currency_by_vessel_id_by_partner[partner_id][vessel_ID][currency_id].append(invoice.id)
+
         if not auto:
-            if len(invoice_by_currency_by_partner) > 1:
+            if len(invoice_by_currency_by_vessel_id_by_partner) > 1:
                 raise osv.except_osv(('Error'), ("You can't group invoices with different customers"))
-            elif len(invoice_by_currency_by_partner.values()[0]) > 1:
+            elif len(invoice_by_currency_by_vessel_id_by_partner.values()[0]) > 1:
                 raise osv.except_osv(('Error'), ("You can't group invoices with different currencies"))
-        for invoice_by_currency in invoice_by_currency_by_partner.values():
+            elif len(invoice_by_currency_by_vessel_id_by_partner):
+                raise osv.except_osv(('Error'), ("You can't group invoices with different vessel IDs"))
+        for invoice_by_currency_by_vessel in invoice_by_currency_by_vessel_id_by_partner.values():
+            invoice_by_currency in invoice_by_currency_by_vessel.values():
             for invoice_ids in invoice_by_currency.values():
                 self._merge_invoices(cr, uid, invoice_ids, context=context)
 
