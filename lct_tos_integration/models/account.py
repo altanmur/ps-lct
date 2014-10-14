@@ -717,9 +717,9 @@ class account_invoice(osv.osv):
             elif len(invoice_by_currency_by_vessel_id_by_partner):
                 raise osv.except_osv(('Error'), ("You can't group invoices with different vessel IDs"))
         for invoice_by_currency_by_vessel in invoice_by_currency_by_vessel_id_by_partner.values():
-            invoice_by_currency in invoice_by_currency_by_vessel.values():
-            for invoice_ids in invoice_by_currency.values():
-                self._merge_invoices(cr, uid, invoice_ids, context=context)
+            for invoice_by_currency in invoice_by_currency_by_vessel.values():
+                for invoice_ids in invoice_by_currency.values():
+                    self._merge_invoices(cr, uid, invoice_ids, context=context)
 
     def group_invoices(self, cr, uid, ids, context=None):
         vbl_ids = self.search(cr, uid, [('id','in',ids), ('type2','=','vessel')], context=context)
