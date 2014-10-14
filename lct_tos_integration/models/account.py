@@ -713,7 +713,7 @@ class account_invoice(osv.osv):
                 raise osv.except_osv(('Error'), ("You can't group invoices with different customers"))
             elif len(invoice_by_currency_by_vessel_id_by_partner.values()[0]) > 1:
                 raise osv.except_osv(('Error'), ("You can't group invoices with different currencies"))
-            elif len(invoice_by_currency_by_vessel_id_by_partner):
+            elif len(invoice_by_currency_by_vessel_id_by_partner.values()[0].values()[0]) > 1:
                 raise osv.except_osv(('Error'), ("You can't group invoices with different vessel IDs"))
         for invoice_by_currency_by_vessel in invoice_by_currency_by_vessel_id_by_partner.values():
             for invoice_by_currency in invoice_by_currency_by_vessel.values():
