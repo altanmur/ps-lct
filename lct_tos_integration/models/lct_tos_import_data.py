@@ -33,7 +33,7 @@ class lct_tos_import_data(osv.Model):
 
     _columns = {
         'name': fields.char('File name', readonly=True),
-        'content': fields.text('File content'),
+        'content': fields.text('File content', readonly=True),
         'type': fields.selection([('xml','xml')], string='File type'),
         'status': fields.selection([('fail','Failed to process'),('success','Processed'),('pending','Pending')], string='Status', readonly=True, required=True),
         'create_date': fields.date(string='Import date', readonly=True),
@@ -55,22 +55,14 @@ class lct_tos_import_data(osv.Model):
         if any((imp_data.status != 'pending') for imp_data in  imp_datas):
             raise osv.except_osv(('Error'),('You can only process pending data'))
 
+        vbl_data_ids = []
         inv_model = self.pool.get('account.invoice')
         vsl_model = self.pool.get('lct.tos.vessel')
         for imp_data in imp_datas:
             cr.execute('SAVEPOINT SP')
             filename = imp_data.name
             if re.match('^VBL_\d{6}_\d{6}\.xml$', filename):
-                try:
-                    inv_model.xml_to_vbl(cr, uid, imp_data.id, context=context)
-                except:
-                    raise
-                    cr.execute('ROLLBACK TO SP')
-                    self.write(cr, uid, imp_data.id, {
-                        'status': 'fail',
-                        'error': traceback.format_exc(),
-                        }, context=context)
-                    continue
+                vbl_data_ids.append(imp_data.id)
             elif re.match('^APP_\d{6}_\d{6}\.xml$', filename):
                 try:
                     inv_model.xml_to_app(cr, uid, imp_data.id, context=context)
@@ -101,6 +93,16 @@ class lct_tos_import_data(osv.Model):
                         'error': traceback.format_exc(),
                         }, context=context)
                     continue
+            elif re.match('^YAC_\d{6}_\d{6}\.xml$', filename):
+                try:
+                    inv_model.xml_to_yac(cr, uid, imp_data.id, context=context)
+                except:
+                    cr.execute('ROLLBACK TO SP')
+                    self.write(cr, uid, imp_data.id, {
+                        'status': 'fail',
+                        'error': traceback.format_exc(),
+                        }, context=context)
+                    continue
             else:
                 cr.execute('ROLLBACK TO SP')
                 error = 'Filename format not known.\nKnown formats are :\n    APP_YYMMDD_SEQ000.xml\n    VBL_YYMMDD_SEQ000.xml'
@@ -111,3 +113,24 @@ class lct_tos_import_data(osv.Model):
                 continue
             self.write(cr, uid, imp_data.id, {'status': 'success'}, context=context)
             cr.execute('RELEASE SAVEPOINT SP')
+
+        if vbl_data_ids and self.search(cr, uid, [('status', '!=', 'success'), ('id', 'not in', vbl_data_ids)], context=context):
+            self.write(cr, uid, vbl_data_ids, {
+                'status': 'fail',
+                'error': "You can't import vessel billings while other imported files are in status 'fail' or 'pending'",
+                }, context=context)
+        else:
+            for vbl_data_id in vbl_data_ids:
+                cr.execute('SAVEPOINT SP')
+                try:
+                    inv_model.xml_to_vbl(cr, uid, vbl_data_id, context=context)
+                except:
+                    cr.execute('ROLLBACK TO SP')
+                    error = traceback.format_exc()
+                    self.write(cr, uid, vbl_data_id, {
+                        'status': 'fail',
+                        'error': error,
+                        }, context=context)
+                else:
+                    self.write(cr, uid, vbl_data_id, {'status': 'success'}, context=context)
+                    cr.execute('RELEASE SAVEPOINT SP')

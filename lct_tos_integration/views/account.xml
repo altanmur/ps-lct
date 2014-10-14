@@ -12,15 +12,6 @@
                     <field name="type2" invisible="1"/>
                 </field>
                 <xpath expr="//page[@string='Invoice Lines']" position="after">
-                    <page string="Vessel Biling Info" attrs="{'invisible':[('type2','!=','vessel')]}">
-                        <group col="4">
-                            <field name="call_sign"/>
-                            <field name="lloyds_nr"/>
-                            <field name="vessel_ID"/>
-                            <field name="berth_time"/>
-                            <field name="dep_time"/>
-                        </group>
-                    </page>
                     <page string="Appointment Info" attrs="{'invisible':[('type2','!=','appointment')]}">
                         <group col="4">
                             <field name="individual_cust"/>
@@ -167,6 +158,30 @@
 
         <menuitem action="action_invoice_dockage" sequence="152" id="menu_action_invoice_dockage" parent="account.menu_finance_receivables"/>
 
+        <record id="action_invoice_yactivity" model="ir.actions.act_window">
+            <field name="name">Yard Activities</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'default_type':'out_invoice','default_type2':'yactivity'}</field>
+            <field name="domain">[('type','=','out_invoice'),('type2','=','yactivity')]</field>
+        </record>
+
+        <record id="action_invoice_yactivity_view1" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_invoice_yactivity"/>
+        </record>
+
+        <record id="action_invoice_yactivity_view2" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_invoice_form_lct"/>
+            <field name="act_window_id" ref="action_invoice_yactivity"/>
+        </record>
+
+        <menuitem action="action_invoice_yactivity" sequence="153" id="menu_action_invoice_yactivity" parent="account.menu_finance_receivables"/>
+
         <!-- Customer Payments -->
         <record id="view_voucher_payment_form_lct" model="ir.ui.view">
             <field name="name">view.voucher.form.lct</field>
@@ -184,9 +199,6 @@
             <field name="model">account.invoice.group</field>
             <field name="arch" type="xml">
                 <form string="Group Invoices" version="7.0">
-                    <p class="oe_grey">
-                        zefzrgf
-                    </p>
                     <footer>
                         <button string="Group Invoices" name="invoice_group" type="object" default_focus="1" class="oe_highlight"/>
                         or

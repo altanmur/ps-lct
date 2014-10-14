@@ -51,7 +51,7 @@ class account_invoice_line(osv.osv):
         'book_nr': fields.char('Booking number'),
     }
 
-    def _merge_vbl_line_pair(self, cr, uid, id1, id2, context=None):
+    def _merge_invoice_line_pair(self, cr, uid, id1, id2, context=None):
         cont_nr_model = self.pool.get('lct.container.number')
         line1, line2 = self.browse(cr, uid, [id1, id2], context=context)
         cont_nr_model.write(cr, uid, [cont_nr.id for cont_nr in line2.cont_nr_ids],
@@ -105,7 +105,8 @@ class account_invoice(osv.osv):
         'type2': fields.selection([
             ('vessel','Vessel Billing'),
             ('appointment','Appointment'),
-            ('dockage', 'Vessel Dockage')
+            ('dockage', 'Vessel Dockage'),
+            ('yactivity', 'Yard Activity'),
             ], 'Type of invoice'),
         'call_sign': fields.char('Call sign'),
         'lloyds_nr': fields.char('Lloyds number'),
@@ -141,7 +142,7 @@ class account_invoice(osv.osv):
 
     def _get_partner(self, cr, uid, elmnt, tag, context=None):
         partner_id = self._get_elmnt_text(elmnt, tag)
-        if not partner_id.isdigit():
+        if not partner_id or not partner_id.isdigit():
             raise osv.except_osv(('Error'), (tag + ' should be a number'))
         partner_id = int(partner_id)
         if not self.pool.get('res.partner').search(cr, uid, [('id','=',partner_id)]):
@@ -154,6 +155,26 @@ class account_invoice(osv.osv):
         except:
             res = 0
         return res
+
+    def _get_status(self, cr, uid, status):
+        imd_model = self.pool.get('ir.model.data')
+        if status == 'F':
+            xml_id = 'lct_product_status_full'
+        elif status == 'E':
+            xml_id = 'lct_product_status_empty'
+        else:
+            return False
+        return imd_model.get_record_id(cr, uid, 'lct_tos_integration', xml_id)
+
+    def _get_size(self, cr, uid, size):
+        imd_model = self.pool.get('ir.model.data')
+        if size == '20':
+            xml_id = 'lct_product_size_20'
+        elif size == '40':
+            xml_id = 'lct_product_size_40'
+        else:
+            return False
+        return imd_model.get_record_id(cr, uid, 'lct_tos_integration', xml_id)
 
     def _get_vcl_lines(self, cr, uid, vals, partner, context=None):
         product_model = self.pool.get('product.product')
@@ -227,7 +248,7 @@ class account_invoice(osv.osv):
         if partner.exists():
             vals['partner_id'] = partner.id
         else:
-            raise osv.except_osv(('Error'), ('No customer with this name (%s) was found' % vals['partner_id'] ))
+            raise osv.except_osv(('Error'), ('No customer with this id (%s) was found' % vals['partner_id'] ))
 
         invoice_line = []
         if invoice_type == 'vcl':
@@ -556,17 +577,6 @@ class account_invoice(osv.osv):
             service_ids = [False]
         return (category_id, service_ids)
 
-    def _get_vbl_status(self, cr, uid, status):
-        imd_model = self.pool.get('ir.model.data')
-        module = 'lct_tos_integration'
-        if status == 'F':
-            status_id = imd_model.get_record_id(cr, uid, module, 'lct_product_status_full')
-        elif status == 'E':
-            status_id = imd_model.get_record_id(cr, uid, module, 'lct_product_status_empty')
-        else:
-            status_id = False
-        return status_id
-
     def _get_vbl_type(self, cr, uid, p_type):
         imd_model = self.pool.get('ir.model.data')
         module = 'lct_tos_integration'
@@ -585,6 +595,7 @@ class account_invoice(osv.osv):
         partner_model = self.pool.get('res.partner')
         cont_nr_model = self.pool.get('lct.container.number')
         imd_model = self.pool.get('ir.model.data')
+        pending_yac_model = self.pool.get('lct.pending.yard.activity')
         module = 'lct_tos_integration'
 
         imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
@@ -595,19 +606,22 @@ class account_invoice(osv.osv):
         for vbilling in vbillings.findall('vbilling'):
             partner_id = self._get_partner(cr, uid, vbilling, 'vessel_operator_id')
             partner = partner_model.browse(cr, uid, partner_id, context=context)
-            pricelist_id = partner.property_product_pricelist
 
+            vessel_ID = self._get_elmnt_text(vbilling, 'vessel_id')
             cont_nr_vals ={
                 'call_sign': self._get_elmnt_text(vbilling, 'call_sign'),
                 'lloyds_nr': self._get_elmnt_text(vbilling, 'lloyds_number'),
-                'vessel_ID': self._get_elmnt_text(vbilling, 'vessel_id'),
+                'vessel_ID': vessel_ID,
                 'berth_time': self._get_elmnt_text(vbilling, 'berthing_time'),
                 'dep_time': self._get_elmnt_text(vbilling, 'departure_time'),
             }
             n_hcm = self._xml_get_digit(vbilling, 'hatchcovers_moves')
             if n_hcm > 0:
-                service_id = imd_model.get_record_id(cr, uid, module, 'lct_product_service_hatchcovermove')
-                product_id = product_model.search(cr, uid, [('service_id','=',service_id)], context=context)[0]
+                service_id = imd_model.get_record_id(cr, uid, module, 'lct_product_service_hatchcovermoves')
+                product_id = product_model.search(cr, uid, [('service_id', '=', service_id)], context=context)
+                if not product_id:
+                    raise osv.except_osv(('Error'), ('The product "Hatch Cover Moves" cannot be found.'))
+                product_id = product_id[0]
                 vals = dict(cont_nr_vals, pricelist_qty=n_hcm, quantity=n_hcm)
                 cont_nr_id = cont_nr_model.create(cr, uid, vals, context=context)
                 invoice_lines[partner_id] = {product_id: [cont_nr_id]}
@@ -615,7 +629,10 @@ class account_invoice(osv.osv):
             n_gbc = self._xml_get_digit(vbilling, 'gearbox_count')
             if n_gbc > 0:
                 service_id = imd_model.get_record_id(cr, uid, module, 'lct_product_service_gearboxcount')
-                product_id = product_model.search(cr, uid, [('service_id','=',service_id)], context=context)[0]
+                product_id = product_model.search(cr, uid, [('service_id', '=', service_id)], context=context)
+                if not product_id:
+                    raise osv.except_osv(('Error'), ('The product "Gearbox Count" cannot be found.'))
+                product_id = product_id[0]
                 vals = dict(cont_nr_vals, pricelist_qty=n_gbc, quantity=n_gbc)
                 cont_nr_id = cont_nr_model.create(cr, uid, vals, context=context)
                 if partner_id not in invoice_lines:
@@ -628,24 +645,27 @@ class account_invoice(osv.osv):
                 continue
             for line in lines.findall('line'):
                 partner_id = self._get_partner(cr, uid, line, 'container_operator_id', context=context)
-                if partner_id not in invoice_lines:
-                    invoice_lines[partner_id] = {}
 
-                cont_nr_vals['name'] = self._get_elmnt_text(line, 'container_number')
+                cont_nr_name = self._get_elmnt_text(line, 'container_number')
+                cont_nr_vals['name'] = cont_nr_name
                 pricelist_qty = 1
 
                 category = self._get_elmnt_text(line, 'transaction_category_id')
+                if category == 'R':
+                    partner_id = self._get_partner(cr, uid, vbilling, 'vessel_operator_id', context=context)
                 category_id, service_ids = self._get_vbl_category_service(cr, uid, category)
 
                 size = self._get_elmnt_text(line, 'container_size')
-                size_id = imd_model.get_record_id(cr, uid, module, 'lct_product_size_' + size)
+                size_id = self._get_size(cr, uid, size)
 
                 status = self._get_elmnt_text(line, 'container_status')
-                status_id = self._get_vbl_status(cr, uid, status)
+                status_id = self._get_status(cr, uid, status)
 
-                p_type = self._get_elmnt_text(line, 'container_type_id')
-                type_id = self._get_vbl_type(cr, uid, p_type)
-
+                if status != 'E':
+                    p_type = self._get_elmnt_text(line, 'container_type_id')
+                    type_id = self._get_vbl_type(cr, uid, p_type)
+                else:
+                    type_id = False
                 properties = {
                     'category_id': category_id,
                     'service_ids': service_ids,
@@ -653,12 +673,57 @@ class account_invoice(osv.osv):
                     'status_id': status_id,
                     'type_id': type_id,
                 }
-                product_ids = product_model.get_products_by_properties(cr, uid, properties, context=context)
+                product_ids = product_model.get_products_by_properties(cr, uid, dict(properties), context=context)
+                if not all(product_ids):
+                    error  = 'One or more product(s) could not be found with these combinations: '
+                    error += ', '.join([key + ': ' + str(val) for key, val in properties.iteritems()])
+                    raise osv.except_osv(('Error'), (error))
+                if partner_id not in invoice_lines:
+                    invoice_lines[partner_id] = {}
                 for product_id in product_ids:
                     if product_id not in invoice_lines[partner_id]:
                         invoice_lines[partner_id][product_id] = []
                     cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=1, quantity=1), context=context)
                     invoice_lines[partner_id][product_id].append(cont_nr_id)
+                if category in ['E', 'T']:
+                    domain = [('vessel_ID', '=', vessel_ID), ('name', '=', cont_nr_name), ('status', '=', 'pending')]
+                    pending_yac_ids = pending_yac_model.search(cr, uid, domain, context=context)
+
+                    reefe_properties = dict(properties)
+                    expst_properties = dict(properties)
+
+                    reefe_properties['service_ids'] = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_reeferelectricity')]
+                    reefe_properties['status_id'] = False
+                    reefe_properties['type_id'] = False
+                    expst_properties['service_ids'] = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_storage')]
+
+                    reefe_product_id = product_model.get_products_by_properties(cr, uid, reefe_properties, context=context)[0]
+                    expst_product_id = product_model.get_products_by_properties(cr, uid, expst_properties, context=context)[0]
+
+                    reefe_qties = []
+                    expst_qties = []
+                    for pending_yac in pending_yac_model.browse(cr, uid, pending_yac_ids, context=context):
+                        if pending_yac.type == 'reefe':
+                            reefe_qties.append(pending_yac.plugged_time)
+                        elif pending_yac.type == 'expst':
+                            dep_date = datetime.strptime(pending_yac.dep_timestamp, "%Y-%m-%d %H:%M:%S").date()
+                            arr_date = datetime.strptime(pending_yac.arr_timestamp, "%Y-%m-%d %H:%M:%S").date()
+                            expst_qties.append((dep_date - arr_date).days + 1)
+                    if reefe_qties:
+                        if reefe_product_id not in invoice_lines[partner_id]:
+                            invoice_lines[partner_id][reefe_product_id] = []
+                        for quantity in reefe_qties:
+                            cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=quantity, quantity=quantity), context=context)
+                            invoice_lines[partner_id][reefe_product_id].append(cont_nr_id)
+                    if expst_qties:
+                        if expst_product_id not in invoice_lines[partner_id]:
+                            invoice_lines[partner_id][expst_product_id] = []
+                        for quantity in expst_qties:
+                            cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=quantity, quantity=quantity), context=context)
+                            invoice_lines[partner_id][expst_product_id].append(cont_nr_id)
+
+                    pending_yac_model.write(cr, uid, pending_yac_ids, {'status': 'processed'}, context=context)
+
         invoice_ids = self._create_invoices(cr, uid, invoice_lines, context=context)
         invoice_model.write(cr, uid, invoice_ids, {'type2': 'vessel'})
 
@@ -714,49 +779,71 @@ class account_invoice(osv.osv):
                 cont_nr_model.write(cr, uid, cont_nr_ids, {'invoice_line_id': line_id}, context=context)
         return invoice_ids
 
-    def _merge_vbl_pair(self, cr, uid, id1, id2, context=None):
+
+    # GROUP INVOICES
+
+    def _merge_invoice_pair(self, cr, uid, id1, id2, context=None):
         invoice_line_model = self.pool.get('account.invoice.line')
-        vbl1, vbl2 = self.browse(cr, uid, [id1, id2], context=context)
-        new_lines = dict([(line.product_id.id, line) for line in vbl1.invoice_line])
-        for line in vbl2.invoice_line:
+        invoice1, invoice2 = self.browse(cr, uid, [id1, id2], context=context)
+        new_lines = dict([(line.product_id.id, line) for line in invoice1.invoice_line])
+        for line in invoice2.invoice_line:
             product_id = line.product_id.id
             if product_id in new_lines:
-                line_id = invoice_line_model._merge_vbl_line_pair(cr, uid, new_lines[product_id].id, line.id, context=context)
+                line_id = invoice_line_model._merge_invoice_line_pair(cr, uid, new_lines[product_id].id, line.id, context=context)
             else:
                 line_id = line.id
-            invoice_line_model.write(cr, uid, [line_id], {'invoice_id': vbl1.id}, context=context)
-        self.unlink(cr, uid, [vbl2.id], context=context)
-        return vbl1.id
+            invoice_line_model.write(cr, uid, [line_id], {'invoice_id': invoice1.id}, context=context)
+        self.unlink(cr, uid, [invoice2.id], context=context)
+        date_invoice = datetime.today().strftime('%Y-%m-%d'),
+        self.write(cr, uid, [invoice1.id], {'date_invoice': date_invoice}, context=context)
+        return invoice1.id
 
-    def _merge_vbls(self, cr, uid, ids, context=None):
+    def _merge_invoices(self, cr, uid, ids, context=None):
         n_ids = len(ids)
         if n_ids < 1:
             return False
         elif n_ids == 1:
             return ids[0]
         elif n_ids == 2:
-            return self._merge_vbl_pair(cr, uid, ids[0], ids[1], context=context)
+            return self._merge_invoice_pair(cr, uid, ids[0], ids[1], context=context)
         else:
-            id1 = self._merge_vbls(cr, uid, ids[:n_ids/2], context=context)
-            id2 = self._merge_vbls(cr, uid, ids[n_ids/2:], context=context)
-            return self._merge_vbl_pair(cr, uid, id1, id2, context=context)
+            id1 = self._merge_invoices(cr, uid, ids[:n_ids/2], context=context)
+            id2 = self._merge_invoices(cr, uid, ids[n_ids/2:], context=context)
+            return self._merge_invoice_pair(cr, uid, id1, id2, context=context)
 
-    def _group_vbl_by_partner(self, cr, uid, ids, context=None):
-        vbl_by_partner = {}
-        for vbl in self.browse(cr, uid, ids, context=context):
-            if vbl.partner_id.id in vbl_by_partner:
-                vbl_by_partner[vbl.partner_id.id].append(vbl.id)
+    def _group_invoices_by_partner(self, cr, uid, ids, auto=False, context=None):
+        if not ids:
+            return []
+        invoice_by_currency_by_partner = {}
+        for invoice in self.browse(cr, uid, ids, context=context):
+            partner_id = invoice.partner_id.id
+            currency_id = invoice.currency_id.id
+            if partner_id in invoice_by_currency_by_partner:
+                if currency_id in invoice_by_currency_by_partner[partner_id]:
+                    invoice_by_currency_by_partner[partner_id][currency_id].append(invoice.id)
+                else:
+                    invoice_by_currency_by_partner[partner_id][currency_id] = [invoice.id]
             else:
-                vbl_by_partner[vbl.partner_id.id] = [vbl.id]
-        for vbl_ids in vbl_by_partner.values():
-            self._merge_vbls(cr, uid, vbl_ids, context=context)
-
-
-    # GROUP INVOICES
+                invoice_by_currency_by_partner[partner_id] = {currency_id : [invoice.id]}
+        if not auto:
+            if len(invoice_by_currency_by_partner) > 1:
+                raise osv.except_osv(('Error'), ("You can't group invoices with different customers"))
+            elif len(invoice_by_currency_by_partner.values()[0]) > 1:
+                raise osv.except_osv(('Error'), ("You can't group invoices with different currencies"))
+        for invoice_by_currency in invoice_by_currency_by_partner.values():
+            for invoice_ids in invoice_by_currency.values():
+                self._merge_invoices(cr, uid, invoice_ids, context=context)
 
     def group_invoices(self, cr, uid, ids, context=None):
         vbl_ids = self.search(cr, uid, [('id','in',ids), ('type2','=','vessel')], context=context)
-        self._group_vbl_by_partner(cr, uid, vbl_ids, context=context)
+        yac_ids = self.search(cr, uid, [('id','in',ids), ('type2','=','yactivity')], context=context)
+        if len(ids) == len(yac_ids):
+            self._group_invoices_by_partner(cr, uid, yac_ids, context=context)
+        elif len(ids) == len(vbl_ids):
+            self._group_invoices_by_partner(cr, uid, vbl_ids, context=context)
+        else:
+            raise osv.except_osv(('Error'), "You can only group invoices of the same type")
+
 
 
     # VCL
@@ -775,13 +862,134 @@ class account_invoice(osv.osv):
                 dockage_vals['off_window'] = True
             else:
                 dockage_vals['off_window'] = False
+            if 'voyage_number_in' in dockage_vals and dockage_vals['voyage_number_in'] and 'dep_time' in dockage_vals and dockage_vals['dep_time'] \
+                and self.search(cr, uid, [('voyage_number_in', '=', dockage_vals['voyage_number_in']), ('dep_time', '=', dockage_vals['dep_time'])], context=context):
+                raise osv.except_osv(('Error'), ('Another Vessel Dockage with the same voyage number in and same departure time already exists.'))
             vdockage_ids.append(invoice_model.create(cr, uid, dockage_vals, context=context))
         return vdockage_ids
+
+    # YAC
+
+    def _get_yac_category(self, cr, uid, yard_activity):
+        imd_model = self.pool.get('ir.model.data')
+        if yard_activity == 'STUFF':
+            xml_id ='lct_product_category_stuffcharges'
+        elif yard_activity == 'STRIP':
+            xml_id =  'lct_product_category_stripcharges'
+        elif yard_activity == 'RENOM':
+            xml_id = 'lct_product_category_renominations'
+        elif yard_activity == 'AMEND':
+            xml_id = 'lct_product_category_amendmentcharges'
+        elif yard_activity == 'INSPE':
+            xml_id = 'lct_product_category_inspection'
+        elif yard_activity == 'SERVI':
+            xml_id = 'lct_product_category_services'
+        elif yard_activity == 'ATTSE':
+            xml_id = 'lct_product_category_sealnumber'
+        elif yard_activity == 'ASEAL':
+            xml_id = 'lct_product_category_seal'
+        elif yard_activity == 'PLACA':
+            xml_id = 'lct_product_category_placards'
+        else:
+            return False
+        return imd_model.get_record_id(cr, uid, 'lct_tos_integration', xml_id)
+
+    def _get_yac_service(self, cr, uid, service):
+        imd_model = self.pool.get('ir.model.data')
+        if service == 'PTI':
+            xml_id = 'lct_product_service_pti'
+        elif service == 'WAS':
+            xml_id = 'lct_product_service_washing'
+        else:
+            return False
+        return imd_model.get_record_id(cr, uid, 'lct_tos_integration', xml_id)
+
+    def _get_yac_type(self, cr, uid, p_type):
+        imd_model = self.pool.get('ir.model.data')
+        if p_type == 'GP':
+            xml_id = 'lct_product_type_gp'
+        elif p_type == 'RE':
+            xml_id = 'lct_product_type_reeferdg'
+        else:
+            return False
+        return imd_model.get_record_id(cr, uid, 'lct_tos_integration', xml_id)
+
+    def xml_to_yac(self, cr, uid, imp_data_id, context=None):
+        product_model = self.pool.get('product.product')
+        cont_nr_model = self.pool.get('lct.container.number')
+        invoice_model = self.pool.get('account.invoice')
+        pending_yac_model = self.pool.get('lct.pending.yard.activity')
+
+        imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
+        content = re.sub('<\?xml.*\?>','',imp_data.content).replace(u"\ufeff","")
+        yactivities = ET.fromstring(content)
+        yactivity_ids = []
+
+        invoice_lines = {}
+        for yactivity in yactivities.findall('yactivity'):
+            lines = yactivity.find('lines')
+            if lines is None:
+                continue
+
+            for line in lines.findall('line'):
+                yard_activity = self._get_elmnt_text(line, 'yard_activity')
+                if yard_activity in ['EXPST', 'REEFE']:
+                    pending_yac_model.create_activity(cr, uid, line, context=context)
+                    continue
+
+                partner_id = self._get_partner(cr, uid, line, 'container_operator_id', context=context)
+                if partner_id not in invoice_lines:
+                    invoice_lines[partner_id] = {}
+                category_id = self._get_yac_category(cr, uid, yard_activity)
+
+                if yard_activity == 'SERVI':
+                    service_ids = []
+                    for service_code_id in line.findall('service_code_id'):
+                        service_ids.append(self._get_yac_service(cr, uid, service_code_id.text))
+                else:
+                    service_ids = [False]
+
+                size = self._get_elmnt_text(line, 'container_size')
+                size_id = self._get_size(cr, uid, size)
+
+                status = self._get_elmnt_text(line, 'status')
+                status_id = self._get_status(cr, uid, status)
+
+                if status != 'E':
+                    p_type = self._get_elmnt_text(line, 'container_type_id')
+                    type_id = self._get_yac_type(cr, uid, p_type)
+                else:
+                    type_id = False
+
+                properties = {
+                    'category_id': category_id,
+                    'service_ids': service_ids,
+                    'size_id': size_id,
+                    'status_id': status_id,
+                    'type_id': type_id,
+                }
+                product_ids = product_model.get_products_by_properties(cr, uid, properties, context=context)
+
+                cont_nr_vals = {
+                    'name': self._get_elmnt_text(line, 'container_number'),
+                    'quantity': 1,
+                    'pricelist_qty': 1,
+                }
+                for product_id in product_ids:
+                    if product_id not in invoice_lines[partner_id]:
+                        invoice_lines[partner_id][product_id] = []
+                    cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals), context=context)
+                    invoice_lines[partner_id][product_id].append(cont_nr_id)
+        invoice_ids = self._create_invoices(cr, uid, invoice_lines, context=context)
+        invoice_model.write(cr, uid, invoice_ids, {'type2': 'yactivity'})
+
+
 
 class account_invoice_group(osv.osv_memory):
     _name = 'account.invoice.group'
 
     def invoice_group(self, cr, uid, ids, context=None):
+        context = context or {}
         invoice_model = self.pool.get('account.invoice')
         invoice_ids = context.get('active_ids', [])
         if invoice_model.search(cr, uid, [('id','in',invoice_ids), ('state','not in',['draft','proforma','proforma2'])], context=context):

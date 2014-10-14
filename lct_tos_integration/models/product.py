@@ -63,7 +63,7 @@ class product_product(osv.osv):
             properties['service_id'] = service_id
             product_id = self.search(cr, uid, [(prop, '=', prop_id) for prop, prop_id in properties.iteritems()])
             if product_id:
-                if len(product_id):
+                if len(product_id) == 1:
                     product_id = product_id[0]
                 else:
                     product_id = False
