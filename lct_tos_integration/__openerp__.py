@@ -47,6 +47,7 @@
         'views/tos_menu.xml',
         'views/lct_pending_yard_activity.xml',
         'views/lct_tos_export_data.xml',
+        'data/res_partner.xml',
         ],
     'images': [],
     'demo': [],

@@ -1,0 +1,7 @@
+<openerp>
+    <data>
+        <record id="lct_generic_customer" model="res.partner">
+            <field name="name">Generic customer</field>
+        </record>
+    </data>
+</openerp>

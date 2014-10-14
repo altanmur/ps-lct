@@ -477,7 +477,14 @@ class account_invoice(osv.osv):
         pricelist_model = self.pool.get('product.pricelist')
 
         ind_cust = self._get_elmnt_text(appointment, 'individual_customer')
-        partner_id = self._get_partner(cr, uid, appointment, 'customer_id', context=context)
+        if ind_cust=='IND':
+            individual_cust = True
+            partner_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'lct_generic_customer')
+        elif ind_cust=='STD':
+            individual_cust = False
+            partner_id = self._get_partner(cr, uid, appointment, 'customer_id', context=context)
+        else:
+            raise osv.except_osv(('Error'), ("Unknown value for tag 'individual_customer': %s" % ind_cust))
         partner = partner_model.browse(cr, uid, partner_id, context=context)
         account = partner.property_account_receivable
         if not account:
@@ -485,8 +492,8 @@ class account_invoice(osv.osv):
         date_invoice = datetime.today().strftime('%Y-%m-%d')
 
         app_vals = {
-            'individual_cust': True if ind_cust == 'IND' else False,
-            'partner_id': self._get_partner(cr, uid, appointment, 'customer_id', context=context),
+            'individual_cust': individual_cust,
+            'partner_id': partner_id,
             'appoint_ref': self._get_elmnt_text(appointment, 'appointment_reference'),
             'appoint_date': self._get_elmnt_text(appointment, 'appointment_date'),
             'date_due': self._get_elmnt_text(appointment, 'pay_through_date'),
