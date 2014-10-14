@@ -10,5 +10,16 @@
                 </field>
             </field>
         </record>
+
+        <record model="ir.ui.view" id="view_res_partner_form_lct">
+            <field name="name">view.res.partner.form.lct</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base_vat.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='vat_info']" position="after">
+                    <field name="tax_id"/>
+                </xpath>
+            </field>
+        </record>
     </data>
 </openerp>

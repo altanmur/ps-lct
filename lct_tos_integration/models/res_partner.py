@@ -28,6 +28,7 @@ class res_partner(osv.Model):
 
     _columns = {
         'ref': fields.char('Customer key', size=64, select=1, required=True),
+        'tax_id': fields.many2one('account.tax', string="Tax"),
     }
 
     def _default_ref(self, cr, uid, context=None):

@@ -69,6 +69,15 @@ class account_invoice_line(osv.osv):
         self.unlink(cr, uid, [line2.id], context=context)
         return line1.id
 
+    def create(self, cr, uid, vals, context=None):
+        if 'invoice_id' in vals and vals['invoice_id']:
+            invoice = self.pool.get('account.invoice').browse(cr, uid, vals['invoice_id'], context=context)
+            if 'partner_id' in invoice and invoice.partner_id:
+                tax = invoice.partner_id.tax_id
+                if tax:
+                    vals['invoice_line_tax_id'] = [(6, False, [tax.id])]
+        return super(account_invoice_line, self).create(cr, uid, vals, context=context)
+
 
 class account_voucher(osv.osv):
     _inherit = 'account.voucher'
