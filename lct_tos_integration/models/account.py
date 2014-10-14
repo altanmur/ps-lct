@@ -447,7 +447,7 @@ class account_invoice(osv.osv):
             type_id = False
         return type_id
 
-    def _prepare_invoice_line(self, invoice_lines, partner_id, vessel_ID, product_id):
+    def _prepare_invoice_line_dict(self, invoice_lines, partner_id, vessel_ID, product_id):
         if partner_id not in invoice_lines:
             invoice_lines[partner_id] = {vessel_ID: {product_id: []}}
         elif vessel_ID not in invoice_lines[partner_id]:
@@ -491,7 +491,7 @@ class account_invoice(osv.osv):
                 product_id = product_id[0]
                 vals = dict(cont_nr_vals, pricelist_qty=n_hcm, quantity=n_hcm)
                 cont_nr_id = cont_nr_model.create(cr, uid, vals, context=context)
-                self._prepare_invoice_line(invoice_lines, partner_id, vessel_ID, product_id)
+                self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_ID, product_id)
                 invoice_lines[partner_id][vessel_ID][product_id].append(cont_nr_id)
 
             n_gbc = self._xml_get_digit(vbilling, 'gearbox_count')
@@ -503,7 +503,7 @@ class account_invoice(osv.osv):
                 product_id = product_id[0]
                 vals = dict(cont_nr_vals, pricelist_qty=n_gbc, quantity=n_gbc)
                 cont_nr_id = cont_nr_model.create(cr, uid, vals, context=context)
-                self._prepare_invoice_line(invoice_lines, partner_id, vessel_ID, product_id)
+                self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_ID, product_id)
                 invoice_lines[partner_id][vessel_ID][product_id].append(cont_nr_id)
 
             lines = vbilling.find('lines')
@@ -545,7 +545,7 @@ class account_invoice(osv.osv):
                     error += ', '.join([key + ': ' + str(val) for key, val in properties.iteritems()])
                     raise osv.except_osv(('Error'), (error))
                 for product_id in product_ids:
-                    self._prepare_invoice_line(invoice_lines, partner_id, vessel_ID, product_id)
+                    self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_ID, product_id)
                     cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=1, quantity=1), context=context)
                     invoice_lines[partner_id][vessel_ID][product_id].append(cont_nr_id)
                 if category in ['E', 'T']:
@@ -573,12 +573,12 @@ class account_invoice(osv.osv):
                             arr_date = datetime.strptime(pending_yac.arr_timestamp, "%Y-%m-%d %H:%M:%S").date()
                             expst_qties.append((dep_date - arr_date).days + 1)
                     if reefe_qties:
-                        self._prepare_invoice_line(invoice_lines, partner_id, vessel_ID, reefe_product_id)
+                        self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_ID, reefe_product_id)
                         for quantity in reefe_qties:
                             cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=quantity, quantity=quantity), context=context)
                             invoice_lines[partner_id][vessel_ID][reefe_product_id].append(cont_nr_id)
                     if expst_qties:
-                        self._prepare_invoice_line(invoice_lines, partner_id, vessel_ID, expst_product_id)
+                        self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_ID, expst_product_id)
                         for quantity in expst_qties:
                             cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=quantity, quantity=quantity), context=context)
                             invoice_lines[partner_id][vessel_ID][expst_product_id].append(cont_nr_id)
@@ -689,9 +689,6 @@ class account_invoice(osv.osv):
             id2 = self._merge_invoices(cr, uid, ids[n_ids/2:], context=context)
             return self._merge_invoice_pair(cr, uid, id1, id2, context=context)
 
-
-
-    # TODO: Change this method to group only when invoices have the same Vessel id
     def _group_invoices_by_partner(self, cr, uid, ids, auto=False, context=None):
         if not ids:
             return []
@@ -824,7 +821,6 @@ class account_invoice(osv.osv):
                     continue
 
                 partner_id = self._get_partner(cr, uid, line, 'container_operator_id', context=context)
-
                 category_id = self._get_yac_category(cr, uid, yard_activity)
 
                 if yard_activity == 'SERVI':
@@ -862,7 +858,7 @@ class account_invoice(osv.osv):
                 }
                 vessel_ID = self._get_elmnt_text(line, 'vessel_id')
                 for product_id in product_ids:
-                    self._prepare_invoice_line(invoice_lines, partner_id, vessel_ID, product_id)
+                    self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_ID, product_id)
                     cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals), context=context)
                     invoice_lines[partner_id][vessel_ID][product_id].append(cont_nr_id)
         invoice_ids = self._create_invoices(cr, uid, invoice_lines, context=context)
