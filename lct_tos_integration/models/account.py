@@ -113,11 +113,11 @@ class account_invoice(osv.osv):
         'vessel_ID': fields.char('Vessel ID'),
         'berth_time': fields.datetime('Berthing time'),
         'dep_time': fields.datetime('Departure time'),
-        'call_sign_vbl': fields.char('Call sign'),
-        'lloyds_nr_vbl': fields.char('Lloyds number'),
-        'vessel_ID_vbl': fields.char('Vessel ID'),
-        'berth_time_vbl': fields.datetime('Berthing time'),
-        'dep_time_vbl': fields.datetime('Departure time'),
+        'call_sign_vbl': fields.related('call_sign', type='char', string='Call sign'),
+        'lloyds_nr_vbl': fields.related('lloyds_nr', type='char', string='Lloyds number'),
+        'vessel_ID_vbl': fields.related('vessel_ID', type='char', string='Vessel ID'),
+        'berth_time_vbl': fields.related('berth_time', type='datetime', string='Berthing time'),
+        'dep_time_vbl': fields.related('dep_time', type='datetime', string='Departure time'),
         'individual_cust': fields.boolean('Individual customer'),
         'appoint_ref': fields.char('Appointment reference'),
         'appoint_date': fields.datetime('Appointment date'),
@@ -481,7 +481,6 @@ class account_invoice(osv.osv):
                 'vessel_ID': vessel_ID,
                 'berth_time': self._get_elmnt_text(vbilling, 'berthing_time'),
                 'dep_time': self._get_elmnt_text(vbilling, 'departure_time'),
-                'vessel_ID': vessel_ID,
             }
             n_hcm = self._xml_get_digit(vbilling, 'hatchcovers_moves')
             if n_hcm > 0:
@@ -629,10 +628,10 @@ class account_invoice(osv.osv):
                     if not cont_nrs:
                         continue
                     new_invoice_vals.update({
-                        'call_sign_vbl': cont_nrs[0].call_sign,
-                        'lloyds_nr_vbl': cont_nrs[0].lloyds_nr,
-                        'berth_time_vbl': cont_nrs[0].berth_time,
-                        'dep_time_vbl': cont_nrs[0].dep_time,
+                        'call_sign': cont_nrs[0].call_sign,
+                        'lloyds_nr': cont_nrs[0].lloyds_nr,
+                        'berth_time': cont_nrs[0].berth_time,
+                        'dep_time': cont_nrs[0].dep_time,
                     })
                     invoice_model.write(cr, uid, invoice_id, new_invoice_vals, context=context)
 
