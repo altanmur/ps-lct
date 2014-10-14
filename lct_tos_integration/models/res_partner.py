@@ -39,7 +39,7 @@ class res_partner(osv.Model):
 
     def create(self, cr, uid, vals, context=None):
         partner_id = super(res_partner, self).create(cr, uid, vals, context=context)
-        self.pool.get('ftp.config').export_partners(cr, uid, [partner_id], context=context)
+        self.pool.get('lct.tos.export.data').export_partners(cr, uid, [partner_id], context=context)
         return partner_id
 
     def write(self, cr, uid, ids, vals, context=None):
@@ -61,9 +61,9 @@ class res_partner(osv.Model):
             'phone',
         ]
         if any(item in vals for item in to_update):
-            self.pool.get('ftp.config').export_partners(cr, uid, ids, context=context)
+            self.pool.get('lct.tos.import.data').export_partners(cr, uid, ids, context=context)
         elif 'mobile' in vals:
             for partner in self.browse(cr, uid, ids, context=context):
                 if not partner.phone:
-                    self.pool.get('ftp.config').export_partners(cr, uid, [partner.id], context=context)
+                    self.pool.get('lct.tos.export.data').export_partners(cr, uid, [partner.id], context=context)
         return res

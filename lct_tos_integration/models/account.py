@@ -122,7 +122,7 @@ class account_invoice(osv.osv):
         'voyage_number_out': fields.char('Voyage Number Out'),
         'off_window': fields.boolean('OFF window'),
         'loa': fields.integer('LOA'),
-        'imported_file_id': fields.many2one('lct.tos.import.data', string="Imported File"),
+        'imported_file_id': fields.many2one('lct.tos.import.data', string="Imported File", ondelete='restrict'),
     }
 
     def _get_elmnt_text(self, elmnt, tag):
