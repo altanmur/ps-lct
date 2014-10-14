@@ -118,6 +118,7 @@ class account_invoice(osv.osv):
         'vessel_ID_vbl': fields.related('vessel_ID', type='char', string='Vessel ID'),
         'berth_time_vbl': fields.related('berth_time', type='datetime', string='Berthing time'),
         'dep_time_vbl': fields.related('dep_time', type='datetime', string='Departure time'),
+        'vessel_ID_yac': fields.related('vessel_ID', type='char', string='Vessel ID'),
         'individual_cust': fields.boolean('Individual customer'),
         'appoint_ref': fields.char('Appointment reference'),
         'appoint_date': fields.datetime('Appointment date'),
