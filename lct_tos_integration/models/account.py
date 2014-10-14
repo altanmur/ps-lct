@@ -397,10 +397,9 @@ class account_invoice(osv.osv):
         category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_export')
         size_id = self._get_app_size(cr, uid, line)
         sub_category_id = self._get_app_sub_category(cr, uid, line)
-        type_id, service_id = self._get_app_type_service_by_type(cr, uid, line)
         if not sub_category_id:
             type_id = False
-
+        type_id, service_id = self._get_app_type_service_by_type(cr, uid, line)
         properties = {
             'category_id': category_id,
             'type_id': type_id,
@@ -409,9 +408,16 @@ class account_invoice(osv.osv):
             'sub_category_id': sub_category_id,
             'service_ids': [service_id],
         }
+        product_ids = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, context=context)
 
-        product_id = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, context=context)[0]
-        quantities_by_products = {product_id: 1}
+        type_id, service_id = self._get_app_type_service_by_cfs_activity(cr, uid, line)
+        properties.update({
+            'type_id': type_id,
+            'service_ids': [service_id],
+        })
+        product_ids.extend(self.pool.get('product.product').get_products_by_properties(cr, uid, properties, context=context))
+
+        quantities_by_products = dict([(product_id, 1) for product_id in product_ids])
 
         return quantities_by_products
 
