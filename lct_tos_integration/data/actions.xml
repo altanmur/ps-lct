@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <openerp>
     <data>
-
         <record id="action_server_process_data" model="ir.actions.server">
             <field name="name">Process data</field>
             <field name="condition">True</field>
@@ -18,6 +17,25 @@
             <field name="key">action</field>
             <field name="model_id" ref="lct_tos_integration.model_lct_tos_import_data" />
             <field name="model">lct.tos.import.data</field>
+            <field name="key2">client_action_multi</field>
+        </record>
+
+        <record id="action_server_upload_files" model="ir.actions.server">
+            <field name="name">Upload files</field>
+            <field name="condition">True</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="lct_tos_integration.model_lct_tos_export_data" />
+            <field name="state">code</field>
+            <field name="code">self.upload_files(cr, uid, ids=context.get('active_ids', []), context=context)</field>
+        </record>
+
+        <record id="action_binding_upload_files" model="ir.values">
+            <field name="name">action_process_data</field>
+            <field name="action_id" ref="action_server_process_data" />
+            <field name="value" eval="'ir.actions.server,' + str(ref('action_server_upload_files'))" />
+            <field name="key">action</field>
+            <field name="model_id" ref="lct_tos_integration.model_lct_tos_export_data" />
+            <field name="model">lct.tos.export.data</field>
             <field name="key2">client_action_multi</field>
         </record>
     </data>

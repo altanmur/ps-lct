@@ -38,6 +38,6 @@
             <field name="context">{"search_default_status_pending":1}</field>
         </record>
 
-        <menuitem id="lct_pending_yard_activities_menu" action="action_lct_pending_yard_activity" name="Pending Yard Activities" parent="tos_integ_ftp_menu"/>
+        <menuitem id="lct_pending_yard_activities_menu" sequence="4" action="action_lct_pending_yard_activity" name="Pending Yard Activities" parent="tos_integ_ftp_menu"/>
     </data>
 </openerp>

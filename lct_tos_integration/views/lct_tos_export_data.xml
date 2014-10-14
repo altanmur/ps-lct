@@ -1,9 +1,8 @@
-<?xml version="1.0" ?>
 <openerp>
     <data>
-        <record id="view_lct_tos_import_data_form" model="ir.ui.view">
-            <field name="name">lct.tos.import.data.form</field>
-            <field name="model">lct.tos.import.data</field>
+        <record id="view_lct_tos_export_data_form" model="ir.ui.view">
+            <field name="name">lct.tos.export.data.form</field>
+            <field name="model">lct.tos.export.data</field>
             <field name="arch" type="xml">
                 <form string="Imported Files" version="7.0" create="0">
                     <header>
@@ -26,11 +25,11 @@
             </field>
         </record>
 
-        <record id="view_lct_tos_import_data_tree" model="ir.ui.view">
-            <field name="name">lct.tos.import.data.tree</field>
-            <field name="model">lct.tos.import.data</field>
+        <record id="view_lct_tos_export_data_tree" model="ir.ui.view">
+            <field name="name">lct.tos.export.data.tree</field>
+            <field name="model">lct.tos.export.data</field>
             <field name="arch" type="xml">
-                <tree string="Imported Files" version="7.0" colors="red:status=='fail';black:status=='success';blue:status=='pending'" create="0">
+                <tree string="Exported Files" version="7.0" colors="red:status=='fail';black:status=='success';blue:status=='pending'" create="0">
                     <field name="name"/>
                     <field name="create_date"/>
                     <field name="status"/>
@@ -38,11 +37,11 @@
             </field>
         </record>
 
-        <record id="view_lct_tos_import_data_search_lct" model="ir.ui.view">
-            <field name="name">lct.tos.import.data.search</field>
-            <field name="model">lct.tos.import.data</field>
+        <record id="view_lct_tos_export_data_search_lct" model="ir.ui.view">
+            <field name="name">lct.tos.export.data.search</field>
+            <field name="model">lct.tos.export.data</field>
             <field name="arch" type="xml">
-                <search string="Search LCT TOS imported files">
+                <search string="Search LCT TOS exported files">
                     <filter name="status_failed" string="Fail" domain="[('status', '=', 'fail')]"/>
                     <filter name="status_success" string="Success" domain="[('status', '=', 'success')]"/>
                     <filter name="status_pending" string="Pending" domain="[('status', '=', 'pending')]"/>
@@ -50,13 +49,13 @@
             </field>
         </record>
 
-        <record id="action_lct_tos_import_data" model="ir.actions.act_window">
-            <field name="name">LCT TOS imported files</field>
-            <field name="res_model">lct.tos.import.data</field>
+        <record id="action_lct_tos_export_data" model="ir.actions.act_window">
+            <field name="name">LCT TOS exported files</field>
+            <field name="res_model">lct.tos.export.data</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="lct_tos_import_data_menu" sequence="2" action="action_lct_tos_import_data" name="Imported Files" parent="tos_integ_ftp_menu"/>
+        <menuitem id="lct_tos_export_data_menu" sequence="3" action="action_lct_tos_export_data" name="Exported Files" parent="tos_integ_ftp_menu"/>
     </data>
 </openerp>

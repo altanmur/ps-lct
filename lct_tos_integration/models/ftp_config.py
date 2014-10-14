@@ -172,7 +172,7 @@ class ftp_config(osv.osv):
             'payment_made': 'YES',
             'pay_through_date': invoice.date_due,
             'payment_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            'cashier_receipt_number': voucher.cashier_rcpt_nr, # TODO
+            'cashier_receipt_number': voucher.cashier_rcpt_nr,
         }
         self._dict_to_tree(values, ET.SubElement(root, 'appointment'))
         return root

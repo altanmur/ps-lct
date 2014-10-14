@@ -62,6 +62,6 @@
 
         <menuitem id="tos_integ_ftp_menu" name="TOS integration" sequence="200" parent="base.menu_config"/>
 
-        <menuitem id="tos_integ_ftp_config_menu" action="action_ftp_config_lct" name="FTP Configurations" parent="tos_integ_ftp_menu"/>
+        <menuitem id="tos_integ_ftp_config_menu" sequence="1" action="action_ftp_config_lct" name="FTP Configurations" parent="tos_integ_ftp_menu"/>
     </data>
 </openerp>
