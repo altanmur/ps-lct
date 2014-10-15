@@ -114,10 +114,10 @@ class lct_tos_import_data(osv.Model):
             self.write(cr, uid, imp_data.id, {'status': 'success'}, context=context)
             cr.execute('RELEASE SAVEPOINT SP')
 
-        if vbl_data_ids and self.search(cr, uid, [('status', '!=', 'success'), ('id', 'not in', vbl_data_ids)], context=context):
+        if vbl_data_ids and self.search(cr, uid, [('status', '!=', 'success'), ('id', 'not in', vbl_data_ids), ('name', 'ilike', 'YAC')], context=context):
             self.write(cr, uid, vbl_data_ids, {
                 'status': 'fail',
-                'error': "You can't import vessel billings while other imported files are in status 'fail' or 'pending'",
+                'error': "You can't import vessel billings while imported yard activity files are in status 'fail' or 'pending'",
                 }, context=context)
         else:
             for vbl_data_id in vbl_data_ids:
