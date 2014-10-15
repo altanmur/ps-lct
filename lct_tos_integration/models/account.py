@@ -287,10 +287,26 @@ class account_invoice(osv.osv):
         service_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', service_xml_id)
         return (type_id, service_id)
 
-    def _get_app_type_service_by_cfs_activity(self, cr, uid, line):
+    def _get_export_app_type_service_by_cfs_activity(self, cr, uid, line):
         cfs_activity = self._get_elmnt_text(line, 'cfs_activity')
         if cfs_activity == 'NO':
             type_xml_id = 'lct_product_type_gatereceive'
+            service_xml_id = 'lct_product_service_shorehandling'
+        elif cfs_activity == 'YES':
+            type_xml_id = 'lct_product_type_cfs'
+            service_xml_id = 'lct_product_service_shorehandling'
+        else:
+            return (False, False)
+
+        imd_model = self.pool.get('ir.model.data')
+        type_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', type_xml_id)
+        service_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', service_xml_id)
+        return (type_id, service_id)
+
+    def _get_import_app_type_service_by_cfs_activity(self, cr, uid, line):
+        cfs_activity = self._get_elmnt_text(line, 'cfs_activity')
+        if cfs_activity == 'NO':
+            type_xml_id = 'lct_product_type_gatedelivery'
             service_xml_id = 'lct_product_service_shorehandling'
         elif cfs_activity == 'YES':
             type_xml_id = 'lct_product_type_cfs'
@@ -374,7 +390,7 @@ class account_invoice(osv.osv):
             service_id = imd_model.get_record_id(cr, uid, module, 'lct_product_service_reeferelectricity')
             type_quantities_by_services[service_id] = (type_id, plugged_time)
 
-        type_id, service_id = self._get_app_type_service_by_cfs_activity(cr, uid, line)
+        type_id, service_id = self._get_import_app_type_service_by_cfs_activity(cr, uid, line)
         type_quantities_by_services[service_id] = (type_id, 1)
 
         properties = {
@@ -410,7 +426,7 @@ class account_invoice(osv.osv):
         }
         product_ids = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, context=context)
 
-        type_id, service_id = self._get_app_type_service_by_cfs_activity(cr, uid, line)
+        type_id, service_id = self._get_export_app_type_service_by_cfs_activity(cr, uid, line)
         properties.update({
             'type_id': type_id,
             'service_ids': [service_id],
