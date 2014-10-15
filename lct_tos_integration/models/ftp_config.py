@@ -27,7 +27,6 @@ from StringIO import StringIO
 from datetime import datetime
 import io
 import traceback
-from tempfile import NamedTemporaryFile
 
 
 
@@ -117,100 +116,3 @@ class ftp_config(osv.osv):
 
     def cron_import_ftp_data(self, cr, uid, context=None):
         self._import_ftp_data(cr, uid, self.search(cr, uid, [('active','=',True)]), context=context)
-
-
-    # Data Export
-
-    def _dict_to_tree(self, vals, elmnt):
-        for tag, val in vals.iteritems():
-            subelmnt = ET.SubElement(elmnt, tag)
-            if not val:
-                pass
-            elif isinstance(val, unicode):
-                subelmnt.text = val
-            elif isinstance(val, str):
-                subelmnt.text = unicode(val)
-            elif isinstance(val, int) or isinstance(val, long) and not isinstance(val, bool):
-                subelmnt.text = unicode(str(val))
-            elif isinstance(val,dict):
-                self._dict_to_tree(val, subelmnt)
-            elif isinstance(val,list):
-                for list_elem in val:
-                    self._dict_to_tree(list_elem, subelmnt)
-
-    def _write_partners_tree(self, cr, uid, partner_ids, context=None):
-        root = ET.Element('customers')
-        partner_model = self.pool.get('res.partner')
-        partners = partner_model.browse(cr, uid, partner_ids, context=context)
-        for partner in partners:
-            values = {
-                'customer_id': partner.id,
-                'customer_key': partner.ref,
-                'name': partner.name,
-                'street': (partner.street + ( (', ' + partner.street2) if partner.street2 else '') if partner.street else '') or False,
-                'city': partner.city,
-                'zip': partner.zip,
-                'country': partner.country_id and partner.country_id.code,
-                'email': partner.email,
-                'website': partner.website,
-                'phone': partner.phone or partner.mobile or False
-            }
-            self._dict_to_tree(values, ET.SubElement(root, 'customer'))
-        return root
-
-    def _write_app_tree(self, cr, uid, app_id, payment_id, context=None):
-        root = ET.Element('appointments')
-        invoice_model = self.pool.get('account.invoice')
-        voucher_model = self.pool.get('account.voucher')
-        invoice = invoice_model.browse(cr, uid, app_id, context=context)
-        voucher = voucher_model.browse(cr, uid, payment_id, context=context)
-        values = {
-            'customer_id': invoice.partner_id.id,
-            'individual_customer': 'IND' if invoice.individual_cust else 'STD',
-            'appointment_reference': invoice.appoint_ref,
-            'appointment_date': invoice.appoint_date,
-            'payment_made': 'YES',
-            'pay_through_date': invoice.date_due,
-            'payment_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            'cashier_receipt_number': voucher.cashier_rcpt_nr, # TODO
-        }
-        self._dict_to_tree(values, ET.SubElement(root, 'appointment'))
-        return root
-
-    def _write_xml_file(self, root):
-        f = StringIO()
-        f.write(u'<?xml version="1.0" encoding="utf-8"?>')
-        f.write(ET.tostring(root, encoding='utf-8', pretty_print=True).decode('utf-8'))
-        return f
-
-    def _upload_file(self, cr, uid, temp_file, file_name, context=None):
-        ftp_config_ids = self.search(cr, uid, [('active','=',True)], context=context)
-        ftp_config_id = ftp_config_ids and ftp_config_ids[0] or False
-        config_obj = self.browse(cr, uid, ftp_config_id, context=context)
-        ftp = FTP(host=config_obj.addr, user=config_obj.user, passwd=config_obj.psswd)
-        inbound_path =  config_obj.inbound_path.rstrip(os.sep) + os.sep
-        ftp.cwd(inbound_path)
-        temp_file.seek(0)
-        ftp.storlines('STOR ' + file_name, temp_file)
-
-    def export_partners(self, cr, uid, partner_ids, context=None):
-        if not partner_ids:
-            return []
-        ftp_config_ids = self.search(cr, uid, [('active','=',True)], context=context)
-        if not ftp_config_ids:
-            raise osv.except_osv(('Error'), ('Impossible to find an active FTP configuration to export this partner'))
-        root = self._write_partners_tree(cr, uid, partner_ids, context=context)
-
-        sequence = self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', 'sequence_partner_export', context=context)
-
-        file_name = 'CUS_' + datetime.today().strftime('%y%m%d') + '_' + sequence + '.xml'
-        self._upload_file(cr, uid, self._write_xml_file(root), file_name, context=context)
-        return partner_ids
-
-    def export_app(self, cr, uid, app_id, payment_id, context=None):
-        if not (app_id and payment_id):
-            return []
-        root = self._write_app_tree(cr, uid, app_id, payment_id, context=context)
-        sequence = self.pool.get('ir.sequence').get_next_by_xml_id(cr, uid, 'lct_tos_integration', 'sequence_appointment_validate_export', context=context)
-        file_name = 'APP_' + datetime.today().strftime('%y%m%d') + '_' + sequence + '.xml'
-        self._upload_file(cr, uid, self._write_xml_file(root), file_name, context=context)

@@ -90,13 +90,13 @@ class account_voucher(osv.osv):
         invoice_id = context.get('invoice_id', False)
         if invoice_id:
             inv = self.pool.get('account.invoice').browse(cr, uid, invoice_id, context=context)
-            if inv.type2 != 'appointment':
+            if inv.type2 != 'appointment' or not inv.individual_cust:
                 return res
             amount = 0.0
             for payment in inv.payment_ids:
                 amount += payment.credit - payment.debit
             if amount >= inv.amount_total:
-                self.pool.get('ftp.config').export_app(cr, uid, invoice_id, ids[0], context=context)
+                self.pool.get('lct.tos.export.data').export_app(cr, uid, invoice_id, ids[0], context=context)
         return res
 
 
@@ -130,6 +130,7 @@ class account_invoice(osv.osv):
         'voyage_number_out': fields.char('Voyage Number Out'),
         'off_window': fields.boolean('OFF window'),
         'loa': fields.integer('LOA'),
+        'imported_file_id': fields.many2one('lct.tos.import.data', string="Imported File", ondelete='restrict'),
     }
 
     def _get_elmnt_text(self, elmnt, tag):
@@ -565,14 +566,16 @@ class account_invoice(osv.osv):
             line_id = invoice_line_model.create(cr, uid, line_vals, context=context)
             cont_nr_model.write(cr, uid, cont_nr_ids, {'invoice_line_id': line_id}, context=context)
 
+        return app_id
+
     def xml_to_app(self, cr, uid, imp_data_id, context=None):
         imp_data = self.pool.get('lct.tos.import.data').browse(cr, uid, imp_data_id, context=context)
         content = re.sub('<\?xml.*\?>','',imp_data.content).replace(u"\ufeff","")
         appointments = ET.fromstring(content)
 
         for appointment in appointments:
-            self._create_app(cr, uid, appointment, context=context)
-
+            app_id = self._create_app(cr, uid, appointment, context=context)
+            self.write(cr, uid, app_id, {'imported_file_id': imp_data_id}, context=context)
 
     # VBL
 
