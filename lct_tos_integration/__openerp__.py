@@ -48,6 +48,7 @@
         'views/lct_pending_yard_activity.xml',
         'views/lct_multiplying_rate.xml',
         'views/lct_tos_export_data.xml',
+        'data/res_partner.xml',
         ],
     'images': [],
     'demo': [],

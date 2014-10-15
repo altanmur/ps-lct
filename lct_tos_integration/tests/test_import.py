@@ -259,9 +259,6 @@ class TestImport(TransactionCase):
         vesselsbefore = len(self.vsl_model.search(cr, uid, []))
         vessel_ids = self.invoice_model.search(cr, uid, [('type2','=','vessel')])
         appoint_ids = self.invoice_model.search(cr, uid, [('type2','=','appointment')])
-        data_ids = import_data_model.search(cr, uid, [])
-        if data_ids:
-            import_data_model.unlink(cr, uid, data_ids)
         ftp_config_model.button_import_ftp_data(cr, uid, [self.config.id])
 
         appoints = invoice_model.browse(cr, uid, invoice_model.search(cr, uid, [('type2','=','appointment'), ('id', 'not in', appoint_ids)], order='appoint_ref'))
@@ -306,9 +303,6 @@ class TestImport(TransactionCase):
 
         self._prepare_import()
         dockage_ids = self.invoice_model.search(cr, uid, [('type2','=','dockage')])
-        data_ids = import_data_model.search(cr, uid, [])
-        if data_ids:
-            import_data_model.unlink(cr, uid, data_ids)
         ftp_config_model.button_import_ftp_data(cr, uid, [self.config.id])
 
         dockages = invoice_model.browse(cr, uid, invoice_model.search(cr, uid, [('type2','=','dockage'), ('id', 'not in', dockage_ids)], order='appoint_ref'))
