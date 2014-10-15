@@ -61,7 +61,7 @@ class res_partner(osv.Model):
             'phone',
         ]
         if any(item in vals for item in to_update):
-            self.pool.get('lct.tos.import.data').export_partners(cr, uid, ids, context=context)
+            self.pool.get('lct.tos.export.data').export_partners(cr, uid, ids, context=context)
         elif 'mobile' in vals:
             for partner in self.browse(cr, uid, ids, context=context):
                 if not partner.phone:
