@@ -68,7 +68,7 @@ class ftp_config(osv.osv):
                 ftp.mkd(archive_path)
 
             for filename in ftp.nlst():
-                if filename == archive_path or filename in ['.', '..']:
+                if filename in [archive_path, '.', '..']:
                     continue
 
                 content = StringIO()

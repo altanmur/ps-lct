@@ -201,10 +201,14 @@ class TestImport(TransactionCase):
         cr, uid = self.cr, self.uid
         config = self.config
         self._create_pricelist()
-        self.partner_id = self.partner_model.create(cr, uid,{
-            'name': 'Test Customer',
-            'property_product_pricelist': self.pricelist.id,
-            })
+        self.partner_id = self.partner_model.search(cr, uid, [('name', '=', 'MSK')])
+        if self.partner_id:
+            self.partner_id = self.partner_id[0]
+        else:
+            self.partner_id = self.partner_model.create(cr, uid,{
+                'name': 'Test Customer',
+                'property_product_pricelist': self.pricelist.id,
+                })
 
         ftp = FTP(host=config['addr'], user=config['user'], passwd=config['psswd'])
         ftp.cwd(config['outbound_path'])
