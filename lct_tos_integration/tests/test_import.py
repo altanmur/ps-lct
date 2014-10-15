@@ -259,23 +259,12 @@ class TestImport(TransactionCase):
         if data_ids:
             import_data_model.unlink(cr, uid, data_ids)
         ftp_config_model.button_import_ftp_data(cr, uid, [self.config.id])
+
         appoints = invoice_model.browse(cr, uid, invoice_model.search(cr, uid, [('type2','=','appointment'), ('id', 'not in', appoint_ids)], order='appoint_ref'))
         self.assertEqual(len(appoints), 2, 'Importing should create 2 appointments')
         self.assertTrue(appoints[0].appoint_ref == 'LCT2014062400289', 'Importing should create an appointment with reference: LCT2014062400289')
-        lines = sorted(appoints[0].invoice_line, key=lambda x: x.name.lower())
-        self.assertTrue(len(lines) == 3)
-        self.assertTrue(lines[0].name == 'Export Reefer electricity 20 Full GP')
-        self.assertTrue(lines[0].quantity == 1)
-        self.assertTrue(lines[0].price_unit == 70.4)
-        self.assertTrue(lines[1].name == 'Export Storage 20 Full GP')
-        self.assertTrue(lines[1].quantity == 2)
-        self.assertTrue(lines[1].price_unit == 281.25)
-        self.assertTrue(lines[2].name == 'Import Reefer electricity 40 Full GP')
-        self.assertTrue(lines[2].quantity == 1)
-        self.assertTrue(lines[2].price_unit == 464.)
-
         self.assertTrue(appoints[1].appoint_ref == 'LCT2014070900019', 'Importing should create an appointment with reference: LCT2014070900019')
-        self.assertTrue(len(appoints[1].invoice_line) == 0)
+        # TODO : Write tests for appointments
 
         vessels = invoice_model.browse(cr, uid, invoice_model.search(cr, uid, [('type2','=','vessel'), ('id', 'not in', vessel_ids)], order='call_sign'))
         self.assertTrue(len(vessels) == 1, 'Importing should create 1 vessel billing')
