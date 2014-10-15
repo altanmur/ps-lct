@@ -518,6 +518,11 @@ class account_invoice(osv.osv):
             elif category == 'E':
                 quantities_by_products = self._get_app_export_line_quantities_by_products(cr, uid, line, context=context)
 
+            bundle = self._get_elmnt_text(line, 'bundles')
+            if bundle=='YES':
+                bundle_product_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'bundle')
+                quantities_by_products[bundle_product_id] = 1
+
             shc_product_ids = self._get_shc_products(cr, uid, line, context=context)
 
             cont_nr_vals = {
