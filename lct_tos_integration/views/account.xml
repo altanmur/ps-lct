@@ -12,6 +12,15 @@
                     <field name="type2" invisible="1"/>
                 </field>
                 <xpath expr="//page[@string='Invoice Lines']" position="after">
+                    <page string="Vessel Billing Info" attrs="{'invisible':[('type2','!=','vessel')]}">
+                        <group col="4">
+                            <field name="vessel_ID_vbl"/>
+                            <field name="call_sign_vbl"/>
+                            <field name="lloyds_nr_vbl"/>
+                            <field name="berth_time_vbl"/>
+                            <field name="dep_time_vbl"/>
+                        </group>
+                    </page>
                     <page string="Appointment Info" attrs="{'invisible':[('type2','!=','appointment')]}">
                         <group col="4">
                             <field name="individual_cust"/>
@@ -32,6 +41,9 @@
                             <field name="loa"/>
                         </group>
                     </page>
+                </xpath>
+                <xpath expr="//field[@name='date_due']" position="after">
+                    <field name="vessel_ID_yac" attrs="{'invisible': [('type2', '!=', 'yactivity')]}" />
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']" position="attributes">
                     <attribute name="attrs">{'invisible':[('type2', 'in', ['vessel', 'appointment', 'dockage'])]}</attribute>
