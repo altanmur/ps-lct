@@ -38,6 +38,7 @@ def set_dockage_customer(xml_file, partner_id):
     return f
 
 def purge_ftp(ftp, path='', omit=[]):
+    omit.extend(['.', '..'])
     files = ftp.nlst(path)
     if path:
         files = [f.rstrip(os.sep).split(os.sep)[-1] for f in files]
