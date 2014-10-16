@@ -495,10 +495,11 @@ class account_invoice(osv.osv):
             if shc is None or not shc.text:
                 continue
             service_ids.append(self._get_shc_service(cr, uid, shc.text))
-
-        properties['service_ids'] = service_ids
-        return self.pool.get('product.product').get_products_by_properties(cr, uid, properties, context=context)
-
+        if service_ids:
+            properties['service_ids'] = service_ids
+            return self.pool.get('product.product').get_products_by_properties(cr, uid, properties, context=context)
+        else:
+            return []
 
     def _create_app(self, cr, uid, appointment, context=None):
         imd_model = self.pool.get('ir.model.data')
