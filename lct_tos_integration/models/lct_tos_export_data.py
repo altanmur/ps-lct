@@ -123,9 +123,9 @@ class lct_tos_export_data(osv.Model):
         partners = partner_model.browse(cr, uid, partner_ids, context=context)
         for partner in partners:
             vals = {
-                'customer_id': partner.id,
+                'customer_id': partner.name,
                 'customer_key': partner.ref,
-                'name': partner.name,
+                'name': partner.id,
                 'street': (partner.street + ( (', ' + partner.street2) if partner.street2 else '') if partner.street else '') or False,
                 'city': partner.city,
                 'zip': partner.zip,
