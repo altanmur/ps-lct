@@ -125,7 +125,6 @@
                     <label for="description" class="oe_edit_only"/>
                     <h1><field colspan="4" name="description"/></h1>
                 </xpath>
-                <field name="categ_id" position="replace"/>
                 <field name="company_id" position="replace"/>
                 <field name="sequence" position="replace">
                     <newline/>
