@@ -33,3 +33,27 @@ access_lct_ftp_config_employee,ftp.config employee,model_ftp_config,base.group_u
 access_lct_tos_import_data_employee,lct.tos.import.data employee,model_lct_tos_import_data,base.group_user,1,0,0,0
 access_lct_tos_vessel_sale_user,lct.tos.vessel sale user,model_lct_tos_vessel,base.group_sale_salesman,1,0,0,0
 access_lct_tos_vessel_sale_manager,lct.tos.vessel salemanager,model_lct_tos_vessel,base.group_sale_manager,1,1,1,1
+
+access_lct_multiplying_rate_employee,lct.multiplying.rate employee,model_lct_multiplying_rate,base.group_user,1,0,0,0
+access_lct_multiplying_rate_account_user,lct.multiplying.rate account user,model_lct_multiplying_rate,account.group_account_user,1,0,0,0
+access_lct_multiplying_rate_sale_user,lct.multiplying.rate sale user,model_lct_multiplying_rate,base.group_sale_salesman,1,0,0,0
+access_lct_multiplying_rate_sale_manager,lct.multiplying.rate salemanager,model_lct_multiplying_rate,base.group_sale_manager,1,1,1,1
+access_lct_multiplying_rate_hr_expense_user,lct.multiplying.rate hr expense user,model_lct_multiplying_rate,base.group_hr_user,1,1,1,1
+
+access_lct_pending_yard_activity_employee,lct.pending.yard.activity employee,model_lct_pending_yard_activity,base.group_user,1,0,0,0
+access_lct_pending_yard_activity_account_user,lct.pending.yard.activity account user,model_lct_pending_yard_activity,account.group_account_user,1,0,0,0
+access_lct_pending_yard_activity_sale_user,lct.pending.yard.activity sale user,model_lct_pending_yard_activity,base.group_sale_salesman,1,0,0,0
+access_lct_pending_yard_activity_sale_manager,lct.pending.yard.activity salemanager,model_lct_pending_yard_activity,base.group_sale_manager,1,1,1,1
+access_lct_pending_yard_activity_hr_expense_user,lct.pending.yard.activity hr expense user,model_lct_pending_yard_activity,base.group_hr_user,1,1,1,1
+
+access_lct_tos_export_data_employee,lct.tos.export.data employee,model_lct_tos_export_data,base.group_user,1,0,0,0
+access_lct_tos_export_data_account_user,lct.tos.export.data account user,model_lct_tos_export_data,account.group_account_user,1,0,0,0
+access_lct_tos_export_data_sale_user,lct.tos.export.data sale user,model_lct_tos_export_data,base.group_sale_salesman,1,0,0,0
+access_lct_tos_export_data_sale_manager,lct.tos.export.data salemanager,model_lct_tos_export_data,base.group_sale_manager,1,1,1,1
+access_lct_tos_export_data_hr_expense_user,lct.tos.export.data hr expense user,model_lct_tos_export_data,base.group_hr_user,1,1,1,1
+
+access_ftp_config_employee,ftp.config employee,model_ftp_config,base.group_user,1,0,0,0
+access_ftp_config_account_user,ftp.config account user,model_ftp_config,account.group_account_user,1,0,0,0
+access_ftp_config_sale_user,ftp.config sale user,model_ftp_config,base.group_sale_salesman,1,0,0,0
+access_ftp_config_sale_manager,ftp.config salemanager,model_ftp_config,base.group_sale_manager,1,1,1,1
+access_ftp_config_hr_expense_user,ftp.config hr expense user,model_ftp_config,base.group_hr_user,1,1,1,1
