@@ -19,6 +19,16 @@
                 <xpath expr="//div[@name='vat_info']" position="after">
                     <field name="tax_id"/>
                 </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="TOS">
+                        <group>
+                            <field name="sync" />
+                        </group>
+                        <group>
+                            <button name="button_export_partner" type="object" string="Synchronize now" attrs="{'invisible': [('sync', '=', False)]}" />
+                        </group>
+                    </page>
+                </xpath>
             </field>
         </record>
     </data>
