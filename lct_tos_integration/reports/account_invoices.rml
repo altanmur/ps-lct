@@ -58,7 +58,7 @@
     </stylesheet>
     <story>
         <para style="terp_5f_default_5f_8">[[ repeatIn( objects, 'o') ]]</para>
-        <para style="terp_5f_default_5f_8">[[ setLang(o.company_id.lang) ]]</para>
+        <para style="terp_5f_default_5f_8">[[ setLang(user.lang) ]]</para>
         <!-- Header -->
         <!--
         <blockTable colWidths="249,250" style="Table1">
