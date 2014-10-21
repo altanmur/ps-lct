@@ -62,7 +62,7 @@
         <blockTable colWidths="249,250" style="Table1">
             <tr>
                 <td rowspan="8">
-                    <!-- TODO: see if we can get image from DB here, or if we need to store it on disk -->
+                    <image>[[ o.company_id.logo ]]</image>
                 </td>
                 <td>
                     <para style="terp_5f_default_5f_8">Lomé Container Terminal S.A.</para>
