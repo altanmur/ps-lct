@@ -156,3 +156,10 @@ class account_account(osv.osv):
             for id in ids:
                 res[id] = null_result
         return res
+
+    def find_by_code(self, cr, uid, code, context=None):
+        if len(code) < 8:
+            code += (8-len(code)) * '0'
+        acc_ids = self.search(cr, uid, [('code', '=', code)], context=context)
+        acc_ids = acc_ids or self.search(cr, uid, [('code', 'ilike', code)], context=context)
+        return acc_ids and (len(acc_ids) == 1) and acc_ids[0] or False
