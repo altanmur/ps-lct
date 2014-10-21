@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <delete model="ir.actions.report.xml" id="account.account_invoices"/>
+        <report id="account.account_invoices"
+            name="account.invoice"
+            auto="False"
+            model="account.invoice"
+            rml="addons/lct_tos_integration/reports/account_invoices.rml"
+            string="Invoices"
+            attachment_use="True"
+            usage="default"
+            header="False"
+            />
+        </data>
+</openerp>
