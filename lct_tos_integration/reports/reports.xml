@@ -10,7 +10,7 @@
             string="Invoices"
             attachment_use="True"
             usage="default"
-            header="False"
+            header="True"
             />
         </data>
 </openerp>

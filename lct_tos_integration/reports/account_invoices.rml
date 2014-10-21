@@ -58,8 +58,9 @@
     </stylesheet>
     <story>
         <para style="terp_5f_default_5f_8">[[ repeatIn( objects, 'o') ]]</para>
-        <para style="terp_5f_default_5f_8">[[ setLang(o.partner_id.lang) ]]</para>
+        <para style="terp_5f_default_5f_8">[[ setLang(o.company_id.lang) ]]</para>
         <!-- Header -->
+        <!--
         <blockTable colWidths="249,250" style="Table1">
             <tr>
                 <td rowspan="8">
@@ -76,6 +77,7 @@
                 </td>
             </tr>
         </blockTable>
+        -->
 
         <!-- Invoice -->
         <para style="P3"> </para>
@@ -232,9 +234,11 @@
             <font color="white"> </font>
         </para>
 
+        <!--
         <para style="P7">
             [[ o.company_id.rml_footer ]]
         </para>
+        -->
 
     </story>
 </document>
