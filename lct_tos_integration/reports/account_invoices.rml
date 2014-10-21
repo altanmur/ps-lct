@@ -88,17 +88,13 @@
                             <td><para style="terp_5f_default_5f_8">Client :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ o.partner_id.name ]]</para></td>
                         </tr><tr>
-                            <td rowspan="4'"><para style="terp_5f_default_5f_8">Adresses :</para></td>
-                            <td><para style="terp_5f_default_5f_8">[[ o.partner_id.street or '' ]]</para></td>
-                        </tr><tr>
-                            <td></td>
-                            <td><para style="terp_5f_default_5f_8">[[ o.partner_id.street2 or '' ]]</para></td>
-                        </tr><tr>
-                            <td></td>
-                            <td><para style="terp_5f_default_5f_8">[[ ', '.join([addr for addr in [o.partner_id.city, (o.partner_id.state_id and o.partner_id.state_id.name), o.partner_id.zip] if addr]) ]]</para></td>
-                        </tr><tr>
-                            <td></td>
-                            <td><para style="terp_5f_default_5f_8">[[ o.partner_id.phone or o.partner_id.mobile or '' ]]</para></td>
+                            <td><para style="terp_5f_default_5f_8">Adresses :</para></td>
+                            <td>
+                                <para style="terp_5f_default_5f_8">[[ o.partner_id.street or '' ]]</para>
+                                <para style="terp_5f_default_5f_8">[[ o.partner_id.street2 or '' ]]</para>
+                                <para style="terp_5f_default_5f_8">[[ ', '.join([addr for addr in [o.partner_id.city, (o.partner_id.state_id and o.partner_id.state_id.name), o.partner_id.zip] if addr]) ]]</para>
+                                <para style="terp_5f_default_5f_8">[[ o.partner_id.phone or o.partner_id.mobile or '' ]]</para>
+                            </td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">Termes de Paiement :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ o.payment_term and o.payment_term.name or '' ]]</para></td>
@@ -109,13 +105,13 @@
                     <blockTable colWidths="120,129" style="Table1">
                         <tr>
                             <td><para style="terp_5f_default_5f_8">Numéro :</para></td>
-                            <td><para style="terp_5f_default_5f_8">[[ o.lloyds_nr_vbl or '' ]]</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ o.internal_number or '' ]]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">Date :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ time.strftime("%Y-%m-%d") ]]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">Devises :</para></td>
-                            <td><para style="terp_5f_default_5f_8">[[ o.currency_id and o.currency_id.name or '' ]]</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ o.currency_id and o.currency_id.symbol or '' ]]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and "Numéro d'appel :" or '']]</para></td>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and o.call_sign_vbl or '']]</para></td>
@@ -146,7 +142,7 @@
                     <para style="P2">Qté</para>
                 </td>
                 <td>
-                    <para style="P2">Montant[[ o.currency_id and ( '(' + o.currency_id.name + ')' ) or '' ]]</para>
+                    <para style="P2">Montant[[ o.currency_id and ( '(' + o.currency_id.symbol + ')' ) or '' ]]</para>
                 </td>
             </tr>
             <tr>
@@ -164,7 +160,7 @@
                                 <para style="P5">[[ line.product_id.name or '' ]]</para>
                             </td>
                             <td>
-                                <para style="P6">[[ line.quantity or '']]</para>
+                                <para style="P6">[[ "%.0f" % (line.quantity, ) or '']]</para>
                             </td>
                             <td>
                                 <para style="P6">[[ line.price_subtotal ]]</para>
@@ -178,22 +174,8 @@
             </tr>
         </blockTable>
 
-        <!-- Vessel billing totals -->
-        <blockTable colWidths="356.0,34.0,109.0" style="Table3">[[o.type2=='vessel' or removeParentNode('blockTable')]]
-            <tr>
-                <td colspan="2">
-                    <para style="P5">Total Facture</para>
-                </td>
-                <td>
-                    <para style="P6">[[ o.currency_id.symbol or '']]</para>
-                </td>
-                <td>
-                    <para style="P6">[[ o.amount_total ]]</para>
-                </td>
-            </tr>
-        </blockTable>
-        <!-- Appointment billing totals -->
-        <blockTable colWidths="74.0,316.0,109.0" style="Table3">[[o.type2 in ['appointment', 'yactivity', 'dockage'] or removeParentNode('blockTable')]]
+        <!-- Totals -->
+        <blockTable colWidths="74.0,316.0,109.0" style="Table3">
             <tr>[[o.partner_id.tax_id or removeParentNode('tr')]]
                 <td/>
                 <td colspan="2">
@@ -224,7 +206,7 @@
             <tr>
                 <td/>
                 <td colspan="2">
-                    <para style="P6">Montant Total ([[ o.currency_id.symbol or '']])</para>
+                    <para style="P6">Montant Total [[ o.currency_id and ( '(' + o.currency_id.symbol + ')' ) or '' ]]</para>
                 </td>
                 <td>
                     <para style="P6">[[ o.amount_total ]]</para>
