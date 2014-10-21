@@ -176,7 +176,7 @@
 
         <!-- Totals -->
         <blockTable colWidths="74.0,316.0,109.0" style="Table3">
-            <tr>[[o.partner_id.tax_id or removeParentNode('tr')]]
+            <tr>[[o.amount_tax or removeParentNode('tr')]]
                 <td/>
                 <td colspan="2">
                     <para style="P6">Total</para>
@@ -185,22 +185,22 @@
                     <para style="P6">[[ o.amount_untaxed ]]</para>
                 </td>
             </tr>
-            <tr>[[o.partner_id.tax_id or removeParentNode('tr')]]
+            <tr>[[o.amount_tax or removeParentNode('tr')]]
                 <td/>
                 <td colspan="2">
                     <para style="P6">Taux TVA</para>
                 </td>
                 <td>
-                    <para style="P6">[[ o.partner_id.tax_id.name ]]</para>
+                    <para style="P6">[[ o.partner_id.tax_id.name or '']]</para>
                 </td>
             </tr>
-            <tr>[[o.partner_id.tax_id or removeParentNode('tr')]]
+            <tr>[[o.amount_tax or removeParentNode('tr')]]
                 <td/>
                 <td colspan="2">
                     <para style="P6">Montant TVA</para>
                 </td>
                 <td>
-                    <para style="P6">[[ o.amount_tax or '0.00']]</para>
+                    <para style="P6">[[ o.amount_tax]]</para>
                 </td>
             </tr>
             <tr>
