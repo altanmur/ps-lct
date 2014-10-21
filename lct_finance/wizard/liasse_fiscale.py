@@ -324,24 +324,16 @@ class liasse_fiscale(osv.osv_memory):
         }
         self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
 
-
-
-
-
     def print_report(self, cr, uid, ids, name, context=None):
         if context is None:
             context = {}
-        fy_obj = self.pool.get('account.fiscalyear')
+
+        fy_model = self.pool.get('account.fiscalyear')
         fiscalyear = self.browse(cr, uid, ids, context=context)[0].fiscalyear_id
-        context['fiscalyear']= fiscalyear and fiscalyear.id
-        date = fy_obj.browse(cr, uid, context.get('fiscalyear'), context=context).date_start
-        fys = fy_obj.browse(cr, uid, fy_obj.search(cr, uid, [('date_stop','<=',date)], context=context), context=context)
-        if fys and len(fys)>0:
-            prev_fy = fys[0]
-            for fy in fys[1:] :
-                if fy.date_stop > prev_fy.date_stop:
-                    prev_fy = fy
-            context['prev_fiscalyear'] = prev_fy.id
+        context['fiscalyear'] = fiscalyear and fiscalyear.id
+        date_start = fiscalyear.date_start
+        fiscalyear_ids = fy_model.search(cr, uid, [('date_stop', '<=', date_start)], order='date_start', limit=1, context=context)
+        context['prev_fiscalyear'] = fiscalyear_ids and fiscalyear_ids[0] or False
         context['date_from'] = '1000-01-01'
         context['date_to'] = self.browse(cr, uid, ids[0], context=context).date_of_report
         module_path = __file__.split('wizard')[0]
@@ -349,19 +341,22 @@ class liasse_fiscale(osv.osv_memory):
         template = open_workbook(xls_path, formatting_info=True)
         workbook = xlutils.copy.copy(template)
         self._write_calc(cr, uid, template, workbook, context=context)
+
         data_xls_sIO = StringIO.StringIO()
-        workbook.save(data_xls_sIO)
         zip_sIO = StringIO.StringIO()
+        workbook.save(data_xls_sIO)
         zip_file = zipfile.ZipFile(zip_sIO, 'w')
-        zip_file.writestr('Liasse fiscale/Donnees liasse fiscale.xls',data_xls_sIO.getvalue())
+        data_xls_sIO.seek(0)
+        zip_file.writestr('Liasse fiscale/Donnees liasse fiscale.xls', data_xls_sIO.getvalue())
         xls_path = os.path.join(module_path, 'data', 'Calculs liasse fiscale.xls')
         zip_file.write(xls_path, arcname='Liasse fiscale/Calculs liasse fiscale.xls')
         xls_path = os.path.join(module_path, 'data', 'Liasse fiscale.xls')
         zip_file.write(xls_path, arcname='Liasse fiscale/Liasse fiscale.xls')
         zip_file.close()
+        zip_sIO.seek(0)
         zip_b64 = base64.b64encode(zip_sIO.getvalue())
-        # data_xls_b64 = base64.b64encode(data_xls_sIO.getvalue())
-        dlwizard = self.pool.get('lct_finance.file.download').create(cr, uid, {'file' : zip_b64, 'file_name' : 'Liasse fiscale.zip'}, context=dict(context, active_ids=ids))
+
+        dlwizard = self.pool.get('lct_finance.file.download').create(cr, uid, {'file': zip_b64, 'file_name': 'Liasse fiscale.zip'}, context=dict(context, active_ids=ids))
         return {
             'view_mode': 'form',
             'view_id': False,
