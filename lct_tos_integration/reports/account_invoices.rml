@@ -39,6 +39,7 @@
         <paraStyle name="P4" rightIndent="0.0" leftIndent="0.0" fontName="Helvetica-Bold" fontSize="20.0" leading="25" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
         <paraStyle name="P5" fontName="Helvetica" fontSize="8.0" leading="10" alignment="LEFT"/>
         <paraStyle name="P6" fontName="Helvetica" fontSize="8.0" leading="10" alignment="RIGHT"/>
+        <paraStyle name="P6_bold" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="RIGHT"/>
         <paraStyle name="P7" fontName="Helvetica" fontSize="8.0" leading="10" alignment="LEFT"/>
         <paraStyle name="P8" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="CENTER"/>
         <paraStyle name="P_SP" fontName="Helvetica-Bold" fontSize="8.0" spaceAfter="12.0"/>
@@ -68,7 +69,7 @@
                     <para style="terp_5f_default_5f_8">[[ o.company_id.name ]]</para>
                     <para style="terp_5f_default_5f_8">Service Facturation</para>
                     <para style="terp_5f_default_5f_8">NIF: [[ o.company_id.nif or '' ]]</para>
-                    <para style="terp_5f_default_5f_8">RCCM/[[ o.company_id.company_registry or '' ]] [[ o.company_id.city or '' ]] [[ o.company_id.country_id.name or '' ]]</para>
+                    <para style="terp_5f_default_5f_8">RCCM/:[[ o.company_id.company_registry or '' ]] [[ o.company_id.city or '' ]] [[ o.company_id.country_id.name or '' ]]</para>
                     <para style="terp_5f_default_5f_8">Telephone: [[ o.company_id.phone or '' ]]</para>
                     <para style="terp_5f_default_5f_8">Fax: [[ o.company_id.fax or '' ]]</para>
                     <para style="terp_5f_default_5f_8">Web Site: [[ o.company_id.website or '' ]]</para>
@@ -108,7 +109,7 @@
                             <td><para style="terp_5f_default_5f_8">[[ o.internal_number or '' ]]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">Date :</para></td>
-                            <td><para style="terp_5f_default_5f_8">[[ time.strftime("%Y-%m-%d") ]]</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ time.strftime("%d-%m-%Y") ]]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">Devises :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ o.currency_id and o.currency_id.symbol or '' ]]</para></td>
@@ -120,10 +121,10 @@
                             <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and o.vessel_ID or '']]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and "Arrivée :" or '']]</para></td>
-                            <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and o.berth_time or '']]</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and formatLang(o.berth_time, date_time=True) or '']]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and "Départ :" or '']]</para></td>
-                            <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and o.dep_time or '']]</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and formatLang(o.dep_time, date_time=True) or '']]</para></td>
                         </tr>
                     </blockTable>
                 </td>
@@ -133,7 +134,7 @@
         <blockTable colWidths="74.0,282.0,34.0,109.0" style="Table2">
             <tr>
                 <td>
-                    <para style="P1">Tariff</para>
+                    <para style="P1">Tarif</para>
                 </td>
                 <td>
                     <para style="P1">Description</para>
@@ -179,10 +180,10 @@
             <tr>[[o.amount_tax or removeParentNode('tr')]]
                 <td/>
                 <td colspan="2">
-                    <para style="P6">Total</para>
+                    <para style="P6_bold">Total</para>
                 </td>
                 <td>
-                    <para style="P6">[[ o.amount_untaxed ]]</para>
+                    <para style="P6_bold">[[ o.amount_untaxed ]]</para>
                 </td>
             </tr>
             <tr>[[o.amount_tax or removeParentNode('tr')]]
@@ -206,10 +207,10 @@
             <tr>
                 <td/>
                 <td colspan="2">
-                    <para style="P6">Montant Total [[ o.currency_id and ( '(' + o.currency_id.symbol + ')' ) or '' ]]</para>
+                    <para style="P6_bold">Montant Total [[ o.currency_id and ( '(' + o.currency_id.symbol + ')' ) or '' ]]</para>
                 </td>
                 <td>
-                    <para style="P6">[[ o.amount_total ]]</para>
+                    <para style="P6_bold">[[ o.amount_total ]]</para>
                 </td>
             </tr>
         </blockTable>
@@ -226,6 +227,13 @@
         </para>
         <para style="P8">
             This is a computer generated invoice. When mailed directly, a signature is not required.
+        </para>
+        <para style="P_SP">
+            <font color="white"> </font>
+        </para>
+
+        <para style="P7">
+            [[ o.company_id.rml_footer ]]
         </para>
 
     </story>
