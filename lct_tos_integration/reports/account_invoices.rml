@@ -65,7 +65,7 @@
                     <image>[[ o.company_id.logo ]]</image>
                 </td>
                 <td>
-                    <para style="terp_5f_default_5f_8">Lomé Container Terminal S.A.</para>
+                    <para style="terp_5f_default_5f_8">[[ o.company_id.name ]]</para>
                     <para style="terp_5f_default_5f_8">Service Facturation</para>
                     <para style="terp_5f_default_5f_8">NIF: [[ o.company_id.nif or '' ]]</para>
                     <para style="terp_5f_default_5f_8">RCCM/[[ o.company_id.company_registry or '' ]] [[ o.company_id.city or '' ]] [[ o.company_id.country_id.name or '' ]]</para>
