@@ -120,7 +120,7 @@
                             <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and o.vessel_ID or '']]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and "Arrivée :" or '']]</para></td>
-                            <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' ando.berth_time or '']]</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and o.berth_time or '']]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and "Départ :" or '']]</para></td>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and o.dep_time or '']]</para></td>
