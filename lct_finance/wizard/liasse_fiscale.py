@@ -134,7 +134,7 @@ class liasse_fiscale(osv.osv_memory):
 
         code_tree = xlm.build_code_tree(template_sheet, "B", "10", "101")
 
-        code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("102"), "1")
+        xlm.add_code_to_tree(code_tree, xlm.get_row("102"), "1")
 
         mapping = {
             xlm.get_col("D"): 'prev_debit',
@@ -160,10 +160,10 @@ class liasse_fiscale(osv.osv_memory):
         code_tree = xlm.build_code_tree(template_sheet, "B", "10", "155",
                                         skip=["84", "85", "114", "155"])
 
-        code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("84"), "20,21,22,23,24,25,26,27")
-        code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("114"), "28")
-        code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("155"), "29")
-        code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("156"), "2")
+        xlm.add_code_to_tree(code_tree, xlm.get_row("84"), "20,21,22,23,24,25,26,27")
+        xlm.add_code_to_tree(code_tree, xlm.get_row("114"), "28")
+        xlm.add_code_to_tree(code_tree, xlm.get_row("155"), "29")
+        xlm.add_code_to_tree(code_tree, xlm.get_row("156"), "2")
 
         mapping = {
             xlm.get_col("D"): 'prev_balance',
@@ -214,7 +214,7 @@ class liasse_fiscale(osv.osv_memory):
         code_tree = xlm.build_code_tree(template_sheet, "B", "8", "98",
                                         skip=["52"])
 
-        code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("52"), '4490')
+        xlm.add_code_to_tree(code_tree, xlm.get_row("52"), '4490')
 
         mapping = {
             xlm.get_col("D"): 'prev_debit',
@@ -275,7 +275,7 @@ class liasse_fiscale(osv.osv_memory):
         code_tree = xlm.build_code_tree(template_sheet, "B", "7", "266",
                                         skip=[])
 
-        code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("268"), "6")
+        xlm.add_code_to_tree(code_tree, xlm.get_row("268"), "6")
 
         mapping = {
             xlm.get_col("D"): 'prev_balance',
@@ -299,7 +299,7 @@ class liasse_fiscale(osv.osv_memory):
         code_tree = xlm.build_code_tree(template_sheet, "B", "7", "123",
                                         skip=[])
 
-        code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("125"), "7")
+        xlm.add_code_to_tree(code_tree, xlm.get_row("125"), "7")
 
         mapping = {
             xlm.get_col("D"): 'prev_balance',
@@ -323,7 +323,7 @@ class liasse_fiscale(osv.osv_memory):
         code_tree = xlm.build_code_tree(template_sheet, "B", "7", "63",
                                         skip=[])
 
-        code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("65"), '8')
+        xlm.add_code_to_tree(code_tree, xlm.get_row("65"), '8')
 
         mapping = {
             xlm.get_col("D"): 'prev_balance',

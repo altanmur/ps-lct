@@ -56,22 +56,18 @@ def check_parentship(parents, childs):
     return any(all(child_code.startswith(parent_code) for child_code in child_codes) for parent_code in parent_codes)
 
 def add_code_to_tree(code_tree, new_row, new_code):
-    new_code_tree = copy.deepcopy(code_tree)
-
-    for row, val in code_tree.iteritems():
+    for row, val in code_tree.items():
         if check_parentship(val['code'], new_code):
-            new_code_tree[row]['children'] = add_code_to_tree(code_tree[row]['children'], new_row, new_code)
-            return new_code_tree
+            return add_code_to_tree(code_tree[row]['children'], new_row, new_code)
 
-    new_code_tree[new_row] = {
+    code_tree[new_row] = {
         'code': new_code,
         'children': {},
     }
-    for row, val in code_tree.iteritems():
-        if check_parentship(new_code, val['code']):
-            new_code_tree[new_row]['children'].update({row: copy.deepcopy(val)})
-            del new_code_tree[row]
-    return new_code_tree
+    for row, val in code_tree.items():
+        if row != new_row and check_parentship(new_code, val['code']):
+            code_tree[new_row]['children'].update({row: copy.deepcopy(val)})
+            del code_tree[row]
 
 def build_code_tree(sheet, col_str, row_str1, row_str2, skip=[]):
     code_tree = {}
@@ -83,7 +79,7 @@ def build_code_tree(sheet, col_str, row_str1, row_str2, skip=[]):
             code = cell_value
         else:
             code = str(int(cell_value))
-        code_tree = add_code_to_tree(code_tree, row, code)
+        add_code_to_tree(code_tree, row, code)
     return code_tree
 
 def get_cell_value_by_coord_str(sheet, coord_str):

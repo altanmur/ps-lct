@@ -42,9 +42,9 @@ class TestXlModule(TransactionCase):
             }
         }
 
-        new_code_tree = xlm.add_code_to_tree(code_tree, 9, '111')
-
         expected_code_tree = copy.deepcopy(code_tree)
+        xlm.add_code_to_tree(code_tree, 9, '111')
+
         expected_code_tree[1]['children'].update({
             9: {
                 'code': '111',
@@ -54,4 +54,4 @@ class TestXlModule(TransactionCase):
         }})
         del expected_code_tree[1]['children'][3]
 
-        self.assertEqual(new_code_tree, expected_code_tree)
+        self.assertEqual(code_tree, expected_code_tree)
