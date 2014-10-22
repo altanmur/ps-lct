@@ -19,11 +19,21 @@
 #
 ##############################################################################
 
-from xlwt import Workbook, easyxf, Formula
-from xlrd import open_workbook, XL_CELL_BLANK
+from xlwt import Formula
+from xlrd import XL_CELL_BLANK
 import re
 import copy
 
+def xrange_skip(a, b, skip=[]):
+    for i in xrange(a, b):
+        if i not in skip:
+            yield i
+
+def str_xrange_skip(a, b, skip=[]):
+    for i in xrange(int(a), int(b) + 1):
+        i = str(i)
+        if i not in skip:
+            yield i
 
 def get_total_rows(code_tree):
     total_rows = []
@@ -40,9 +50,9 @@ def write_sum_from_code_tree(sheet, children_code_tree, row, col):
     form = cell_list_sum({'pos': coords})
     set_out_cell(sheet, (row, col), form)
 
-def check_parentship(parent_code, child_code):
-    parent_codes = parent_code.split(',')
-    child_codes = child_code.split(',')
+def check_parentship(parents, childs):
+    parent_codes = parents.split(',')
+    child_codes = childs.split(',')
     return any(all(child_code.startswith(parent_code) for child_code in child_codes) for parent_code in parent_codes)
 
 def add_code_to_tree(code_tree, new_row, new_code):
@@ -59,17 +69,15 @@ def add_code_to_tree(code_tree, new_row, new_code):
     }
     for row, val in code_tree.iteritems():
         if check_parentship(new_code, val['code']):
-            new_code_tree[new_row]['children'].update({
-                row: copy.deepcopy(val),
-            })
+            new_code_tree[new_row]['children'].update({row: copy.deepcopy(val)})
             del new_code_tree[row]
     return new_code_tree
 
-def build_code_tree(sheet, col, row1, row2, skip=[]):
+def build_code_tree(sheet, col_str, row_str1, row_str2, skip=[]):
     code_tree = {}
-    col = get_col(col)
-    for row in str_xrange(row1, row2, skip=skip):
-        row = get_row(row)
+    col = get_col(col_str)
+    for row_str in str_xrange_skip(row_str1, row_str2, skip=skip):
+        row = get_row(row_str)
         cell_value = get_cell_value(sheet, (row, col))
         if isinstance(cell_value, unicode) and cell_value[-1].lower() in ['x', 'y', 'z']:
             code = cell_value
@@ -78,15 +86,8 @@ def build_code_tree(sheet, col, row1, row2, skip=[]):
         code_tree = add_code_to_tree(code_tree, row, code)
     return code_tree
 
-def str_xrange(a, b, skip=[]):
-    a, b = int(a), int(b) +1
-    for i in xrange(a, b):
-        i = str(i)
-        if i not in skip:
-            yield i
-
-def get_cell_value_by_cell_str(sheet, cell_str):
-    return get_cell_value(sheet, get_coord(cell_str))
+def get_cell_value_by_coord_str(sheet, coord_str):
+    return get_cell_value(sheet, get_coord(coord_str))
 
 def get_cell_value(sheet, coord):
     row, col = coord
@@ -95,82 +96,79 @@ def get_cell_value(sheet, coord):
     return sheet.cell(row, col).value
 
 def get_cells_value(sheet, coords):
-    values_by_coord = {}
-    for coord in coords:
-        value_by_coord[coord] = get_cell_value(sheet, coord)
-    return values_by_coord
+    return {coord: get_cell_value(sheet, coord) for coord in coords}
 
-def get_out_cell(out_sheet, coord):
-    row = out_sheet._Worksheet__rows.get(coord[0])
+def get_out_cell(sheet, coord):
+    row = sheet._Worksheet__rows.get(coord[0])
     if not row:
         return None
     cell = row._Row__cells.get(coord[1])
     return cell
 
-def set_out_cell(out_sheet, coord, value):
-    previous_cell = get_out_cell(out_sheet, coord)
-    out_sheet.write(coord[0], coord[1], value)
+def set_out_cell(sheet, coord, value):
+    previous_cell = get_out_cell(sheet, coord)
+    sheet.write(coord[0], coord[1], value)
     if previous_cell:
-        new_cell = get_out_cell(out_sheet, coord)
+        new_cell = get_out_cell(sheet, coord)
         if new_cell:
             new_cell.xf_idx = previous_cell.xf_idx
 
-def set_out_cells(out_sheet, value_by_coord):
+def set_out_cells(sheet, value_by_coord):
     for coord, value in value_by_coord.iteritems():
-        set_out_cell(out_sheet, coord, value)
+        set_out_cell(sheet, coord, value)
 
-def set_out_cells_by_cell_str(out_sheet, value_by_cell_str):
-    for cell_str, value in value_by_cell_str.iteritems():
-        coord = get_coord(cell_str)
-        set_out_cell(out_sheet, coord, value)
+def set_out_cells_by_coord_str(sheet, value_by_coord_str):
+    for coord_str, value in value_by_coord_str.iteritems():
+        coord = get_coord(coord_str)
+        set_out_cell(sheet, coord, value)
 
-def get_col_char(col):
+def get_col_str(col):
     if col < 26:
         return chr(ord("A") + col)
     else:
-        return get_col_char(col/26 - 1) + get_col_char(col % 26)
+        return get_col_str(col/26-1) + get_col_str(col%26)
 
-def get_row_char(row):
+def get_row_str(row):
     return str(row + 1)
 
-def get_row_chars(rows):
-    return [get_row_char(row) for row in rows]
+def get_row_strs(rows):
+    return [get_row_str(row) for row in rows]
 
-def get_char(coord):
-    row = get_row_char(coord[0])
-    col = get_col_char(coord[1])
+def get_coord_str(coord):
+    row = get_row_str(coord[0])
+    col = get_col_str(coord[1])
     return col + row
 
-def get_col(col_char):
+def get_col(col_str):
     col = 0
-    for i, char in enumerate(reversed(col_char)):
+    for i, char in enumerate(reversed(col_str)):
         n = ord(char) - ord("A")
         col += 26**i * (n+1)
     return col - 1
 
-def get_row(row_char):
-    return int(row_char) - 1
+def get_row(row_str):
+    return int(row_str) - 1
 
-def get_coord(char):
-    m = re.match(r"(?P<col>[A-Z]+)(?P<row>\d+)", char)
+def get_coord(coord_str):
+    m = re.match(r"(?P<col>[A-Z]+)(?P<row>\d+)", coord_str)
     if not m:
         return False
-    m = m.groupdict()
-    row = get_row(m['row'])
-    col = get_col(m['col'])
+    m_dict = m.groupdict()
+    row = get_row(m_dict['row'])
+    col = get_col(m_dict['col'])
     return (row, col)
 
 def cell_range_sum(coord_start, coord_end):
-    return Formula("SUM(" + get_char(coord_start) + ":" + get_char(coord_end) + ")")
+    return Formula("SUM(" + get_coord_str(coord_start) + ":" + get_coord_str(coord_end) + ")")
 
 def text_list_sum(texts_by_sign):
     form = ""
     for text in texts_by_sign.get('pos', []):
         form += '+' + text
-    if form.startswith('+'):
-        form = form[1:]
     for text in  texts_by_sign.get('neg', []):
         form += '-' + text
+    if form.startswith('+'):
+        form = form[1:]
     return Formula(form)
 
 def cell_list_sum(coords_by_sign) :
@@ -178,15 +176,7 @@ def cell_list_sum(coords_by_sign) :
     for sign, coords in coords_by_sign.iteritems():
         texts_by_sign[sign] = []
         for coord in coords:
-            texts_by_sign[sign].append(get_char(coord))
-    return text_list_sum(texts_by_sign)
-
-def num_list_sum(nums_by_sign):
-    texts_by_sign = {}
-    for sign, nums in coords_by_sign:
-        texts_by_sign[sign] = []
-        for num in nums:
-            texts_by_sign[sign].append(str(num))
+            texts_by_sign[sign].append(get_coord_str(coord))
     return text_list_sum(texts_by_sign)
 
 def write_row_sum(sheet, rows, sum_col, pos_cols=[], neg_cols=[]):
@@ -196,4 +186,4 @@ def write_row_sum(sheet, rows, sum_col, pos_cols=[], neg_cols=[]):
                                 'pos': [col + row for col in pos_cols],
                                 'neg': [col + row for col in neg_cols],
                             })
-    set_out_cells_by_cell_str(sheet, values)
+    set_out_cells_by_coord_str(sheet, values)

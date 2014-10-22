@@ -4,12 +4,12 @@ import copy
 
 class TestXlModule(TransactionCase):
 
-    def test_coord_char_conversion(self):
-        self.assertEqual(xlm.get_row_char(52), "53")
-        self.assertEqual(xlm.get_col_char(14033), "TST")
-        self.assertEqual(xlm.get_char((52, 14033)), "TST53")
+    def test_coord_str_conversion(self):
+        self.assertEqual(xlm.get_row_str(52), "53")
+        self.assertEqual(xlm.get_col_str(14033), "TST")
+        self.assertEqual(xlm.get_coord_str((52, 14033)), "TST53")
 
-    def test_char_coord_conversion(self):
+    def test_str_coord_conversion(self):
         self.assertEqual(xlm.get_row("53"), 52)
         self.assertEqual(xlm.get_col("TST"), 14033)
         self.assertEqual(xlm.get_coord("TST53"), (52, 14033))

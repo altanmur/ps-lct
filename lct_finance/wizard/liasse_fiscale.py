@@ -109,205 +109,205 @@ class liasse_fiscale(osv.osv_memory):
         prev_fy_code = fy_model.browse(cr, uid, context.get('prev_fiscalyear'), context=context).code
 
 
-        # # Info complémentaires
+        # Info complémentaires
 
-        # template_sheet = template.sheet_by_index(0)
-        # work_sheet = report.get_sheet(0)
-        # xlm.set_out_cells(work_sheet, {
-        #     xlm.get_coord("D3"): fy_code,
-        #     xlm.get_coord("D10"): fy_code,
-        #     xlm.get_coord("C4"): prev_fy_code,
-        #     xlm.get_coord("C5"): prev_fy_code,
-        #     xlm.get_coord("E10"): prev_fy_code,
-        # })
-
-
-        # # Classe 1
-
-        # template_sheet = template.sheet_by_index(1)
-        # work_sheet = report.get_sheet(1)
-
-        # xlm.set_out_cells(work_sheet, {
-        #     xlm.get_coord("D7"): prev_fy_code,
-        #     xlm.get_coord("F7"): fy_code,
-        # })
-
-        # code_tree = xlm.build_code_tree(template_sheet, "B", "10", "101")
-
-        # code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("102"), "1")
-
-        # mapping = {
-        #     xlm.get_col("D"): 'prev_debit',
-        #     xlm.get_col("E"): 'prev_credit',
-        #     xlm.get_col("F"): 'move_debit',
-        #     xlm.get_col("G"): 'move_credit',
-        # }
-        # self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
-
-        # xlm.write_row_sum(work_sheet, xlm.str_xrange("10", "102"), "H", pos_cols=["D", "F"], neg_cols=["E", "G"])
+        template_sheet = template.sheet_by_index(0)
+        work_sheet = report.get_sheet(0)
+        xlm.set_out_cells(work_sheet, {
+            xlm.get_coord("D3"): fy_code,
+            xlm.get_coord("D10"): fy_code,
+            xlm.get_coord("C4"): prev_fy_code,
+            xlm.get_coord("C5"): prev_fy_code,
+            xlm.get_coord("E10"): prev_fy_code,
+        })
 
 
-        # # Classe 2
+        # Classe 1
 
-        # template_sheet = template.sheet_by_index(2)
-        # work_sheet = report.get_sheet(2)
+        template_sheet = template.sheet_by_index(1)
+        work_sheet = report.get_sheet(1)
 
-        # xlm.set_out_cells(work_sheet, {
-        #     xlm.get_coord("D6"): prev_fy_code,
-        #     xlm.get_coord("E6"): fy_code,
-        # })
+        xlm.set_out_cells(work_sheet, {
+            xlm.get_coord("D7"): prev_fy_code,
+            xlm.get_coord("F7"): fy_code,
+        })
 
-        # code_tree = xlm.build_code_tree(template_sheet, "B", "10", "155",
-        #                                 skip=["84", "85", "114", "155"])
+        code_tree = xlm.build_code_tree(template_sheet, "B", "10", "101")
 
-        # code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("84"), "20,21,22,23,24,25,26,27")
-        # code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("114"), "28")
-        # code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("155"), "29")
-        # code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("156"), "2")
+        code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("102"), "1")
 
-        # mapping = {
-        #     xlm.get_col("D"): 'prev_balance',
-        #     xlm.get_col("E"): 'move_debit',
-        #     xlm.get_col("K"): 'move_credit',
-        # }
-        # self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
+        mapping = {
+            xlm.get_col("D"): 'prev_debit',
+            xlm.get_col("E"): 'prev_credit',
+            xlm.get_col("F"): 'move_debit',
+            xlm.get_col("G"): 'move_credit',
+        }
+        self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
 
-        # xlm.write_row_sum(work_sheet, xlm.str_xrange("10", "13"), "L", pos_cols=["D", "E", "F", "G"], neg_cols=["I", "K"])
-        # xlm.write_row_sum(work_sheet, xlm.str_xrange("14", "84"), "L", pos_cols=["D", "E", "F", "G"], neg_cols=["H", "K"])
-        # xlm.write_row_sum(work_sheet, xlm.str_xrange("86", "156"), "L", pos_cols=["D", "E"], neg_cols=["I", "K"])
+        xlm.write_row_sum(work_sheet, xlm.str_xrange_skip("10", "102"), "H", pos_cols=["D", "F"], neg_cols=["E", "G"])
 
 
-        # # Classe 3
+        # Classe 2
 
-        # template_sheet = template.sheet_by_index(3)
-        # work_sheet = report.get_sheet(3)
+        template_sheet = template.sheet_by_index(2)
+        work_sheet = report.get_sheet(2)
 
-        # xlm.set_out_cells(work_sheet, {
-        #     xlm.get_coord("D5"): prev_fy_code,
-        #     xlm.get_coord("E5"): fy_code,
-        # })
+        xlm.set_out_cells(work_sheet, {
+            xlm.get_coord("D6"): prev_fy_code,
+            xlm.get_coord("E6"): fy_code,
+        })
 
-        # code_tree = xlm.build_code_tree(template_sheet, "B", "8", "56",
-        #                                 skip=[])
+        code_tree = xlm.build_code_tree(template_sheet, "B", "10", "155",
+                                        skip=["84", "85", "114", "155"])
 
-        # mapping = {
-        #     xlm.get_col("D"): 'prev_balance',
-        #     xlm.get_col("E"): 'move_debit',
-        #     xlm.get_col("F"): 'move_credit',
-        # }
+        code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("84"), "20,21,22,23,24,25,26,27")
+        code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("114"), "28")
+        code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("155"), "29")
+        code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("156"), "2")
 
-        # self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
+        mapping = {
+            xlm.get_col("D"): 'prev_balance',
+            xlm.get_col("E"): 'move_debit',
+            xlm.get_col("K"): 'move_credit',
+        }
+        self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
 
-        # xlm.write_row_sum(work_sheet, xlm.str_xrange("8", "56"), "G", pos_cols=["D", "E"], neg_cols=["F"])
+        xlm.write_row_sum(work_sheet, xlm.str_xrange_skip("10", "13"), "L", pos_cols=["D", "E", "F", "G"], neg_cols=["I", "K"])
+        xlm.write_row_sum(work_sheet, xlm.str_xrange_skip("14", "84"), "L", pos_cols=["D", "E", "F", "G"], neg_cols=["H", "K"])
+        xlm.write_row_sum(work_sheet, xlm.str_xrange_skip("86", "156"), "L", pos_cols=["D", "E"], neg_cols=["I", "K"])
 
 
-        # # Classe 4
+        # Classe 3
 
-        # template_sheet = template.sheet_by_index(4)
-        # work_sheet = report.get_sheet(4)
+        template_sheet = template.sheet_by_index(3)
+        work_sheet = report.get_sheet(3)
 
-        # xlm.set_out_cells(work_sheet, {
-        #     xlm.get_coord("D5"): prev_fy_code,
-        #     xlm.get_coord("F5"): fy_code,
-        # })
+        xlm.set_out_cells(work_sheet, {
+            xlm.get_coord("D5"): prev_fy_code,
+            xlm.get_coord("E5"): fy_code,
+        })
 
-        # code_tree = xlm.build_code_tree(template_sheet, "B", "8", "98",
-        #                                 skip=["52"])
+        code_tree = xlm.build_code_tree(template_sheet, "B", "8", "56",
+                                        skip=[])
 
-        # code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("52"), '4490')
+        mapping = {
+            xlm.get_col("D"): 'prev_balance',
+            xlm.get_col("E"): 'move_debit',
+            xlm.get_col("F"): 'move_credit',
+        }
 
-        # mapping = {
-        #     xlm.get_col("D"): 'prev_debit',
-        #     xlm.get_col("E"): 'prev_credit',
-        #     xlm.get_col("F"): 'move_debit',
-        #     xlm.get_col("G"): 'move_credit',
-        # }
-        # self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
+        self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
 
-        # account449 = self._get_account_vals(cr, uid, '449', context=context)
-        # account4499 = self._get_account_vals(cr, uid, '4499', context=context)
-        # values = {
-        #     "D52": account449['prev_debit'] - account4499['prev_debit'],
-        #     "E52": account449['prev_credit'] - account4499['prev_credit'],
-        #     "D52": account449['move_debit'] - account4499['move_debit'],
-        #     "G52": account449['move_credit'] - account4499['move_credit'],
-        # }
-        # xlm.set_out_cells_by_cell_str(work_sheet, values)
+        xlm.write_row_sum(work_sheet, xlm.str_xrange_skip("8", "56"), "G", pos_cols=["D", "E"], neg_cols=["F"])
 
-        # xlm.write_row_sum(work_sheet, xlm.str_xrange("8", "98"), "H", pos_cols=["D", "F"])
-        # xlm.write_row_sum(work_sheet, xlm.str_xrange("8", "98"), "I", pos_cols=["E", "G"])
+
+        # Classe 4
+
+        template_sheet = template.sheet_by_index(4)
+        work_sheet = report.get_sheet(4)
+
+        xlm.set_out_cells(work_sheet, {
+            xlm.get_coord("D5"): prev_fy_code,
+            xlm.get_coord("F5"): fy_code,
+        })
+
+        code_tree = xlm.build_code_tree(template_sheet, "B", "8", "98",
+                                        skip=["52"])
+
+        code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("52"), '4490')
+
+        mapping = {
+            xlm.get_col("D"): 'prev_debit',
+            xlm.get_col("E"): 'prev_credit',
+            xlm.get_col("F"): 'move_debit',
+            xlm.get_col("G"): 'move_credit',
+        }
+        self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
+
+        account449 = self._get_account_vals(cr, uid, '449', context=context)
+        account4499 = self._get_account_vals(cr, uid, '4499', context=context)
+        values = {
+            "D52": account449['prev_debit'] - account4499['prev_debit'],
+            "E52": account449['prev_credit'] - account4499['prev_credit'],
+            "D52": account449['move_debit'] - account4499['move_debit'],
+            "G52": account449['move_credit'] - account4499['move_credit'],
+        }
+        xlm.set_out_cells_by_coord_str(work_sheet, values)
+
+        xlm.write_row_sum(work_sheet, xlm.str_xrange_skip("8", "98"), "H", pos_cols=["D", "F"])
+        xlm.write_row_sum(work_sheet, xlm.str_xrange_skip("8", "98"), "I", pos_cols=["E", "G"])
 
 
         # Classe 5
 
-        # template_sheet = template.sheet_by_index(5)
-        # work_sheet = report.get_sheet(5)
+        template_sheet = template.sheet_by_index(5)
+        work_sheet = report.get_sheet(5)
 
-        # xlm.set_out_cells(work_sheet, {
-        #     xlm.get_coord("D5"): prev_fy_code,
-        #     xlm.get_coord("F5"): fy_code,
-        # })
+        xlm.set_out_cells(work_sheet, {
+            xlm.get_coord("D5"): prev_fy_code,
+            xlm.get_coord("F5"): fy_code,
+        })
 
-        # code_tree = xlm.build_code_tree(template_sheet, "B", "8", "68",
-        #                                 skip=[])
+        code_tree = xlm.build_code_tree(template_sheet, "B", "8", "68",
+                                        skip=[])
 
-        # mapping = {
-        #     xlm.get_col("D"): 'prev_debit',
-        #     xlm.get_col("E"): 'prev_credit',
-        #     xlm.get_col("F"): 'move_debit',
-        #     xlm.get_col("G"): 'move_credit',
-        # }
-        # self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
+        mapping = {
+            xlm.get_col("D"): 'prev_debit',
+            xlm.get_col("E"): 'prev_credit',
+            xlm.get_col("F"): 'move_debit',
+            xlm.get_col("G"): 'move_credit',
+        }
+        self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
 
-        # xlm.write_row_sum(work_sheet, xlm.str_xrange("8", "56"), "G", pos_cols=["D", "E"], neg_cols=["F"])
-
-
-        # # Classe 6
-
-        # template_sheet = template.sheet_by_index(6)
-        # work_sheet = report.get_sheet(6)
-
-        # xlm.set_out_cells(work_sheet, {
-        #     xlm.get_coord("D5"): prev_fy_code,
-        #     xlm.get_coord("E5"): fy_code,
-        # })
-
-        # code_tree = xlm.build_code_tree(template_sheet, "B", "7", "266",
-        #                                 skip=[])
-
-        # code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("268"), "6")
-
-        # mapping = {
-        #     xlm.get_col("D"): 'prev_balance',
-        #     xlm.get_col("E"): 'balance',
-        # }
-        # self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
-
-        # xlm.write_row_sum(work_sheet, xlm.get_row_chars(xlm.get_total_rows(code_tree)), "F", pos_cols=["E"])
+        xlm.write_row_sum(work_sheet, xlm.str_xrange_skip("8", "56"), "G", pos_cols=["D", "E"], neg_cols=["F"])
 
 
-        # # Classe 7
+        # Classe 6
 
-        # template_sheet = template.sheet_by_index(7)
-        # work_sheet = report.get_sheet(7)
+        template_sheet = template.sheet_by_index(6)
+        work_sheet = report.get_sheet(6)
 
-        # xlm.set_out_cells(work_sheet, {
-        #     xlm.get_coord("D5"): prev_fy_code,
-        #     xlm.get_coord("E5"): fy_code,
-        # })
+        xlm.set_out_cells(work_sheet, {
+            xlm.get_coord("D5"): prev_fy_code,
+            xlm.get_coord("E5"): fy_code,
+        })
 
-        # code_tree = xlm.build_code_tree(template_sheet, "B", "7", "123",
-        #                                 skip=[])
+        code_tree = xlm.build_code_tree(template_sheet, "B", "7", "266",
+                                        skip=[])
 
-        # code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("125"), "7")
+        code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("268"), "6")
 
-        # mapping = {
-        #     xlm.get_col("D"): 'prev_balance',
-        #     xlm.get_col("E"): 'balance',
-        # }
-        # self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
+        mapping = {
+            xlm.get_col("D"): 'prev_balance',
+            xlm.get_col("E"): 'balance',
+        }
+        self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
 
-        # xlm.write_row_sum(work_sheet, xlm.get_row_chars(xlm.get_total_rows(code_tree)), "F", pos_cols=["E"])
+        xlm.write_row_sum(work_sheet, xlm.get_row_strs(xlm.get_total_rows(code_tree)), "F", pos_cols=["E"])
+
+
+        # Classe 7
+
+        template_sheet = template.sheet_by_index(7)
+        work_sheet = report.get_sheet(7)
+
+        xlm.set_out_cells(work_sheet, {
+            xlm.get_coord("D5"): prev_fy_code,
+            xlm.get_coord("E5"): fy_code,
+        })
+
+        code_tree = xlm.build_code_tree(template_sheet, "B", "7", "123",
+                                        skip=[])
+
+        code_tree = xlm.add_code_to_tree(code_tree, xlm.get_row("125"), "7")
+
+        mapping = {
+            xlm.get_col("D"): 'prev_balance',
+            xlm.get_col("E"): 'balance',
+        }
+        self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
+
+        xlm.write_row_sum(work_sheet, xlm.get_row_strs(xlm.get_total_rows(code_tree)), "F", pos_cols=["E"])
 
 
         # Classe 8
@@ -331,7 +331,7 @@ class liasse_fiscale(osv.osv_memory):
         }
         self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
 
-        xlm.write_row_sum(work_sheet, xlm.get_row_chars(xlm.get_total_rows(code_tree)), "F", pos_cols=["E"])
+        xlm.write_row_sum(work_sheet, xlm.get_row_strs(xlm.get_total_rows(code_tree)), "F", pos_cols=["E"])
 
 
     def print_report(self, cr, uid, ids, name, context=None):
