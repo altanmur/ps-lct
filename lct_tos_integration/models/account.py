@@ -298,6 +298,7 @@ class account_invoice(osv.osv):
             'invoice_line': invoice_line,
             'state': 'draft',
             'type': 'out_invoice',
+            'currency_id': partner.property_product_pricelist.currency_id.id,
         })
         return vals
 
@@ -533,6 +534,7 @@ class account_invoice(osv.osv):
             'account_id': account.id,
             'date_invoice': date_invoice,
             'type2': 'appointment',
+            'currency_id': partner.property_product_pricelist.currency_id.id,
         }
 
         app_id = self.create(cr, uid, app_vals, context=context)
@@ -817,6 +819,7 @@ class account_invoice(osv.osv):
                 'partner_id': partner_id,
                 'account_id': account.id,
                 'date_invoice': date_invoice,
+                'currency_id': partner.property_product_pricelist.currency_id.id,
             }
             for vessel_ID, invoices_by_product in invoice.iteritems():
                 invoice_id = invoice_model.create(cr, uid, invoice_vals, context=context)
