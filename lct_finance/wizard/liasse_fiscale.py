@@ -144,7 +144,7 @@ class liasse_fiscale(osv.osv_memory):
         }
         self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
 
-        xlm.write_row_sum(work_sheet, xlm.str_xrange_skip("10", "102"), "H", pos_cols=["D", "F"], neg_cols=["E", "G"])
+        xlm.write_row_sum(work_sheet, xlm.str_xrange_skip("10", "102"), "H", pos_cols=["E", "G"], neg_cols=["F"])
 
 
         # Classe 2
