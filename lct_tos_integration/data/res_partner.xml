@@ -3,6 +3,7 @@
         <record id="lct_generic_customer" model="res.partner">
             <field name="name">Generic customer</field>
             <field name="sync" eval="False" />
+            <field name="customer" eval="True"/>
         </record>
     </data>
 </openerp>
