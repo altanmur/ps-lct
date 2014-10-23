@@ -30,10 +30,9 @@ def xrange_skip(a, b, skip=[]):
             yield i
 
 def str_xrange_skip(a, b, skip=[]):
-    for i in xrange(int(a), int(b) + 1):
-        i = str(i)
-        if i not in skip:
-            yield i
+    for s in (str(n) for n in xrange(int(a), int(b) + 1)):
+        if s not in skip:
+            yield s
 
 def get_total_rows(code_tree):
     total_rows = []
@@ -69,16 +68,20 @@ def add_code_to_tree(code_tree, new_row, new_code):
             code_tree[new_row]['children'].update({row: copy.deepcopy(val)})
             del code_tree[row]
 
+def code_cell_value(cell_value):
+    if isinstance(cell_value, unicode) and cell_value[-1].lower() in ['x', 'y', 'z']:
+        return cell_value
+    return str(int(cell_value))
+
+def get_cell_code(sheet, coord):
+    return code_cell_value(get_cell_value(sheet, coord))
+
 def build_code_tree(sheet, col_str, row_str1, row_str2, skip=[]):
     code_tree = {}
     col = get_col(col_str)
     for row_str in str_xrange_skip(row_str1, row_str2, skip=skip):
         row = get_row(row_str)
-        cell_value = get_cell_value(sheet, (row, col))
-        if isinstance(cell_value, unicode) and cell_value[-1].lower() in ['x', 'y', 'z']:
-            code = cell_value
-        else:
-            code = str(int(cell_value))
+        code = get_cell_code(sheet, (row, col))
         add_code_to_tree(code_tree, row, code)
     return code_tree
 
@@ -115,8 +118,7 @@ def set_out_cells(sheet, value_by_coord):
 
 def set_out_cells_by_coord_str(sheet, value_by_coord_str):
     for coord_str, value in value_by_coord_str.iteritems():
-        coord = get_coord(coord_str)
-        set_out_cell(sheet, coord, value)
+        set_out_cell(sheet, get_coord(coord_str), value)
 
 def get_col_str(col):
     if col < 26:
@@ -131,16 +133,14 @@ def get_row_strs(rows):
     return [get_row_str(row) for row in rows]
 
 def get_coord_str(coord):
-    row = get_row_str(coord[0])
-    col = get_col_str(coord[1])
-    return col + row
+    return get_col_str(coord[1]) + get_row_str(coord[0])
 
 def get_col(col_str):
-    col = 0
+    col = -1
     for i, char in enumerate(reversed(col_str)):
         n = ord(char) - ord("A")
         col += 26**i * (n+1)
-    return col - 1
+    return col
 
 def get_row(row_str):
     return int(row_str) - 1
@@ -150,12 +150,10 @@ def get_coord(coord_str):
     if not m:
         return False
     m_dict = m.groupdict()
-    row = get_row(m_dict['row'])
-    col = get_col(m_dict['col'])
-    return (row, col)
+    return (get_row(m_dict['row']), get_col(m_dict['col']))
 
-def cell_range_sum(coord_start, coord_end):
-    return Formula("SUM(" + get_coord_str(coord_start) + ":" + get_coord_str(coord_end) + ")")
+def range_sum(start, end):
+    return Formula("".join(["SUM(", start, ":", end, ")"]))
 
 def text_list_sum(texts_by_sign):
     form = ""
