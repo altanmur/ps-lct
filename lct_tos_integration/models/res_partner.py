@@ -29,6 +29,7 @@ class res_partner(osv.Model):
     _columns = {
         'ref': fields.char('Customer key', size=64, select=1, required=True),
         'tax_id': fields.many2one('account.tax', string="Tax"),
+        'sync': fields.boolean('Synchronize', help='Synchronize this customer with FTP server when it is updated')
     }
 
     def _default_ref(self, cr, uid, context=None):
@@ -36,12 +37,17 @@ class res_partner(osv.Model):
 
     _defaults = {
         'ref': _default_ref,
+        'sync': True,
     }
 
     def create(self, cr, uid, vals, context=None):
         partner_id = super(res_partner, self).create(cr, uid, vals, context=context)
-        self.pool.get('lct.tos.export.data').export_partners(cr, uid, [partner_id], context=context)
+        if vals.get('sync', True):
+            self.pool.get('lct.tos.export.data').export_partners(cr, uid, [partner_id], context=context)
         return partner_id
+
+    def button_export_partner(self, cr, uid, ids, context=None):
+        self.pool.get('lct.tos.export.data').export_partners(cr, uid, ids, context=context)
 
     def write(self, cr, uid, ids, vals, context=None):
         res = super(res_partner, self).write(cr, uid, ids, vals, context=context)
@@ -49,6 +55,8 @@ class res_partner(osv.Model):
         for call in traceback.extract_stack():
             if call[0] == filename and call[2] == 'create':
                 return res
+
+        ids = self.search(cr, uid, [('id', 'in', ids), ('sync', '=', True)], context=context)
         to_update = [
             'name',
             'ref',
