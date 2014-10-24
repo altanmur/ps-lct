@@ -21,7 +21,7 @@
                     <field name="sync" invisible="1"/>
                 </xpath>
                 <xpath expr="//notebook" position="inside">
-                    <page string="TOS" attrs="{'invisible': [['sync', '=', False]]}" >
+                    <page string="TOS" attrs="{'invisible': ['|', ('sync', '=', False), ('customer', '=', False)]}" >
                         <group>
                             <button name="button_export_partner" type="object" string="Synchronize now"/>
                         </group>
