@@ -43,8 +43,16 @@ def get_total_rows(code_tree):
             total_rows.append(row)
     return total_rows
 
-def write_sum_from_code_tree(sheet, row_tree, row, col):
-    coords = []
+def merge_cell_sums(sum1, sum2):
+    sum1, sum2 = sum1.text(), sum2.text()
+    if sum2.startswith('+') or sum2.startswith('-'):
+        terms = [sum1, sum2]
+    else:
+        terms = [sum1, '+', sum2]
+    return Formula(''.join(terms))
+
+
+def get_sum_from_code_tree(row_tree, row, col):
     coords_by_sign = {'pos': [], 'neg': []}
     inverse_balance = row_tree.get('inverse_balance', False)
     for child_row, val in row_tree['children'].iteritems():
@@ -52,9 +60,10 @@ def write_sum_from_code_tree(sheet, row_tree, row, col):
             coords_by_sign['pos'].append((child_row, col))
         else:
             coords_by_sign['neg'].append((child_row, col))
-    form = cell_list_sum(coords_by_sign)
-    set_out_cell(sheet, (row, col), form)
+    return cell_list_sum(coords_by_sign)
 
+def write_sum_from_code_tree(sheet, row_tree, row, col):
+    set_out_cell(sheet, (row, col), get_sum_from_code_tree(row_tree, row, col))
 
 def check_parentship(parents, childs):
     parent_codes = parents.split(',')
@@ -190,3 +199,22 @@ def write_row_sum(sheet, rows, sum_col, pos_cols=[], neg_cols=[]):
                                 'neg': [col + row for col in neg_cols],
                             })
     set_out_cells_by_coord_str(sheet, values)
+
+def write_if_positive(sheet, coord, value):
+    set_out_cell(sheet, coord, if_positive(value))
+
+def write_if_negative(sheet, coord, value):
+    set_out_cell(sheet, coord, if_negative(value))
+
+def if_positive(value):
+    value = to_string(value)
+    return Formula('IF(' + value + '>0;' + value + ';0)')
+
+def if_negative(value):
+    value = to_string(value)
+    return Formula('IF(' + value + '<0;-(' + value + ');0)')
+
+def to_string(value):
+    if isinstance(value, Formula):
+        value = value.text()
+    return str(value)

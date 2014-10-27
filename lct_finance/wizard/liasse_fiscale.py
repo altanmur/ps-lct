@@ -87,7 +87,6 @@ class liasse_fiscale(osv.osv_memory):
         }
 
     def _write_accounts_info(self, cr, uid, sheet, code_tree, mapping, context=None):
-        accounts_tree = {}
         for row, val in code_tree.iteritems():
             if val.get('children', False):
                 for col in mapping.keys():
@@ -102,6 +101,26 @@ class liasse_fiscale(osv.osv_memory):
                     if val['inverse_balance']:
                         value *= -1
                     xlm.set_out_cell(sheet, (row, col), value)
+
+    def _write_accounts_info_if_positive(self, cr, uid, work_sheet, code_tree, col1, col2, attr, context=None):
+        for row, val in code_tree.iteritems():
+            if val.get('children', False):
+                sum1 = xlm.get_sum_from_code_tree(val, row, col1)
+                sum2 = xlm.get_sum_from_code_tree(dict(val, inverse_balance=(not val['inverse_balance'])), row, col2)
+                value = xlm.merge_cell_sums(sum1, sum2)
+                xlm.write_if_positive(work_sheet, (row, col1), value)
+                xlm.write_if_negative(work_sheet, (row, col2), value)
+                self._write_accounts_info_if_positive(cr, uid, work_sheet, val['children'], col1, col2, attr, context=context)
+            else:
+                account_vals = self._get_account_vals(cr, uid, val['code'], context=context)
+                if not account_vals:
+                    continue
+                value = account_vals[attr]
+                if val['inverse_balance']:
+                    value *= -1
+                xlm.write_if_positive(work_sheet, (row, col1), value)
+                xlm.write_if_negative(work_sheet, (row, col2), value)
+
 
     def _write_calc(self, cr, uid, template, report, context=None):
         account_model = self.pool.get('account.account')
@@ -255,16 +274,9 @@ class liasse_fiscale(osv.osv_memory):
         })
 
         code_tree = xlm.build_code_tree(template_sheet, "B", "8", "68")
+        self._write_accounts_info_if_positive(cr, uid, work_sheet, code_tree, col1=xlm.get_col("D"), col2=xlm.get_col("E"), attr='prev_balance', context=context)
+        self._write_accounts_info_if_positive(cr, uid, work_sheet, code_tree, col1=xlm.get_col("F"), col2=xlm.get_col("G"), attr='balance', context=context)
 
-        mapping = {
-            xlm.get_col("D"): 'prev_debit',
-            xlm.get_col("E"): 'prev_credit',
-            xlm.get_col("F"): 'move_debit',
-            xlm.get_col("G"): 'move_credit',
-        }
-        self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
-
-        xlm.write_row_sum(work_sheet, xlm.str_xrange_skip("8", "56"), "G", pos_cols=["D", "E"], neg_cols=["F"])
 
 
         # Classe 6
