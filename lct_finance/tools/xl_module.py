@@ -43,19 +43,25 @@ def get_total_rows(code_tree):
             total_rows.append(row)
     return total_rows
 
-def write_sum_from_code_tree(sheet, children_code_tree, row, col):
+def write_sum_from_code_tree(sheet, row_tree, row, col):
     coords = []
-    for child_row in children_code_tree.keys():
-        coords.append((child_row, col))
-    form = cell_list_sum({'pos': coords})
+    coords_by_sign = {'pos': [], 'neg': []}
+    inverse_balance = row_tree.get('inverse_balance', False)
+    for child_row, val in row_tree['children'].iteritems():
+        if inverse_balance == val.get('inverse_balance', False):
+            coords_by_sign['pos'].append((child_row, col))
+        else:
+            coords_by_sign['neg'].append((child_row, col))
+    form = cell_list_sum(coords_by_sign)
     set_out_cell(sheet, (row, col), form)
+
 
 def check_parentship(parents, childs):
     parent_codes = parents.split(',')
     child_codes = childs.split(',')
     return any(all(child_code.startswith(parent_code) for child_code in child_codes) for parent_code in parent_codes)
 
-def add_code_to_tree(code_tree, new_row, new_code):
+def add_code_to_tree(code_tree, new_row, new_code, inverse_balance=False):
     for row, val in code_tree.items():
         if check_parentship(val['code'], new_code):
             return add_code_to_tree(code_tree[row]['children'], new_row, new_code)
@@ -63,13 +69,14 @@ def add_code_to_tree(code_tree, new_row, new_code):
     code_tree[new_row] = {
         'code': new_code,
         'children': {},
+        'inverse_balance': inverse_balance,
     }
     for row, val in code_tree.items():
         if row != new_row and check_parentship(new_code, val['code']):
             code_tree[new_row]['children'].update({row: copy.deepcopy(val)})
             del code_tree[row]
 
-def build_code_tree(sheet, col_str, row_str1, row_str2, skip=[]):
+def build_code_tree(sheet, col_str, row_str1, row_str2, skip=[], inverse_balance=False):
     code_tree = {}
     col = get_col(col_str)
     for row_str in str_xrange_skip(row_str1, row_str2, skip=skip):
@@ -79,7 +86,7 @@ def build_code_tree(sheet, col_str, row_str1, row_str2, skip=[]):
             code = cell_value
         else:
             code = str(int(cell_value))
-        add_code_to_tree(code_tree, row, code)
+        add_code_to_tree(code_tree, row, code, inverse_balance=inverse_balance)
     return code_tree
 
 def get_cell_value_by_coord_str(sheet, coord_str):
