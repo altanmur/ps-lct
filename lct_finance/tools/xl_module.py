@@ -73,7 +73,7 @@ def check_parentship(parents, childs):
 def add_code_to_tree(code_tree, new_row, new_code, inverse_balance=False):
     for row, val in code_tree.items():
         if check_parentship(val['code'], new_code):
-            return add_code_to_tree(code_tree[row]['children'], new_row, new_code)
+            return add_code_to_tree(code_tree[row]['children'], new_row, new_code, inverse_balance=inverse_balance)
 
     code_tree[new_row] = {
         'code': new_code,
