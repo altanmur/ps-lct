@@ -289,9 +289,9 @@ class liasse_fiscale(osv.osv_memory):
             xlm.get_coord("E5"): fy_code,
         })
 
-        code_tree = xlm.build_code_tree(template_sheet, "B", "7", "266")
+        code_tree = xlm.build_code_tree(template_sheet, "B", "7", "273")
 
-        xlm.add_code_to_tree(code_tree, xlm.get_row("268"), "6")
+        xlm.add_code_to_tree(code_tree, xlm.get_row("275"), "6")
 
         mapping = {
             xlm.get_col("D"): 'prev_balance',
