@@ -18,14 +18,6 @@
             <field name="arch" type="xml">
                 <xpath expr="//div[@name='vat_info']" position="after">
                     <field name="tax_id"/>
-                    <field name="sync" invisible="1"/>
-                </xpath>
-                <xpath expr="//notebook" position="inside">
-                    <page string="TOS" attrs="{'invisible': [['sync', '=', False]]}" >
-                        <group>
-                            <button name="button_export_partner" type="object" string="Synchronize now"/>
-                        </group>
-                    </page>
                 </xpath>
             </field>
         </record>
