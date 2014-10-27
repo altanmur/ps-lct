@@ -49,7 +49,7 @@
         'views/lct_multiplying_rate.xml',
         'views/lct_tos_export_data.xml',
         'views/res_company.xml',
-        # 'data/res_partner.xml',
+        'data/res_partner.xml',
         'reports/reports.xml',
         ],
     'images': [],

@@ -42,7 +42,8 @@ class res_partner(osv.Model):
 
     def create(self, cr, uid, vals, context=None):
         partner_id = super(res_partner, self).create(cr, uid, vals, context=context)
-        if vals.get('sync', True):
+        partner = self.browse(cr, uid, partner_id, context=context)
+        if partner.customer and partner.sync:
             self.pool.get('lct.tos.export.data').export_partners(cr, uid, [partner_id], context=context)
         return partner_id
 
@@ -51,12 +52,16 @@ class res_partner(osv.Model):
 
     def write(self, cr, uid, ids, vals, context=None):
         res = super(res_partner, self).write(cr, uid, ids, vals, context=context)
+
         filename = __file__.rstrip('c')
         for call in traceback.extract_stack():
             if call[0] == filename and call[2] == 'create':
                 return res
 
-        ids = self.search(cr, uid, [('id', 'in', ids), ('sync', '=', True)], context=context)
+        sync_customer_ids = self.search(cr, uid, [('id', 'in', ids), ('customer', '=', True), ('sync', '=', True)], context=context)
+        if not sync_customer_ids:
+            return res
+
         to_update = [
             'name',
             'ref',
@@ -70,9 +75,9 @@ class res_partner(osv.Model):
             'phone',
         ]
         if any(item in vals for item in to_update):
-            self.pool.get('lct.tos.export.data').export_partners(cr, uid, ids, context=context)
+            self.pool.get('lct.tos.export.data').export_partners(cr, uid, sync_customer_ids, context=context)
         elif 'mobile' in vals:
-            for partner in self.browse(cr, uid, ids, context=context):
+            for partner in self.browse(cr, uid, sync_customer_ids, context=context):
                 if not partner.phone:
                     self.pool.get('lct.tos.export.data').export_partners(cr, uid, [partner.id], context=context)
         return res
