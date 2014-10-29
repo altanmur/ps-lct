@@ -57,7 +57,8 @@ class account_invoice_line(osv.osv):
         ]
         nonvalid_product_ids = [imd_model.get_record_id(cr, uid, 'lct_tos_integration', xml_id, context=context) for xml_id in xml_ids]
         for invoice_line in self.browse(cr, uid, ids, context=context):
-            res[invoice_line.id] = invoice_line.product_id.id not in nonvalid_product_ids
+            product = invoice_line.product_id
+            res[invoice_line.id] = product and product.id not in nonvalid_product_ids or False
         return res
 
     _columns = {
