@@ -24,6 +24,12 @@ from openerp.osv import fields, osv
 class product_product(osv.osv):
     _inherit = 'product.product'
 
+    def _calc_cont_nr_editable(self, cr, uid, ids, fields, arg, context=None):
+        res = {}
+        for product_id in ids:
+            res[product_id] = self._is_cont_nr_editable(cr, uid, product_id, context=context)
+        return res
+
     _columns = {
         'service_id': fields.many2one('lct.product.service', 'Service'),
         'category_id': fields.many2one('lct.product.category', 'Category'),
@@ -31,9 +37,10 @@ class product_product(osv.osv):
         'size_id': fields.many2one('lct.product.size', 'Size'),
         'status_id': fields.many2one('lct.product.status', 'Status'),
         'type_id': fields.many2one('lct.product.type', 'Type'),
+        'cont_nr_editable': fields.function(_calc_cont_nr_editable, type='boolean', string="Container number editable"),
     }
 
-    def is_cont_nr_editable(self, cr, uid, product_id, context=None):
+    def _is_cont_nr_editable(self, cr, uid, product_id, context=None):
         xml_ids = [
             'gearboxcount',
             'hatchcovermoves',

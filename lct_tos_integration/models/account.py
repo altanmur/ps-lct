@@ -48,18 +48,10 @@ class lct_container_number(osv.osv):
 class account_invoice_line(osv.osv):
     _inherit = 'account.invoice.line'
 
-    def _calc_cont_nr_editable(self, cr, uid, ids, fields, arg, context=None):
-        product_model = self.pool.get('product.product')
-        res = {}
-        for invoice_line in self.browse(cr, uid, ids, context=context):
-            product = invoice_line.product_id
-            res[invoice_line.id] = product and product_model.is_cont_nr_editable(cr, uid, product.id, context=context)
-        return res
-
     _columns = {
         'cont_nr_ids': fields.one2many('lct.container.number', 'invoice_line_id', 'Containers'),
         'book_nr': fields.char('Booking number'),
-        'cont_nr_editable': fields.function(_calc_cont_nr_editable, type='boolean', string="Container number editable"),
+        'cont_nr_editable': fields.related('product_id', 'cont_nr_editable', type='boolean', string='Container Number editable'),
     }
 
     def onchange_cont_nr_ids(self, cr, uid, ids, cont_nr_ids, context=None):
@@ -105,11 +97,39 @@ class account_invoice_line(osv.osv):
 
         return {'value': value}
 
-    def product_id_change(self, cr, uid, ids, product, *args, **kwargs):
-        context = kwargs.get('context', None)
-        res = super(account_invoice_line, self).product_id_change(cr, uid, ids, product, *args, **kwargs)
-        res['value']['cont_nr_editable'] = self._compute_cont_nr_editable(cr, uid, product, context=context)
+    def _compute_price_unit(self, cr, uid, product_id, quantity, cont_nr_ids, partner_id, context=None):
+        if quantity <= 0.:
+            return 0.
+        pricelist_model = self.pool.get('product.pricelist')
+        partner = self.pool.get('res.partner').browse(cr, uid, partner_id, context=context)
+        pricelist_id = partner.property_product_pricelist.id
+        if self.pool.get('product.product').browse(cr, uid, product_id, context=context).cont_nr_editable:
+            price_subtotal = 0.
+            for cont_nr in self.pool.get('lct.container.number').browse(cr, uid, cont_nr_ids, context=context):
+                pricelist_qty = cont_nr.pricelist_qty
+                price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
+                price_subtotal += pricelist_qty * price_multi[product_id][pricelist_id]
+            return price_subtotal / quantity
+        else:
+            price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, quantity, partner_id)], context=context)
+            return price_multi[product_id][pricelist_id]
+
+    def product_id_change(self, cr, uid, ids, product_id, uom_id, qty=0, name='', type='out_invoice', partner_id=False, fposition_id=False, price_unit=False, currency_id=False, context=None, company_id=None, cont_nr_ids=[]):
+        res = super(account_invoice_line, self).product_id_change(cr, uid, ids, product_id, uom_id, qty=qty, name=name, type=type, partner_id=partner_id, fposition_id=fposition_id, price_unit=price_unit, currency_id=currency_id, context=context, company_id=company_id)
+        res['value'] = res.get('value', {})
+        cont_nr_ids = [cont_nr[1] for cont_nr in cont_nr_ids]
+        price_unit = self._compute_price_unit(cr, uid, product_id, qty, cont_nr_ids, partner_id, context=context)
+        res['value']['price_unit'] = price_unit
+        res['value']['price_subtotal'] = price_unit * qty
         return res
+
+    def onchange_quantity(self, cr, uid, ids, product_id, quantity, cont_nr_ids, partner_id, context=None):
+        value = {}
+        cont_nr_ids = [cont_nr[1] for cont_nr in cont_nr_ids]
+        price_unit = self._compute_price_unit(cr, uid, product_id, quantity, cont_nr_ids, partner_id, context=context)
+        value['price_unit'] = price_unit
+        value['price_subtotal'] = price_unit * quantity
+        return {'value': value}
 
     def _merge_invoice_line_pair(self, cr, uid, id1, id2, context=None):
         cont_nr_model = self.pool.get('lct.container.number')

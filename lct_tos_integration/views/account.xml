@@ -53,15 +53,19 @@
                     <button name="button_edit" string="Edit line" type="object" icon="STOCK_EDIT"
                             attrs="{'invisible': [('cont_nr_editable', '!=', True)]}"/>
                 </xpath>
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="attributes">
+                    <attribute name="on_change">product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id, cont_nr_ids)</attribute>
+                </xpath>
                 <xpath expr="//field[@name='invoice_line']" position="after">
                     <field name="invoice_line_vessel" nolabel="1" widget="one2many_list" context="{'type': type}" attrs="{'invisible':[('type2','not in',['vessel', 'dockage'])], 'readonly': [['state', 'not in', ['draft', 'synchronized']]]}">
                         <tree string="Invoice Lines" editable="bottom">
                             <field name="sequence" widget="handle" invisible="1"/>
                             <field name="cont_nr_editable" invisible="1"/>
+                            <field name="cont_nr_ids" invisible="1"/>
                             <button name="button_edit" string="Edit line" type="object" icon="STOCK_EDIT"
                                     attrs="{'invisible': [('cont_nr_editable', '!=', True)]}"/>
                             <field name="product_id"
-                                on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id)"/>
+                                on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id, cont_nr_ids)"/>
                             <field name="name"/>
                             <field name="company_id" invisible="1"/>
                             <field name="account_id" groups="account.group_account_user"
@@ -69,7 +73,7 @@
                                 on_change="onchange_account_id(product_id, parent.partner_id, parent.type, parent.fiscal_position,account_id)"/>
                             <field name="account_analytic_id" groups="analytic.group_analytic_accounting"
                                 domain="[('type','!=','view'), ('company_id', '=', parent.company_id)]" string="Profit Center"/>
-                            <field name="quantity" readonly="1" />
+                            <field name="quantity" attrs="{'readonly': [('cont_nr_editable', '=', True)]}" on_change="onchange_quantity(product_id, quantity, cont_nr_ids, parent.partner_id)"/>
                             <field name="uos_id" groups="product.group_uom"
                                 on_change="uos_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id)"/>
                             <field name="price_unit" invisible="1"/>
@@ -86,7 +90,7 @@
                             <button name="button_edit" string="Edit line" type="object" icon="STOCK_EDIT"
                                     attrs="{'invisible': [('cont_nr_editable', '!=', True)]}"/>
                             <field name="product_id"
-                                on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id)"/>
+                                on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id, cont_nr_ids)"/>
                             <field name="name"/>
                             <field name="company_id" invisible="1"/>
                             <field name="account_id" groups="account.group_account_user"
@@ -94,7 +98,7 @@
                                 on_change="onchange_account_id(product_id, parent.partner_id, parent.type, parent.fiscal_position,account_id)"/>
                             <field name="account_analytic_id" groups="analytic.group_analytic_accounting"
                                 domain="[('type','!=','view'), ('company_id', '=', parent.company_id)]" string="Profit Center"/>
-                            <field name="quantity"/>
+                            <field name="quantity" attrs="{'readonly': [('cont_nr_editable', '=', True)]}" on_change="onchange_quantity(product_id, quantity, cont_nr_ids, parent.partner_id)"/>
                             <field name="uos_id" groups="product.group_uom"
                                 on_change="uos_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id)"/>
                             <field name="price_unit" invisible="1"/>
