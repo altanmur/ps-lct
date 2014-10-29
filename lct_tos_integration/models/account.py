@@ -364,7 +364,7 @@ class account_invoice(osv.osv):
         return self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', xml_id)
 
     def _get_app_sub_category(self, cr, uid, line):
-        sub_category = line.find('sub_category')
+        sub_category = line.find('subcategory')
         if sub_category is None or not sub_category.text:
             return False
         else:
