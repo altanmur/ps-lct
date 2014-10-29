@@ -59,7 +59,7 @@
                     <attribute name="on_change">product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id, cont_nr_ids)</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']" position="after">
-                    <field name="invoice_line_vessel" nolabel="1" widget="one2many_list" context="{'type': type}" attrs="{'invisible':[('type2','not in',['vessel', 'dockage'])], 'readonly': [['state', 'not in', ['draft', 'synchronized']]]}">
+                    <field name="invoice_line_vessel" nolabel="1" widget="one2many_list" context="{'default_type': type, 'default_state': state}" attrs="{'invisible':[('type2','not in',['vessel', 'dockage'])], 'readonly': [['state', 'not in', ['draft', 'synchronized']]]}">
                         <tree string="Invoice Lines" editable="bottom">
                             <field name="sequence" widget="handle" invisible="1"/>
                             <field name="cont_nr_editable" invisible="1"/>

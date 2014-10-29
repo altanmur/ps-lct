@@ -117,12 +117,14 @@ class account_invoice_line(osv.osv):
 
     def product_id_change(self, cr, uid, ids, product_id, uom_id, qty=0, name='', type='out_invoice', partner_id=False, fposition_id=False, price_unit=False, currency_id=False, context=None, company_id=None, cont_nr_ids=[]):
         res = super(account_invoice_line, self).product_id_change(cr, uid, ids, product_id, uom_id, qty=qty, name=name, type=type, partner_id=partner_id, fposition_id=fposition_id, price_unit=price_unit, currency_id=currency_id, context=context, company_id=company_id)
-        if product_id and partner_id:
-            res['value'] = res.get('value', {})
-            cont_nr_ids = [cont_nr[1] for cont_nr in cont_nr_ids]
-            price_unit = self._compute_price_unit(cr, uid, product_id, qty, cont_nr_ids, partner_id, context=context)
-            res['value']['price_unit'] = price_unit
-            res['value']['price_subtotal'] = price_unit * qty
+        res['value'] = res.get('value', {})
+        if product_id:
+            res['value']['cont_nr_editable'] = self.pool.get('product.product').browse(cr, uid, product_id, context=context).cont_nr_editable
+            if partner_id:
+                cont_nr_ids = [cont_nr[1] for cont_nr in cont_nr_ids]
+                price_unit = self._compute_price_unit(cr, uid, product_id, qty, cont_nr_ids, partner_id, context=context)
+                res['value']['price_unit'] = price_unit
+                res['value']['price_subtotal'] = price_unit * qty
         return res
 
     def onchange_quantity(self, cr, uid, ids, product_id, quantity, cont_nr_ids, partner_id, context=None):
