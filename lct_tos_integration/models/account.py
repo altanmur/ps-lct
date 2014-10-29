@@ -48,20 +48,12 @@ class lct_container_number(osv.osv):
 class account_invoice_line(osv.osv):
     _inherit = 'account.invoice.line'
 
-    def _compute_cont_nr_editable(self, cr, uid, product_id, context=None):
-        xml_ids = [
-            'gearboxcount',
-            'hatchcovermoves',
-        ]
-        imd_model = self.pool.get('ir.model.data')
-        nonvalid_product_ids = [imd_model.get_record_id(cr, uid, 'lct_tos_integration', xml_id, context=context) for xml_id in xml_ids]
-        return product_id and product_id not in nonvalid_product_ids or False
-
     def _calc_cont_nr_editable(self, cr, uid, ids, fields, arg, context=None):
+        product_model = self.pool.get('product.product')
         res = {}
         for invoice_line in self.browse(cr, uid, ids, context=context):
             product = invoice_line.product_id
-            res[invoice_line.id] = product and self._compute_cont_nr_editable(cr, uid, product.id, context=context)
+            res[invoice_line.id] = product and product_model.is_cont_nr_editable(cr, uid, product.id, context=context)
         return res
 
     _columns = {
