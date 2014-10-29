@@ -50,8 +50,10 @@
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='sequence']" position="after">
                     <field name="cont_nr_editable" invisible="1"/>
+                    <field name="cont_nr_ids" invisible="1"/>
+                    <field name="state" invisible="1"/>
                     <button name="button_edit" string="Edit line" type="object" icon="STOCK_EDIT"
-                            attrs="{'invisible': [('cont_nr_editable', '!=', True)]}"/>
+                            attrs="{'invisible': ['|', ('cont_nr_editable', '!=', True), ('state', 'not in', ['draft', 'synchronized'])]}"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="attributes">
                     <attribute name="on_change">product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id, cont_nr_ids)</attribute>
@@ -62,8 +64,9 @@
                             <field name="sequence" widget="handle" invisible="1"/>
                             <field name="cont_nr_editable" invisible="1"/>
                             <field name="cont_nr_ids" invisible="1"/>
+                            <field name="state" invisible="1"/>
                             <button name="button_edit" string="Edit line" type="object" icon="STOCK_EDIT"
-                                    attrs="{'invisible': [('cont_nr_editable', '!=', True)]}"/>
+                                    attrs="{'invisible': ['|', ('cont_nr_editable', '!=', True), ('state', 'not in', ['draft', 'synchronized'])]}"/>
                             <field name="product_id"
                                 on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id, cont_nr_ids)"/>
                             <field name="name"/>
@@ -87,8 +90,10 @@
                         <tree string="Invoice Lines" editable="bottom">
                             <field name="sequence" widget="handle" invisible="1"/>
                             <field name="cont_nr_editable" invisible="1"/>
+                            <field name="cont_nr_ids" invisible="1"/>
+                            <field name="state" invisible="1"/>
                             <button name="button_edit" string="Edit line" type="object" icon="STOCK_EDIT"
-                                    attrs="{'invisible': [('cont_nr_editable', '!=', True)]}"/>
+                                    attrs="{'invisible': ['|', ('cont_nr_editable', '!=', True), ('state', 'not in', ['draft', 'synchronized'])]}"/>
                             <field name="product_id"
                                 on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id, cont_nr_ids)"/>
                             <field name="name"/>

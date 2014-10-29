@@ -52,6 +52,7 @@ class account_invoice_line(osv.osv):
         'cont_nr_ids': fields.one2many('lct.container.number', 'invoice_line_id', 'Containers'),
         'book_nr': fields.char('Booking number'),
         'cont_nr_editable': fields.related('product_id', 'cont_nr_editable', type='boolean', string='Container Number editable'),
+        'state': fields.related('invoice_id', 'state', type="char", string="Status"),
     }
 
     def onchange_cont_nr_ids(self, cr, uid, ids, cont_nr_ids, context=None):
