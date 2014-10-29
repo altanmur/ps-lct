@@ -48,17 +48,20 @@ class lct_container_number(osv.osv):
 class account_invoice_line(osv.osv):
     _inherit = 'account.invoice.line'
 
-    def _calc_cont_nr_editable(self, cr, uid, ids, fields, arg, context=None):
-        res = {}
-        imd_model = self.pool.get('ir.model.data')
+    def _compute_cont_nr_editable(self, cr, uid, product_id, context=None):
         xml_ids = [
             'gearboxcount',
             'hatchcovermoves',
         ]
+        imd_model = self.pool.get('ir.model.data')
         nonvalid_product_ids = [imd_model.get_record_id(cr, uid, 'lct_tos_integration', xml_id, context=context) for xml_id in xml_ids]
+        return product_id and product_id not in nonvalid_product_ids or False
+
+    def _calc_cont_nr_editable(self, cr, uid, ids, fields, arg, context=None):
+        res = {}
         for invoice_line in self.browse(cr, uid, ids, context=context):
             product = invoice_line.product_id
-            res[invoice_line.id] = product and product.id not in nonvalid_product_ids or False
+            res[invoice_line.id] = product and self._compute_cont_nr_editable(cr, uid, product.id, context=context)
         return res
 
     _columns = {
@@ -109,6 +112,12 @@ class account_invoice_line(osv.osv):
             value['price_subtotal'] += pricelist_qty*price_multi[product_id][pricelist_id]
 
         return {'value': value}
+
+    def product_id_change(self, cr, uid, ids, product, *args, **kwargs):
+        context = kwargs.get('context', None)
+        res = super(account_invoice_line, self).product_id_change(cr, uid, ids, product, *args, **kwargs)
+        res['value']['cont_nr_editable'] = self._compute_cont_nr_editable(cr, uid, product, context=context)
+        return res
 
     def _merge_invoice_line_pair(self, cr, uid, id1, id2, context=None):
         cont_nr_model = self.pool.get('lct.container.number')
