@@ -32,7 +32,7 @@ class lct_container_number(osv.osv):
         'name': fields.char('Container Number'),
         'date_start': fields.date('Arrival date'),
         'quantity': fields.integer('Quantity', help="Real quantity of product on invoice line"),
-        'pricelist_qty': fields.integer('Quantity', help="Quantity used for pricelist computation"),
+        'pricelist_qty': fields.integer('Pricelist quantity', help="Quantity used for pricelist computation"),
         'cont_operator': fields.char('Container operator'),
         'call_sign': fields.char('Call sign'),
         'lloyds_nr': fields.char('Lloyds number'),
@@ -48,10 +48,66 @@ class lct_container_number(osv.osv):
 class account_invoice_line(osv.osv):
     _inherit = 'account.invoice.line'
 
+    def _calc_cont_nr_editable(self, cr, uid, ids, fields, arg, context=None):
+        res = {}
+        imd_model = self.pool.get('ir.model.data')
+        xml_ids = [
+            'gearboxcount',
+            'hatchcovermoves',
+        ]
+        nonvalid_product_ids = [imd_model.get_record_id(cr, uid, 'lct_tos_integration', xml_id, context=context) for xml_id in xml_ids]
+        for invoice_line in self.browse(cr, uid, ids, context=context):
+            res[invoice_line.id] = invoice_line.product_id.id not in nonvalid_product_ids
+        return res
+
     _columns = {
         'cont_nr_ids': fields.one2many('lct.container.number', 'invoice_line_id', 'Containers'),
         'book_nr': fields.char('Booking number'),
+        'cont_nr_editable': fields.function(_calc_cont_nr_editable, type='boolean', string="Container number editable"),
     }
+
+    def onchange_cont_nr_ids(self, cr, uid, ids, cont_nr_ids, context=None):
+        if not ids or not cont_nr_ids:
+            return {}
+
+        cont_nr_model = self.pool.get('lct.container.number')
+
+        value = {'quantity': 0, 'price_subtotal': 0.}
+        for cont_nr in cont_nr_ids:
+            if cont_nr[2] and 'quantity' in cont_nr[2]:
+                value['quantity'] += cont_nr[2]['quantity']
+            elif cont_nr[1]:
+                value['quantity'] += cont_nr_model.browse(cr, uid, cont_nr[1], context=context).quantity
+            else:
+                return {'warning': {
+                    'title': 'Warning!',
+                    'message' : "Line Quantity could not be correctly updated. Values will be updated when you confirm the invoice line editing",
+                }}
+
+        pricelist_model = self.pool.get('product.pricelist')
+        invoice_line = self.browse(cr, uid, ids[0], context=context)
+        partner = invoice_line.invoice_id.partner_id
+        partner_id = partner.id
+        pricelist_id = partner.property_product_pricelist.id
+        product_id = invoice_line.product_id.id
+
+        pricelist_qties = []
+        for cont_nr in cont_nr_ids:
+            if cont_nr[2] and 'pricelist_qty' in cont_nr[2]:
+                pricelist_qties.append(cont_nr[2]['pricelist_qty'])
+            elif cont_nr[1]:
+                pricelist_qties.append(cont_nr_model.browse(cr, uid, cont_nr[1], context=context).pricelist_qty)
+            else:
+                return {'warning': {
+                    'title': 'Warning!',
+                    'message' : "Line Subtotal could not be correctly updated. Values will be updated when you confirm the invoice line editing",
+                }}
+
+        for pricelist_qty in pricelist_qties:
+            price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
+            value['price_subtotal'] += pricelist_qty*price_multi[product_id][pricelist_id]
+
+        return {'value': value}
 
     def _merge_invoice_line_pair(self, cr, uid, id1, id2, context=None):
         cont_nr_model = self.pool.get('lct.container.number')
@@ -93,6 +149,48 @@ class account_invoice_line(osv.osv):
                         vals['invoice_line_tax_id'] = [(6, False, [tax.id])]
         return super(account_invoice_line, self).write(cr, uid, ids, vals, context=context)
 
+    def button_edit(self, cr, uid, ids, context=None):
+        return {
+            'view_mode': 'form',
+            'view_id': self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'view_invoice_line_form_lct', context=context),
+            'view_type': 'form',
+            'res_model': 'account.invoice.line',
+            'res_id': ids[0],
+            'type': 'ir.actions.act_window',
+            'nodestroy': True,
+            'target': 'new',
+            'domain': '[]',
+            'context': context,
+        }
+
+    def button_confirm_edit(self, cr, uid, ids, context=None):
+        if not ids:
+            return {}
+
+        invoice_line = self.browse(cr, uid, ids[0], context=context)
+        cont_nrs = invoice_line.cont_nr_ids
+
+        quantity = sum(cont_nr.quantity for cont_nr in cont_nrs)
+
+        pricelist_model = self.pool.get('product.pricelist')
+        invoice_line = self.browse(cr, uid, ids[0], context=context)
+        partner = invoice_line.invoice_id.partner_id
+        partner_id = partner.id
+        pricelist_id = partner.property_product_pricelist.id
+        product_id = invoice_line.product_id.id
+
+        pricelist_qties = [cont_nr.pricelist_qty for cont_nr in cont_nrs]
+        price_subtotal = 0.
+        for pricelist_qty in pricelist_qties:
+            price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
+            price_subtotal += pricelist_qty*price_multi[product_id][pricelist_id]
+
+        vals = {
+            'quantity': quantity,
+            'price_unit': price_subtotal/quantity,
+        }
+        self.write(cr, uid, [invoice_line.id], vals, context=context)
+        return {}
 
 class account_voucher(osv.osv):
     _inherit = 'account.voucher'
