@@ -26,10 +26,15 @@ import traceback
 class res_partner(osv.Model):
     _inherit = 'res.partner'
 
+    def _calc_generic_customer(self, cr, uid, ids, fields, arg, context=None):
+        generic_customer_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_generic_customer', context=context)
+        return {partner_id: (partner_id == generic_customer_id) for partner_id in ids}
+
     _columns = {
         'ref': fields.char('Customer key', size=64, select=1, required=True),
         'tax_id': fields.many2one('account.tax', string="Tax"),
-        'sync': fields.boolean('Synchronize', help='Synchronize this customer with FTP server when it is updated')
+        'sync': fields.boolean('Synchronize', help='Synchronize this customer with FTP server when it is updated'),
+        'generic_customer': fields.function(_calc_generic_customer, type='boolean', string="Is generic customer"),
     }
 
     def _default_ref(self, cr, uid, context=None):
