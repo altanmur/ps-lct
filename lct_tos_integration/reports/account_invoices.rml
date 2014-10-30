@@ -120,7 +120,7 @@
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and o.call_sign_vbl or '']]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and "Navire :" or '']]</para></td>
-                            <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and o.vessel_ID or '']]</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and o.vessel_id or '']]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and "Arrivée :" or '']]</para></td>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and formatLang(o.berth_time, date_time=True) or '']]</para></td>
