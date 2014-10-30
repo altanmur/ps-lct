@@ -89,7 +89,7 @@
                     <blockTable colWidths="120,129" style="Table1">
                         <tr>
                             <td><para style="terp_5f_default_5f_8">Client :</para></td>
-                            <td><para style="terp_5f_default_5f_8">[[ o.partner_id.name ]]</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ not o.generic_customer and o.partner_id.name or o.generic_customer_name ]]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">Adresses :</para></td>
                             <td>
