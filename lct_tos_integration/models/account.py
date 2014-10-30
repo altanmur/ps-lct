@@ -155,7 +155,17 @@ class account_invoice(osv.osv):
         'off_window': fields.boolean('OFF window'),
         'loa': fields.integer('LOA'),
         'imported_file_id': fields.many2one('lct.tos.import.data', string="Imported File", ondelete='restrict'),
+        'generic_customer': fields.related('partner_id', 'generic_customer', type='boolean', string="Generic customer"),
+        'generic_customer_name': fields.char("Customer Name"),
     }
+
+    def onchange_partner_id(self, cr, uid, ids, type, partner_id,\
+            date_invoice=False, payment_term=False, partner_bank_id=False, company_id=False, context=None):
+        res = super(account_invoice, self).onchange_partner_id(cr, uid, ids, type=type, partner_id=partner_id,\
+            date_invoice=date_invoice, payment_term=payment_term, partner_bank_id=partner_bank_id, company_id=company_id)
+        res['value'] = res.get('value', {})
+        res['value']['generic_customer'] = self.pool.get('res.partner').browse(cr, uid, partner_id, context=context).generic_customer
+        return res
 
     def _get_elmnt_text(self, elmnt, tag):
         sub_elmnt = elmnt.find(tag)
