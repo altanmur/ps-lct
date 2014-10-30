@@ -9,25 +9,29 @@ class TestXlModule(TransactionCase):
         super(TestXlModule, self).setUp()
         self.code_tree = {
             1: {
+                'inverse_balance': False,
                 'code': '11',
                 'children': {
-                    2: {'code': '112'},
+                    2: {'code': '112', 'inverse_balance': False},
                     3: {
+                        'inverse_balance': False,
                         'code': '1115',
                         'children': {
-                            8: '11157',
+                            8: {'code': '11157', 'inverse_balance': False},
                         },
                     },
-                    4: {'code': '113'},
+                    4: {'code': '113', 'inverse_balance': False},
                 },
             },
             6: {
+                'inverse_balance': False,
                 'code': '16',
                 'children': {
                     7: {
+                        'inverse_balance': False,
                         'code': '165',
                         'children': {
-                            5: {'code': '1658'},
+                            5: {'code': '1658', 'inverse_balance': False,},
                         }
                     }
                 }
@@ -51,30 +55,35 @@ class TestXlModule(TransactionCase):
 
         expected_code_tree = {
             1: {
+                'inverse_balance': False,
                 'code': '11',
                 'children': {
                     9: {
+                        'inverse_balance': False,
                         'code': '111',
                         'children': {
                             3: {
+                                'inverse_balance': False,
                                 'code': '1115',
                                 'children': {
-                                    8: '11157',
+                                    8: {'code': '11157', 'inverse_balance': False},
                                 },
                             },
                         },
                     },
-                    4: {'code': '113'},
-                    2: {'code': '112'},
+                    4: {'code': '113', 'inverse_balance': False},
+                    2: {'code': '112', 'inverse_balance': False},
                 },
             },
             6: {
+                'inverse_balance': False,
                 'code': '16',
                 'children': {
                     7: {
+                        'inverse_balance': False,
                         'code': '165',
                         'children': {
-                            5: {'code': '1658'},
+                            5: {'code': '1658', 'inverse_balance': False},
                         }
                     }
                 }
@@ -91,30 +100,35 @@ class TestXlModule(TransactionCase):
 
         expected_code_tree = {
             1: {
+                'inverse_balance': False,
                 'code': '11',
                 'children': {
                     9: {
+                        'inverse_balance': False,
                         'code': '111,112',
                         'children': {
                             3: {
+                                'inverse_balance': False,
                                 'code': '1115',
                                 'children': {
-                                    8: '11157',
+                                    8: {'code': '11157', 'inverse_balance': False},
                                 },
                             },
-                            2: {'code': '112'},
+                            2: {'code': '112', 'inverse_balance': False},
                         },
                     },
-                    4: {'code': '113'},
+                    4: {'code': '113', 'inverse_balance': False},
                 },
             },
             6: {
+                'inverse_balance': False,
                 'code': '16',
                 'children': {
                     7: {
+                        'inverse_balance': False,
                         'code': '165',
                         'children': {
-                            5: {'code': '1658'},
+                            5: {'code': '1658', 'inverse_balance': False},
                         }
                     }
                 }
