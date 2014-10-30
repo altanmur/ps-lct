@@ -155,7 +155,31 @@ class account_invoice(osv.osv):
         'off_window': fields.boolean('OFF window'),
         'loa': fields.integer('LOA'),
         'imported_file_id': fields.many2one('lct.tos.import.data', string="Imported File", ondelete='restrict'),
+        'printed': fields.boolean('Already printed'),
     }
+
+    _defaults = {
+        'printed': False,
+    }
+
+    def print_invoice(self, cr, uid, id, context=None):
+        if not id:
+            return {}
+        self.write(cr, uid, [id], {'printed': True}, context=context)
+        return {
+            'type': 'ir.actions.report.xml',
+            'res_model': 'account.invoice',
+            'report_name': 'account.invoice',
+            'auto': False,
+            'model': 'account.invoice',
+            'report_type': 'pdf',
+            'report_file': 'addons/lct_tos_integration/reports/account_invoices.rml',
+            'name': 'Invoices',
+            'attachment_use': True,
+            'usage': 'default',
+            'header': True,
+            'context': context,
+        }
 
     def _get_elmnt_text(self, elmnt, tag):
         sub_elmnt = elmnt.find(tag)

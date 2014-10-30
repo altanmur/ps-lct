@@ -2,15 +2,22 @@
 <openerp>
     <data>
         <delete model="ir.actions.report.xml" id="account.account_invoices"/>
-        <report id="account.account_invoices"
-            name="account.invoice"
-            auto="False"
-            model="account.invoice"
-            rml="addons/lct_tos_integration/reports/account_invoices.rml"
-            string="Invoices"
-            attachment_use="True"
-            usage="default"
-            header="True"
-            />
-        </data>
+
+        <record id="action_server_print_and_set_invoice" model="ir.actions.server">
+            <field name="name">Invoices</field>
+            <field name="model_id" ref="account.model_account_invoice"/>
+            <field name="state">code</field>
+            <field name="condition">True</field>
+            <field name="code">
+action = self.print_invoice(cr, uid, context.get('active_id', False), context=context)
+            </field>
+        </record>
+
+        <record id="action_binding_print_invoice" model="ir.values">
+            <field name="name">Invoices</field>
+            <field name="model">account.invoice</field>
+            <field name="key2">client_print_multi</field>
+            <field name="value_unpickle" eval="'ir.actions.server,'+str(ref('action_server_print_and_set_invoice'))"/>
+        </record>
+    </data>
 </openerp>
