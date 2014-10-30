@@ -125,6 +125,33 @@
             </field>
         </record>
 
+        <record id="view_invoice_appoint_tree_lct" model="ir.ui.view">
+            <field name="name">account.invoice.tree</field>
+            <field name="model">account.invoice</field>
+            <field name="priority" eval="100"/>
+            <field name="arch" type="xml">
+                <tree colors="blue:state == 'draft';black:state in ('proforma','proforma2','open');gray:state == 'cancel'" string="Invoice">
+                    <field name="partner_id" groups="base.group_user"/>
+                    <field name="appoint_ref"/>
+                    <field name="date_invoice"/>
+                    <field name="number"/>
+                    <field name="reference" invisible="1"/>
+                    <field name="name" invisible="1"/>
+                    <field name="journal_id" invisible="1"/>
+                    <field name="period_id" invisible="1" groups="account.group_account_user"/>
+                    <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                    <field name="user_id"/>
+                    <field name="date_due"/>
+                    <field name="origin"/>
+                    <field name="currency_id" groups="base.group_multi_currency"/>
+                    <field name="residual" sum="Residual Amount"/>
+                    <field name="amount_untaxed" sum="Untaxed Amount"/>
+                    <field name="amount_total" sum="Total Amount"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
         <record id="view_invoice_vessel_filter_lct" model="ir.ui.view">
             <field name="name">invoice.vessel.select.lct</field>
             <field name="model">account.invoice</field>
@@ -193,6 +220,7 @@
         <record id="action_invoice_appointment_view1" model="ir.actions.act_window.view">
             <field name="sequence" eval="1"/>
             <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_invoice_appoint_tree_lct"/>
             <field name="act_window_id" ref="action_invoice_appointment"/>
         </record>
 
