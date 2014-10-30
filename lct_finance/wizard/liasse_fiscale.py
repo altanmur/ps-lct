@@ -87,11 +87,10 @@ class liasse_fiscale(osv.osv_memory):
         }
 
     def _write_accounts_info(self, cr, uid, sheet, code_tree, mapping, context=None):
-        accounts_tree = {}
         for row, val in code_tree.iteritems():
-            if val['children']:
+            if val.get('children', False):
                 for col in mapping.keys():
-                    xlm.write_sum_from_code_tree(sheet, val['children'], row, col)
+                    xlm.write_sum_from_code_tree(sheet, val, row, col)
                 self._write_accounts_info(cr, uid, sheet, val['children'], mapping, context=context)
             else:
                 account_vals = self._get_account_vals(cr, uid, val['code'], context=context)
@@ -99,7 +98,29 @@ class liasse_fiscale(osv.osv_memory):
                     continue
                 for col, attr in mapping.iteritems():
                     value = account_vals[attr]
+                    if val['inverse_balance']:
+                        value *= -1
                     xlm.set_out_cell(sheet, (row, col), value)
+
+    def _write_accounts_info_if_positive(self, cr, uid, work_sheet, code_tree, col1, col2, attr, context=None):
+        for row, val in code_tree.iteritems():
+            if val.get('children', False):
+                sum1 = xlm.get_sum_from_code_tree(val, row, col1)
+                sum2 = xlm.get_sum_from_code_tree(dict(val, inverse_balance=(not val['inverse_balance'])), row, col2)
+                value = xlm.merge_cell_sums(sum1, sum2)
+                xlm.write_if_positive(work_sheet, (row, col1), value)
+                xlm.write_if_negative(work_sheet, (row, col2), value)
+                self._write_accounts_info_if_positive(cr, uid, work_sheet, val['children'], col1, col2, attr, context=context)
+            else:
+                account_vals = self._get_account_vals(cr, uid, val['code'], context=context)
+                if not account_vals:
+                    continue
+                value = account_vals[attr]
+                if val['inverse_balance']:
+                    value *= -1
+                xlm.write_if_positive(work_sheet, (row, col1), value)
+                xlm.write_if_negative(work_sheet, (row, col2), value)
+
 
     def _write_calc(self, cr, uid, template, report, context=None):
         account_model = self.pool.get('account.account')
@@ -144,7 +165,7 @@ class liasse_fiscale(osv.osv_memory):
         }
         self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
 
-        xlm.write_row_sum(work_sheet, xlm.str_xrange_skip("10", "102"), "H", pos_cols=["D", "F"], neg_cols=["E", "G"])
+        xlm.write_row_sum(work_sheet, xlm.str_xrange_skip("10", "102"), "H", pos_cols=["E", "G"], neg_cols=["F"])
 
 
         # Classe 2
@@ -157,12 +178,14 @@ class liasse_fiscale(osv.osv_memory):
             xlm.get_coord("E6"): fy_code,
         })
 
-        code_tree = xlm.build_code_tree(template_sheet, "B", "10", "155",
-                                        skip=["84", "85", "114", "155"])
+        code_tree1 = xlm.build_code_tree(template_sheet, "B", "10", "83")
+        code_tree2 = xlm.build_code_tree(template_sheet, "B", "86", "154", skip=["114"], inverse_balance=True)
+
+        code_tree = dict(code_tree1.items() + code_tree2.items())
 
         xlm.add_code_to_tree(code_tree, xlm.get_row("84"), "20,21,22,23,24,25,26,27")
-        xlm.add_code_to_tree(code_tree, xlm.get_row("114"), "28")
-        xlm.add_code_to_tree(code_tree, xlm.get_row("155"), "29")
+        xlm.add_code_to_tree(code_tree, xlm.get_row("114"), "28", inverse_balance=True)
+        xlm.add_code_to_tree(code_tree, xlm.get_row("155"), "29", inverse_balance=True)
         xlm.add_code_to_tree(code_tree, xlm.get_row("156"), "2")
 
         mapping = {
@@ -187,8 +210,10 @@ class liasse_fiscale(osv.osv_memory):
             xlm.get_coord("E5"): fy_code,
         })
 
-        code_tree = xlm.build_code_tree(template_sheet, "B", "8", "56",
-                                        skip=[])
+        code_tree1 = xlm.build_code_tree(template_sheet, "B", "8", "44")
+        code_tree2 = xlm.build_code_tree(template_sheet, "B", "45", "55", inverse_balance=True)
+        code_tree = dict(code_tree1.items() + code_tree2.items())
+        xlm.add_code_to_tree(code_tree, xlm.get_row("56"), "3")
 
         mapping = {
             xlm.get_col("D"): 'prev_balance',
@@ -212,7 +237,7 @@ class liasse_fiscale(osv.osv_memory):
         })
 
         code_tree = xlm.build_code_tree(template_sheet, "B", "8", "98",
-                                        skip=["52"])
+                                        skip=["52", "86"])
 
         xlm.add_code_to_tree(code_tree, xlm.get_row("52"), '4490')
 
@@ -248,18 +273,10 @@ class liasse_fiscale(osv.osv_memory):
             xlm.get_coord("F5"): fy_code,
         })
 
-        code_tree = xlm.build_code_tree(template_sheet, "B", "8", "68",
-                                        skip=[])
+        code_tree = xlm.build_code_tree(template_sheet, "B", "8", "68")
+        self._write_accounts_info_if_positive(cr, uid, work_sheet, code_tree, col1=xlm.get_col("D"), col2=xlm.get_col("E"), attr='prev_balance', context=context)
+        self._write_accounts_info_if_positive(cr, uid, work_sheet, code_tree, col1=xlm.get_col("F"), col2=xlm.get_col("G"), attr='balance', context=context)
 
-        mapping = {
-            xlm.get_col("D"): 'prev_debit',
-            xlm.get_col("E"): 'prev_credit',
-            xlm.get_col("F"): 'move_debit',
-            xlm.get_col("G"): 'move_credit',
-        }
-        self._write_accounts_info(cr, uid, work_sheet, code_tree, mapping, context=context)
-
-        xlm.write_row_sum(work_sheet, xlm.str_xrange_skip("8", "56"), "G", pos_cols=["D", "E"], neg_cols=["F"])
 
 
         # Classe 6
@@ -272,10 +289,9 @@ class liasse_fiscale(osv.osv_memory):
             xlm.get_coord("E5"): fy_code,
         })
 
-        code_tree = xlm.build_code_tree(template_sheet, "B", "7", "266",
-                                        skip=[])
+        code_tree = xlm.build_code_tree(template_sheet, "B", "7", "273")
 
-        xlm.add_code_to_tree(code_tree, xlm.get_row("268"), "6")
+        xlm.add_code_to_tree(code_tree, xlm.get_row("275"), "6")
 
         mapping = {
             xlm.get_col("D"): 'prev_balance',
@@ -296,10 +312,9 @@ class liasse_fiscale(osv.osv_memory):
             xlm.get_coord("E5"): fy_code,
         })
 
-        code_tree = xlm.build_code_tree(template_sheet, "B", "7", "123",
-                                        skip=[])
+        code_tree = xlm.build_code_tree(template_sheet, "B", "7", "123", inverse_balance=True)
 
-        xlm.add_code_to_tree(code_tree, xlm.get_row("125"), "7")
+        xlm.add_code_to_tree(code_tree, xlm.get_row("125"), "7", inverse_balance=True)
 
         mapping = {
             xlm.get_col("D"): 'prev_balance',
@@ -320,8 +335,7 @@ class liasse_fiscale(osv.osv_memory):
             xlm.get_coord("E5"): fy_code,
         })
 
-        code_tree = xlm.build_code_tree(template_sheet, "B", "7", "63",
-                                        skip=[])
+        code_tree = xlm.build_code_tree(template_sheet, "B", "7", "63")
 
         xlm.add_code_to_tree(code_tree, xlm.get_row("65"), '8')
 

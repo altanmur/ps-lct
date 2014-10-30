@@ -42,47 +42,59 @@ def get_total_rows(code_tree):
             total_rows.append(row)
     return total_rows
 
-def write_sum_from_code_tree(sheet, children_code_tree, row, col):
-    coords = []
-    for child_row in children_code_tree.keys():
-        coords.append((child_row, col))
-    form = cell_list_sum({'pos': coords})
-    set_out_cell(sheet, (row, col), form)
+def merge_cell_sums(sum1, sum2):
+    sum1, sum2 = sum1.text(), sum2.text()
+    if sum2.startswith('+') or sum2.startswith('-'):
+        terms = [sum1, sum2]
+    else:
+        terms = [sum1, '+', sum2]
+    return Formula(''.join(terms))
+
+
+def get_sum_from_code_tree(row_tree, row, col):
+    coords_by_sign = {'pos': [], 'neg': []}
+    inverse_balance = row_tree.get('inverse_balance', False)
+    for child_row, val in row_tree['children'].iteritems():
+        if inverse_balance == val.get('inverse_balance', False):
+            coords_by_sign['pos'].append((child_row, col))
+        else:
+            coords_by_sign['neg'].append((child_row, col))
+    return cell_list_sum(coords_by_sign)
+
+def write_sum_from_code_tree(sheet, row_tree, row, col):
+    set_out_cell(sheet, (row, col), get_sum_from_code_tree(row_tree, row, col))
 
 def check_parentship(parents, childs):
     parent_codes = parents.split(',')
     child_codes = childs.split(',')
     return any(all(child_code.startswith(parent_code) for child_code in child_codes) for parent_code in parent_codes)
 
-def add_code_to_tree(code_tree, new_row, new_code):
+def add_code_to_tree(code_tree, new_row, new_code, inverse_balance=False):
     for row, val in code_tree.items():
         if check_parentship(val['code'], new_code):
-            return add_code_to_tree(code_tree[row]['children'], new_row, new_code)
+            return add_code_to_tree(code_tree[row]['children'], new_row, new_code, inverse_balance=inverse_balance)
 
     code_tree[new_row] = {
         'code': new_code,
         'children': {},
+        'inverse_balance': inverse_balance,
     }
     for row, val in code_tree.items():
         if row != new_row and check_parentship(new_code, val['code']):
             code_tree[new_row]['children'].update({row: copy.deepcopy(val)})
             del code_tree[row]
 
-def code_cell_value(cell_value):
-    if isinstance(cell_value, unicode) and cell_value[-1].lower() in ['x', 'y', 'z']:
-        return cell_value
-    return str(int(cell_value))
-
-def get_cell_code(sheet, coord):
-    return code_cell_value(get_cell_value(sheet, coord))
-
-def build_code_tree(sheet, col_str, row_str1, row_str2, skip=[]):
+def build_code_tree(sheet, col_str, row_str1, row_str2, skip=[], inverse_balance=False):
     code_tree = {}
     col = get_col(col_str)
     for row_str in str_xrange_skip(row_str1, row_str2, skip=skip):
         row = get_row(row_str)
-        code = get_cell_code(sheet, (row, col))
-        add_code_to_tree(code_tree, row, code)
+        cell_value = get_cell_value(sheet, (row, col))
+        if isinstance(cell_value, unicode) and cell_value[-1].lower() in ['x', 'y', 'z']:
+            code = cell_value
+        else:
+            code = str(int(cell_value))
+        add_code_to_tree(code_tree, row, code, inverse_balance=inverse_balance)
     return code_tree
 
 def get_cell_value_by_coord_str(sheet, coord_str):
@@ -181,3 +193,22 @@ def write_row_sum(sheet, rows, sum_col, pos_cols=[], neg_cols=[]):
                                 'neg': [col + row for col in neg_cols],
                             })
     set_out_cells_by_coord_str(sheet, values)
+
+def write_if_positive(sheet, coord, value):
+    set_out_cell(sheet, coord, if_positive(value))
+
+def write_if_negative(sheet, coord, value):
+    set_out_cell(sheet, coord, if_negative(value))
+
+def if_positive(value):
+    value = to_string(value)
+    return Formula('IF(' + value + '>0;' + value + ';0)')
+
+def if_negative(value):
+    value = to_string(value)
+    return Formula('IF(' + value + '<0;-(' + value + ');0)')
+
+def to_string(value):
+    if isinstance(value, Formula):
+        value = value.text()
+    return str(value)
