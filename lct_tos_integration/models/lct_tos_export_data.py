@@ -38,7 +38,7 @@ class lct_tos_export_data(osv.Model):
         'name': fields.char('File name', readonly=True),
         'content': fields.text('File content', readonly=True),
         'status': fields.selection([('fail','Failed to upload'),('success','Uploaded'),('pending','Pending')], string='Status', readonly=True, required=True),
-        'create_date': fields.date(string='Created Date', readonly=True),
+        'create_date': fields.datetime(string='Created Date', readonly=True),
         'error': fields.text('Errors'),
     }
 
