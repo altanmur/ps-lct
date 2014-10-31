@@ -19,5 +19,19 @@ action = self.print_invoice(cr, uid, context.get('active_id', False), context=co
             <field name="key2">client_print_multi</field>
             <field name="value_unpickle" eval="'ir.actions.server,'+str(ref('action_server_print_and_set_invoice'))"/>
         </record>
+
+        <record id="account.account_invoices" model="ir.actions.report.xml">
+            <field name="report_name">account.invoice</field>
+            <field name="res_model">account.invoice</field>
+            <field name="report_name">account.invoice</field>
+            <field name="auto" eval="False"/>
+            <field name="model">account.invoice</field>
+            <field name="report_type">pdf</field>
+            <field name="report_rml">addons/lct_tos_integration/reports/account_invoices.rml</field>
+            <field name="name">Invoices</field>
+            <field name="attachment_use" eval="True"/>
+            <field name="usage">default</field>
+            <field name="header" eval="True"/>
+        </record>
     </data>
 </openerp>

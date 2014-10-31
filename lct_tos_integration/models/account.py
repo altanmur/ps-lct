@@ -155,31 +155,24 @@ class account_invoice(osv.osv):
         'off_window': fields.boolean('OFF window'),
         'loa': fields.integer('LOA'),
         'imported_file_id': fields.many2one('lct.tos.import.data', string="Imported File", ondelete='restrict'),
-        'printed': fields.boolean('Already printed'),
+        'printed': fields.integer('Already printed'),
     }
 
     _defaults = {
-        'printed': False,
+        'printed': 0,
     }
 
-    def print_invoice(self, cr, uid, id, context=None):
+    def print_invoice(self, cr, uid, invoice_id, context=None):
         if not id:
             return {}
-        self.write(cr, uid, [id], {'printed': True}, context=context)
-        return {
-            'type': 'ir.actions.report.xml',
-            'res_model': 'account.invoice',
-            'report_name': 'account.invoice',
-            'auto': False,
-            'model': 'account.invoice',
-            'report_type': 'pdf',
-            'report_file': 'addons/lct_tos_integration/reports/account_invoices.rml',
-            'name': 'Invoices',
-            'attachment_use': True,
-            'usage': 'default',
-            'header': True,
-            'context': context,
-        }
+        invoice = self.browse(cr, uid, invoice_id, context=context)
+        self.write(cr, uid, [invoice_id], {'printed': invoice.printed + 1}, context=context)
+        report_model = self.pool.get('ir.actions.report.xml')
+        report_ids = report_model.search(cr, uid, [('report_name', '=', 'account.invoice')], context=context)
+        if not report_ids:
+            raise osv.except_osv(('Error'), ('Unable to find the invoice report'))
+        report_values = report_model.read(cr, uid, report_ids[0], context=context)
+        return dict(report_values, context=context)
 
     def _get_elmnt_text(self, elmnt, tag):
         sub_elmnt = elmnt.find(tag)
