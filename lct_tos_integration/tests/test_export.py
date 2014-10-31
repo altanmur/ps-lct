@@ -97,6 +97,6 @@ class TestExport(TransactionCase):
         f = iet.set_appointment_customer(f, partner_id)
         ftp.cwd('/')
         ftp.cwd(config['outbound_path'])
-        iet.upload_file(ftp, f, file_name)
+        self.assertTrue(iet.upload_file(ftp, f, file_name))
         self.ftp_config_model.button_import_ftp_data(cr, uid, [self.config.id])
         inv_id = inv_model.search(cr, uid, [('state','=','draft')])[0]
