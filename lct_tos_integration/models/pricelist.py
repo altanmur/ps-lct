@@ -218,6 +218,9 @@ class product_pricelist(osv.Model):
                                     price_type.field, context=context)[product_id], round=False, context=context)
 
                         if price is not False:
+                            if qty <= 0:
+                                price = 0.
+                                break
                             price_limit = price
                             if res['slab_rate']:
                                 for key in ['free_period', 'first_slab_last_day', 'second_slab_last_day']:
