@@ -231,7 +231,7 @@ class product_pricelist(osv.Model):
                                     (res['second_slab_last_day'] - res['first_slab_last_day'], 1.0 + res['price_discount_rate2'], res['price_surcharge_rate2']),
                                     (qty - res['second_slab_last_day'], 1.0 + res['price_discount_rate3'], res['price_surcharge_rate3']),
                                 ]
-                                price = sum([(period*coef*price + (period > 0 and surcharge or 0)) for period, coef, surcharge in periods_by_discountcoef_by_surcharge])/qty
+                                price = sum([(period*(coef*price + (period > 0 and surcharge or 0))) for period, coef, surcharge in periods_by_discountcoef_by_surcharge])/qty
                                 if res['price_round']:
                                     price = tools.float_round(price, precision_rounding=res['price_round'])
                             else:
