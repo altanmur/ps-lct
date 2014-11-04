@@ -29,13 +29,13 @@ import re
 
 def amount_to_text_fr(number, currency):
     number = '%.2f' % number
-    units_name = currency
     list = str(number).split('.')
     start_word = french_number(abs(int(list[0])))
-    final_result = start_word +' '+units_name
+    final_result = start_word
     final_result = re.sub('un Mil', 'Mil', final_result)
     final_result = re.sub('un Cent', 'Cent', final_result)
     final_result = re.sub(',', '', final_result)
+    final_result = final_result.title() + ' ' + currency
     return final_result
 
 

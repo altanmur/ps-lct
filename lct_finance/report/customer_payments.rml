@@ -117,7 +117,7 @@
                                 <td><para style="terp_5f_default_5f_8">[[ '%.0f' % o.amount or '0' ]]</para></td>
                             </tr><tr>
                                 <td><para style="terp_5f_default_5f_8_b">Montant en lettres :</para></td>
-                                <td><para style="terp_5f_default_5f_8">[[ amount_to_text_fr(o.amount or 'Zéro', o.currency_id and o.currency_id.symbol or '') ]]</para></td>
+                                <td><para style="terp_5f_default_5f_8">[[ amount_to_text_fr(o.amount, o.currency_id.symbol) or 'Zéro ' + o.currency_id.symbol ]]</para></td>
                             </tr><tr>
                                 <td><para style="terp_5f_default_5f_8_b">Date :</para></td>
                                 <td><para style="terp_5f_default_5f_8">[[ formatLang(o.date, date=True) ]]</para></td>
