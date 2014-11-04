@@ -55,6 +55,16 @@
             webkit_header="internal landscape"
             header="False"/>
 
+        <report id="lct_finance.report_customer_payments"
+            name="lct_finance.customer_payments"
+            auto="False"
+            model="account.voucher"
+            rml="addons/lct_finance/report/customer_payments.rml"
+            string="Customer Payments"
+            report_type="pdf"
+            webkit_header="internal portrait"
+            header="False"/>
+
 
 
     </data>
