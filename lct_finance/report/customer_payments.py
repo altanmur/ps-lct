@@ -35,6 +35,7 @@ def amount_to_text_fr(number, currency):
     final_result = start_word +' '+units_name
     final_result = re.sub('un Mil', 'Mil', final_result)
     final_result = re.sub('un Cent', 'Cent', final_result)
+    final_result = re.sub(',', '', final_result)
     return final_result
 
 
