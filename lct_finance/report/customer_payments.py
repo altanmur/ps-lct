@@ -21,18 +21,45 @@
 
 import time
 from openerp.report import report_sxw
-from openerp.tools.amount_to_text import french_number
+from openerp.tools.amount_to_text import _convert_nn_fr, _convert_nnn_fr
 import re
 
 # Lifted from openerp/tools/amount_to_text to get rid of the cents, which aren't
-# used in CFA.
+# used in CFA, and various other fixes such as "un Millions"...
+
+denom_fr = ( '',
+          'Mille',     'Million',         'Milliard',       'Billion',       'Quadrillion',
+          'Quintillion',  'Sextillion',      'Septillion',    'Octillion',      'Nonillion',
+          'Décillion',    'Undecillion',     'Duodecillion',  'Tredecillion',   'Quattuordecillion',
+          'Sexdecillion', 'Septendecillion', 'Octodecillion', 'Icosillion', 'Vigintillion' )
+
+def french_number(val):
+    if val < 100:
+        return _convert_nn_fr(val)
+    if val < 1000:
+         return _convert_nnn_fr(val)
+    for (didx, dval) in ((v - 1, 1000 ** v) for v in range(len(denom_fr))):
+        if dval > val:
+            mod = 1000 ** didx
+            l = val // mod
+            r = val - (l * mod)
+            num = _convert_nnn_fr(l)
+            print num # 2-5
+            if num != 'un' and num not in range(2, 6):
+                unit = denom_fr[didx] + 's'
+            else:
+                unit = denom_fr[didx]
+            ret = num + ' ' + unit
+            if r > 0:
+                ret = ret + ', ' + french_number(r)
+            return ret
 
 def amount_to_text_fr(number, currency):
     number = '%.2f' % number
     list = str(number).split('.')
     start_word = french_number(abs(int(list[0])))
     final_result = start_word
-    final_result = re.sub('un Mil', 'Mil', final_result)
+    final_result = re.sub('un Mille', 'Mille', final_result)
     final_result = re.sub('un Cent', 'Cent', final_result)
     final_result = re.sub(',', '', final_result)
     final_result = final_result.title() + ' ' + currency
