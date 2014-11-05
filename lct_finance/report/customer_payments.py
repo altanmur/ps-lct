@@ -44,7 +44,6 @@ def french_number(val):
             l = val // mod
             r = val - (l * mod)
             num = _convert_nnn_fr(l)
-            print num # 2-5
             if num != 'un' and num not in range(2, 6):
                 unit = denom_fr[didx] + 's'
             else:
