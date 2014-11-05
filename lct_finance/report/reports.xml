@@ -60,7 +60,7 @@
             auto="False"
             model="account.voucher"
             rml="addons/lct_finance/report/customer_payments.rml"
-            string="Customer Payments"
+            string="Cash Receipts"
             report_type="pdf"
             webkit_header="internal portrait"
             header="False"/>
