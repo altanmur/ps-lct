@@ -58,27 +58,21 @@ class account_invoice_line(osv.osv):
             product = line.product_id
             invoice = line.invoice_id
             pricelist = invoice and invoice.partner_id.property_product_pricelist or False
-            if not pricelist or not product:
-                res[line.id] = line.quantity
-                continue
 
-            version_ids = [version.id for version in pricelist.version_id if version.active]
-            domain = [
-                ('price_version_id', 'in', version_ids),
-                ('product_id', '=', product.id),
-            ]
-            item_ids = price_item_model.search(cr, uid, domain, context=context)
-            item = item_ids and price_item_model.browse(cr, uid, item_ids[0], context=context) or False
+            item_id = (product and pricelist) and price_item_model.find_active_item(cr, uid, product.id, pricelist.id, context=context) or False
+            item = item_id and price_item_model.browse(cr, uid, item_id, context=context)
+
             if not item or not item.slab_rate:
-                res[line.id] = line.quantity
+                if line.cont_nr_editable:
+                    res[line.id] = sum(cont_nr.pricelist_qty for cont_nr in line.cont_nr_ids)
+                else:
+                    res[line.id] = line.quantity
                 continue
 
             if line.cont_nr_editable:
-                res[line.id] = 0.
-                for cont_nr in line.cont_nr_ids:
-                    res[line.id] += max(cont_nr.pricelist_qty - item.free_period, 0.)
+                res[line.id] = sum(max(cont_nr.pricelist_qty - item.free_period, 0.) for cont_nr in line.cont_nr_ids)
             else:
-                res[line.id] = max(line.quantity - item.free_period, 0)
+                res[line.id] = max(line.pricelist_qty - item.free_period, 0)
         return res
 
     _columns = {
