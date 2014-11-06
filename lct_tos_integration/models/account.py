@@ -278,7 +278,7 @@ class account_invoice(osv.osv):
     }
 
     def print_invoice(self, cr, uid, invoice_id, context=None):
-        if not id:
+        if not invoice_id:
             return {}
         invoice = self.browse(cr, uid, invoice_id, context=context)
         self.write(cr, uid, [invoice_id], {'printed': invoice.printed + 1}, context=context)
