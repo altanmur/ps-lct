@@ -22,6 +22,7 @@
 from openerp.osv import fields, osv
 import openerp.addons.decimal_precision as dp
 import time
+from openerp.tools.translate import _
 
 class product_pricelist_item(osv.Model):
     _inherit = 'product.pricelist.item'
