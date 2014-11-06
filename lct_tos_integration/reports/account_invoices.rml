@@ -89,7 +89,7 @@
                     <blockTable colWidths="120,129" style="Table1">
                         <tr>
                             <td><para style="terp_5f_default_5f_8">Client :</para></td>
-                            <td><para style="terp_5f_default_5f_8">[[ o.partner_id.name ]]</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ not o.generic_customer and o.partner_id.name or o.generic_customer_name ]]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">Adresses :</para></td>
                             <td>
@@ -109,6 +109,9 @@
                         <tr>
                             <td><para style="terp_5f_default_5f_8">Numéro :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ o.internal_number or '' ]]</para></td>
+                        </tr><tr>[[ o.type2 == 'appointment' or removeParentNode('tr') ]]
+                            <td><para style="terp_5f_default_5f_8">Appointment :</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ o.appoint_ref ]]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">Date :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ time.strftime("%d-%m-%Y") ]]</para></td>
@@ -120,7 +123,7 @@
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and o.call_sign_vbl or '']]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and "Navire :" or '']]</para></td>
-                            <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and o.vessel_ID or '']]</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and o.vessel_id or '']]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and "Arrivée :" or '']]</para></td>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and formatLang(o.berth_time, date_time=True) or '']]</para></td>
@@ -133,11 +136,8 @@
             </tr>
         </blockTable>
         <para style="P4"> </para>
-        <blockTable colWidths="74.0,282.0,34.0,109.0" style="Table2">
+        <blockTable colWidths="356,34.0,109.0" style="Table2">
             <tr>
-                <td>
-                    <para style="P1">Tarif</para>
-                </td>
                 <td>
                     <para style="P1">Description</para>
                 </td>
@@ -154,11 +154,8 @@
                     <para style="P5">
                         <font color="white"> </font>
                     </para>
-                    <blockTable colWidths="74.0,282.0,34.0,109.0" style="Table3">
+                    <blockTable colWidths="356,34.0,109.0" style="Table3">
                         <tr>
-                            <td>
-                                <para style="P5">[[ line.product_id.default_code or '' ]]</para>
-                            </td>
                             <td>
                                 <para style="P5">[[ line.product_id.name or '' ]]</para>
                             </td>
@@ -178,10 +175,9 @@
         </blockTable>
 
         <!-- Totals -->
-        <blockTable colWidths="74.0,316.0,109.0" style="Table3">
+        <blockTable colWidths="390.0,109.0" style="Table3">
             <tr>[[o.amount_tax or removeParentNode('tr')]]
-                <td/>
-                <td colspan="2">
+                <td>
                     <para style="P6_bold">Total</para>
                 </td>
                 <td>
@@ -189,8 +185,7 @@
                 </td>
             </tr>
             <tr>[[o.amount_tax or removeParentNode('tr')]]
-                <td/>
-                <td colspan="2">
+                <td>
                     <para style="P6">Taux TVA</para>
                 </td>
                 <td>
@@ -198,8 +193,7 @@
                 </td>
             </tr>
             <tr>[[o.amount_tax or removeParentNode('tr')]]
-                <td/>
-                <td colspan="2">
+                <td>
                     <para style="P6">Montant TVA</para>
                 </td>
                 <td>
@@ -207,8 +201,7 @@
                 </td>
             </tr>
             <tr>
-                <td/>
-                <td colspan="2">
+                <td>
                     <para style="P6_bold">Montant Total [[ o.currency_id and ( '(' + o.currency_id.symbol + ')' ) or '' ]]</para>
                 </td>
                 <td>

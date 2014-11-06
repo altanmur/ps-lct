@@ -29,7 +29,7 @@ class lct_pending_yard_activity(osv.osv):
 
     _columns = {
         'name': fields.char('Container number', required=True),
-        'vessel_ID': fields.char('Vessel ID', required=True),
+        'vessel_id': fields.char('Vessel ID', required=True),
         'plugged_time': fields.integer('Plugged time'),
         'dep_timestamp': fields.datetime('Departure timestamp'),
         'arr_timestamp': fields.datetime('Arrival timestamp'),
@@ -66,7 +66,7 @@ class lct_pending_yard_activity(osv.osv):
         vals = {
             'name': self._get_elmnt_text(line, 'container_number'),
             'status': 'pending',
-            'vessel_ID': self._get_elmnt_text(line, 'vessel_id'),
+            'vessel_id': self._get_elmnt_text(line, 'vessel_id'),
         }
 
         yac_type = self._get_elmnt_text(line, 'yard_activity', raise_on_failure=True)

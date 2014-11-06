@@ -32,11 +32,11 @@ class lct_container_number(osv.osv):
         'name': fields.char('Container Number'),
         'date_start': fields.date('Arrival date'),
         'quantity': fields.integer('Quantity', help="Real quantity of product on invoice line"),
-        'pricelist_qty': fields.integer('Quantity', help="Quantity used for pricelist computation"),
+        'pricelist_qty': fields.integer('Pricelist quantity', help="Quantity used for pricelist computation"),
         'cont_operator': fields.char('Container operator'),
         'call_sign': fields.char('Call sign'),
         'lloyds_nr': fields.char('Lloyds number'),
-        'vessel_ID': fields.char('Vessel ID'),
+        'vessel_id': fields.char('Vessel ID'),
         'berth_time': fields.datetime('Berthing time'),
         'dep_time': fields.datetime('Departure time'),
         'invoice_line_id': fields.many2one('account.invoice.line', string="Invoice line"),
@@ -48,10 +48,81 @@ class lct_container_number(osv.osv):
 class account_invoice_line(osv.osv):
     _inherit = 'account.invoice.line'
 
+    def _get_ids_from_invoice(self, cr, uid, ids, context=None):
+        return self.pool.get("account.invoice.line").search(cr, uid, [('invoice_id', 'in', ids)], context=context)
+
     _columns = {
         'cont_nr_ids': fields.one2many('lct.container.number', 'invoice_line_id', 'Containers'),
         'book_nr': fields.char('Booking number'),
+        'cont_nr_editable': fields.related('product_id', 'cont_nr_editable', type='boolean', string='Container Number editable', store={
+            'account.invoice.line': (lambda self, cr, uid, ids, context={}: ids, ['product_id'], 20),
+            }),
+        'state': fields.related('invoice_id', 'state', type="char", string="Status", store={
+            'account.invoice.line': (lambda self, cr, uid, ids, context={}: ids, ['invoice_id'], 20),
+            'account.invoice': (_get_ids_from_invoice, ['state'], 20),
+            }),
     }
+
+    def onchange_cont_nr_ids(self, cr, uid, ids, cont_nr_ids, context=None):
+        if not ids or not cont_nr_ids:
+            return {}
+
+        value = {'quantity': 0, 'price_subtotal': 0.}
+        pricelist_qties = []
+        for cont_nr in self.resolve_2many_commands(cr, uid, "cont_nr_ids", cont_nr_ids):
+            if 'quantity' in cont_nr:
+                value['quantity'] += cont_nr['quantity']
+            if 'pricelist_qty' in cont_nr:
+                pricelist_qties.append(cont_nr['pricelist_qty'])
+
+        invoice_line = self.browse(cr, uid, ids[0], context=context)
+        partner = invoice_line.invoice_id.partner_id
+        pricelist_id = partner.property_product_pricelist.id
+        product_id = invoice_line.product_id.id
+
+        for pricelist_qty in pricelist_qties:
+            price_multi = self.pool.get('product.pricelist').price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner.id)], context=context)
+            value['price_subtotal'] += pricelist_qty*price_multi[product_id][pricelist_id]
+
+        return {'value': value}
+
+    def _compute_price_unit(self, cr, uid, product_id, quantity, cont_nr_ids, partner_id, context=None):
+        if quantity <= 0.:
+            return 0.
+        pricelist_model = self.pool.get('product.pricelist')
+        partner = self.pool.get('res.partner').browse(cr, uid, partner_id, context=context)
+        pricelist_id = partner.property_product_pricelist.id
+        if self.pool.get('product.product').browse(cr, uid, product_id, context=context).cont_nr_editable:
+            price_subtotal = 0.
+            for cont_nr in self.pool.get('lct.container.number').browse(cr, uid, cont_nr_ids, context=context):
+                pricelist_qty = cont_nr.pricelist_qty
+                price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
+                price_subtotal += pricelist_qty * price_multi[product_id][pricelist_id]
+            return price_subtotal / quantity
+        else:
+            price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, quantity, partner_id)], context=context)
+            return price_multi[product_id][pricelist_id]
+
+    def product_id_change(self, cr, uid, ids, product_id, uom_id, qty=0, name='', type='out_invoice', partner_id=False, fposition_id=False, price_unit=False, currency_id=False, context=None, company_id=None, cont_nr_ids=[]):
+        res = super(account_invoice_line, self).product_id_change(cr, uid, ids, product_id, uom_id, qty=qty, name=name, type=type, partner_id=partner_id, fposition_id=fposition_id, price_unit=price_unit, currency_id=currency_id, context=context, company_id=company_id)
+        res['value'] = res.get('value', {})
+        if product_id:
+            res['value']['cont_nr_editable'] = self.pool.get('product.product').browse(cr, uid, product_id, context=context).cont_nr_editable
+            if partner_id:
+                cont_nr_ids = [cont_nr[1] for cont_nr in cont_nr_ids]
+                price_unit = self._compute_price_unit(cr, uid, product_id, qty, cont_nr_ids, partner_id, context=context)
+                res['value']['price_unit'] = price_unit
+                res['value']['price_subtotal'] = price_unit * qty
+        return res
+
+    def onchange_quantity(self, cr, uid, ids, product_id, quantity, cont_nr_ids, partner_id, context=None):
+        value = {}
+        cont_nr_ids = [cont_nr[1] for cont_nr in cont_nr_ids]
+        if product_id and partner_id:
+            price_unit = self._compute_price_unit(cr, uid, product_id, quantity, cont_nr_ids, partner_id, context=context)
+            value['price_unit'] = price_unit
+            value['price_subtotal'] = price_unit * quantity
+        return {'value': value}
 
     def _merge_invoice_line_pair(self, cr, uid, id1, id2, context=None):
         cont_nr_model = self.pool.get('lct.container.number')
@@ -93,6 +164,48 @@ class account_invoice_line(osv.osv):
                         vals['invoice_line_tax_id'] = [(6, False, [tax.id])]
         return super(account_invoice_line, self).write(cr, uid, ids, vals, context=context)
 
+    def button_edit(self, cr, uid, ids, context=None):
+        return {
+            'view_mode': 'form',
+            'view_id': self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'view_invoice_line_form_lct', context=context),
+            'view_type': 'form',
+            'res_model': 'account.invoice.line',
+            'res_id': ids[0],
+            'type': 'ir.actions.act_window',
+            'nodestroy': True,
+            'target': 'new',
+            'domain': '[]',
+            'context': context,
+        }
+
+    def button_confirm_edit(self, cr, uid, ids, context=None):
+        if not ids:
+            return {}
+
+        invoice_line = self.browse(cr, uid, ids[0], context=context)
+        cont_nrs = invoice_line.cont_nr_ids
+
+        quantity = sum(cont_nr.quantity for cont_nr in cont_nrs)
+
+        pricelist_model = self.pool.get('product.pricelist')
+        invoice_line = self.browse(cr, uid, ids[0], context=context)
+        partner = invoice_line.invoice_id.partner_id
+        partner_id = partner.id
+        pricelist_id = partner.property_product_pricelist.id
+        product_id = invoice_line.product_id.id
+
+        pricelist_qties = [cont_nr.pricelist_qty for cont_nr in cont_nrs]
+        price_subtotal = 0.
+        for pricelist_qty in pricelist_qties:
+            price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
+            price_subtotal += pricelist_qty*price_multi[product_id][pricelist_id]
+
+        vals = {
+            'quantity': quantity,
+            'price_unit': price_subtotal/quantity,
+        }
+        self.write(cr, uid, [invoice_line.id], vals, context=context)
+        return {}
 
 class account_voucher(osv.osv):
     _inherit = 'account.voucher'
@@ -136,15 +249,15 @@ class account_invoice(osv.osv):
             ], 'Type of invoice'),
         'call_sign': fields.char('Call sign'),
         'lloyds_nr': fields.char('Lloyds number'),
-        'vessel_ID': fields.char('Vessel ID'),
+        'vessel_id': fields.char('Vessel ID'),
         'berth_time': fields.datetime('Berthing time'),
         'dep_time': fields.datetime('Departure time'),
         'call_sign_vbl': fields.related('call_sign', type='char', string='Call sign'),
         'lloyds_nr_vbl': fields.related('lloyds_nr', type='char', string='Lloyds number'),
-        'vessel_ID_vbl': fields.related('vessel_ID', type='char', string='Vessel ID'),
+        'vessel_id_vbl': fields.related('vessel_id', type='char', string='Vessel ID'),
         'berth_time_vbl': fields.related('berth_time', type='datetime', string='Berthing time'),
         'dep_time_vbl': fields.related('dep_time', type='datetime', string='Departure time'),
-        'vessel_ID_yac': fields.related('vessel_ID', type='char', string='Vessel ID'),
+        'vessel_id_yac': fields.related('vessel_id', type='char', string='Vessel ID'),
         'individual_cust': fields.boolean('Individual customer'),
         'appoint_ref': fields.char('Appointment reference'),
         'appoint_date': fields.datetime('Appointment date'),
@@ -156,6 +269,8 @@ class account_invoice(osv.osv):
         'loa': fields.integer('LOA'),
         'imported_file_id': fields.many2one('lct.tos.import.data', string="Imported File", ondelete='restrict'),
         'printed': fields.integer('Already printed'),
+        'generic_customer': fields.related('partner_id', 'generic_customer', type='boolean', string="Generic customer"),
+        'generic_customer_name': fields.char("Customer Name"),
     }
 
     _defaults = {
@@ -173,6 +288,14 @@ class account_invoice(osv.osv):
             raise osv.except_osv(('Error'), ('Unable to find the invoice report'))
         report_values = report_model.read(cr, uid, report_ids[0], context=context)
         return dict(report_values, context=context)
+
+    def onchange_partner_id(self, cr, uid, ids, type, partner_id,\
+            date_invoice=False, payment_term=False, partner_bank_id=False, company_id=False, context=None):
+        res = super(account_invoice, self).onchange_partner_id(cr, uid, ids, type=type, partner_id=partner_id,\
+            date_invoice=date_invoice, payment_term=payment_term, partner_bank_id=partner_bank_id, company_id=company_id)
+        res['value'] = res.get('value', {})
+        res['value']['generic_customer'] = self.pool.get('res.partner').browse(cr, uid, partner_id, context=context).generic_customer
+        return res
 
     def _get_elmnt_text(self, elmnt, tag):
         sub_elmnt = elmnt.find(tag)
@@ -280,7 +403,7 @@ class account_invoice(osv.osv):
                 'partner_id': 'vessel_operator_id',
                 'call_sign': 'call_sign',
                 'lloyds_nr': 'lloyds_number',
-                'vessel_ID': 'vessel_id',
+                'vessel_id': 'vessel_id',
                 'berth_time': 'berthing_time',
                 'dep_time': 'departure_time',
                 'voyage_number_in': 'voyage_number_in',
@@ -381,7 +504,7 @@ class account_invoice(osv.osv):
         return self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', xml_id)
 
     def _get_app_sub_category(self, cr, uid, line):
-        sub_category = line.find('sub_category')
+        sub_category = line.find('subcategory')
         if sub_category is None or not sub_category.text:
             return False
         else:
@@ -676,13 +799,13 @@ class account_invoice(osv.osv):
             type_id = False
         return type_id
 
-    def _prepare_invoice_line_dict(self, invoice_lines, partner_id, vessel_ID, product_id):
+    def _prepare_invoice_line_dict(self, invoice_lines, partner_id, vessel_id, product_id):
         if partner_id not in invoice_lines:
-            invoice_lines[partner_id] = {vessel_ID: {product_id: []}}
-        elif vessel_ID not in invoice_lines[partner_id]:
-            invoice_lines[partner_id][vessel_ID] = {product_id: []}
-        elif product_id not in invoice_lines[partner_id][vessel_ID]:
-            invoice_lines[partner_id][vessel_ID][product_id] = []
+            invoice_lines[partner_id] = {vessel_id: {product_id: []}}
+        elif vessel_id not in invoice_lines[partner_id]:
+            invoice_lines[partner_id][vessel_id] = {product_id: []}
+        elif product_id not in invoice_lines[partner_id][vessel_id]:
+            invoice_lines[partner_id][vessel_id][product_id] = []
 
     def xml_to_vbl(self, cr, uid, imp_data_id, context=None):
         product_model = self.pool.get('product.product')
@@ -703,11 +826,11 @@ class account_invoice(osv.osv):
             partner_id = self._get_partner(cr, uid, vbilling, 'vessel_operator_id')
             partner = partner_model.browse(cr, uid, partner_id, context=context)
 
-            vessel_ID = self._get_elmnt_text(vbilling, 'vessel_id')
+            vessel_id = self._get_elmnt_text(vbilling, 'vessel_id')
             cont_nr_vals ={
                 'call_sign': self._get_elmnt_text(vbilling, 'call_sign'),
                 'lloyds_nr': self._get_elmnt_text(vbilling, 'lloyds_number'),
-                'vessel_ID': vessel_ID,
+                'vessel_id': vessel_id,
                 'berth_time': self._get_elmnt_text(vbilling, 'berthing_time'),
                 'dep_time': self._get_elmnt_text(vbilling, 'departure_time'),
             }
@@ -720,8 +843,8 @@ class account_invoice(osv.osv):
                 product_id = product_id[0]
                 vals = dict(cont_nr_vals, pricelist_qty=n_hcm, quantity=n_hcm)
                 cont_nr_id = cont_nr_model.create(cr, uid, vals, context=context)
-                self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_ID, product_id)
-                invoice_lines[partner_id][vessel_ID][product_id].append(cont_nr_id)
+                self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_id, product_id)
+                invoice_lines[partner_id][vessel_id][product_id].append(cont_nr_id)
 
             n_gbc = self._xml_get_digit(vbilling, 'gearbox_count')
             if n_gbc > 0:
@@ -732,8 +855,8 @@ class account_invoice(osv.osv):
                 product_id = product_id[0]
                 vals = dict(cont_nr_vals, pricelist_qty=n_gbc, quantity=n_gbc)
                 cont_nr_id = cont_nr_model.create(cr, uid, vals, context=context)
-                self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_ID, product_id)
-                invoice_lines[partner_id][vessel_ID][product_id].append(cont_nr_id)
+                self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_id, product_id)
+                invoice_lines[partner_id][vessel_id][product_id].append(cont_nr_id)
 
             lines = vbilling.find('lines')
             if lines is None:
@@ -783,11 +906,11 @@ class account_invoice(osv.osv):
                     product_ids.append(imd_model.get_record_id(cr, uid, module, 'bundle'))
 
                 for product_id in product_ids:
-                    self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_ID, product_id)
+                    self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_id, product_id)
                     cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=1, quantity=1, oog=oog), context=context)
-                    invoice_lines[partner_id][vessel_ID][product_id].append(cont_nr_id)
+                    invoice_lines[partner_id][vessel_id][product_id].append(cont_nr_id)
                 if category in ['E', 'T']:
-                    domain = [('vessel_ID', '=', vessel_ID), ('name', '=', cont_nr_name), ('status', '=', 'pending')]
+                    domain = [('vessel_id', '=', vessel_id), ('name', '=', cont_nr_name), ('status', '=', 'pending')]
                     pending_yac_ids = pending_yac_model.search(cr, uid, domain, context=context)
 
                     reefe_properties = dict(properties)
@@ -811,15 +934,15 @@ class account_invoice(osv.osv):
                             arr_date = datetime.strptime(pending_yac.arr_timestamp, "%Y-%m-%d %H:%M:%S").date()
                             expst_qties.append((dep_date - arr_date).days + 1)
                     if reefe_qties:
-                        self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_ID, reefe_product_id)
+                        self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_id, reefe_product_id)
                         for quantity in reefe_qties:
                             cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=quantity, quantity=quantity), context=context)
-                            invoice_lines[partner_id][vessel_ID][reefe_product_id].append(cont_nr_id)
+                            invoice_lines[partner_id][vessel_id][reefe_product_id].append(cont_nr_id)
                     if expst_qties:
-                        self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_ID, expst_product_id)
+                        self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_id, expst_product_id)
                         for quantity in expst_qties:
                             cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=quantity, quantity=quantity), context=context)
-                            invoice_lines[partner_id][vessel_ID][expst_product_id].append(cont_nr_id)
+                            invoice_lines[partner_id][vessel_id][expst_product_id].append(cont_nr_id)
 
                     pending_yac_model.write(cr, uid, pending_yac_ids, {'status': 'processed'}, context=context)
 
@@ -853,13 +976,13 @@ class account_invoice(osv.osv):
                 'date_invoice': date_invoice,
                 'currency_id': partner.property_product_pricelist.currency_id.id,
             }
-            for vessel_ID, invoices_by_product in invoice.iteritems():
+            for vessel_id, invoices_by_product in invoice.iteritems():
                 invoice_id = invoice_model.create(cr, uid, invoice_vals, context=context)
                 invoice_ids.append(invoice_id)
                 line_vals = {
                     'invoice_id': invoice_id,
                 }
-                new_invoice_vals = {'vessel_ID': vessel_ID}
+                new_invoice_vals = {'vessel_id': vessel_id}
 
                 for product_id, cont_nr_ids in invoices_by_product.iteritems():
                     product = product_model.browse(cr, uid, product_id, context=context)
@@ -936,14 +1059,14 @@ class account_invoice(osv.osv):
         for invoice in self.browse(cr, uid, ids, context=context):
             partner_id = invoice.partner_id.id
             currency_id = invoice.currency_id.id
-            vessel_ID = invoice.vessel_ID
+            vessel_id = invoice.vessel_id
             if partner_id not in invoice_by_currency_by_vessel_id_by_partner:
-                invoice_by_currency_by_vessel_id_by_partner[partner_id] = {vessel_ID: {currency_id: []}}
-            elif vessel_ID not in invoice_by_currency_by_vessel_id_by_partner[partner_id]:
-                invoice_by_currency_by_vessel_id_by_partner[partner_id][vessel_ID] = {currency_id: []}
-            elif currency_id not in invoice_by_currency_by_vessel_id_by_partner[partner_id][vessel_ID]:
-                invoice_by_currency_by_vessel_id_by_partner[partner_id][vessel_ID][currency_id] = []
-            invoice_by_currency_by_vessel_id_by_partner[partner_id][vessel_ID][currency_id].append(invoice.id)
+                invoice_by_currency_by_vessel_id_by_partner[partner_id] = {vessel_id: {currency_id: []}}
+            elif vessel_id not in invoice_by_currency_by_vessel_id_by_partner[partner_id]:
+                invoice_by_currency_by_vessel_id_by_partner[partner_id][vessel_id] = {currency_id: []}
+            elif currency_id not in invoice_by_currency_by_vessel_id_by_partner[partner_id][vessel_id]:
+                invoice_by_currency_by_vessel_id_by_partner[partner_id][vessel_id][currency_id] = []
+            invoice_by_currency_by_vessel_id_by_partner[partner_id][vessel_id][currency_id].append(invoice.id)
 
         if not auto:
             if len(invoice_by_currency_by_vessel_id_by_partner) > 1:
@@ -1109,11 +1232,11 @@ class account_invoice(osv.osv):
                     'plugged_time': self._get_elmnt_text(line, 'plugged_time'),
                     'oog': oog,
                 }
-                vessel_ID = self._get_elmnt_text(line, 'vessel_id')
+                vessel_id = self._get_elmnt_text(line, 'vessel_id')
                 for product_id in product_ids:
-                    self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_ID, product_id)
+                    self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_id, product_id)
                     cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals), context=context)
-                    invoice_lines[partner_id][vessel_ID][product_id].append(cont_nr_id)
+                    invoice_lines[partner_id][vessel_id][product_id].append(cont_nr_id)
         invoice_ids = self._create_invoices(cr, uid, invoice_lines, context=context)
         invoice_model.write(cr, uid, invoice_ids, {'type2': 'yactivity'})
 
