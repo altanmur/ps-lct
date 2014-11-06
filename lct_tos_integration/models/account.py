@@ -51,6 +51,36 @@ class account_invoice_line(osv.osv):
     def _get_ids_from_invoice(self, cr, uid, ids, context=None):
         return self.pool.get("account.invoice.line").search(cr, uid, [('invoice_id', 'in', ids)], context=context)
 
+    def _compute_billed_quantity(self, cr, uid, ids, fields, arg, context=None):
+        res = {}
+        price_item_model = self.pool.get('product.pricelist.item')
+        for line in self.browse(cr, uid, ids, context=context):
+            product = line.product_id
+            invoice = line.invoice_id
+            pricelist = invoice and invoice.partner_id.property_product_pricelist or False
+            if not pricelist or not product:
+                res[line.id] = line.quantity
+                continue
+
+            version_ids = [version.id for version in pricelist.version_id if version.active]
+            domain = [
+                ('price_version_id', 'in', version_ids),
+                ('product_id', '=', product.id),
+            ]
+            item_ids = price_item_model.search(cr, uid, domain, context=context)
+            item = item_ids and price_item_model.browse(cr, uid, item_ids[0], context=context) or False
+            if not item or not item.slab_rate:
+                res[line.id] = line.quantity
+                continue
+
+            if line.cont_nr_editable:
+                res[line.id] = 0.
+                for cont_nr in line.cont_nr_ids:
+                    res[line.id] += max(cont_nr.pricelist_qty - item.free_period, 0.)
+            else:
+                res[line.id] = max(line.quantity - item.free_period, 0)
+        return res
+
     _columns = {
         'cont_nr_ids': fields.one2many('lct.container.number', 'invoice_line_id', 'Containers'),
         'book_nr': fields.char('Booking number'),
@@ -61,7 +91,9 @@ class account_invoice_line(osv.osv):
             'account.invoice.line': (lambda self, cr, uid, ids, context={}: ids, ['invoice_id'], 20),
             'account.invoice': (_get_ids_from_invoice, ['state'], 20),
             }),
+        'billed_quantity': fields.function(_compute_billed_quantity, type='float', string="Billed quantity"),
     }
+
 
     def onchange_cont_nr_ids(self, cr, uid, ids, cont_nr_ids, context=None):
         if not ids or not cont_nr_ids:
