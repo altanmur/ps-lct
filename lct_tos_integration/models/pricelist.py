@@ -274,8 +274,8 @@ class product_pricelist_item(osv.osv):
         version_ids = self.pool.get('product.pricelist.version').search(cr, uid, [
                 ('pricelist_id', '=', pricelist_id),
                 ('active', '=', True),
-                ('date_start', '<=', today),
-                ('date_end', '>=', today),
+                '|', ('date_start', '<=', today), ('date_start', '=', False),
+                '|', ('date_end', '>=', today), ('date_end', '=', False),
             ])
         item_ids = self.search(cr, uid, [
                 ('price_version_id', 'in', version_ids),
