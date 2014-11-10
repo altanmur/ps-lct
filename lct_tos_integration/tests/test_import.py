@@ -246,7 +246,7 @@ class TestImport(TransactionCase):
             xml_files.append((file_name, f))
 
         for xml_file in xml_files:
-            iet.upload_file(ftp, xml_file[1], xml_file[0])
+            self.asserTrue(iet.upload_file(ftp, xml_file[1], xml_file[0]))
 
     def test_import(self):
         cr, uid = self.cr, self.uid

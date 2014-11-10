@@ -4,7 +4,8 @@ import os
 
 def upload_file(ftp, f, file_name):
     f.seek(0)
-    ftp.storlines(''.join(['STOR ', file_name]), f)
+    result = ftp.storbinary(''.join(['STOR ', file_name]), f)
+    return 199 > int(result[0:3]) > 300
 
 def set_appointment_customer(xml_file, partner_id):
     tree = ET.parse(xml_file)

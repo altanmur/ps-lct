@@ -83,7 +83,8 @@ class lct_tos_export_data(osv.Model):
             f.write(exported_file.content)
             f.seek(0)
             try:
-                ftp.storlines('STOR ' + file_name, f)
+                result = ftp.storbinary('STOR ' + file_name, f)
+                assert 199 < int(result[0:3]) < 300
             except:
                 cr.execute('ROLLBACK TO SP')
                 self.write(cr, uid, exported_file.id, {
