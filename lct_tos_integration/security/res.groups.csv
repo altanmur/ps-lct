@@ -1,0 +1,5 @@
+id,menu_access/id,category_id/id,name
+lct_tos_integration.group_all_access_tos,,lct_tos_integration.module_category_tos,All Access
+lct_tos_integration.group_user_tos,"account.menu_finance_receivables,account.menu_action_invoice_tree1,account.menu_finance",lct_tos_integration.module_category_tos,User
+lct_tos_integration.group_read_tariffs_tos,base.menu_base_partner,lct_tos_integration.module_category_tos,Read Tariffs
+lct_tos_integration.group_cashier_tos,"account.menu_finance_receivables,account.menu_action_invoice_tree1,account.menu_finance",lct_tos_integration.module_category_tos,Cashier
