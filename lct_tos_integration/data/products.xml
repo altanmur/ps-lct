@@ -1,19 +1,37 @@
 <?xml version="1.0"?>
 <openerp>
   <data>
-    <record id="import_storage_localimport_20" model="product.product">
-      <field name="name">Import Storage Local import 20</field>
+    <record id="import_storage_localimport_20_gp" model="product.product">
+      <field name="name">Import Storage Local import 20 GP</field>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="service_id" ref="lct_product_service_storage"/>
       <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
       <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
     </record>
-    <record id="import_storage_localimport_40" model="product.product">
-      <field name="name">Import Storage Local import 40</field>
+    <record id="import_storage_localimport_40_gp" model="product.product">
+      <field name="name">Import Storage Local import 40 GP</field>
       <field name="category_id" ref="lct_product_category_import"/>
       <field name="service_id" ref="lct_product_service_storage"/>
       <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
       <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_storage_localimport_20_reeferdg" model="product.product">
+      <field name="name">Import Storage Local import 20 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_storage_localimport_40_reeferdg" model="product.product">
+      <field name="name">Import Storage Local import 40 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
     </record>
     <record id="import_storage_transitsahel_20_gp" model="product.product">
       <field name="name">Import Storage Transit Sahel 20 GP</field>

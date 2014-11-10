@@ -581,7 +581,6 @@ class account_invoice(osv.osv):
         type_id, service_id = self._get_app_type_service_by_type(cr, uid, line)
         if not sub_category_id:
             sub_category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_sub_category_localimport')
-            type_id = False
 
         type_quantities_by_services[service_id] = (type_id, 1)
 
