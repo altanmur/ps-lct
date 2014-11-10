@@ -300,9 +300,26 @@ class account_invoice(osv.osv):
         'off_window': fields.boolean('OFF window'),
         'loa': fields.integer('LOA'),
         'imported_file_id': fields.many2one('lct.tos.import.data', string="Imported File", ondelete='restrict'),
+        'printed': fields.integer('Already printed'),
         'generic_customer': fields.related('partner_id', 'generic_customer', type='boolean', string="Generic customer"),
         'generic_customer_name': fields.char("Customer Name"),
     }
+
+    _defaults = {
+        'printed': 0,
+    }
+
+    def print_invoice(self, cr, uid, invoice_id, context=None):
+        if not invoice_id:
+            return {}
+        invoice = self.browse(cr, uid, invoice_id, context=context)
+        self.write(cr, uid, [invoice_id], {'printed': invoice.printed + 1}, context=context)
+        report_model = self.pool.get('ir.actions.report.xml')
+        report_ids = report_model.search(cr, uid, [('report_name', '=', 'account.invoice')], context=context)
+        if not report_ids:
+            raise osv.except_osv(('Error'), ('Unable to find the invoice report'))
+        report_values = report_model.read(cr, uid, report_ids[0], context=context)
+        return dict(report_values, context=context)
 
     def onchange_partner_id(self, cr, uid, ids, type, partner_id,\
             date_invoice=False, payment_term=False, partner_bank_id=False, company_id=False, context=None):
