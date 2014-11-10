@@ -558,6 +558,11 @@ msgid "Cash flow report"
 msgstr "Cash flow report"
 
 #. module: lct_finance
+#: model:ir.actions.report.xml,name:lct_finance.report_customer_payments
+msgid "Cash receipt"
+msgstr "Reçu de caisse"
+
+#. module: lct_finance
 #: field:balance.sheet,fiscalyear_id:0
 #: field:balance.sheet,fiscalyear_id_cmp:0
 #: field:lct_finance.balance.report,fiscalyear_id:0

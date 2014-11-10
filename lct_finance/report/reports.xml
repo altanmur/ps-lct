@@ -33,7 +33,7 @@
             webkit_header="lct_finance.ir_header_webkit_finance_landscape"
             header="False"/>
         <!-- Not necessary, just putting it here in case we want to override these too someday. -->
-<!--
+        <!--
         <delete model="ir.actions.report.xml" id="account.account_general_ledger"/>
         <report id="account.account_general_ledger"
             name="account.general.ledger"
@@ -42,7 +42,7 @@
             model="account.account"
             rml="addons/lct_finance/report/account_general_ledger.rml"
             string="General Ledger"/>
- -->
+         -->
         <delete model="ir.actions.report.xml" id="account.account_general_ledger_landscape"/>
         <report id="account.account_general_ledger_landscape"
             name="account.general.ledger_landscape"
@@ -53,6 +53,16 @@
             string="General Ledger"
             report_type="pdf"
             webkit_header="internal landscape"
+            header="False"/>
+
+        <report id="lct_finance.report_customer_payments"
+            name="lct_finance.customer_payments"
+            auto="False"
+            model="account.voucher"
+            rml="addons/lct_finance/report/customer_payments.rml"
+            string="Cash Receipts"
+            report_type="pdf"
+            webkit_header="internal portrait"
             header="False"/>
 
 

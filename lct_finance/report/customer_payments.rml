@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<document filename="test.pdf">
+    <template pageSize="(612.0,792.0)" title="Customer Payments" author="Juan Rial" allowSplitting="20">
+        <pageTemplate id="first">
+            <frame id="first" x1="57.0" y1="57.0" width="498" height="678"/>
+        </pageTemplate>
+    </template>
+    <stylesheet>
+        <blockTableStyle id="Standard_Outline">
+            <blockAlignment value="LEFT"/>
+            <blockValign value="TOP"/>
+        </blockTableStyle>
+        <blockTableStyle id="Table1">
+            <blockAlignment value="LEFT"/>
+            <blockValign value="TOP"/>
+            <blockTopPadding length="0"/>
+            <blockBottomPadding length="0"/>
+        </blockTableStyle>
+        <blockTableStyle id="Table2">
+            <blockAlignment value="LEFT"/>
+            <blockValign value="TOP"/>
+            <blockTopPadding length="10"/>
+            <lineStyle kind="LINEABOVE" colorName="#000000" start="0,0" stop="-1,0"/>
+        </blockTableStyle>
+        <blockTableStyle id="Table3">
+            <blockAlignment value="LEFT"/>
+            <blockValign value="TOP"/>
+        </blockTableStyle>
+        <blockTableStyle id="Table4">
+            <blockAlignment value="LEFT"/>
+            <blockValign value="TOP"/>
+        </blockTableStyle>
+        <initialize>
+            <paraStyle name="all" alignment="justify"/>
+        </initialize>
+        <paraStyle name="P1" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT"/>
+        <paraStyle name="P2" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="RIGHT"/>
+        <paraStyle name="P3" rightIndent="0.0" leftIndent="0.0" fontName="Helvetica-Bold" fontSize="12.0" leading="25" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+        <paraStyle name="P4" rightIndent="0.0" leftIndent="0.0" fontName="Helvetica-Bold" fontSize="16.0" leading="25" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+        <paraStyle name="P5" fontName="Helvetica" fontSize="8.0" leading="10" alignment="LEFT"/>
+        <paraStyle name="P6" fontName="Helvetica" fontSize="8.0" leading="10" alignment="RIGHT"/>
+        <paraStyle name="P6_bold" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="RIGHT"/>
+        <paraStyle name="P7" fontName="Helvetica" fontSize="8.0" leading="10" alignment="LEFT"/>
+        <paraStyle name="P8" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="CENTER"/>
+        <paraStyle name="P_SP" fontName="Helvetica-Bold" fontSize="8.0" spaceAfter="12.0"/>
+        <paraStyle name="Standard" fontName="Helvetica"/>
+        <paraStyle name="Heading" fontName="Helvetica" fontSize="14.0" leading="17" spaceBefore="12.0" spaceAfter="6.0"/>
+        <paraStyle name="Text_20_body" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
+        <paraStyle name="List" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
+        <paraStyle name="Caption" fontName="Helvetica" fontSize="12.0" leading="15" spaceBefore="6.0" spaceAfter="6.0"/>
+        <paraStyle name="Index" fontName="Helvetica"/>
+        <paraStyle name="Table_20_Contents" fontName="Helvetica"/>
+        <paraStyle name="terp_5f_header" fontName="Helvetica-Bold" fontSize="12.0" leading="15" alignment="LEFT" spaceBefore="12.0" spaceAfter="6.0"/>
+        <paraStyle name="terp_5f_default_5f_8" rightIndent="0.0" leftIndent="0.0" fontName="Helvetica" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+        <paraStyle name="terp_5f_default_5f_8_b" rightIndent="0.0" leftIndent="0.0" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+        <paraStyle name="Heading_20_1" fontName="Helvetica-Bold" fontSize="115%" leading="NaN" spaceBefore="12.0" spaceAfter="6.0"/>
+        <paraStyle name="Table_20_Heading" fontName="Helvetica" alignment="CENTER"/>
+        <images/>
+    </stylesheet>
+    <story>
+        <!-- Outer blocktable so we can fit multiple records on one page. -->
+        <para style="terp_5f_default_5f_8">[[ repeatIn( objects, 'o') ]]</para>
+        <para style="terp_5f_default_5f_8">[[ setLang(o.company_id.partner_id.lang) ]]</para>
+        <blockTable><tr><td>
+            <!-- Repeat same record thrice -->
+            <para style="terp_5f_default_5f_8">[[ repeatIn( [1, 2, 3], 'repeat') ]]</para>
+            <!-- Header -->
+            <blockTable colWidths="349,150" style="Table2">
+                <tr>
+                    <td>
+                        <image height="60" width="60">[[ o.company_id.logo ]]</image>
+                    </td>
+                    <td>
+                        <para style="terp_5f_default_5f_8">[[ o.company_id.name ]]</para>
+                        <para style="terp_5f_default_5f_8">Service Facturation</para>
+                        <para style="terp_5f_default_5f_8">NIF: [[ o.company_id.nif or '' ]]</para>
+                        <para style="terp_5f_default_5f_8">RCCM/:[[ o.company_id.company_registry or '' ]] [[ o.company_id.city or '' ]] [[ o.company_id.country_id.name or '' ]]</para>
+                        <para style="terp_5f_default_5f_8">Telephone: [[ o.company_id.phone or '' ]]</para>
+                        <para style="terp_5f_default_5f_8">Fax: [[ o.company_id.fax or '' ]]</para>
+                        <para style="terp_5f_default_5f_8">Web Site: [[ o.company_id.website or '' ]]</para>
+                    </td>
+                </tr>
+            </blockTable>
+
+            <!-- Invoice -->
+            <para style="P4">RECU DE CAISSE</para>
+            <para style="P3">Numéro: [[ o.number or '' ]]</para>
+            <blockTable colWidths="199.0,300.0" style="Table3">
+                <tr>
+                    <td>
+                        <blockTable colWidths="100,99" style="Table1">
+                            <tr>
+                                <td colspan="2"><para style="terp_5f_default_5f_8_b">Reçu de :</para></td>
+                            </tr><tr>
+                                <td><para style="terp_5f_default_5f_8_b">Client :</para></td>
+                                <td><para style="terp_5f_default_5f_8">[[ o.partner_id.name or '' ]]</para></td>
+                            </tr><tr>
+                                <td><para style="terp_5f_default_5f_8_b">Adresses :</para></td>
+                                <td>
+                                    <para style="terp_5f_default_5f_8">[[ o.partner_id.street or '' ]]</para>
+                                    <para style="terp_5f_default_5f_8">[[ o.partner_id.street2 or '' ]]</para>
+                                    <para style="terp_5f_default_5f_8">[[ ', '.join([addr for addr in [o.partner_id.city, (o.partner_id.state_id and o.partner_id.state_id.name), o.partner_id.zip] if addr]) ]]</para>
+                                    <para style="terp_5f_default_5f_8">[[ o.partner_id.phone or o.partner_id.mobile or '' ]]</para>
+                                </td>
+                            </tr>
+                        </blockTable>
+                    </td>
+                    <td>
+                        <blockTable colWidths="120,180" style="Table1">
+                            <tr>
+                                <td colspan="2"><para style="terp_5f_default_5f_8_b">En paiement de :</para></td>
+                            </tr><tr>
+                                <td><para style="terp_5f_default_5f_8_b">Numéro facture :</para></td>
+                                <td><para style="terp_5f_default_5f_8">[[ fac_nbr(o) ]]</para></td>
+                            </tr><tr>
+                                <td><para style="terp_5f_default_5f_8_b">Montant en chiffres :</para></td>
+                                <td><para style="terp_5f_default_5f_8">[[ '%.0f' % o.amount or '0' ]]</para></td>
+                            </tr><tr>
+                                <td><para style="terp_5f_default_5f_8_b">Montant en lettres :</para></td>
+                                <td><para style="terp_5f_default_5f_8">[[ amount_to_text_fr(o.amount, o.currency_id.symbol) or 'Zéro ' + o.currency_id.symbol ]]</para></td>
+                            </tr><tr>
+                                <td><para style="terp_5f_default_5f_8_b">Date :</para></td>
+                                <td><para style="terp_5f_default_5f_8">[[ formatLang(o.date, date=True) ]]</para></td>
+                            </tr><tr>
+                                <td><para style="terp_5f_default_5f_8_b">Devises :</para></td>
+                                <td><para style="terp_5f_default_5f_8">[[ o.currency_id and o.currency_id.symbol or '' ]]</para></td>
+                            </tr>
+                        </blockTable>
+                    </td>
+                </tr>
+            </blockTable>
+        </td></tr></blockTable>
+
+    </story>
+</document>
