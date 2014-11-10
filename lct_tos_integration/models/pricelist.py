@@ -22,6 +22,7 @@
 from openerp.osv import fields, osv
 import openerp.addons.decimal_precision as dp
 import time
+from openerp.tools.translate import _
 
 class product_pricelist_item(osv.Model):
     _inherit = 'product.pricelist.item'
@@ -263,3 +264,24 @@ class product_pricelist(osv.Model):
                     results[product_id] = {pricelist_id: price}
 
         return results
+
+
+class product_pricelist_item(osv.osv):
+    _inherit = 'product.pricelist.item'
+
+    def find_active_item(self, cr, uid, product_id, pricelist_id, context=None):
+        today = fields.date.today()
+        version_ids = self.pool.get('product.pricelist.version').search(cr, uid, [
+                ('pricelist_id', '=', pricelist_id),
+                ('active', '=', True),
+                '|', ('date_start', '<=', today), ('date_start', '=', False),
+                '|', ('date_end', '>=', today), ('date_end', '=', False),
+            ])
+        item_ids = self.search(cr, uid, [
+                ('price_version_id', 'in', version_ids),
+                ('product_id', '=', product_id),
+            ], order='sequence', limit=1, context=context)
+
+        return item_ids and item_ids[0] or False
+
+

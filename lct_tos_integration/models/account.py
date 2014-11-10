@@ -51,6 +51,20 @@ class account_invoice_line(osv.osv):
     def _get_ids_from_invoice(self, cr, uid, ids, context=None):
         return self.pool.get("account.invoice.line").search(cr, uid, [('invoice_id', 'in', ids)], context=context)
 
+    def _billed_quantity(self, cr, uid, ids, fields, arg, context=None):
+        res = {}
+        for line in self.browse(cr, uid, ids, context=context):
+            product = line.product_id
+            invoice = line.invoice_id
+            pricelist = invoice and invoice.partner_id.property_product_pricelist or False
+
+            pricelist_qties = [cont_nr.pricelist_qty for cont_nr in line.cont_nr_ids]
+            res[line.id] = self._compute_billed_quantity(cr, uid, product and product.id or False,
+                pricelist and pricelist.id or False,
+                line.cont_nr_editable, line.quantity, pricelist_qties, context=context)
+
+        return res
+
     _columns = {
         'cont_nr_ids': fields.one2many('lct.container.number', 'invoice_line_id', 'Containers'),
         'book_nr': fields.char('Booking number'),
@@ -61,7 +75,25 @@ class account_invoice_line(osv.osv):
             'account.invoice.line': (lambda self, cr, uid, ids, context={}: ids, ['invoice_id'], 20),
             'account.invoice': (_get_ids_from_invoice, ['state'], 20),
             }),
+        'billed_quantity': fields.function(_billed_quantity, type='float', string="Billed quantity"),
     }
+
+
+    def _compute_billed_quantity(self, cr, uid, product_id, pricelist_id, cont_nr_editable, quantity, pricelist_qties, context=None):
+        price_item_model = self.pool.get('product.pricelist.item')
+        item_id = (product_id and pricelist_id) and price_item_model.find_active_item(cr, uid, product_id, pricelist_id, context=context) or False
+        item = item_id and price_item_model.browse(cr, uid, item_id, context=context) or False
+
+        if not item or not item.slab_rate:
+            if cont_nr_editable:
+                return sum(pricelist_qties)
+            else:
+                return quantity
+
+        if cont_nr_editable:
+            return sum(max(pricelist_qty - item.free_period, 0.) for pricelist_qty in pricelist_qties)
+        else:
+            return max(quantity - item.free_period, 0.)
 
     def onchange_cont_nr_ids(self, cr, uid, ids, cont_nr_ids, context=None):
         if not ids or not cont_nr_ids:
