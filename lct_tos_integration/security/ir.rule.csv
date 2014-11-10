@@ -1,0 +1,2 @@
+"id","active","perm_create","perm_unlink","perm_read","perm_write","groups/id","name","model_id/id"
+"cashier_cash_journal_rule","True","True","True","True","True",lct_tos_integration.group_cashier_tos","Cashier cash journal","account.model_account_journal"
