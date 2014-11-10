@@ -309,6 +309,12 @@ class account_invoice(osv.osv):
         'printed': 0,
     }
 
+    def invoice_validate(self, cr, uid, ids, context=None):
+        res = super(account_invoice, self).invoice_validate(cr, uid, ids, context=context)
+        if not ids:
+            return res
+        return self.print_invoice(cr, uid, ids[0], context=context)
+
     def print_invoice(self, cr, uid, invoice_id, context=None):
         if not invoice_id:
             return {}
