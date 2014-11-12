@@ -30,6 +30,10 @@
         LCT TOS integration
     """,
     'data': [
+        'security/group_category.xml',
+        'security/res.groups.csv',
+        'security/ir.model.access.csv',
+        'security/ir.rule.csv',
         'views/account.xml',
         'views/ftp_config.xml',
         'views/product.xml',
@@ -38,7 +42,6 @@
         'data/products.xml',
         'data/cron.xml',
         'data/ir_sequences.xml',
-        'security/ir.model.access.csv',
         'views/lct_tos_import_data.xml',
         'views/lct_tos_vessel.xml',
         'data/actions.xml',

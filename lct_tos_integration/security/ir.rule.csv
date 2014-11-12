@@ -1,0 +1,2 @@
+id,active,perm_create,perm_unlink,perm_read,perm_write,domain_force,groups/id,name,model_id/id
+lct_tos_integration.cashier_cash_journal_rule,True,True,True,True,True,"[('type', 'in', ['cash', 'sale'])]",lct_tos_integration.group_cashier_tos,Cashier cash journal,account.model_account_journal

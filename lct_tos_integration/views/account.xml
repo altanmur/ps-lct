@@ -2,12 +2,24 @@
 <openerp>
     <data>
 
+
+
+        <record id="account.action_account_invoice_confirm" model="ir.actions.act_window">
+            <field name="groups_id" eval="[(6, 0, [ref('lct_tos_integration.group_all_access_tos')])]"/>
+        </record>
+
         <!-- Customer Invoices -->
         <record id="view_invoice_form_lct" model="ir.ui.view">
             <field name="name">account.invoice.form.lct</field>
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//button[@name='invoice_open' and @states='draft']" position="replace">
+                    <button name="invoice_open" states="draft" string="Validate" class="oe_highlight" groups="lct_tos_integration.group_all_access_tos"/>
+                </xpath>
+                <xpath expr="//button[@name='invoice_open' and @states='proforma2']" position="replace">
+                    <button name="invoice_open" states="proforma2" string="Validate" class="oe_highlight" groups="lct_tos_integration.group_all_access_tos"/>
+                </xpath>
                 <field name="partner_id" position="before">
                     <field name="generic_customer" invisible="1"/>
                 </field>

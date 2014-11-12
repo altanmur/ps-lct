@@ -1,0 +1,8 @@
+<openerp>
+    <data>
+        <record id="module_category_tos" model="ir.module.category">
+            <field name="name">TOS</field>
+        </record>
+    </data>
+</openerp>
+
