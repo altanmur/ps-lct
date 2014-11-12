@@ -30,6 +30,10 @@
         LCT TOS integration
     """,
     'data': [
+        'security/group_category.xml',
+        'security/res.groups.csv',
+        'security/ir.model.access.csv',
+        'security/ir.rule.csv',
         'views/account.xml',
         'views/ftp_config.xml',
         'views/product.xml',
@@ -50,10 +54,6 @@
         'views/res_company.xml',
         'data/res_partner.xml',
         'reports/reports.xml',
-        'security/group_category.xml',
-        'security/res.groups.csv',
-        'security/ir.model.access.csv',
-        'security/ir.rule.csv',
         ],
     'images': [],
     'demo': [],
