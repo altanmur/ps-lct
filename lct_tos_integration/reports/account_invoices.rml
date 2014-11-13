@@ -142,7 +142,7 @@
                     <para style="P1">Description</para>
                 </td>
                 <td>
-                    <para style="P2">Billed Quantity</para>
+                    <para style="P2">Qté</para>
                 </td>
                 <td>
                     <para style="P2">Montant[[ o.currency_id and ( '(' + o.currency_id.symbol + ')' ) or '' ]]</para>
