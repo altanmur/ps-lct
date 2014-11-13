@@ -13,6 +13,7 @@
             <field name="name">account.invoice.form.lct</field>
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="priority" eval="100"/>
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='invoice_open' and @states='draft']" position="attributes">
                     <attribute name="groups">lct_tos_integration.group_all_access_tos</attribute>
