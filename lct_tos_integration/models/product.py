@@ -46,6 +46,10 @@ class product_product(osv.osv):
 
     def _product_by_properties(self, cr, uid, properties, ids=None, context=None):
         domain = []
+        if 'category_id' in properties:
+            domain.append(('category_id', '=', properties['category_id']))
+            del properties['category_id']
+
         if ids is not None:
             if not ids:
                 return False
