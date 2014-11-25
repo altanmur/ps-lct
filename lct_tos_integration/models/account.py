@@ -59,9 +59,14 @@ class account_invoice_line(osv.osv):
             pricelist = invoice and invoice.partner_id.property_product_pricelist or False
 
             pricelist_qties = [cont_nr.pricelist_qty for cont_nr in line.cont_nr_ids]
-            res[line.id] = self._compute_billed_quantity(cr, uid, product and product.id or False,
+            billed_quantity = self._compute_billed_quantity(cr, uid, product and product.id or False,
                 pricelist and pricelist.id or False,
                 line.cont_nr_editable, line.quantity, pricelist_qties, context=context)
+
+            res[line.id] = {
+                'billed_quantity': billed_quantity,
+                'billed_price_unit': billed_quantity > 0 and line.price_unit * line.quantity / billed_quantity or 0,
+            }
 
         return res
 
@@ -75,7 +80,9 @@ class account_invoice_line(osv.osv):
             'account.invoice.line': (lambda self, cr, uid, ids, context={}: ids, ['invoice_id'], 20),
             'account.invoice': (_get_ids_from_invoice, ['state'], 20),
             }),
-        'billed_quantity': fields.function(_billed_quantity, type='float', string="Billed quantity"),
+        'billed_quantity': fields.function(_billed_quantity, type='float', string="Billed quantity", multi='billed_unit_price_quantity'),
+        'billed_price_unit': fields.function(_billed_quantity, type='float', string="Unit Price", multi='billed_unit_price_quantity'),
+
     }
 
 
