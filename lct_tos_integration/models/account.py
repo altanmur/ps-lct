@@ -485,14 +485,14 @@ class account_invoice(osv.osv):
 
     def _get_app_type_service_by_type(self, cr, uid, line):
         p_type = self._get_elmnt_text(line, 'container_type')
-        if p_type == 'GP':
-            type_xml_id = 'lct_product_type_gp'
-            service_xml_id = 'lct_product_service_stevedoringcharges'
-        elif p_type == 'RE':
+        if not p_type:
+            return (False, False)
+        if p_type in ['RE', 'RS', 'RT', 'TH', 'HR']:
             type_xml_id = 'lct_product_type_reeferdg'
             service_xml_id = 'lct_product_service_stevedoringcharges'
         else:
-            return (False, False)
+            type_xml_id = 'lct_product_type_gp'
+            service_xml_id = 'lct_product_service_stevedoringcharges'
 
         imd_model = self.pool.get('ir.model.data')
         type_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', type_xml_id)
