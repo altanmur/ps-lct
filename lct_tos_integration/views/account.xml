@@ -21,8 +21,8 @@
                 <xpath expr="//button[@name='invoice_open' and @states='proforma2']" position="attributes">
                     <attribute name="groups">lct_tos_integration.group_all_access_tos</attribute>
                 </xpath>
-                <xpath expr="//button[@name='invoice_cancel']" position="replace">
-                    <button name="invoice_cancel" states="draft,proforma2" string="Cancel Invoice" groups="lct_tos_integration.group_all_access_tos"/>
+                <xpath expr="//button[@name='invoice_cancel']" position="attributes">
+                    <attribute name="groups">lct_tos_integration.group_all_access_tos</attribute>
                 </xpath>
                 <xpath expr="//button[@string='Refund Invoice']" position="attributes">
                     <attribute name="groups">lct_tos_integration.group_all_access_tos</attribute>
