@@ -136,13 +136,16 @@
             </tr>
         </blockTable>
         <para style="P4"> </para>
-        <blockTable colWidths="356,34.0,109.0" style="Table2">
+        <blockTable colWidths="322.0,34.0,34.0,109.0" style="Table2">
             <tr>
                 <td>
                     <para style="P1">Description</para>
                 </td>
                 <td>
                     <para style="P2">Qté</para>
+                </td>
+                <td>
+                    <para style="P2">Tarif</para>
                 </td>
                 <td>
                     <para style="P2">Montant[[ o.currency_id and ( '(' + o.currency_id.symbol + ')' ) or '' ]]</para>
@@ -154,13 +157,16 @@
                     <para style="P5">
                         <font color="white"> </font>
                     </para>
-                    <blockTable colWidths="356,34.0,109.0" style="Table3">
+                    <blockTable colWidths="322.0,34.0,34.0,109.0" style="Table3">
                         <tr>
                             <td>
                                 <para style="P5">[[ line.product_id.name or '' ]]</para>
                             </td>
                             <td>
                                 <para style="P6">[[ "%.0f" % (line.billed_quantity, ) or '']]</para>
+                            </td>
+                            <td>
+                                <para style="P6">[[ "%.0f" % (line.billed_price_unit, ) or '']]</para>
                             </td>
                             <td>
                                 <para style="P6">[[ line.price_subtotal or '0.00']]</para>
