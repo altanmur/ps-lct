@@ -415,6 +415,7 @@
                             <field name="name"/>
                             <field name="quantity"/>
                             <field name="pricelist_qty"/>
+                            <field name="oog"/>
                         </tree>
                     </field>
                     <footer>

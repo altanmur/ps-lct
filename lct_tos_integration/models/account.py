@@ -107,22 +107,20 @@ class account_invoice_line(osv.osv):
             return {}
 
         value = {'quantity': 0, 'price_subtotal': 0.}
-        pricelist_qties = []
+        pricelist_qties_and_oog = []
         for cont_nr in self.resolve_2many_commands(cr, uid, "cont_nr_ids", cont_nr_ids):
-            if 'quantity' in cont_nr:
-                value['quantity'] += cont_nr['quantity']
-            if 'pricelist_qty' in cont_nr:
-                pricelist_qties.append(cont_nr['pricelist_qty'])
+            value['quantity'] += cont_nr.get('quantity', 0)
+            pricelist_qties_and_oog.append((cont_nr.get('pricelist_qty', 0), cont_nr.get('oog')))
 
         invoice_line = self.browse(cr, uid, ids[0], context=context)
         partner = invoice_line.invoice_id.partner_id
         pricelist_id = partner.property_product_pricelist.id
         product_id = invoice_line.product_id.id
+        mult_rate = self.pool.get('lct.multiplying.rate').get_active_rate(cr, uid, context=context)
 
-        for pricelist_qty in pricelist_qties:
+        for pricelist_qty, oog in pricelist_qties_and_oog:
             price_multi = self.pool.get('product.pricelist').price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner.id)], context=context)
-            value['price_subtotal'] += pricelist_qty*price_multi[product_id][pricelist_id]
-
+            value['price_subtotal'] += pricelist_qty*price_multi[product_id][pricelist_id] * (oog and mult_rate or 1.)
         return {'value': value}
 
     def _compute_price_unit(self, cr, uid, product_id, quantity, cont_nr_ids, partner_id, context=None):
@@ -131,12 +129,13 @@ class account_invoice_line(osv.osv):
         pricelist_model = self.pool.get('product.pricelist')
         partner = self.pool.get('res.partner').browse(cr, uid, partner_id, context=context)
         pricelist_id = partner.property_product_pricelist.id
+        mult_rate = self.pool.get('lct.multiplying.rate').get_active_rate(cr, uid, context=context)
         if self.pool.get('product.product').browse(cr, uid, product_id, context=context).cont_nr_editable:
             price_subtotal = 0.
             for cont_nr in self.pool.get('lct.container.number').browse(cr, uid, cont_nr_ids, context=context):
                 pricelist_qty = cont_nr.pricelist_qty
                 price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
-                price_subtotal += pricelist_qty * price_multi[product_id][pricelist_id]
+                price_subtotal += pricelist_qty * price_multi[product_id][pricelist_id] * (cont_nr.oog and mult_rate or 1.)
             return price_subtotal / quantity
         else:
             price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, quantity, partner_id)], context=context)
@@ -232,12 +231,14 @@ class account_invoice_line(osv.osv):
         partner_id = partner.id
         pricelist_id = partner.property_product_pricelist.id
         product_id = invoice_line.product_id.id
+        mult_rate = self.pool.get('lct.multiplying.rate').get_active_rate(cr, uid, context=context)
 
-        pricelist_qties = [cont_nr.pricelist_qty for cont_nr in cont_nrs]
         price_subtotal = 0.
-        for pricelist_qty in pricelist_qties:
+        for cont_nr in cont_nrs:
+            pricelist_qty = cont_nr.pricelist_qty
+            oog = cont_nr.oog
             price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
-            price_subtotal += pricelist_qty*price_multi[product_id][pricelist_id]
+            price_subtotal += pricelist_qty*price_multi[product_id][pricelist_id] * (oog and mult_rate or 1.)
 
         vals = {
             'quantity': quantity,
@@ -744,6 +745,7 @@ class account_invoice(osv.osv):
         if lines is None:
             return app_id
 
+        mult_rate = self.pool.get('lct.multiplying.rate').get_active_rate(cr, uid, context=context)
         invoice_lines = {}
         for line in lines.findall('line'):
             category = self._get_elmnt_text(line, 'category')
@@ -780,13 +782,15 @@ class account_invoice(osv.osv):
             account = product.property_account_income or (product.categ_id and product.categ_id.property_account_income_categ) or False
             if not account:
                 raise osv.except_osv(('Error'), ('Could not find an income account on product %s ') % product.name)
-            cont_nrs = cont_nr_model.browse(cr, uid, cont_nr_ids, context=context)
-            pricelist_qties = [cont_nr.pricelist_qty for cont_nr in cont_nrs]
-            quantity = sum(pricelist_qties)
+
+            quantity = 0.
             price = 0.
-            for pricelist_qty in pricelist_qties:
+            for cont_nr in cont_nr_model.browse(cr, uid, cont_nr_ids, context=context):
+                pricelist_qty = cont_nr.pricelist_qty
+                oog = cont_nr.oog
+                quantity += pricelist_qty
                 price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
-                price += pricelist_qty*price_multi[product_id][pricelist_id]
+                price += pricelist_qty*price_multi[product_id][pricelist_id] * (oog and mult_rate or 1.)
             line_vals = {
                 'invoice_id': app_id,
                 'product_id': product_id,
@@ -1007,6 +1011,8 @@ class account_invoice(osv.osv):
 
         date_invoice = datetime.today().strftime('%Y-%m-%d')
 
+        mult_rate = self.pool.get('lct.multiplying.rate').get_active_rate(cr, uid, context=context)
+
         invoice_ids = []
         for partner_id, invoice in invoice_lines.iteritems():
             partner = partner_model.browse(cr, uid, partner_id, context=context)
@@ -1044,13 +1050,13 @@ class account_invoice(osv.osv):
                     })
                     invoice_model.write(cr, uid, invoice_id, new_invoice_vals, context=context)
 
-                    quantities = [cont_nr.quantity for cont_nr in cont_nrs]
-                    pricelist_qties = [cont_nr.pricelist_qty for cont_nr in cont_nrs]
-                    quantity = sum(quantities)
+                    quantity = sum([cont_nr.quantity for cont_nr in cont_nrs])
                     price = 0.
-                    for pricelist_qty in pricelist_qties:
+                    for cont_nr in cont_nrs:
+                        pricelist_qty = cont_nr.pricelist_qty
+                        oog = cont_nr.oog
                         price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
-                        price += pricelist_qty*price_multi[product_id][pricelist_id]
+                        price += pricelist_qty*price_multi[product_id][pricelist_id] * (oog and mult_rate or 1.)
 
                     line_vals.update({
                         'product_id': product_id,

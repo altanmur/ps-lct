@@ -27,7 +27,7 @@ class lct_multiplying_rate(osv.osv):
 
     _columns = {
         'name': fields.char('Name', required=True),
-        'multiplying_rate': fields.integer('Multiplying Rate For oog Containers', required=True),
+        'multiplying_rate': fields.float('Multiplying Rate For oog Containers', required=True),
         'active': fields.boolean('Active'),
     }
 
@@ -39,3 +39,6 @@ class lct_multiplying_rate(osv.osv):
         (_check_active, 'There can only be one active multiplying rate', ['active']),
     ]
 
+    def get_active_rate(self, cr, uid, context=None):
+        mult_rate_ids = self.search(cr, uid, [('active', '=', True)], context=context)
+        return mult_rate_ids and self.browse(cr, uid, mult_rate_ids[0], context=context).multiplying_rate or 1.
