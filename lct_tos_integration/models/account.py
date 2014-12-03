@@ -761,10 +761,15 @@ class account_invoice(osv.osv):
 
             shc_product_ids = self._get_shc_products(cr, uid, line, context=context)
 
+            oog = self._get_elmnt_text(line, 'oog')
+            oog = True if oog=='YES' else False
+
             cont_nr_vals = {
                 'name': self._get_elmnt_text(line, 'container_number'),
                 'cont_operator': self._get_elmnt_text(line, 'container_operator'),
+                'oog': oog,
             }
+
             for product_id, quantity in quantities_by_products.iteritems():
                 if product_id not in invoice_lines:
                     invoice_lines[product_id] = []
