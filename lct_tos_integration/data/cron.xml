@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <openerp>
-    <data>
+    <data noupdate="1">
         <record id="ir_cron_ftp_import" model="ir.cron">
             <field name="name">Import data from FTP</field>
             <field name="active" eval="True"/>
