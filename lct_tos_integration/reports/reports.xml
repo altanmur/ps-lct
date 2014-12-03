@@ -22,8 +22,6 @@ action = self.print_invoice(cr, uid, context.get('active_id', False), context=co
 
         <record id="account.account_invoices" model="ir.actions.report.xml">
             <field name="report_name">account.invoice</field>
-            <field name="res_model">account.invoice</field>
-            <field name="report_name">account.invoice</field>
             <field name="auto" eval="False"/>
             <field name="model">account.invoice</field>
             <field name="report_type">pdf</field>

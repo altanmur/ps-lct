@@ -5,7 +5,7 @@ import os
 def upload_file(ftp, f, file_name):
     f.seek(0)
     result = ftp.storbinary(''.join(['STOR ', file_name]), f)
-    return 199 > int(result[0:3]) > 300
+    return 199 < int(result[0:3]) < 300
 
 def set_appointment_customer(xml_file, partner_id):
     tree = ET.parse(xml_file)
@@ -50,3 +50,6 @@ def purge_ftp(ftp, path='', omit=[]):
             ftp.delete(f)
         except:
             ftp.rmd(f)
+
+def ls(ftp):
+    return [filename for filename in ftp.nlst() if filename not in ['.', '..']]

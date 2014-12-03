@@ -204,6 +204,7 @@ class TestImport(TransactionCase):
         self.partner_id = self.partner_model.search(cr, uid, [('name', '=', 'MSK')])
         if self.partner_id:
             self.partner_id = self.partner_id[0]
+            self.partner_model.write(cr, uid, [self.partner_id], {'property_product_pricelist': self.pricelist.id})
         else:
             self.partner_id = self.partner_model.create(cr, uid,{
                 'name': 'Test Customer',
@@ -256,7 +257,9 @@ class TestImport(TransactionCase):
         invoice_model, import_data_model = self.invoice_model, self.import_data_model
         product_model = self.registry('product.product')
         self._prepare_import()
-        vesselsbefore = len(self.vsl_model.search(cr, uid, []))
+        vsl_ids = self.vsl_model.search(cr, uid, [])
+        self.vsl_model.unlink(cr, uid, vsl_ids)
+
         vessel_ids = self.invoice_model.search(cr, uid, [('type2','=','vessel')])
         appoint_ids = self.invoice_model.search(cr, uid, [('type2','=','appointment')])
         ftp_config_model.button_import_ftp_data(cr, uid, [self.config.id])
@@ -273,10 +276,10 @@ class TestImport(TransactionCase):
         lines = sorted(vessels[0].invoice_line, key=lambda x: x.name.lower())
         self.assertEqual(len(lines), 4)
 
-        self.assertTrue(lines[0].name == 'Gearbox Count')
+        self.assertTrue(lines[0].name == 'Gearbox count')
         self.assertTrue(lines[0].quantity == 14)
         self.assertTrue(lines[0].price_unit == 7.7)
-        self.assertTrue(lines[1].name == 'Hatch Cover Move')
+        self.assertTrue(lines[1].name == 'Hatchcover moves')
         self.assertTrue(lines[1].quantity == 6)
         self.assertTrue(lines[1].price_unit == 7.8)
         self.assertTrue(lines[2].name == 'Import Discharge 20 Full GP')
@@ -287,11 +290,7 @@ class TestImport(TransactionCase):
         self.assertTrue(lines[3].price_unit == 10.)
 
         vesselsafter = len(self.vsl_model.search(cr, uid, []))
-        self.assertEqual(vesselsbefore + 5, vesselsafter, 'Importing should create 5 Vessels')
-        self._prepare_import()
-        ftp_config_model.button_import_ftp_data(cr, uid, [self.config.id])
-        vesselsafter2 = len(self.vsl_model.search(cr, uid, []))
-        self.assertEqual(vesselsafter + 5, vesselsafter2, 'Importing should create 5 Vessels even if they exist')
+        self.assertEqual(5, vesselsafter, 'Importing should create 5 Vessels')
 
     def test_02_vessel_dockage(self):
         cr, uid = self.cr, self.uid
