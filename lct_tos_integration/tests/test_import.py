@@ -251,6 +251,7 @@ class TestImport(TransactionCase):
 
     def test_import(self):
         cr, uid = self.cr, self.uid
+        assertTrue(False, "This build should be red")
         if not self.config:
             return True
         ftp_config_model = self.ftp_config_model
