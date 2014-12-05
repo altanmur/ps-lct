@@ -252,8 +252,8 @@ class TestImport(TransactionCase):
     def test_import(self):
         cr, uid = self.cr, self.uid
         if not self.config:
-            self.assertTrue(False, "This build should be red")
             return True
+        self.assertTrue(False, "This build should be red")
         ftp_config_model = self.ftp_config_model
         invoice_model, import_data_model = self.invoice_model, self.import_data_model
         product_model = self.registry('product.product')
