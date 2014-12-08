@@ -317,6 +317,11 @@ class account_invoice(osv.osv):
         'printed': 0,
     }
 
+    def invoice_open_bypass(self, cr, uid, ids, context=None):
+        if not context:
+            context = {}
+        self.pool.get('account.invoice.confirm').invoice_confirm(cr, SUPERUSER_ID, [], context=dict(context, active_ids=ids))
+
     def invoice_validate(self, cr, uid, ids, context=None):
         res = super(account_invoice, self).invoice_validate(cr, uid, ids, context=context)
         if not ids:
