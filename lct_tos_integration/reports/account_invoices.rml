@@ -136,7 +136,7 @@
             </tr>
         </blockTable>
         <para style="P4"> </para>
-        <blockTable colWidths="322.0,34.0,34.0,109.0" style="Table2">
+        <blockTable colWidths="250.0,80.0,80.0,89.0" style="Table2">
             <tr>
                 <td>
                     <para style="P1">Description</para>
@@ -157,19 +157,20 @@
                     <para style="P5">
                         <font color="white"> </font>
                     </para>
-                    <blockTable colWidths="322.0,34.0,34.0,109.0" style="Table3">
+                    <blockTable colWidths="250.0,80.0,80.0,89.0" style="Table3">
                         <tr>
                             <td>
                                 <para style="P5">[[ line.product_id.name or '' ]]</para>
                             </td>
                             <td>
-                                <para style="P6">[[ "%.0f" % (line.billed_quantity, ) or '']]</para>
+                                <para style="P6">[[ "{:.0F}".format(line.billed_quantity or 0.) ]]</para>
+                                <!-- <para style="P6">[[ line.billed_quantity or 0 ]]</para> -->
                             </td>
                             <td>
-                                <para style="P6">[[ "%.0f" % (line.billed_price_unit, ) or '']]</para>
+                                <para style="P6">[[ (o.currency_id.name == "XOF" and "{:,.0f}" or "{:,.2f}").format(line.billed_price_unit or 0.) ]]</para>
                             </td>
                             <td>
-                                <para style="P6">[[ line.price_subtotal or '0.00']]</para>
+                                <para style="P6">[[ (o.currency_id.name == "XOF" and "{:,.0f}" or "{:,.2f}").format(line.price_subtotal or 0.) ]]</para>
                             </td>
                         </tr>
                     </blockTable>
@@ -187,10 +188,10 @@
                     <para style="P6_bold">Total</para>
                 </td>
                 <td>
-                    <para style="P6_bold">[[ o.amount_untaxed ]]</para>
+                    <para style="P6_bold">[[ (o.currency_id.name == "XOF" and "{:,.0f}" or "{:,.2f}").format(o.amount_untaxed or 0.) ]]</para>
                 </td>
             </tr>
-            <tr>[[o.amount_tax or removeParentNode('tr')]]
+            <tr>[[o.amount_tax and (o.currency_id.name == "XOF" and "{:,.0f}" or "{:,.2f}").format(o.amount_tax or 0.) or removeParentNode('tr')]]
                 <td>
                     <para style="P6">Taux TVA</para>
                 </td>
@@ -198,12 +199,12 @@
                     <para style="P6">[[ o.partner_id.tax_id.name or '']]</para>
                 </td>
             </tr>
-            <tr>[[o.amount_tax or removeParentNode('tr')]]
+            <tr>[[ o.amount_tax and (o.currency_id.name == "XOF" and "{:,.0f}" or "{:,.2f}").format(o.amount_tax or 0.) or removeParentNode('tr')]]
                 <td>
                     <para style="P6">Montant TVA</para>
                 </td>
                 <td>
-                    <para style="P6">[[ o.amount_tax]]</para>
+                    <para style="P6">[[ (o.currency_id.name == "XOF" and "{:,.0f}" or "{:,.2f}").format(o.amount_tax or 0.) ]]</para>
                 </td>
             </tr>
             <tr>
@@ -211,7 +212,7 @@
                     <para style="P6_bold">Montant Total [[ o.currency_id and ( '(' + o.currency_id.symbol + ')' ) or '' ]]</para>
                 </td>
                 <td>
-                    <para style="P6_bold">[[ o.amount_total ]]</para>
+                    <para style="P6_bold">[[ (o.currency_id.name == "XOF" and "{:,.0f}" or "{:,.2f}").format(o.amount_total or 0.) ]]</para>
                 </td>
             </tr>
         </blockTable>
