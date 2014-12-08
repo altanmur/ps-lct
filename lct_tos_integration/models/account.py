@@ -20,6 +20,7 @@
 ##############################################################################
 
 from openerp.osv import fields, osv
+from openerp import SUPERUSER_ID
 
 from lxml import etree as ET
 from datetime import datetime
