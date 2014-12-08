@@ -33,7 +33,7 @@ class TestExport(TransactionCase):
 
         partner_model = self.registry('res.partner')
         company_id = partner_model.create(cr, uid, {'name': 'New Company', 'is_company': True})
-        files_before = ftp.nlst()
+        files_before = iet.ls(ftp)
         self.assertTrue(len(files_before) == 1, 'Creating a new partner should upload an XML file')
         match = re.match("^.+(\d{6}).xml$", files_before[0])
         sequence = int(match.group(1))
@@ -53,7 +53,7 @@ class TestExport(TransactionCase):
             'phone': '0454545454',
         }
         partner_id = partner_model.create(cr, uid, vals)
-        files_after = ftp.nlst()
+        files_after = iet.ls(ftp)
         filename = ''
 
         self.assertTrue(len(files_after) == 2, 'Creating a new partner should upload an XML file')
