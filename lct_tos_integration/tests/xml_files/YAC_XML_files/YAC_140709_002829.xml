@@ -6,7 +6,7 @@
     <lines>
       <line>
         <container_number>ABCD0110001</container_number>
-        <container_operator_id>ACL</container_operator_id>
+        <container_customer_id>ACL</container_customer_id>
         <arrival_timestamp>2014-01-10 12:34:39</arrival_timestamp>
         <departure_timestamp />
         <transaction_direction />

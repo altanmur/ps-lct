@@ -6,7 +6,7 @@
     <lines>
       <line>
         <container_number>TDCN0000100</container_number>
-        <container_operator_id>TD</container_operator_id>
+        <container_customer_id>TD</container_customer_id>
         <arrival_timestamp>2014-04-01 14:54:54</arrival_timestamp>
         <departure_timestamp />
         <transaction_direction />

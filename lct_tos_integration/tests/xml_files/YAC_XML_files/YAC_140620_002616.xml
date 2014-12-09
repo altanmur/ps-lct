@@ -6,7 +6,7 @@
     <lines>
       <line>
         <container_number>DEAN0620006</container_number>
-        <container_operator_id>DYL</container_operator_id>
+        <container_customer_id>DYL</container_customer_id>
         <arrival_timestamp>2014-06-20 17:21:16</arrival_timestamp>
         <departure_timestamp />
         <transaction_direction />

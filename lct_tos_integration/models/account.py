@@ -1241,7 +1241,7 @@ class account_invoice(osv.osv):
                     pending_yac_model.create_activity(cr, uid, line, context=context)
                     continue
 
-                partner_id = self._get_partner(cr, uid, line, 'container_operator_id', context=context)
+                partner_id = self._get_partner(cr, uid, line, 'container_customer_id', context=context)
                 category_id = self._get_yac_category(cr, uid, yard_activity)
 
                 if yard_activity == 'SERVI':
