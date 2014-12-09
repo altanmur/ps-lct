@@ -876,7 +876,7 @@ class account_invoice(osv.osv):
 
         invoice_lines = {}
         for vbilling in vbillings.findall('vbilling'):
-            partner_id = self._get_partner(cr, uid, vbilling, 'vessel_operator_id')
+            partner_id = self._get_partner(cr, uid, vbilling, 'customer_id')
             partner = partner_model.browse(cr, uid, partner_id, context=context)
 
             vessel_id = self._get_elmnt_text(vbilling, 'vessel_id')
@@ -923,7 +923,7 @@ class account_invoice(osv.osv):
 
                 category = self._get_elmnt_text(line, 'transaction_category_id')
                 if category == 'R':
-                    partner_id = self._get_partner(cr, uid, vbilling, 'vessel_operator_id', context=context)
+                    partner_id = self._get_partner(cr, uid, vbilling, 'customer_id', context=context)
                 category_id, service_ids = self._get_vbl_category_service(cr, uid, category)
 
                 size = self._get_elmnt_text(line, 'container_size')
