@@ -33,7 +33,7 @@ def set_dockage_customer(xml_file, partner_id):
     tree = ET.parse(xml_file)
     root = tree.getroot()
     for dockage in root.findall('call'):
-        dockage.find('vessel_operator_id').text = str(partner_id)
+        dockage.find('customer_id').text = str(partner_id)
     f = StringIO()
     f.write(ET.tostring(tree, pretty_print=True))
     return f

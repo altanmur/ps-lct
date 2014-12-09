@@ -446,7 +446,7 @@ class account_invoice(osv.osv):
         invoice_map = {}
         if invoice_type == 'vcl':
             invoice_map = {
-                'partner_id': 'vessel_operator_id',
+                'partner_id': 'customer_id',
                 'call_sign': 'call_sign',
                 'lloyds_nr': 'lloyds_number',
                 'vessel_id': 'vessel_id',

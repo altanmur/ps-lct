@@ -5,7 +5,7 @@
     <call_sign>CALLCA</call_sign>
     <lloyds_number />
     <vessel_id>CATEGO000008</vessel_id>
-    <vessel_operator_id>ACL</vessel_operator_id>
+    <customer_id>ACL</customer_id>
     <voyage_number_in>CA08E</voyage_number_in>
     <voyage_number_out>CA08N</voyage_number_out>
     <departure_time>2014-06-18 10:38:00</departure_time>
