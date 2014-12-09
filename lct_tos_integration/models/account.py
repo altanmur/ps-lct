@@ -821,7 +821,7 @@ class account_invoice(osv.osv):
 
     # VBL
 
-    def _get_vbl_category_service(self, cr, uid, category):
+    def _get_vbl_category_service(self, cr, uid, category, direction=None):
         imd_model = self.pool.get('ir.model.data')
         module = 'lct_tos_integration'
         if category == 'I':
@@ -831,8 +831,13 @@ class account_invoice(osv.osv):
             category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_category_export')
             service_ids = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_load')]
         elif category == 'T':
+            if direction == 'R':
+                service_ids = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_reload')]
+            elif direction == 'D':
+                service_ids = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_discharge')]
+            else:
+                return (False, False)
             category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_category_transshipment')
-            service_ids = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_discharge'), imd_model.get_record_id(cr, uid, module, 'lct_product_service_reload')]
         elif category == 'R':
             category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_category_restowageshifting')
             service_ids = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_restow')]
@@ -924,7 +929,12 @@ class account_invoice(osv.osv):
                 category = self._get_elmnt_text(line, 'transaction_category_id')
                 if category == 'R':
                     partner_id = self._get_partner(cr, uid, vbilling, 'customer_id', context=context)
-                category_id, service_ids = self._get_vbl_category_service(cr, uid, category)
+
+                if category == 'T':
+                    direction = self._get_elmnt_text(line, 'transaction_direction')
+                    category_id, service_ids = self._get_vbl_category_service(cr, uid, category, direction)
+                else:
+                    category_id, service_ids = self._get_vbl_category_service(cr, uid, category)
 
                 size = self._get_elmnt_text(line, 'container_size')
                 size_id = self._get_size(cr, uid, size)
