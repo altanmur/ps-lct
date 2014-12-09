@@ -831,9 +831,9 @@ class account_invoice(osv.osv):
             category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_category_export')
             service_ids = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_load')]
         elif category == 'T':
-            if direction == 'R':
+            if direction == 'D':
                 service_ids = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_reload')]
-            elif direction == 'D':
+            elif direction == 'R':
                 service_ids = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_discharge')]
             else:
                 return (False, False)
