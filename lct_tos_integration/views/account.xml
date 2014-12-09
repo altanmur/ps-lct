@@ -21,6 +21,10 @@
                 <xpath expr="//button[@name='invoice_open' and @states='proforma2']" position="attributes">
                     <attribute name="groups">lct_tos_integration.group_all_access_tos</attribute>
                 </xpath>
+                <xpath expr="//button[@name='invoice_open' and @states='proforma2']" position="after">
+                    <button name="invoice_open_bypass" type="object" states="draft" string="Validate" class="oe_highlight" groups="lct_tos_integration.group_invoice_validate_tos"/>
+                    <button name="invoice_open_bypass" type="object" states="proforma2" string="Validate" groups="lct_tos_integration.group_invoice_validate_tos"/>
+                </xpath>
                 <xpath expr="//button[@name='invoice_cancel']" position="attributes">
                     <attribute name="groups">lct_tos_integration.group_all_access_tos</attribute>
                 </xpath>
