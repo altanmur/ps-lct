@@ -61,7 +61,7 @@ class lct_tos_vessel(osv.Model):
                     ('vessel_in_voyage_number', '=', vessel_in_voyage_number),
                 ], context=context)
             if vessel_to_write_ids:
-                self.write(cr, uid, vals, vessel_to_write_ids, context=context)
+                self.write(cr, uid, vessel_to_write_ids, vals, context=context)
                 vsl_ids.extend(vessel_to_write_ids)
             else:
                 vals.update({
