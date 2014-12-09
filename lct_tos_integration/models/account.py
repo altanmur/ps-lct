@@ -915,7 +915,7 @@ class account_invoice(osv.osv):
             if lines is None:
                 continue
             for line in lines.findall('line'):
-                partner_id = self._get_partner(cr, uid, line, 'container_operator_id', context=context)
+                partner_id = self._get_partner(cr, uid, line, 'container_customer_id', context=context)
 
                 cont_nr_name = self._get_elmnt_text(line, 'container_number')
                 cont_nr_vals['name'] = cont_nr_name

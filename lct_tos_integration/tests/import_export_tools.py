@@ -24,7 +24,7 @@ def set_vbilling_customer(xml_file, partner_id):
         vbilling.find('vessel_operator_id').text = partner_id
         lines = vbilling.find('lines')
         for line in lines.findall('line'):
-            line.find('container_operator_id').text = partner_id
+            line.find('container_customer_id').text = partner_id
     f = StringIO()
     f.write(ET.tostring(tree, pretty_print=True))
     return f
