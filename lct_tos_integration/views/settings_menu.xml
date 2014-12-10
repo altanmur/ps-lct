@@ -1,0 +1,18 @@
+<openerp>
+    <data>
+        <menuitem
+            name="Settings"
+            id="menu_settings_2"
+            sequence="600"
+            />
+        <menuitem
+            name="Users"
+            id="menu_settings_users_2"
+            parent="menu_settings_2"/>
+        <menuitem
+            action="base.action_res_users"
+            name="Users"
+            id="menu_settings_users_users_2"
+            parent="menu_settings_users_2"/>
+    </data>
+</openerp>

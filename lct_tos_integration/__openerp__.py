@@ -31,6 +31,7 @@
         LCT TOS integration
     """,
     'data': [
+        'views/settings_menu.xml',
         'security/group_category.xml',
         'security/res.groups.csv',
         'security/ir.model.access.csv',
