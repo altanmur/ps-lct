@@ -23,13 +23,15 @@
     'name': 'LCT TOS integration',
     'author': 'OpenERP SA',
     'version': '0.1',
-    'depends': ['base','account','product','account_voucher','hr', 'base_vat'],
+    'depends': ['base', 'account', 'product', 'account_voucher', 'hr',
+                'base_vat', 'sale'],
     'category' : 'Tools',
     'summary': 'LCT TOS integration',
     'description': """
         LCT TOS integration
     """,
     'data': [
+        'views/settings_menu.xml',
         'security/group_category.xml',
         'security/res.groups.csv',
         'security/ir.model.access.csv',
@@ -54,6 +56,7 @@
         'views/res_company.xml',
         'data/res_partner.xml',
         'reports/reports.xml',
+        'views/res_users.xml',
         ],
     'images': [],
     'demo': [],
