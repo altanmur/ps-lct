@@ -6,7 +6,7 @@
     <lines>
       <line>
         <container_number>EMCU9318432</container_number>
-        <container_operator_id>ACL</container_operator_id>
+        <container_customer_id>ACL</container_customer_id>
         <arrival_timestamp>2009-04-17 17:39:18</arrival_timestamp>
         <departure_timestamp />
         <transaction_direction />

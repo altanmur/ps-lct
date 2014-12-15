@@ -6,7 +6,7 @@
     <lines>
       <line>
         <container_number>CRXU1303334</container_number>
-        <container_operator_id>RSL</container_operator_id>
+        <container_customer_id>RSL</container_customer_id>
         <arrival_timestamp>2011-06-11 00:40:00</arrival_timestamp>
         <departure_timestamp />
         <transaction_direction />

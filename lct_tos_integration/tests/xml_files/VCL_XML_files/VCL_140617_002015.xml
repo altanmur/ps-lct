@@ -5,7 +5,7 @@
     <call_sign>TEST1</call_sign>
     <lloyds_number />
     <vessel_id>THOLCT000001</vessel_id>
-    <vessel_operator_id>MSK</vessel_operator_id>
+    <customer_id>MSK</customer_id>
     <voyage_number_in>IN1</voyage_number_in>
     <voyage_number_out>OUT1</voyage_number_out>
     <departure_time>2014-05-30 14:15:00</departure_time>
