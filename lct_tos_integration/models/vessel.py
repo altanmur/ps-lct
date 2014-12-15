@@ -47,14 +47,27 @@ class lct_tos_vessel(osv.Model):
             if self.search(cr, uid, [('vessel_id','=',vessel_id), ('vessel_eta','=',vessel_eta)], context=context):
                 raise osv.except_osv(('Error'), ('Another vessel with the same ID and ETA already exists.'))
 
-            new_vessel = {
-                'vessel_id': vessel_id,
+            vals = {
                 'name': vessel.find('name').text,
                 'call_sign': vessel.find('call_sign').text,
                 'lloyds_number': vessel.find('lloyds_number').text,
-                'vessel_in_voyage_number': vessel.find('vessel_in_voyage_number').text,
-                'vessel_out_voyage_number': vessel.find('vessel_out_voyage_number').text,
                 'vessel_eta': vessel_eta,
             }
-            vsl_ids.append(self.create(cr, uid, new_vessel, context=context))
+            vessel_in_voyage_number = vessel.find('vessel_in_voyage_number').text
+            vessel_out_voyage_number = vessel.find('vessel_out_voyage_number').text
+            vessel_to_write_ids = self.search(cr, uid, [
+                    ('vessel_id', '=', vessel_id),
+                    ('vessel_out_voyage_number', '=', vessel_out_voyage_number),
+                    ('vessel_in_voyage_number', '=', vessel_in_voyage_number),
+                ], context=context)
+            if vessel_to_write_ids:
+                self.write(cr, uid, vessel_to_write_ids, vals, context=context)
+                vsl_ids.extend(vessel_to_write_ids)
+            else:
+                vals.update({
+                        'vessel_id': vessel_id,
+                        'vessel_in_voyage_number': vessel_in_voyage_number,
+                        'vessel_out_voyage_number': vessel_out_voyage_number,
+                    })
+                vsl_ids.append(self.create(cr, uid, vals, context=context))
         return vsl_ids
