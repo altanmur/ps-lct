@@ -8,6 +8,9 @@
     <record id="lct_product_category_export" model="lct.product.category">
       <field name="name">Export</field>
     </record>
+    <record id="lct_product_category_export_e_r" model="lct.product.category">
+      <field name="name">Export Empty Release</field>
+    </record>
     <record id="lct_product_category_transshipment" model="lct.product.category">
       <field name="name">Transshipment</field>
     </record>
