@@ -57,6 +57,7 @@
         'data/res_partner.xml',
         'reports/reports.xml',
         'views/res_users.xml',
+        'views/export_button.xml',
         ],
     'images': [],
     'demo': [],

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Batch Executive : Add specific info to executives -->
+
+        <record model="ir.ui.view" id="export_button_form">
+            <field name="name">lct.export.button.form</field>
+            <field name="model">lct.export.button</field>
+            <field name="arch" type="xml">
+                <form string="Export Buttons" version="7.0">
+                	<field name="state" invisible="1"/>
+                	<group attrs="{'invisible' : [('state', '=', 'done')]}">
+                		<label string="Here you can export buttons and the groups that can access them. Buttons without groups are accessible by everyone."/>
+                    </group>
+                    <group attrs="{'invisible' : [('state', '=', 'done')]}">
+                        <label string="Warning: The .csv file is encoded in UTF-8 so don't forget to choose '65001 : Unicode (UTF-8)' as File Origin during your import in Excel." colspan="2"/>
+                	</group>
+                	<group attrs="{'invisible' : [('state', '=', 'draft')]}">
+                		<group>
+                			<label string="Now you can download your file"/>
+                		</group>
+                		<newline/>
+                		<group>
+                			<field name="datas_fname" invisible="1" />
+                			<field name="xls_file" filename="datas_fname"/>
+                		</group>
+                    </group>
+                    <footer attrs="{'invisible' : [('state', '=', 'done')]}">
+                        <button string="Export" name="export_button" type="object"/>
+                    </footer>
+                    <footer attrs="{'invisible' : [('state', '=', 'draft')]}">
+                            <button string="Close" special="cancel" icon="gtk-cancel" colspan='1'/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+
+		<record model="ir.actions.act_window" id="action_export_button_lct">
+			<field name="name">Export Buttons</field>
+			<field name="res_model">lct.export.button</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+		<menuitem id="menu_export_button_lct" name="Export Buttons"	parent="tos_integ_ftp_menu" action="action_export_button_lct"/>
+
+    </data>
+</openerp>
