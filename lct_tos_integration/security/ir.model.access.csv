@@ -70,3 +70,112 @@ mail_group_group_user_creation,True,False,False,lct_tos_integration.group_user_c
 email_template_group_user_creation,True,False,False,lct_tos_integration.group_user_creation,email_template group_user_creation,email_template.model_email_template,True,False
 mail_mail_group_user_creation,True,True,False,lct_tos_integration.group_user_creation,mail_mail group_user_creation,mail.model_mail_mail,True,True
 lct_multiplying_rate_group_all_access_tos,True,True,True,lct_tos_integration.group_all_access_tos,lct_multiplying_rate group_all_access_tos,lct_tos_integration.model_lct_multiplying_rate,True,True
+__export__.ir_model_access_504,True,True,True,lct.hr_team,hr.employee.resource.manager,resource.model_resource_resource,True,True
+__export__.ir_model_access_505,True,False,False,lct.hr_team,hr.contract.type.manager,hr_contract.model_hr_contract_type,True,False
+__export__.ir_model_access_506,True,False,False,lct.hr_team,hr.contract.manager,hr_contract.model_hr_contract,True,False
+__export__.ir_model_access_507,True,True,True,lct.hr_team,crm.meeting.type.manager,base_calendar.model_crm_meeting_type,True,True
+__export__.ir_model_access_508,True,True,True,lct.hr_team,hr.payslip.worked_days,hr_payroll.model_hr_payslip_worked_days,True,True
+__export__.ir_model_access_509,True,True,True,lct.hr_team,hr.payslip.run,hr_payroll.model_hr_payslip_run,True,True
+__export__.ir_model_access_510,True,True,True,lct.hr_team,hr.rule.input,hr_payroll.model_hr_rule_input,True,True
+__export__.ir_model_access_511,True,True,True,lct.hr_team,hr.evaluation.report,hr_evaluation.model_hr_evaluation_report,True,True
+__export__.ir_model_access_512,True,True,True,lct.hr_team,survey.type,survey.model_survey_type,True,True
+__export__.ir_model_access_513,True,True,True,lct.hr_team,survey.hr.manager,survey.model_survey,True,True
+__export__.ir_model_access_514,True,True,True,lct.hr_team,survey.history,survey.model_survey_history,True,True
+__export__.ir_model_access_515,True,True,True,lct.hr_team,survey.question,survey.model_survey_question,True,True
+__export__.ir_model_access_516,True,True,True,lct.hr_team,survey.question.column.heading,survey.model_survey_question_column_heading,True,True
+__export__.ir_model_access_517,True,True,True,lct.hr_team,survey.answer,survey.model_survey_answer,True,True
+__export__.ir_model_access_518,True,True,True,lct.hr_team,survey.response,survey.model_survey_response,True,True
+__export__.ir_model_access_519,True,True,True,lct.hr_team,survey.response.line,survey.model_survey_response_line,True,True
+__export__.ir_model_access_520,True,True,True,lct.hr_team,survey.tbl.column.heading,survey.model_survey_tbl_column_heading,True,True
+__export__.ir_model_access_521,True,True,True,lct.hr_team,survey.response.answer,survey.model_survey_response_answer,True,True
+__export__.ir_model_access_522,True,True,True,lct.hr_team,survey.request,hr_evaluation.model_survey_request,True,True
+__export__.ir_model_access_523,True,True,True,lct.hr_team,hr.recruitment.report,hr_recruitment.model_hr_recruitment_report,True,True
+__export__.ir_model_access_524,True,True,True,lct.hr_team,hr.applicant_category,hr_recruitment.model_hr_applicant_category,True,True
+__export__.ir_model_access_525,True,True,True,lct.employee,hr.employee.category.user,hr.model_hr_employee_category,True,True
+__export__.ir_model_access_526,True,True,True,lct.employee,hr.employee user,hr.model_hr_employee,True,True
+__export__.ir_model_access_527,True,True,True,lct.employee,resource.resource.user,resource.model_resource_resource,True,True
+__export__.ir_model_access_528,True,True,True,lct.employee,hr.department.user,hr.model_hr_department,True,True
+__export__.ir_model_access_529,True,True,True,lct.employee,hr.job user,hr.model_hr_job,True,True
+__export__.ir_model_access_530,True,True,False,lct.employee,ir_property hr_user,base.model_ir_property,True,True
+__export__.ir_model_access_531,True,True,True,lct.employee,hr.employee.resource.calendar.user,resource.model_resource_calendar,True,True
+__export__.ir_model_access_532,True,True,True,lct.employee,hr.holidays.status user,hr_holidays.model_hr_holidays_status,True,True
+__export__.ir_model_access_533,True,True,True,lct.employee,hr.holidays.user,hr_holidays.model_hr_holidays,True,True
+__export__.ir_model_access_534,True,True,True,lct.employee,hr.holidays.ramain.user,hr_holidays.model_hr_holidays_remaining_leaves_user,True,True
+__export__.ir_model_access_535,True,True,True,lct.employee,resource_calendar_leaves_user,hr_holidays.model_resource_calendar_leaves,True,True
+__export__.ir_model_access_536,True,True,True,lct.employee,hr.payroll.structure,hr_payroll.model_hr_payroll_structure,True,True
+__export__.ir_model_access_537,True,True,True,lct.employee,hr.contribution.register,hr_payroll.model_hr_contribution_register,True,True
+__export__.ir_model_access_538,True,True,True,lct.employee,hr.salary.rule.category,hr_payroll.model_hr_salary_rule_category,True,True
+__export__.ir_model_access_539,True,True,True,lct.employee,hr.payslip,hr_payroll.model_hr_payslip,True,True
+__export__.ir_model_access_540,True,True,True,lct.employee,hr.payslip.line,hr_payroll.model_hr_payslip_line,True,True
+__export__.ir_model_access_541,True,True,True,lct.employee,hr.payslip.input.user,hr_payroll.model_hr_payslip_input,True,True
+__export__.ir_model_access_542,True,True,True,lct.employee,hr.salary.rule.user,hr_payroll.model_hr_salary_rule,True,True
+__export__.ir_model_access_543,True,True,True,lct.employee,hr_evaluation.evaluation.user,hr_evaluation.model_hr_evaluation_evaluation,True,True
+__export__.ir_model_access_544,True,True,True,lct.employee,hr_evaluation.plan.user,hr_evaluation.model_hr_evaluation_plan,True,True
+__export__.ir_model_access_545,True,True,True,lct.employee,hr_evaluation.plan.phase.user,hr_evaluation.model_hr_evaluation_plan_phase,True,True
+__export__.ir_model_access_546,True,True,True,lct.employee,hr.evaluation.interview.user,hr_evaluation.model_hr_evaluation_interview,True,True
+__export__.ir_model_access_547,True,True,False,lct.employee,survey.answer.hr.user,survey.model_survey_answer,True,True
+__export__.ir_model_access_548,True,True,False,lct.employee,survey.response.answer.hr.user,survey.model_survey_response_answer,True,True
+__export__.ir_model_access_549,True,True,False,lct.employee,survey.type.hr.user,survey.model_survey_type,True,True
+__export__.ir_model_access_550,True,True,False,lct.employee,survey.question.hr.user,survey.model_survey_question,True,True
+__export__.ir_model_access_551,True,True,True,lct.employee,survey.page.hr.user,survey.model_survey_page,True,True
+__export__.ir_model_access_552,True,True,False,lct.employee,survey.response.hr.user,survey.model_survey_response,True,True
+__export__.ir_model_access_553,True,True,False,lct.employee,survey.history.hr.user,survey.model_survey_history,True,True
+__export__.ir_model_access_554,True,True,False,lct.employee,survey.request.hr.user,hr_evaluation.model_survey_request,True,True
+__export__.ir_model_access_555,True,True,False,lct.employee,survey.question.column.heading.hr.user,survey.model_survey_question_column_heading,True,True
+__export__.ir_model_access_556,True,True,False,lct.employee,survey.response.line.hr.user,survey.model_survey_response_line,True,True
+__export__.ir_model_access_557,True,True,False,lct.employee,survey.tbl.column.heading.hr.user,survey.model_survey_tbl_column_heading,True,True
+__export__.ir_model_access_558,True,True,True,lct.employee,hr.applicant.user,hr_recruitment.model_hr_applicant,True,True
+__export__.ir_model_access_559,True,True,True,lct.employee,hr.recruitment.stage.user,hr_recruitment.model_hr_recruitment_stage,True,True
+__export__.ir_model_access_560,True,True,True,lct.employee,hr.recruitment.degree,hr_recruitment.model_hr_recruitment_degree,True,True
+__export__.ir_model_access_561,True,True,True,lct.employee,res.partner.user,account.model_res_partner,True,True
+__export__.ir_model_access_562,True,True,False,lct.employee,survey.hr.user,survey.model_survey,True,True
+__export__.ir_model_access_563,True,True,True,lct.employee,crm.meeting.hruser,base_calendar.model_crm_meeting,True,True
+__export__.ir_model_access_564,True,True,True,lct.employee,hr.recruitment.source,hr_recruitment.model_hr_recruitment_source,True,True
+__export__.ir_model_access_565,True,True,True,lct.manager_lct,hr.employee.category.user,hr.model_hr_employee_category,True,True
+__export__.ir_model_access_566,True,True,True,lct.manager_lct,hr.employee user,hr.model_hr_employee,True,True
+__export__.ir_model_access_567,True,True,True,lct.manager_lct,resource.resource.user,resource.model_resource_resource,True,True
+__export__.ir_model_access_568,True,True,True,lct.manager_lct,hr.department.user,hr.model_hr_department,True,True
+__export__.ir_model_access_569,True,True,True,lct.manager_lct,hr.job user,hr.model_hr_job,True,True
+__export__.ir_model_access_570,True,True,False,lct.manager_lct,ir_property hr_user,base.model_ir_property,True,True
+__export__.ir_model_access_571,True,True,True,lct.manager_lct,hr.employee.resource.calendar.user,resource.model_resource_calendar,True,True
+__export__.ir_model_access_572,True,True,True,lct.manager_lct,hr.holidays.status user,hr_holidays.model_hr_holidays_status,True,True
+__export__.ir_model_access_573,True,True,True,lct.manager_lct,hr.holidays.user,hr_holidays.model_hr_holidays,True,True
+__export__.ir_model_access_574,True,True,True,lct.manager_lct,hr.holidays.ramain.user,hr_holidays.model_hr_holidays_remaining_leaves_user,True,True
+__export__.ir_model_access_575,True,True,True,lct.manager_lct,resource_calendar_leaves_user,hr_holidays.model_resource_calendar_leaves,True,True
+__export__.ir_model_access_576,True,True,True,lct.manager_lct,hr.payroll.structure,hr_payroll.model_hr_payroll_structure,True,True
+__export__.ir_model_access_577,True,True,True,lct.manager_lct,hr.contribution.register,hr_payroll.model_hr_contribution_register,True,True
+__export__.ir_model_access_578,True,True,True,lct.manager_lct,hr.salary.rule.category,hr_payroll.model_hr_salary_rule_category,True,True
+__export__.ir_model_access_579,True,True,True,lct.manager_lct,hr.payslip,hr_payroll.model_hr_payslip,True,True
+__export__.ir_model_access_580,True,True,True,lct.manager_lct,hr.payslip.line,hr_payroll.model_hr_payslip_line,True,True
+__export__.ir_model_access_581,True,True,True,lct.manager_lct,hr.payslip.input.user,hr_payroll.model_hr_payslip_input,True,True
+__export__.ir_model_access_582,True,True,True,lct.manager_lct,hr.salary.rule.user,hr_payroll.model_hr_salary_rule,True,True
+__export__.ir_model_access_583,True,True,True,lct.manager_lct,hr_evaluation.evaluation.user,hr_evaluation.model_hr_evaluation_evaluation,True,True
+__export__.ir_model_access_584,True,True,True,lct.manager_lct,hr_evaluation.plan.user,hr_evaluation.model_hr_evaluation_plan,True,True
+__export__.ir_model_access_585,True,True,True,lct.manager_lct,hr_evaluation.plan.phase.user,hr_evaluation.model_hr_evaluation_plan_phase,True,True
+__export__.ir_model_access_586,True,True,True,lct.manager_lct,hr.evaluation.interview.user,hr_evaluation.model_hr_evaluation_interview,True,True
+__export__.ir_model_access_587,True,True,False,lct.manager_lct,survey.answer.hr.user,survey.model_survey_answer,True,True
+__export__.ir_model_access_588,True,True,False,lct.manager_lct,survey.response.answer.hr.user,survey.model_survey_response_answer,True,True
+__export__.ir_model_access_589,True,True,False,lct.manager_lct,survey.type.hr.user,survey.model_survey_type,True,True
+__export__.ir_model_access_590,True,True,False,lct.manager_lct,survey.question.hr.user,survey.model_survey_question,True,True
+__export__.ir_model_access_591,True,True,True,lct.manager_lct,survey.page.hr.user,survey.model_survey_page,True,True
+__export__.ir_model_access_592,True,True,False,lct.manager_lct,survey.response.hr.user,survey.model_survey_response,True,True
+__export__.ir_model_access_593,True,True,False,lct.manager_lct,survey.history.hr.user,survey.model_survey_history,True,True
+__export__.ir_model_access_594,True,True,False,lct.manager_lct,survey.request.hr.user,hr_evaluation.model_survey_request,True,True
+__export__.ir_model_access_595,True,True,False,lct.manager_lct,survey.question.column.heading.hr.user,survey.model_survey_question_column_heading,True,True
+__export__.ir_model_access_596,True,True,False,lct.manager_lct,survey.response.line.hr.user,survey.model_survey_response_line,True,True
+__export__.ir_model_access_597,True,True,False,lct.manager_lct,survey.tbl.column.heading.hr.user,survey.model_survey_tbl_column_heading,True,True
+__export__.ir_model_access_598,True,True,True,lct.manager_lct,hr.applicant.user,hr_recruitment.model_hr_applicant,True,True
+__export__.ir_model_access_599,True,True,True,lct.manager_lct,hr.recruitment.stage.user,hr_recruitment.model_hr_recruitment_stage,True,True
+__export__.ir_model_access_600,True,True,True,lct.manager_lct,hr.recruitment.degree,hr_recruitment.model_hr_recruitment_degree,True,True
+__export__.ir_model_access_601,True,True,True,lct.manager_lct,res.partner.user,account.model_res_partner,True,True
+__export__.ir_model_access_602,True,True,False,lct.manager_lct,survey.hr.user,survey.model_survey,True,True
+__export__.ir_model_access_603,True,True,True,lct.manager_lct,crm.meeting.hruser,base_calendar.model_crm_meeting,True,True
+__export__.ir_model_access_604,True,True,True,lct.manager_lct,hr.recruitment.source,hr_recruitment.model_hr_recruitment_source,True,True
+__export__.ir_model_access_921,True,False,False,lct.base_group_ap,type awu,account.model_account_account_type,True,False
+__export__.ir_model_access_922,True,False,False,lct.base_group_ap,account awu,account.model_account_account,True,False
+__export__.ir_model_access_923,True,True,True,lct.base_group_ap,model awu,account.model_account_model,True,True
+__export__.ir_model_access_924,True,True,True,lct.base_group_ap,model.entry awu,account.model_account_model_line,True,True
+__export__.ir_model_access_925,True,True,True,lct.base_group_ap,subscription awu,account.model_account_subscription,True,True
+__export__.ir_model_access_926,True,True,True,lct.base_group_ap,subscription.line awu,account.model_account_subscription_line,True,True
+__export__.ir_model_access_927,True,True,False,lct.base_group_ap,cashbox.line awu,account.model_account_journal_cashbox_line,True,True
+__export__.ir_model_access_928,True,True,True,lct.base_group_ap,account.report awu,account.model_account_financial_report,True,True
