@@ -33,6 +33,7 @@
     'data': [
         'views/settings_menu.xml',
         'security/group_category.xml',
+        'security/ir.module.category.csv',
         'security/res.groups.csv',
         'security/ir.model.access.csv',
         'security/ir.rule.csv',
