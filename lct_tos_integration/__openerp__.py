@@ -24,7 +24,7 @@
     'author': 'OpenERP SA',
     'version': '0.1',
     'depends': ['base', 'account', 'product', 'account_voucher', 'hr',
-                'base_vat', 'sale'],
+                'base_vat', 'sale', 'account_check_writing'],
     'category' : 'Tools',
     'summary': 'LCT TOS integration',
     'description': """
