@@ -633,8 +633,11 @@ class account_invoice(osv.osv):
 
         return quantities_by_products
 
-    def _get_app_export_line_quantities_by_products(self, cr, uid, line, context=None):
-        category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_export')
+    def _get_app_export_line_quantities_by_products(self, cr, uid, line, empty_release=False, context=None):
+        if empty_release:
+            category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_export_e_r')
+        else:
+            category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_export')
         size_id = self._get_app_size(cr, uid, line)
         sub_category_id = self._get_app_sub_category(cr, uid, line)
         if not sub_category_id:
@@ -757,8 +760,9 @@ class account_invoice(osv.osv):
             category = self._get_elmnt_text(line, 'category')
             if category == 'I':
                 quantities_by_products = self._get_app_import_line_quantities_by_products(cr, uid, line, context=context)
-            elif category == 'E':
-                quantities_by_products = self._get_app_export_line_quantities_by_products(cr, uid, line, context=context)
+            elif category in ['E', 'Z']:
+                quantities_by_products = self._get_app_export_line_quantities_by_products(cr, uid, line, empty_release=(category == 'Z'), context=context)
+
 
             bundle = self._get_elmnt_text(line, 'bundles')
             if bundle=='YES':

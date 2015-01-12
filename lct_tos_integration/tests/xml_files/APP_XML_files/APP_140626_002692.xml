@@ -106,6 +106,38 @@
         <special_handling_code_id>INS</special_handling_code_id>
         <service_code_id/>
       </line>
+      <line>
+        <container_number>QQQQ0624014</container_number>
+        <container_operator>MDG</container_operator>
+        <cfs_activity>NO</cfs_activity>
+        <lift_on_yard>NO</lift_on_yard>
+        <lift_off_yard>NO</lift_off_yard>
+        <lift_on_cfs>NO</lift_on_cfs>
+        <lift_off_cfs>NO</lift_off_cfs>
+        <transfer_yard>NO</transfer_yard>
+        <transfer_cfs>NO</transfer_cfs>
+        <stripping>NO</stripping>
+        <return_of_export>NO</return_of_export>
+        <direct_delivery>NO</direct_delivery>
+        <arrival_timestamp/>
+        <storage/>
+        <transaction_direction>R</transaction_direction>
+        <status>F</status>
+        <category>Z</category>
+        <container_size>40</container_size>
+        <container_type>GP</container_type>
+        <container_height>8</container_height>
+        <container_hazardous_class/>
+        <booking_number>B241</booking_number>
+        <release_number/>
+        <active_reefer>NO</active_reefer>
+        <oog>NO</oog>
+        <bb>NO</bb>
+        <bundles>NO</bundles>
+        <plugged_time>17</plugged_time>
+        <special_handling_code_id>INS</special_handling_code_id>
+        <service_code_id/>
+      </line>
     </lines>
   </appointment>
 </appointments>

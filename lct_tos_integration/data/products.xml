@@ -1480,5 +1480,213 @@
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
+    <record id="export_e_r_shorehandling_20" model="product.product">
+      <field name="name">Export Empty Release Shore handling 20</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+    </record>
+    <record id="export_e_r_shorehandling_40" model="product.product">
+      <field name="name">Export Empty Release Shore handling 40</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+    </record>
+    <record id="export_e_r_shorehandling_transitsahel_20_gatereceive" model="product.product">
+      <field name="name">Export Empty Release Shore handling Transit Sahel 20 Gate Receive</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gatereceive"/>
+    </record>
+    <record id="export_e_r_shorehandling_transitsahel_20_cfs" model="product.product">
+      <field name="name">Export Empty Release Shore handling Transit Sahel 20 CFS</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="export_e_r_shorehandling_transitsahel_40_gatereceive" model="product.product">
+      <field name="name">Export Empty Release Shore handling Transit Sahel 40 Gate Receive</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gatereceive"/>
+    </record>
+    <record id="export_e_r_shorehandling_transitsahel_40_cfs" model="product.product">
+      <field name="name">Export Empty Release Shore handling Transit Sahel 40 CFS</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="export_e_r_shorehandling_transitcoastal_20_gatereceive" model="product.product">
+      <field name="name">Export Empty Release Shore handling Transit coastal 20 Gate Receive</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gatereceive"/>
+    </record>
+    <record id="export_e_r_shorehandling_transitcoastal_20_cfs" model="product.product">
+      <field name="name">Export Empty Release Shore handling Transit coastal 20 CFS</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="export_e_r_shorehandling_transitcoastal_40_gatereceive" model="product.product">
+      <field name="name">Export Empty Release Shore handling Transit coastal 40 Gate Receive</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gatereceive"/>
+    </record>
+    <record id="export_e_r_shorehandling_transitcoastal_40_cfs" model="product.product">
+      <field name="name">Export Empty Release Shore handling Transit coastal 40 CFS</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="export_e_r_shorehandling_freezone_20_gatereceive" model="product.product">
+      <field name="name">Export Empty Release Shore handling Free zone 20 Gate Receive</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gatereceive"/>
+    </record>
+    <record id="export_e_r_shorehandling_freezone_20_cfs" model="product.product">
+      <field name="name">Export Empty Release Shore handling Free zone 20 CFS</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="export_e_r_shorehandling_freezone_40_gatereceive" model="product.product">
+      <field name="name">Export Empty Release Shore handling Free zone 40 Gate Receive</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gatereceive"/>
+    </record>
+    <record id="export_e_r_shorehandling_freezone_40_cfs" model="product.product">
+      <field name="name">Export Empty Release Shore handling Free zone 40 CFS</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_shorehandling"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_cfs"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_20" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges 20</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_40" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges 40</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_transitsahel_20_gp" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges Transit Sahel 20 GP</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_transitsahel_20_reeferdg" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges Transit Sahel 20 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_transitsahel_40_gp" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges Transit Sahel 40 GP</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_transitsahel_40_reeferdg" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges Transit Sahel 40 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_transitcoastal_20_gp" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges Transit coastal 20 GP</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_transitcoastal_20_reeferdg" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges Transit coastal 20 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_transitcoastal_40_gp" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges Transit coastal 40 GP</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_transitcoastal_40_reeferdg" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges Transit coastal 40 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_freezone_20_gp" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges Free zone 20 GP</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_freezone_20_reeferdg" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges Free zone 20 Reefer/DG</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_freezone_40_gp" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges Free zone 40 GP</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
   </data>
 </openerp>
