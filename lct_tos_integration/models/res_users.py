@@ -25,7 +25,7 @@ from openerp.osv import fields,osv
 from lxml import etree
 
 CATEGORIES = ['Accounting & Finance', 'Human Resources', 'Administration', 'TOS']
-GROUPS = ['Invoicing & Payments', 'HR Base group', 'Officer', 'Access Rights']
+GROUPS = ['Invoicing & Payments', 'HR Base group', 'Officer', 'Access Rights', 'Accountant']
 
 class res_users(osv.osv):
 
