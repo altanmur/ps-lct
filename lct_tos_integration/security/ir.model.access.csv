@@ -179,3 +179,7 @@ __export__.ir_model_access_925,True,True,True,lct.base_group_ap,subscription awu
 __export__.ir_model_access_926,True,True,True,lct.base_group_ap,subscription.line awu,account.model_account_subscription_line,True,True
 __export__.ir_model_access_927,True,True,False,lct.base_group_ap,cashbox.line awu,account.model_account_journal_cashbox_line,True,True
 __export__.ir_model_access_928,True,True,True,lct.base_group_ap,account.report awu,account.model_account_financial_report,True,True
+lct_invoice_line_group_all_access_tos,True,True,True,lct_tos_integration.group_all_access_tos,invoice line group_all_access_tos,account.model_account_invoice_line,True,True
+account.access_account_invoice_uinvoice,True,False,False,account.group_account_invoice,account.invoice,account.model_account_invoice,True,False
+account.access_account_invoice_line_uinvoice,True,False,False,account.group_account_invoice,account.invoice.line,account.model_account_invoice_line,True,False
+account.access_account_invoice_group_invoice,True,False,False,account.group_account_invoice,account.invoice group invoice,account.model_account_invoice,True,False
