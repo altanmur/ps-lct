@@ -277,6 +277,9 @@ class account_voucher(osv.osv):
                 self.pool.get('lct.tos.export.data').export_app(cr, uid, invoice_id, ids[0], context=context)
         return res
 
+    def button_proforma_voucher_bypass(self, cr, uid, ids, context=None):
+        self.button_proforma_voucher(cr, SUPERUSER_ID, ids, context=context)
+
 
 class account_invoice(osv.osv):
     _inherit = 'account.invoice'
