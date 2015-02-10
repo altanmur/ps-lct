@@ -21,7 +21,7 @@
 
 from report import report_sxw
 from datetime import datetime
-
+from collections import OrderedDict
 
 class payslip_report_pdf(report_sxw.rml_parse):
     _name = 'payslip_report_pdf'
@@ -38,10 +38,23 @@ class payslip_report_pdf(report_sxw.rml_parse):
     # duplicating a ton of lookups. If it turns out this performs badly, rewrite
     # to use queries instead of ORM.
     def get_payslip_data(self, cr, uid, context=None):
-        retval = {}
+        retval = OrderedDict()
+        ordered_slips = {}
         payslip_obj = self.pool.get('hr.payslip')
         payslip_ids = context.get('active_ids')
         payslips = payslip_obj.browse(cr, uid, payslip_ids, context=context)
+
+        # Customer wants their payslips ordered by employee name, alphabetically
+        for payslip in payslips:
+            emp_name = payslip.employee_id.name_related
+            if emp_name in ordered_slips:
+                ordered_slips[emp_name].append(payslip)
+            else:
+                ordered_slips[emp_name] = [payslip]
+        payslips = []
+        for employee_name in sorted(ordered_slips.keys(), key=lambda s: s.lower()):
+            payslips.extend(ordered_slips[employee_name])
+
         for payslip in payslips:
             sen_yr, sen_mon, sen_day = self.pool.get('hr.employee')\
                 .get_seniority_ymd(cr, uid, payslip.employee_id.id, context=context)
