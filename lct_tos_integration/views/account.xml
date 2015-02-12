@@ -379,6 +379,9 @@
                 <field name="journal_id" position="after">
                     <field name="cashier_rcpt_nr"/>
                 </field>
+                <xpath expr="//button[@name='cancel_voucher' and @states='posted']" position="attributes">
+                    <attribute name="groups">base.group_no_one</attribute>
+                </xpath>
             </field>
         </record>
 
