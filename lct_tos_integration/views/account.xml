@@ -379,6 +379,9 @@
                 <field name="journal_id" position="after">
                     <field name="cashier_rcpt_nr"/>
                 </field>
+                <xpath expr="//button[@name='cancel_voucher' and @states='posted']" position="attributes">
+                    <attribute name="groups">base.group_no_one</attribute>
+                </xpath>
             </field>
         </record>
 
@@ -443,6 +446,10 @@
                     <attribute name="groups">account.group_all_access</attribute>
                 </xpath>
             </field>
+        </record>
+
+        <record id="account.action_account_unreconcile" model="ir.actions.act_window">
+            <field name="groups_id" eval="[(6, 0, [ref('base.group_no_one')])]"></field>
         </record>
 
     </data>
