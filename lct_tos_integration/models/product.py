@@ -67,7 +67,28 @@ class product_product(osv.osv):
                 return product_id
         return False
 
-    def get_products_by_properties(self, cr, uid, properties, context=None):
+    def _get_property_string(self, cr, uid, properties, context=None):
+        property_names = {}
+
+        for prop, prop_id in properties.iteritems():
+            if not prop_id:
+                property_names[prop] = "None"
+                continue
+            relation = self.fields_get(cr, uid, context=context)[prop]['relation']
+            property_names[prop] = self.pool.get(relation).name_get(cr, uid, prop_id, context=context)[0][1]
+        return ";  ".join([("%s: %s" % (prop, name)) for prop, name in property_names.iteritems()])
+
+    def _get_too_many_products_found_error_message(self, cr, uid, properties, line, context=None):
+        message = "Too many products found for this combination at line %d in xml:  " % (line,)
+        message += self._get_property_string(cr, uid, properties, context=context)
+        return message
+
+    def _get_product_not_found_error_message(self, cr, uid, properties, context=None):
+        message = "No product found for this combination at line %d in xml:  " % (line,)
+        message += self._get_property_string(cr, uid, properties, context=context)
+        return message
+
+    def get_products_by_properties(self, cr, uid, properties, line, context=None):
         properties = dict(properties)
         service_ids = properties.pop('service_ids', False)
         if not service_ids:
@@ -77,18 +98,17 @@ class product_product(osv.osv):
         for service_id in service_ids:
             properties['service_id'] = service_id
             product_id = self.search(cr, uid, [(prop, '=', prop_id) for prop, prop_id in properties.iteritems()])
-            if product_id:
-                if len(product_id) == 1:
-                    product_id = product_id[0]
-                else:
-                    product_id = False
-            else:
+            if not product_id:
                 product_id = self._product_by_properties(cr, uid, properties, context=context)
             if not product_id:
-                error = 'Could not find a product with this combination of properties: '
-                error += '; '.join([prop + ': id=' + repr(value) for prop, value in properties.iteritems()])
-                raise osv.except_osv(('Error'), (error))
-            product_ids.append(product_id)
+                error_message = self._get_product_not_found_error_message(cr, uid, properties, line, context=context)
+                raise osv.except_osv(('Error'), (error_message))
+
+            if len(product_id) == 1:
+                error_message = self._get_too_many_products_found_error_message(cr, uid, properties, line, context=context)
+                raise osv.except_osv(('Error'), (error_message))
+
+            product_ids.append(product_id[0])
 
         return product_ids
 

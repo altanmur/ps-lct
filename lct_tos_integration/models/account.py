@@ -631,7 +631,7 @@ class account_invoice(osv.osv):
         for service_id, type_quantity in type_quantities_by_services.iteritems():
             properties['service_ids'] = [service_id]
             properties['type_id'] = type_quantity[0]
-            product_id = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, context=context)[0]
+            product_id = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context)[0]
             quantities_by_products[product_id] = type_quantity[1]
 
         return quantities_by_products
@@ -654,14 +654,14 @@ class account_invoice(osv.osv):
             'sub_category_id': sub_category_id,
             'service_ids': [service_id],
         }
-        product_ids = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, context=context)
+        product_ids = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context)
 
         type_id, service_id = self._get_app_export_type_service_by_cfs_activity(cr, uid, line)
         properties.update({
             'type_id': type_id,
             'service_ids': [service_id],
         })
-        product_ids.extend(self.pool.get('product.product').get_products_by_properties(cr, uid, properties, context=context))
+        product_ids.extend(self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context))
 
         quantities_by_products = dict([(product_id, 1) for product_id in product_ids])
 
@@ -710,7 +710,7 @@ class account_invoice(osv.osv):
             service_ids.append(self._get_shc_service(cr, uid, shc.text))
         if service_ids:
             properties['service_ids'] = service_ids
-            return self.pool.get('product.product').get_products_by_properties(cr, uid, properties, context=context)
+            return self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context)
         else:
             return []
 
@@ -971,7 +971,7 @@ class account_invoice(osv.osv):
                 oog = self._get_elmnt_text(line, 'oog')
                 oog = True if oog=='YES' else False
 
-                product_ids = product_model.get_products_by_properties(cr, uid, dict(properties), context=context)
+                product_ids = product_model.get_products_by_properties(cr, uid, dict(properties), line.sourceline, context=context)
                 if not all(product_ids):
                     error  = 'One or more product(s) could not be found with these combinations: '
                     error += ', '.join([key + ': ' + str(val) for key, val in properties.iteritems()])
@@ -997,8 +997,8 @@ class account_invoice(osv.osv):
                     reefe_properties['type_id'] = False
                     expst_properties['service_ids'] = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_storage')]
 
-                    reefe_product_id = product_model.get_products_by_properties(cr, uid, reefe_properties, context=context)[0]
-                    expst_product_id = product_model.get_products_by_properties(cr, uid, expst_properties, context=context)[0]
+                    reefe_product_id = product_model.get_products_by_properties(cr, uid, reefe_properties, line.sourceline, context=context)[0]
+                    expst_product_id = product_model.get_products_by_properties(cr, uid, expst_properties, line.sourceline, context=context)[0]
 
                     reefe_qties = []
                     expst_qties = []
@@ -1293,7 +1293,7 @@ class account_invoice(osv.osv):
                     'status_id': status_id,
                     'type_id': type_id,
                 }
-                product_ids = product_model.get_products_by_properties(cr, uid, properties, context=context)
+                product_ids = product_model.get_products_by_properties(cr, uid, properties, line.sourceline, context=context)
 
                 oog = self._get_elmnt_text(line, 'oog')
                 oog = True if oog=='YES' else False
