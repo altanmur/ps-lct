@@ -83,7 +83,7 @@ class product_product(osv.osv):
         message += self._get_property_string(cr, uid, properties, context=context)
         return message
 
-    def _get_product_not_found_error_message(self, cr, uid, properties, context=None):
+    def _get_product_not_found_error_message(self, cr, uid, properties, line, context=None):
         message = "No product found for this combination at line %d in xml:  " % (line,)
         message += self._get_property_string(cr, uid, properties, context=context)
         return message
@@ -100,6 +100,7 @@ class product_product(osv.osv):
             product_id = self.search(cr, uid, [(prop, '=', prop_id) for prop, prop_id in properties.iteritems()])
             if not product_id:
                 product_id = self._product_by_properties(cr, uid, properties, context=context)
+                product_id = product_id and [product_id] or False
             if not product_id:
                 error_message = self._get_product_not_found_error_message(cr, uid, properties, line, context=context)
                 raise osv.except_osv(('Error'), (error_message))
