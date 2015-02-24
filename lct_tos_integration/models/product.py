@@ -104,7 +104,7 @@ class product_product(osv.osv):
                 error_message = self._get_product_not_found_error_message(cr, uid, properties, line, context=context)
                 raise osv.except_osv(('Error'), (error_message))
 
-            if len(product_id) == 1:
+            if len(product_id) > 1:
                 error_message = self._get_too_many_products_found_error_message(cr, uid, properties, line, context=context)
                 raise osv.except_osv(('Error'), (error_message))
 
