@@ -162,6 +162,7 @@ class hr_contract(osv.osv):
             seniority_pay = employee.seniority_pay
             if relativedelta(date.today(), employee_start).years > employee.active_years:
                 active_years = employee.active_years + 1
+                employee_start = active_years
                 if active_years == 2:
                     wage = self._calculate_wage(cr, uid, [contract.id], field_name=None, args=None)[contract.id]
                     seniority_pay = wage * 0.02
