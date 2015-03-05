@@ -79,16 +79,22 @@ class product_product(osv.osv):
         return ";  ".join([("%s: %s" % (prop, name)) for prop, name in property_names.iteritems()])
 
     def _get_too_many_products_found_error_message(self, cr, uid, properties, line, context=None):
-        message = "Too many products found for this combination at line %d in xml:  " % (line,)
+        if line:
+            message = "Too many products found for this combination at line %d in xml:  " % (line,)
+        else:
+            message = "Too many products found for this combination:  "
         message += self._get_property_string(cr, uid, properties, context=context)
         return message
 
     def _get_product_not_found_error_message(self, cr, uid, properties, line, context=None):
-        message = "No product found for this combination at line %d in xml:  " % (line,)
+        if line:
+            message = "No product found for this combination at line %d in xml:  " % (line,)
+        else:
+            message = "No product found for this combination:  "
         message += self._get_property_string(cr, uid, properties, context=context)
         return message
 
-    def get_products_by_properties(self, cr, uid, properties, line, context=None):
+    def get_products_by_properties(self, cr, uid, properties, line=False, context=None):
         properties = dict(properties)
         service_ids = properties.pop('service_ids', False)
         if not service_ids:
