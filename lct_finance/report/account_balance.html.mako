@@ -4,7 +4,7 @@
         <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
         <title>Balance Des Comptes</title>
         <style type="text/css">
-            th, td {vertical-align: top;}
+            th, td {vertical-align: top; border-left: 1px solid black; border-right: 1px solid black;}
             .totals {font-weight: bold; text-align: right;}
             .acc_type_view {font-weight:bold;}
             .numeric {text-align: right;}
@@ -12,16 +12,16 @@
     </head>
     <body dir="ltr" style="max-width:29.7cm;margin-top:0.254cm; margin-bottom:0.254cm; margin-left:0.762cm; margin-right:0.762cm; writing-mode:lr-tb; ">
         ${context}
-        <table style="text-align: left; width: 100%;" border="0" cellpadding="5px;" cellspacing="0">
+        <table style="text-align: left; width: 100%;" border="1" cellpadding="5px;" cellspacing="0">
             <tr>
                 <th colspan="5">
                     ${context.get('company_name')}
                 </th>
-                <th colspan="3">
+                <th colspan="3" style="border-left: 0px; border-right: 0px;">
                     <table style="text-align: left; width: 100%;" border="0" cellpadding="0" cellspacing="0">
-                        <tr><td>Période du</td><td>${context.get('start_date')}</td></tr>
-                        <tr><td>au</td><td>${context.get('end_date')}</td></tr>
-                        <tr><td colspan="2">&nbsp;</td></tr>
+                        <tr><td style="border-left: 0px; border-right: 0px;">Période du</td><td style="border-left: 0px; border-right: 0px;">${context.get('start_date')}</td></tr>
+                        <tr><td style="border-left: 0px; border-right: 0px;">au</td><td style="border-left: 0px; border-right: 0px;">${context.get('end_date')}</td></tr>
+                        <tr><td style="border-left: 0px; border-right: 0px;" colspan="2">&nbsp;</td style="border-left: 0px; border-right: 0px;"></tr>
                     </table>
                 </th>
             </tr>
@@ -37,9 +37,9 @@
             <tr style="text-align: center;">
                 <th rowspan="2">Numéro de compte</th>
                 <th rowspan="2">Intitulé des comptes</th>
-                <th colspan="2">Mouvements au ${context.get('prev_period_end')}</th>
+                <th colspan="2">Soldes d'ouverture</th>
                 <th colspan="2">Mouvements</th>
-                <th colspan="2">Soldes cummulés</th>
+                <th colspan="2">Soldes de fin de période</th>
             </tr>
             <tr style="text-align: center;">
                 <th>Débit</th>
@@ -58,27 +58,27 @@
                 <td>${line.get('code')}</td>
                 <td>${line.get('name')}</td>
                 <td class="numeric">
-                    ${'{0:,.0f}'.format(line.get('prev_debit')).replace(',', '.')}
+                    ${'{0:,.0f}'.format(line.get('prev_debit')).replace(',', ' ')}
                 </td>
                 <td class="numeric">
-                    ${'{0:,.0f}'.format((abs(line.get('prev_credit')))).replace(',', '.')}
+                    ${'{0:,.0f}'.format((abs(line.get('prev_credit')))).replace(',', ' ')}
                 </td>
                 <td class="numeric">
-                    ${'{0:,.0f}'.format(line.get('debit')).replace(',', '.')}
+                    ${'{0:,.0f}'.format(line.get('debit')).replace(',', ' ')}
                 </td>
                 <td class="numeric">
-                    ${'{0:,.0f}'.format(line.get('credit')).replace(',', '.')}
+                    ${'{0:,.0f}'.format(line.get('credit')).replace(',', ' ')}
                 </td>
                 <td class="numeric">
                     %if line.get('balance') > 0:
-                    ${'{0:,.0f}'.format(line.get('balance')).replace(',', '.')}
+                    ${'{0:,.0f}'.format(line.get('balance')).replace(',', ' ')}
                     %else:
                     <!-- -->
                     %endif
                 </td>
                 <td class="numeric">
                     %if line.get('balance') <= 0:
-                    ${'{0:,.0f}'.format((abs(line.get('balance')))).replace(',', '.')}
+                    ${'{0:,.0f}'.format((abs(line.get('balance')))).replace(',', ' ')}
                     %else:
                     <!-- -->
                     %endif
@@ -87,22 +87,22 @@
             %endfor
             <tr class="totals">
                 <td colspan="2">
-                    A reporter
+                    Total Balance
                 </td>
-                <td class="numeric">${'{0:,.0f}'.format(context.get('total_prev_debit')).replace(',', '.')}</td>
-                <td class="numeric">${'{0:,.0f}'.format(context.get('total_prev_credit')).replace(',', '.')}</td>
-                <td class="numeric">${'{0:,.0f}'.format(context.get('total_debit')).replace(',', '.')}</td>
-                <td class="numeric">${'{0:,.0f}'.format(context.get('total_credit')).replace(',', '.')}</td>
+                <td class="numeric">${'{0:,.0f}'.format(context.get('total_prev_debit')).replace(',', ' ')}</td>
+                <td class="numeric">${'{0:,.0f}'.format(context.get('total_prev_credit')).replace(',', ' ')}</td>
+                <td class="numeric">${'{0:,.0f}'.format(context.get('total_debit')).replace(',', ' ')}</td>
+                <td class="numeric">${'{0:,.0f}'.format(context.get('total_credit')).replace(',', ' ')}</td>
                 <td class="numeric">
                     %if context.get('total_balance') > 0:
-                    ${'{0:,.0f}'.format(context.get('total_balance')).replace(',', '.')}
+                    ${'{0:,.0f}'.format(context.get('total_balance')).replace(',', ' ')}
                     %else:
                     <!-- -->
                     %endif
                 </td>
                 <td class="numeric">
                     %if context.get('total_balance') <= 0:
-                    ${'{0:,.0f}'.format(abs(context.get('total_balance'))).replace(',', '.')}
+                    ${'{0:,.0f}'.format(abs(context.get('total_balance'))).replace(',', ' ')}
                     %else:
                     <!-- -->
                     %endif
