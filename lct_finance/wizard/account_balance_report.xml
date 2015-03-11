@@ -20,6 +20,9 @@
                     <notebook tabpos="up" colspan="4">
                         <page string="Filters" name="filters">
                             <group>
+                                <field name="accounts_to_print"/>
+                            </group>
+                            <group>
                                 <field name="filter" on_change="onchange_filter(filter, fiscalyear_id)"/>
                             </group>
                             <group string="Dates"  attrs="{'invisible':[('filter', '!=', 'filter_date')], 'required':[('filter', '=', 'filter_date')]}">

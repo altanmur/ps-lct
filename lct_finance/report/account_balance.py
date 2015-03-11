@@ -87,6 +87,7 @@ class account_balance_report(report_sxw.rml_parse):
             })
 
     def lines(self, form, ids=None, done=None):
+        account_filter = form['accounts_to_print']
         def _process_child(accounts, disp_acc, parent):
                 account_rec = [acct for acct in accounts if acct['id']==parent][0]
                 currency_obj = self.pool.get('res.currency')
@@ -109,19 +110,28 @@ class account_balance_report(report_sxw.rml_parse):
                 }
                 self.sum_debit += account_rec['debit']
                 self.sum_credit += account_rec['credit']
-                if disp_acc == 'movement':
-                    if not currency_obj.is_zero(self.cr, self.uid, currency, res['credit']) \
-                       or not currency_obj.is_zero(self.cr, self.uid, currency, res['debit']) \
-                       or not currency_obj.is_zero(self.cr, self.uid, currency, res['balance']):
+                if _keep_node(account_rec, account_filter):
+                    if disp_acc == 'movement':
+                        if not currency_obj.is_zero(self.cr, self.uid, currency, res['credit']) \
+                           or not currency_obj.is_zero(self.cr, self.uid, currency, res['debit']) \
+                           or not currency_obj.is_zero(self.cr, self.uid, currency, res['balance']):
+                            self.result_acc.append(res)
+                    elif disp_acc == 'not_zero':
+                        if not currency_obj.is_zero(self.cr, self.uid, currency, res['balance']):
+                            self.result_acc.append(res)
+                    else:
                         self.result_acc.append(res)
-                elif disp_acc == 'not_zero':
-                    if not currency_obj.is_zero(self.cr, self.uid, currency, res['balance']):
-                        self.result_acc.append(res)
-                else:
-                    self.result_acc.append(res)
+
                 if account_rec['child_id']:
                     for child in account_rec['child_id']:
                         _process_child(accounts,disp_acc,child)
+
+        def _keep_node(node, account_filter):
+            if account_filter == 'parents':
+                return node['type'] == 'view'
+            elif account_filter == 'children':
+                return node['type'] != 'view'
+            return account_filter == 'all'
 
         obj_account = self.pool.get('account.account')
         if not ids:
