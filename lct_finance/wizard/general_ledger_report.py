@@ -27,10 +27,18 @@ class account_report_general_ledger(osv.osv_memory):
     _columns = {
         'filter_accounts': fields.boolean('Filter Accounts', required=False),
         'account_ids': fields.many2many('account.account', 'account_account_res_account_rel', 'account_id', 'account2_id', 'Accounts'),
+        'accounts_to_print': fields.selection([
+            ('all', 'All accounts'),
+            ('parents', 'Parent accounts only'),
+            ('children', 'Children accounts only'),
+            ],
+            string='Accounts to be printed',
+            required=True)
     }
 
     _defaults = {
         'amount_currency': False,
+        'accounts_to_print': 'all',
     }
 
     def check_report(self, cr, uid, ids, context=None):
@@ -42,7 +50,7 @@ class account_report_general_ledger(osv.osv_memory):
         data['form'] = self.read(cr, uid, ids,
                         ['date_from',  'date_to',  'fiscalyear_id', 'journal_ids',
                         'period_from', 'period_to',  'filter',  'chart_account_id',
-                        'target_move', 'filter_accounts', 'account_ids'],
+                        'target_move', 'filter_accounts', 'account_ids', 'accounts_to_print'],
                         context=context)[0]
         if data['form'].get('filter_accounts') and data['form'].get('account_ids'):
             data['ids'] = data['form']['account_ids']
