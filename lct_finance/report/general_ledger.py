@@ -105,4 +105,42 @@ def patch_lines(self, account):
             self.tot_currency = self.tot_currency + l['amount_currency']
     return res
 
+def patch_get_children_accounts(self, account):
+    accounts_to_print = self.datas['form'].get('accounts_to_print', 'all')
+    if accounts_to_print == 'parents':
+        where_filter = ('type', '=', 'view')
+    elif accounts_to_print == 'children':
+        where_filter = ('type', '!=', 'view')
+    else:
+        where_filter = ''
+    res = []
+    currency_obj = self.pool.get('res.currency')
+    ids_acc = self.pool.get('account.account')._get_children_and_consol(self.cr, self.uid, account.id)
+    if where_filter:
+        ids_acc = self.pool.get('account.account').search(self.cr, self.uid, [('id', 'in', ids_acc), where_filter])
+    currency = account.currency_id and account.currency_id or account.company_id.currency_id
+    for child_account in self.pool.get('account.account').browse(self.cr, self.uid, ids_acc, context=self.context):
+        sql = """
+            SELECT count(id)
+            FROM account_move_line AS l
+            WHERE %s AND l.account_id = %%s
+        """ % (self.query)
+        self.cr.execute(sql, (child_account.id,))
+        num_entry = self.cr.fetchone()[0] or 0
+        sold_account = self._sum_balance_account(child_account)
+        self.sold_accounts[child_account.id] = sold_account
+        if self.display_account == 'movement':
+            if child_account.type != 'view' and num_entry <> 0:
+                res.append(child_account)
+        elif self.display_account == 'not_zero':
+            if child_account.type != 'view' and num_entry <> 0:
+                if not currency_obj.is_zero(self.cr, self.uid, currency, sold_account):
+                    res.append(child_account)
+        else:
+            res.append(child_account)
+    if not res:
+        return [account]
+    return res
+
 general_ledger.lines = patch_lines
+general_ledger.get_children_accounts = patch_get_children_accounts
