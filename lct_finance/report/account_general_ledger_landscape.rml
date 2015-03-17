@@ -496,16 +496,16 @@
             <para style="terp_default_Bold_7"><font color="white">[[ '..'*(o.level-1) ]]</font>[[ o.code ]] [[ o.name ]]</para>
           </td>
           <td>
-            <para style="terp_default_Bold_7_Right">[[ formatLang(sum_debit_account(o), digits=0, grouping=False) ]]</para>
+            <para style="terp_default_Bold_7_Right">[[ formatLang(sum_debit_account(o), digits=0, grouping=True).replace(',', ' ') ]]</para>
           </td>
           <td>
-            <para style="terp_default_Bold_7_Right">[[ formatLang(sum_credit_account(o), digits=0, grouping=False) ]]</para>
+            <para style="terp_default_Bold_7_Right">[[ formatLang(sum_credit_account(o), digits=0, grouping=True).replace(',', ' ') ]]</para>
           </td>
           <td>
-            <para style="terp_default_Bold_7_Right">[[ formatLang(sum_balance_account(o), digits=0, grouping=False, currency_obj= company.currency_id) ]]</para>
+            <para style="terp_default_Bold_7_Right">[[ formatLang(sum_balance_account(o), digits=0, grouping=True, currency_obj= company.currency_id).replace(',', ' ') ]]</para>
           </td>
           <td>
-            <para style="terp_default_Bold_7_Right">[[ o.currency_id and formatLang(sum_currency_amount_account(o), digits=0, grouping=False, currency_obj=o.currency_id) or '' ]]</para>
+            <para style="terp_default_Bold_7_Right">[[ o.currency_id and formatLang(sum_currency_amount_account(o), digits=0, grouping=True, currency_obj=o.currency_id).replace(',', ' ') or '' ]]</para>
           </td>
           <td>
             <para style="terp_default_Bold_7_Right">[[ o.currency_id.symbol or '' ]]</para>
@@ -538,16 +538,16 @@
               <para style="terp_default_7">[[ strip_name(line['line_corresp'],18) ]]</para>
             </td>
             <td>
-              <para style="terp_default_Right_7">[[ formatLang(line['debit'], digits=0, grouping=False) ]]</para>
+              <para style="terp_default_Right_7">[[ formatLang(line['debit'], digits=0, grouping=True).replace(',', ' ') ]]</para>
             </td>
             <td>
-              <para style="terp_default_Right_7">[[ formatLang(line['credit'], digits=0, grouping=False) ]]</para>
+              <para style="terp_default_Right_7">[[ formatLang(line['credit'], digits=0, grouping=True).replace(',', ' ') ]]</para>
             </td>
             <td>
-              <para style="terp_default_Right_7">[[ formatLang(line['progress'], digits=0, grouping=False, currency_obj=company.currency_id) ]]</para>
+              <para style="terp_default_Right_7">[[ formatLang(line['progress'], digits=0, grouping=True, currency_obj=company.currency_id).replace(',', ' ') ]]</para>
             </td>
             <td>
-              <para style="terp_default_Right_7">[[ (line.has_key('currency_id') and line['currency_id']==None or line['amount_currency']==None) and removeParentNode('font') ]] [[ formatLang(line['amount_currency'], grouping=False)]] [[ line['currency_code'] or '']]</para>
+              <para style="terp_default_Right_7">[[ (line.has_key('currency_id') and line['currency_id']==None or line['amount_currency']==None) and removeParentNode('font') ]] [[ formatLang(line['amount_currency'], grouping=True).replace(',', ' ')]] [[ line['currency_code'] or '']]</para>
             </td>
           </tr>
         </blockTable>
@@ -592,13 +592,13 @@
             <para style="terp_default_Bold_7"><font color="white">[[ '..'*(o.level-1) ]]</font>[[ o.code ]] [[ o.name ]]</para>
           </td>
           <td>
-            <para style="terp_default_Bold_7_Right">[[ formatLang(sum_debit_account(o), digits=0, grouping=False) ]]</para>
+            <para style="terp_default_Bold_7_Right">[[ formatLang(sum_debit_account(o), digits=0, grouping=True).replace(',', ' ') ]]</para>
           </td>
           <td>
-            <para style="terp_default_Bold_7_Right">[[ formatLang(sum_credit_account(o), digits=0, grouping=False) ]]</para>
+            <para style="terp_default_Bold_7_Right">[[ formatLang(sum_credit_account(o), digits=0, grouping=True).replace(',', ' ') ]]</para>
           </td>
           <td>
-            <para style="terp_default_Bold_7_Right">[[ formatLang(sum_balance_account(o), digits=0, grouping=False, currency_obj=company.currency_id) ]]</para>
+            <para style="terp_default_Bold_7_Right">[[ formatLang(sum_balance_account(o), digits=0, grouping=True, currency_obj=company.currency_id).replace(',', ' ') ]]</para>
           </td>
         </tr>
       </blockTable>
@@ -625,13 +625,13 @@
               <para style="terp_default_7">[[ strip_name(line['lname'],70) ]]</para>
             </td>
             <td>
-              <para style="terp_default_Right_7">[[ formatLang(line['debit'], digits=0, grouping=False) ]]</para>
+              <para style="terp_default_Right_7">[[ formatLang(line['debit'], digits=0, grouping=True).replace(',', ' ') ]]</para>
             </td>
             <td>
-              <para style="terp_default_Right_7">[[ formatLang(line['credit'], digits=0, grouping=False) ]]</para>
+              <para style="terp_default_Right_7">[[ formatLang(line['credit'], digits=0, grouping=True).replace(',', ' ') ]]</para>
             </td>
             <td>
-              <para style="terp_default_Right_7">[[ formatLang(line['progress'], digits=0, grouping=False, currency_obj=company.currency_id) ]] </para>
+              <para style="terp_default_Right_7">[[ formatLang(line['progress'], digits=0, grouping=True, currency_obj=company.currency_id).replace(',', ' ') ]] </para>
             </td>
           </tr>
         </blockTable>
