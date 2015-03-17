@@ -133,9 +133,8 @@ def patch_get_children_accounts(self, account):
             if child_account.type != 'view' and num_entry <> 0:
                 res.append(child_account)
         elif self.display_account == 'not_zero':
-            if child_account.type != 'view' and num_entry <> 0:
-                if not currency_obj.is_zero(self.cr, self.uid, currency, sold_account):
-                    res.append(child_account)
+            if not currency_obj.is_zero(self.cr, self.uid, currency, sold_account):
+                res.append(child_account)
         else:
             res.append(child_account)
     if not res:
