@@ -35,11 +35,11 @@
                 <td colspan="8">Date de tirage: ${context.get('current_date')} à ${context.get('current_time')}</td>
             </tr>
             <tr style="text-align: center;">
-                <th rowspan="2">Numéro de compte</th>
-                <th rowspan="2">Intitulé des comptes</th>
-                <th colspan="2">Soldes d'ouverture</th>
-                <th colspan="2">Mouvements</th>
-                <th colspan="2">Soldes de fin de période</th>
+                <th rowspan="2" width="10%">Numéro de compte</th>
+                <th rowspan="2" width="30%">Intitulé des comptes</th>
+                <th colspan="2" width="20%">Soldes d'ouverture</th>
+                <th colspan="2" width="20%">Mouvements</th>
+                <th colspan="2" width="20%">Soldes de fin de période</th>
             </tr>
             <tr style="text-align: center;">
                 <th>Débit</th>
