@@ -173,6 +173,6 @@ class account_balance_report(report_sxw.rml_parse):
 
 
 report_sxw.report_sxw('report.webkit.account_balance_report',
-                      'account.voucher',
+                      'account.account',
                       'lct_finance/report/account_balance.html.mako',
                       parser=account_balance_report)
