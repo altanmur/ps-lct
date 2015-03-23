@@ -59,10 +59,15 @@ class account_balance_report(osv.osv_memory):
     def _print_report(self, cr, uid, ids, data, context=None):
         data = self.pre_print_report(cr, uid, ids, data, context=context)
         context.update(data)
-        return {
-            'type': 'ir.actions.report.xml',
-            'report_name': 'webkit.account_balance_report',
-            'context': context}
+        if context.get('xls_export'):
+            return {'type': 'ir.actions.report.xml',
+                    'report_name': 'xls.account_balance_report',
+                    'context': context}
+        else:
+            return {
+                'type': 'ir.actions.report.xml',
+                'report_name': 'webkit.account_balance_report',
+                'context': context}
 
     def check_report(self, cr, uid, ids, context=None):
         if context is None:
@@ -83,6 +88,9 @@ class account_balance_report(osv.osv_memory):
         data['form']['periods'] = used_context.get('periods', False) and used_context['periods'] or []
         data['form']['used_context'] = dict(used_context, lang=context.get('lang', 'en_US'))
         return self._print_report(cr, uid, ids, data, context=context)
+
+    def xls_export(self, cr, uid, ids, context=None):
+        return self.check_report(cr, uid, ids, context=context)
 
 account_balance_report()
 
