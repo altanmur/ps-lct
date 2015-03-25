@@ -65,7 +65,7 @@ class TestExport(TransactionCase):
         sequence2 = int(match.group(1))
         self.assertTrue(sequence2 == (sequence+1)%1000000)
         f = StringIO()
-        ftp.retrlines('RETR ' + filename, f.write)
+        ftp.retrbinary('RETR %s' % filename, f.write)
 
         f.seek(0)
         customers = ET.fromstring(f.getvalue())
