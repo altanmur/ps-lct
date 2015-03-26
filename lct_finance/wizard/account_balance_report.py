@@ -29,10 +29,18 @@ class account_balance_report(osv.osv_memory):
     _columns = {
         'prev_fiscalyear_id': fields.many2one('account.fiscalyear', 'Previous Fiscal Year', help='Keep empty for all open fiscal year'),
         'journal_ids': fields.many2many('account.journal', 'account_balance_report_journal_rel', 'account_id', 'journal_id', 'Journals', required=True),
+        'accounts_to_print': fields.selection([
+            ('all', 'All accounts'),
+            ('parents', 'Parent accounts only'),
+            ('children', 'Children accounts only'),
+            ],
+            string='Accounts to be printed',
+            required=True)
     }
 
     _defaults = {
         'journal_ids': [],
+        'accounts_to_print': 'all',
     }
 
     def onchange_fiscalyear_id(self, cr, uid, ids, fiscalyear_id, context=None):
@@ -51,10 +59,15 @@ class account_balance_report(osv.osv_memory):
     def _print_report(self, cr, uid, ids, data, context=None):
         data = self.pre_print_report(cr, uid, ids, data, context=context)
         context.update(data)
-        return {
-            'type': 'ir.actions.report.xml',
-            'report_name': 'webkit.account_balance_report',
-            'context': context}
+        if context.get('xls_export'):
+            return {'type': 'ir.actions.report.xml',
+                    'report_name': 'xls.account_balance_report',
+                    'context': context}
+        else:
+            return {
+                'type': 'ir.actions.report.xml',
+                'report_name': 'webkit.account_balance_report',
+                'context': context}
 
     def check_report(self, cr, uid, ids, context=None):
         if context is None:
@@ -64,7 +77,8 @@ class account_balance_report(osv.osv_memory):
         data['model'] = context.get('active_model', 'ir.ui.menu')
         data['form'] = self.read(cr, uid, ids, ['date_from',  'date_to',
             'fiscalyear_id', 'prev_fiscalyear_id', 'journal_ids', 'period_from',
-            'period_to',  'filter',  'chart_account_id', 'target_move'],
+            'period_to',  'filter',  'chart_account_id', 'target_move',
+            'accounts_to_print'],
             context=context)[0]
         for field in ['fiscalyear_id', 'prev_fiscalyear_id', 'chart_account_id',
                       'period_from', 'period_to']:
@@ -74,6 +88,9 @@ class account_balance_report(osv.osv_memory):
         data['form']['periods'] = used_context.get('periods', False) and used_context['periods'] or []
         data['form']['used_context'] = dict(used_context, lang=context.get('lang', 'en_US'))
         return self._print_report(cr, uid, ids, data, context=context)
+
+    def xls_export(self, cr, uid, ids, context=None):
+        return self.check_report(cr, uid, ids, context=context)
 
 account_balance_report()
 

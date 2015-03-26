@@ -14,6 +14,10 @@
                         <field name="account_ids" attrs="{'invisible': [('filter_accounts', '=', False)], 'required': [('filter_accounts', '=', True)]}"/>
                     </page>
                 </page>
+                <xpath expr="//field[@name='filter']" position="before">
+                    <field name="accounts_to_print"/>
+                </xpath>
+
             </field>
         </record>
     </data>

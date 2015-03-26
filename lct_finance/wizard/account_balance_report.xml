@@ -20,6 +20,9 @@
                     <notebook tabpos="up" colspan="4">
                         <page string="Filters" name="filters">
                             <group>
+                                <field name="accounts_to_print"/>
+                            </group>
+                            <group>
                                 <field name="filter" on_change="onchange_filter(filter, fiscalyear_id)"/>
                             </group>
                             <group string="Dates"  attrs="{'invisible':[('filter', '!=', 'filter_date')], 'required':[('filter', '=', 'filter_date')]}">
@@ -34,6 +37,7 @@
                     </notebook>
                     <footer>
                         <button name="check_report" string="Print" type="object" default_focus="1" class="oe_highlight"/>
+                        <button icon="gtk-execute" name="xls_export" string="Export" type="object" class="oe_highlight" context="{'xls_export':1}"/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel" />
                     </footer>
