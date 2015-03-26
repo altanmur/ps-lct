@@ -73,7 +73,7 @@ class ftp_config(osv.osv):
 
                 content = StringIO()
                 try:
-                    ftp.retrlines('RETR ' + filename, content.write)
+                    ftp.retrbinary('RETR %s' % filename, content.write)
                 except:
                     imp_data_model.create(cr, uid, {
                             'name': filename,
