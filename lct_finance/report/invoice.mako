@@ -137,7 +137,7 @@
 				</tr>
 			</table>
 		</div>
-		<div>
+		<div style="page-break-after: always;">
 			<table class="bottom">
 				<tr>
 					<td style="width:25em;align:left;">Imputée et saisie par : ${user.name}</td>
