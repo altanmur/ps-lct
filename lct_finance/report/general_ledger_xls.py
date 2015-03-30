@@ -247,13 +247,13 @@ class general_ledger_xls(report_xls):
             row_pos = self.xls_write_row(ws, row_pos, row_data)
         return row_pos
 
-    def _print_acc_header(self, account, ws, row_pos, _xs, debit_formula, credit_formula, bal_formula):
+    def _print_acc_header(self, account, ws, row_pos, _xs, debit, credit, balance):
         style = xlwt.easyxf(_xs['bold'])
         header_spec = [
             ('cod_nam', 6 + self.padding, 0, 'text', '  ' * (account.level-1) + '%s %s' % (account.code, account.name), None, style),
-            ('debit', 1, 0, 'number', None, debit_formula, style),
-            ('credit', 1, 0, 'number', None, credit_formula, style),
-            ('balance', 1, 0, 'number', None, bal_formula, style),
+            ('debit', 1, 0, 'number', debit, None, style),
+            ('credit', 1, 0, 'number', credit, None, style),
+            ('balance', 1, 0, 'number', balance, None, style),
         ]
         row_data = self.xls_row_template(header_spec, [x[0] for x in header_spec])
         row_pos = self.xls_write_row(ws, row_pos, row_data)
@@ -289,17 +289,11 @@ class general_ledger_xls(report_xls):
             row_pos += 1  # Make room for the account header
             acc_start_pos = row_pos
             # Totals on top
-            debit_start = rowcol_to_cell(acc_start_pos, debit_pos)
-            debit_stop = rowcol_to_cell(row_pos + acc_cnt - 1, debit_pos)
-            debit_formula = 'SUM(%s:%s)' % (debit_start, debit_stop)
-            credit_start = rowcol_to_cell(acc_start_pos, credit_pos)
-            credit_stop = rowcol_to_cell(row_pos + acc_cnt - 1, credit_pos)
-            credit_formula = 'SUM(%s:%s)' % (credit_start, credit_stop)
-            debit_cell = rowcol_to_cell(row_pos - 1, debit_pos)
-            credit_cell = rowcol_to_cell(row_pos - 1, credit_pos)
-            bal_formula = debit_cell + '-' + credit_cell
+            debit = parser['sum_debit_account'](child_acc)
+            credit = parser['sum_credit_account'](child_acc)
+            balance = parser['sum_balance_account'](child_acc)
             # Account header with totals
-            row_pos = self._print_acc_header(child_acc, ws, header_pos, _xs, debit_formula, credit_formula, bal_formula)
+            row_pos = self._print_acc_header(child_acc, ws, header_pos, _xs, debit, credit, balance)
             cnt = 0
             # for l in parser.lines(o):
             for l in parser.lines(child_acc):
