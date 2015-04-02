@@ -35,17 +35,51 @@ class account_balance_xls_parser(account_balance_report):
 
     def __init__(self, cr, uid, name, context):
         super(account_balance_xls_parser, self).__init__(cr, uid, name, context=context)
-        account_obj = self.pool.get('account.account')
         self.context = context
-        wanted_list = account_obj._report_xls_fields(cr, uid, context)
-        template_changes = account_obj._report_xls_template(cr, uid, context)
-        space_extra = account_obj._report_xls_render_space_extra(cr, uid, context)
+        wanted_list = self._report_xls_fields(cr, uid, context)
+        template_changes = self._report_xls_template(cr, uid, context)
+        space_extra = self._report_xls_render_space_extra(cr, uid, context)
         self.localcontext.update({
             'datetime': datetime,
             'wanted_list': wanted_list,
             'template_changes': template_changes,
             'space_extra': space_extra,
         })
+
+    # Most of these do nothing, but the report kind of requires them.
+
+    # override list in inherited module to add/drop columns or change order
+    def _report_xls_fields(self, cr, uid, context=None):
+        res = [
+            'code',
+            'name',
+            'prev_debit',
+            'prev_credit',
+            'debit',
+            'credit',
+            'balance',
+        ]
+        return res
+
+    # allow inherited modules to extend the query
+    def _report_xls_query_extra(self, cr, uid, context=None):
+        select_extra = ""
+        join_extra = ""
+        where_extra = ""
+        return (select_extra, join_extra, where_extra)
+
+    # allow inherited modules to add document references
+    def _report_xls_document_extra(self, cr, uid, context=None):
+        return "''"
+
+    # allow inherited modules to extend the render namespace
+    def _report_xls_render_space_extra(self, cr, uid, context=None):
+        return None
+
+    # Change/Add Template entries
+    def _report_xls_template(self, cr, uid, context=None):
+        return {}
+
 
 
 class account_balance_xls(report_xls):
@@ -212,7 +246,6 @@ class account_balance_xls(report_xls):
         row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
         row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=self.rt_cell_style_right)
         return row_pos + 1
-
 
     def generate_xls_report(self, parser, _xs, data, objects, wb):
         """

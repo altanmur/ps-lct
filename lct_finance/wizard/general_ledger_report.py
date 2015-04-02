@@ -41,6 +41,23 @@ class account_report_general_ledger(osv.osv_memory):
         'accounts_to_print': 'all',
     }
 
+    def _print_report(self, cr, uid, ids, data, context=None):
+        if context is None:
+            context = {}
+        data = self.pre_print_report(cr, uid, ids, data, context=context)
+        data['form'].update(self.read(cr, uid, ids, ['landscape',  'initial_balance', 'amount_currency', 'sortby'])[0])
+        if not data['form']['fiscalyear_id']:# GTK client problem onchange does not consider in save record
+            data['form'].update({'initial_balance': False})
+        if context.get('xls_export'):
+            return {'type': 'ir.actions.report.xml',
+                    'report_name': 'xls.general_ledger',
+                    'datas': data,
+                    'context': context}
+        elif data['form']['landscape']:
+            return { 'type': 'ir.actions.report.xml', 'report_name': 'account.general.ledger_landscape', 'datas': data}
+        return { 'type': 'ir.actions.report.xml', 'report_name': 'account.general.ledger', 'datas': data}
+
+
     def check_report(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
@@ -62,6 +79,9 @@ class account_report_general_ledger(osv.osv_memory):
         data['form']['periods'] = used_context.get('periods', False) and used_context['periods'] or []
         data['form']['used_context'] = dict(used_context, lang=context.get('lang', 'en_US'))
         return self._print_report(cr, uid, ids, data, context=context)
+
+    def xls_export(self, cr, uid, ids, context=None):
+        return self.check_report(cr, uid, ids, context=context)
 
 account_report_general_ledger()
 
