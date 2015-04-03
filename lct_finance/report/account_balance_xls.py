@@ -57,7 +57,8 @@ class account_balance_xls_parser(account_balance_report):
             'prev_credit',
             'debit',
             'credit',
-            'balance',
+            'balance_debit',
+            'balance_credit'
         ]
         return res
 
@@ -138,10 +139,15 @@ class account_balance_xls(report_xls):
                 'lines': [1, 0, 'number', _render("l['credit']")],
                 'totals': [1, 0, 'number',None,  _render("credit_formula")],
             },
-            'balance': {
-                'header': [1, 20, 'text', _render("_('Balance')"), None, self.rh_cell_style_center],
-                'lines': [1, 0, 'number', _render("l['balance']")],
-                'totals': [1, 0, 'number', None, _render("bal_formula")],
+            'balance_debit': {
+                'header': [1, 20, 'text', _render("_('Débit')"), None, self.rh_cell_style_center],
+                'lines': [1, 0, 'number', _render("l['balance_debit']")],
+                'totals': [1, 0, 'number', None, _render("bal_debit_formula")],
+            },
+            'balance_credit': {
+                'header': [1, 20, 'text', _render("_('Crédit')"), None, self.rh_cell_style_center],
+                'lines': [1, 0, 'number', _render("l['balance_credit']")],
+                'totals': [1, 0, 'number', None, _render("bal_credit_formula")],
             },
         }
 
@@ -151,20 +157,20 @@ class account_balance_xls(report_xls):
         company_name = parser.company.name
         row_specs = [
             [  # company name, start_date
-                ('company_name', 5, 0, 'text', company_name),
+                ('company_name', 6, 0, 'text', company_name),
                 ('start_date_lbl', 1, 0, 'text', 'Période du'),
                 ('start_date', 1, 0, 'text', parser.get('start_date')),
             ],
             [  # end_date
-                ('empty_cell', 5, 0, 'text', ''),
+                ('empty_cell', 6, 0, 'text', ''),
                 ('end_date_lbl', 1, 0, 'text', 'au'),
                 ('end_date', 1, 0, 'text', parser.get('end_date')),
             ],
             [  # balance des comptes
-                ('acc_bal', 7, 0, 'text', 'Balance des comptes', None, cell_style_center),
+                ('acc_bal', 8, 0, 'text', 'Balance des comptes', None, cell_style_center),
             ],
             [  # with movements
-                ('with_mov', 7, 0, 'text','With movements', None, cell_style_center),
+                ('with_mov', 8, 0, 'text','With movements', None, cell_style_center),
             ],
         ]
         for c_specs in row_specs:
@@ -186,7 +192,7 @@ class account_balance_xls(report_xls):
                 ('acct_name', 1, 0, 'text', 'Intitulé des comptes', None, self.rh_cell_style_center),
                 ('opening_bal', 2, 0, 'text', "Soldes d'ouverture", None, self.rh_cell_style_center),
                 ('mov', 2, 0, 'text', "Mouvements", None, self.rh_cell_style_center),
-                ('closing_bal', 1, 0, 'text', 'Soldes de fin de periode', None, self.rh_cell_style_center),
+                ('closing_bal', 2, 0, 'text', 'Soldes de fin de periode', None, self.rh_cell_style_center),
             ],
         ]
         for c_specs in row_specs:
@@ -225,7 +231,6 @@ class account_balance_xls(report_xls):
             cnt += 1
             debit_cell = rowcol_to_cell(row_pos, debit_pos)
             credit_cell = rowcol_to_cell(row_pos, credit_pos)
-            bal_formula = debit_cell + '-' + credit_cell
             c_specs = map(lambda x: self.render(x, self.col_specs_lines_template, 'lines'), wanted_list)
             row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
             row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=self.acc_cell_style)
@@ -241,7 +246,14 @@ class account_balance_xls(report_xls):
         credit_formula = 'SUM(%s:%s)' % (credit_start, credit_stop)
         debit_cell = rowcol_to_cell(row_pos, debit_pos)
         credit_cell = rowcol_to_cell(row_pos, credit_pos)
-        bal_formula = debit_cell + '-' + credit_cell
+
+        bal_credit_start = rowcol_to_cell(acc_start_pos, self.bal_credit_pos)
+        bal_credit_stop = rowcol_to_cell(row_pos - 1, self.bal_credit_pos)
+        bal_debit_start = rowcol_to_cell(acc_start_pos, self.bal_debit_pos)
+        bal_debit_stop = rowcol_to_cell(row_pos - 1, self.bal_debit_pos)
+        bal_credit_formula = 'SUM(%s:%s)' % (bal_credit_start, bal_credit_stop)
+        bal_debit_formula = 'SUM(%s:%s)' % (bal_debit_start, bal_debit_stop)
+
         c_specs = map(lambda x: self.render(x, self.col_specs_lines_template, 'totals'), wanted_list)
         row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
         row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=self.rt_cell_style_right)
@@ -261,7 +273,9 @@ class account_balance_xls(report_xls):
 
         self.debit_pos = 'debit' in wanted_list and wanted_list.index('debit')
         self.credit_pos = 'credit' in wanted_list and wanted_list.index('credit')
-        if not (self.credit_pos and self.debit_pos) and 'balance' in wanted_list:
+        self.bal_debit_pos = 'balance_debit' in wanted_list and wanted_list.index('balance_debit')
+        self.bal_credit_pos = 'balance_credit' in wanted_list and wanted_list.index('balance_credit')
+        if not (self.credit_pos and self.debit_pos) and ('balance_debit' in wanted_list and 'balance_credit' in wanted_list):
             raise orm.except_orm(_('Customisation Error!'),
                 _("The 'Balance' field is a calculated XLS field requiring the presence of the 'Debit' and 'Credit' fields !"))
 

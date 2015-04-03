@@ -41,7 +41,7 @@ class account_balance_report(report_sxw.rml_parse):
         company_obj = self.pool.get('res.company')
         user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
         company = company_obj.browse(cr, uid, user.company_id.id)
-        total_debit = total_credit = total_balance = \
+        total_debit = total_credit = total_balance_credit = total_balance_debit = \
             total_prev_debit = total_prev_credit = 0.0
         fisc_obj = self.pool.get('account.fiscalyear')
         curr_fy = fisc_obj.browse(cr, uid, context['form']['fiscalyear_id'])
@@ -58,7 +58,8 @@ class account_balance_report(report_sxw.rml_parse):
         for line in lines:
             total_debit += line.get('debit')
             total_credit += line.get('credit')
-            total_balance += line.get('balance')
+            total_balance_credit += line.get('balance_credit')
+            total_balance_debit += line.get('balance_debit')
             total_prev_debit += line.get('prev_debit')
             total_prev_credit += line.get('prev_credit')
         now = datetime.now()
@@ -82,7 +83,8 @@ class account_balance_report(report_sxw.rml_parse):
             'total_prev_credit': total_prev_credit,
             'total_debit': total_debit,
             'total_credit': total_credit,
-            'total_balance': total_balance,
+            'total_balance_debit': total_balance_debit,
+            'total_balance_credit': total_balance_credit,
             'lines': lines,
             })
 
@@ -101,7 +103,8 @@ class account_balance_report(report_sxw.rml_parse):
                     'level': account_rec['level'],
                     'debit': account_rec['debit'],
                     'credit': account_rec['credit'],
-                    'balance': account_rec['balance'],
+                    'balance_debit': account_rec['balance'] if account_rec['balance'] > 0 else 0.0,
+                    'balance_credit': -1*account_rec['balance'] if account_rec['balance'] < 0 else 0.0,
                     'prev_debit': account_rec['prev_debit'],
                     'prev_credit': account_rec['prev_credit'],
                     'prev_balance': account_rec['prev_balance'],
@@ -114,10 +117,12 @@ class account_balance_report(report_sxw.rml_parse):
                     if disp_acc == 'movement':
                         if not currency_obj.is_zero(self.cr, self.uid, currency, res['credit']) \
                            or not currency_obj.is_zero(self.cr, self.uid, currency, res['debit']) \
-                           or not currency_obj.is_zero(self.cr, self.uid, currency, res['balance']):
+                           or not currency_obj.is_zero(self.cr, self.uid, currency, res['balance_debit']) \
+                           or not currency_obj.is_zero(self.cr, self.uid, currency, res['balance_credit']):
                             self.result_acc.append(res)
                     elif disp_acc == 'not_zero':
-                        if not currency_obj.is_zero(self.cr, self.uid, currency, res['balance']):
+                        if not currency_obj.is_zero(self.cr, self.uid, currency, res['balance_debit']) \
+                            or not currency_obj.is_zero(self.cr, self.uid, currency, res['balance_credit']):
                             self.result_acc.append(res)
                     else:
                         self.result_acc.append(res)
