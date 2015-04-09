@@ -56,8 +56,8 @@ class general_ledger_xls_parser(general_ledger):
     # override list in inherited module to add/drop columns or change order
     def _report_xls_fields(self, cr, uid, context=None):
         res = [
-            'acode',
             'ldate',
+            'acode',
             'period_code',
             'lcode',
             'partner_name',
@@ -115,14 +115,14 @@ class general_ledger_xls(report_xls):
 
         # XLS Template
         self.col_specs_lines_template = {
-            'acode': {
-                'header': [1, 20, 'text', 'Code'],
-                'lines': [1, 0, 'text', _render("l['acode']")],
-                'totals': [1, 0, 'text', None],
-            },
             'ldate': {
                 'header': [1, 20, 'text', 'Date'],
                 'lines': [1, 0, 'text', _render("l['ldate']")],
+                'totals': [1, 0, 'text', None],
+            },
+            'acode': {
+                'header': [1, 20, 'text', 'Code'],
+                'lines': [1, 0, 'text', _render("l['acode']")],
                 'totals': [1, 0, 'text', None],
             },
             'period_code': {
@@ -255,8 +255,9 @@ class general_ledger_xls(report_xls):
     def _print_acc_header(self, account, ws, row_pos, _xs, debit, credit, balance):
         style = xlwt.easyxf(_xs['bold'])
         header_spec = [
+            ('none', 1, 0, 'text', None, None, style),
             ('cod', 1, 0, 'text', account.code, None, style),
-            ('cod_nam', 6 + self.padding, 0, 'text', account.name, None, style),
+            ('none2', 5 + self.padding, 0, 'text', None, None, style),
             ('debit', 1, 0, 'number', debit, None, style),
             ('credit', 1, 0, 'number', credit, None, style),
             ('balance', 1, 0, 'number', balance, None, style),
