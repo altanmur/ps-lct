@@ -22,7 +22,6 @@
 
 import xlwt
 from datetime import datetime
-from openerp.osv import orm
 from openerp.addons.report_xls.report_xls import report_xls
 from openerp.addons.report_xls.utils import rowcol_to_cell, _render
 # from .general_ledger import general_ledger_report
@@ -58,6 +57,7 @@ class general_ledger_xls_parser(general_ledger):
     def _report_xls_fields(self, cr, uid, context=None):
         res = [
             'ldate',
+            'acode',
             'period_code',
             'lcode',
             'partner_name',
@@ -120,6 +120,11 @@ class general_ledger_xls(report_xls):
                 'lines': [1, 0, 'text', _render("l['ldate']")],
                 'totals': [1, 0, 'text', None],
             },
+            'acode': {
+                'header': [1, 20, 'text', 'Code'],
+                'lines': [1, 0, 'text', _render("l['acode']")],
+                'totals': [1, 0, 'text', None],
+            },
             'period_code': {
                 'header': [1, 20, 'text', 'Period'],
                 'lines': [1, 0, 'text', _render("l['period_code']")],
@@ -172,7 +177,7 @@ class general_ledger_xls(report_xls):
         cell_style_center = xlwt.easyxf(_xs['xls_title'] + _xs['center'])
         row_specs = [
             [
-                ('title', 9 + self.padding, 0, 'text', 'General Ledger', None, cell_style_center),
+                ('title', 10 + self.padding, 0, 'text', 'General Ledger', None, cell_style_center),
             ],
         ]
         for c_specs in row_specs:
@@ -215,7 +220,7 @@ class general_ledger_xls(report_xls):
             [
                 ('chart_of_acc', 2 + self.padding, 0, 'text', 'Chart of Accounts', None, cell_style_center),
                 ('fisc_yr', 1, 0, 'text', 'Fiscal Year', None, cell_style_center),
-                ('jrnl', 1, 0, 'text', 'Journals', None, cell_style_center),
+                ('jrnl', 2, 0, 'text', 'Journals', None, cell_style_center),
                 ('disp_acc', 1, 0, 'text', 'Display Account', None, cell_style_center),
                 ('filter_by', 2, 0, 'text', 'Filter By', None, cell_style_center),
                 ('sorted_by', 1, 0, 'text', 'Entries Sorted By', None, cell_style_center),
@@ -224,7 +229,7 @@ class general_ledger_xls(report_xls):
             [
                 ('chart_of_acc', 2 + self.padding, 0, 'text', o.name),
                 ('fisc_yr', 1, 0, 'text', parser['get_fiscalyear'](data)),
-                ('jrnl', 1, 0, 'text', ', '.join([ lt or '' for lt in parser['get_journal'](data) ])),
+                ('jrnl', 2, 0, 'text', ', '.join([ lt or '' for lt in parser['get_journal'](data) ])),
                 ('disp_acc', 1, 0, 'text', disp_acc),
             ] + filter_header + [
                 ('sorted_by', 1, 0, 'text', parser['get_sortby'](data)),
@@ -236,7 +241,7 @@ class general_ledger_xls(report_xls):
                 [
                     ('chart_of_acc', 2 + self.padding, 0, 'text', ''),
                     ('fisc_yr', 1, 0, 'text', ''),
-                    ('jrnl', 1, 0, 'text', ''),
+                    ('jrnl', 2, 0, 'text', ''),
                     ('disp_acc', 1, 0, 'text', ''),
                 ] + filter_val + [
                     ('sorted_by', 1, 0, 'text', ''),
@@ -250,7 +255,9 @@ class general_ledger_xls(report_xls):
     def _print_acc_header(self, account, ws, row_pos, _xs, debit, credit, balance):
         style = xlwt.easyxf(_xs['bold'])
         header_spec = [
-            ('cod_nam', 6 + self.padding, 0, 'text', '  ' * (account.level-1) + '%s %s' % (account.code, account.name), None, style),
+            ('none', 1, 0, 'text', None, None, style),
+            ('cod', 1, 0, 'text', account.code, None, style),
+            ('none2', 5 + self.padding, 0, 'text', None, None, style),
             ('debit', 1, 0, 'number', debit, None, style),
             ('credit', 1, 0, 'number', credit, None, style),
             ('balance', 1, 0, 'number', balance, None, style),
@@ -297,6 +304,8 @@ class general_ledger_xls(report_xls):
             cnt = 0
             # for l in parser.lines(o):
             for l in parser.lines(child_acc):
+                l['ldate'] = l['ldate'].split()[0]
+                l['acode'] = child_acc.code
                 cnt += 1
                 debit_cell = rowcol_to_cell(row_pos, debit_pos)
                 credit_cell = rowcol_to_cell(row_pos, credit_pos)
