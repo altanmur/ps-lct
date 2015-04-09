@@ -117,7 +117,7 @@ class account_balance_xls(report_xls):
             'name': {
                 'header': [1, 20, 'text', None],
                 'lines': [1, 0, 'text', _render("l['name']")],
-                'totals': [1, 0, 'text', None],
+                'totals': [1, 0, 'text', _render("'Total'"), None, self.rh_cell_style_center],
             },
             'prev_debit': {
                 'header': [1, 20, 'text', _render("_('Débit')"), None, self.rh_cell_style_center],
@@ -258,9 +258,12 @@ class account_balance_xls(report_xls):
         prev_debit_cell = rowcol_to_cell(row_pos, prev_debit_pos)
         prev_credit_cell = rowcol_to_cell(row_pos, prev_credit_pos)
 
-        bal_result = debit_cell + '+' + prev_debit_cell + '-' + credit_cell + '-' + prev_credit_cell
-        bal_credit_formula = 'IF(%s<0,%s,0.0)' % (bal_result, bal_result)
-        bal_debit_formula = 'IF(%s>0,%s,0.0)' % (bal_result, bal_result)
+        bal_credit_start = rowcol_to_cell(acc_start_pos, self.bal_credit_pos)
+        bal_credit_stop = rowcol_to_cell(row_pos - 1, self.bal_credit_pos)
+        bal_debit_start = rowcol_to_cell(acc_start_pos, self.bal_debit_pos)
+        bal_debit_stop = rowcol_to_cell(row_pos - 1, self.bal_debit_pos)
+        bal_credit_formula = 'SUM(%s:%s)' % (bal_credit_start, bal_credit_stop)
+        bal_debit_formula = 'SUM(%s:%s)' % (bal_debit_start, bal_debit_stop)
 
         c_specs = map(lambda x: self.render(x, self.col_specs_lines_template, 'totals'), wanted_list)
         row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
