@@ -22,7 +22,6 @@
 
 import xlwt
 from datetime import datetime
-from openerp.osv import orm
 from openerp.addons.report_xls.report_xls import report_xls
 from openerp.addons.report_xls.utils import rowcol_to_cell, _render
 # from .general_ledger import general_ledger_report
