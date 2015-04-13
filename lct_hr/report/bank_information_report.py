@@ -44,9 +44,10 @@ class bank_information_report_pdf(report_sxw.rml_parse):
             payslip_ids.extend([x.id for x in run.slip_ids])
         payslips = payslip_obj.browse(cr, uid, payslip_ids, context=context)
         net_total = 0
+        net_salary_rule_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'lct_hr', 'hr_salary_rule_27')[1]
         for payslip in payslips:
             lines = payslip_obj.get_visible_lines(cr, uid, payslip.id, context=context)
-            net_salary = sum(x.total for x in lines if x.sequence in [5000])
+            net_salary = sum(x.total for x in lines if x.salary_rule_id.id == net_salary_rule_id)
             net_total += net_salary
             retval[payslip] = {
                 'net_salary': net_salary,
