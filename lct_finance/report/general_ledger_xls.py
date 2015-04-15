@@ -166,7 +166,7 @@ class general_ledger_xls(report_xls):
                 'totals': [1, 0, 'number', None, _render("credit_formula")],
             },
             'progress': {
-                'header': [1, 20, 'text', 'Balance', None, self.rh_cell_style_center],
+                'header': [1, 20, 'text', 'Solde', None, self.rh_cell_style_center],
                 'lines': [1, 0, 'number', _render("l['progress']")],
                 'totals': [1, 0, 'number', None, _render("bal_formula")],
             },
@@ -256,7 +256,7 @@ class general_ledger_xls(report_xls):
         style = xlwt.easyxf(_xs['bold'])
         header_spec = [
             ('none', 1, 0, 'text', None, None, style),
-            ('cod', 1, 0, 'text', account.code, None, style),
+            ('cod', 1, 0, 'text', "%s %s" % (account.code, account.name), None, style),
             ('none2', 5 + self.padding, 0, 'text', None, None, style),
             ('debit', 1, 0, 'number', debit, None, style),
             ('credit', 1, 0, 'number', credit, None, style),
