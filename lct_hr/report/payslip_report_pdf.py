@@ -121,11 +121,19 @@ class payslip_report_pdf(report_sxw.rml_parse):
         keys = ['gross', 'salarial_costs', 'patronal_costs',
                 'net_salary', 'benefits_in_kind', 'worked_hours', 'worked_days']
         lines = payslip.get_visible_lines(context=context)
-        gross = sum(x.total for x in lines if x.sequence in [1999])
-        salarial_costs = sum(x.total for x in lines if x.sequence in [2040])
-        patronal_costs = sum(x.total for x in lines if x.sequence in [2041])
-        net_salary = sum(x.total for x in lines if x.sequence in [5000])
-        benefits_in_kind = sum(x.total for x in lines if x.sequence in [1009])
+
+        imd_model = self.pool.get('ir.model.data')
+        gross_rule_id = imd_model.get_object_reference(cr, uid, 'lct_hr', 'hr_salary_rule_12')[1]
+        salarial_costs_rule_id = imd_model.get_object_reference(cr, uid, 'lct_hr', 'hr_salary_rule_34')[1]
+        patronal_costs_rule_id = imd_model.get_object_reference(cr, uid, 'lct_hr', 'hr_salary_rule_33')[1]
+        net_salary_rule_id = imd_model.get_object_reference(cr, uid, 'lct_hr', 'hr_salary_rule_27')[1]
+        benefits_in_kind_rule_id = imd_model.get_object_reference(cr, uid, 'lct_hr', 'hr_salary_rule_29')[1]
+
+        gross = sum(x.total for x in lines if x.salary_rule_id.id == gross_rule_id)
+        salarial_costs = sum(x.total for x in lines if x.salary_rule_id.id == salarial_costs_rule_id)
+        patronal_costs = sum(x.total for x in lines if x.salary_rule_id.id == patronal_costs_rule_id)
+        net_salary = sum(x.total for x in lines if x.salary_rule_id.id == net_salary_rule_id)
+        benefits_in_kind = sum(x.total for x in lines if x.salary_rule_id.id == benefits_in_kind_rule_id)
         # For now, it's 160, except the 1st month, when it's prorata.
         days_in_service = (datetime.strptime(payslip.date_to, '%Y-%m-%d') \
             - datetime.strptime(payslip.employee_id.start_date, '%Y-%m-%d')).days
