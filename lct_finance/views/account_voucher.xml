@@ -50,9 +50,6 @@
                 <field name="line_dr_ids" position="attributes">
                     <attribute name="on_change">onchange_line_ids_lct(line_dr_ids, line_cr_ids, amount, currency_id, type, context)</attribute>
                 </field>
-                <xpath expr="//notebook" position="attributes">
-                    <attribute name="invisible">0</attribute>
-                </xpath>
             </field>
         </record>
 
