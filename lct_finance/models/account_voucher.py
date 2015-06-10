@@ -96,6 +96,14 @@ class account_voucher(osv.osv):
             for line in lines:
                 line[field] = name_gets[line[field]]
 
+    def create(self, cr, uid, vals, context=None):
+        for line in vals.get('line_cr_ids', []) + vals.get('line_dr_ids', []):
+            for field in ['account_id', 'currency_id', 'move_line_id']:
+                if len(line) < 3 or line[0] != 0 or not isinstance(line[2].get(field), list) or not line[2][field]:
+                    continue
+                line[2][field] = line[2][field][0]
+        return super(account_voucher, self).create(cr, uid, vals, context=context)
+
 def resolve_o2m_operations(cr, uid, target_osv, operations, fields, context):
     results = []
     for operation in operations:
