@@ -75,7 +75,11 @@ class lct_pending_yard_activity(osv.osv):
         elif yac_type == 'REEFE':
             vals['type'] = 'reefe'
         dep_timestamp = self._get_elmnt_text(line, 'departure_timestamp')
+        if not dep_timestamp:
+            raise osv.except_osv(('Error'), ('departure_timestamp in not defined at line %d' % (line.sourceline)))
         arr_timestamp = self._get_elmnt_text(line, 'arrival_timestamp')
+        if not arr_timestamp:
+            raise osv.except_osv(('Error'), ('arrival_timestamp in not defined at line %d' % (line.sourceline)))
         dep_time = datetime.strptime(dep_timestamp, "%Y-%m-%d %H:%M:%S")
         arr_time = datetime.strptime(arr_timestamp, "%Y-%m-%d %H:%M:%S")
         if dep_time < arr_time:
