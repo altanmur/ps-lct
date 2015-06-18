@@ -188,21 +188,6 @@ class account_invoice_line(osv.osv):
                     vals['invoice_line_tax_id'] = [(6, False, [tax.id])]
         return super(account_invoice_line, self).create(cr, uid, vals, context=context)
 
-    def write(self, cr, uid, ids, vals, context=None):
-        for invoice_line in self.browse(cr, uid, ids, context=context):
-            invoice_id = False
-            if 'invoice_id' in vals and vals['invoice_id']:
-                invoice_id = vals['invoice_id']
-            elif invoice_line.invoice_id:
-                invoice_id = invoice_line.invoice_id.id
-            if invoice_id:
-                invoice = self.pool.get('account.invoice').browse(cr, uid, invoice_id, context=context)
-                if invoice.type2 and 'partner_id' in invoice and invoice.partner_id:
-                    tax = invoice.partner_id.tax_id
-                    if tax:
-                        vals['invoice_line_tax_id'] = [(6, False, [tax.id])]
-        return super(account_invoice_line, self).write(cr, uid, ids, vals, context=context)
-
     def button_edit(self, cr, uid, ids, context=None):
         return {
             'view_mode': 'form',
