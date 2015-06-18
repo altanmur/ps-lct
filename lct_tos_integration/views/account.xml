@@ -443,7 +443,7 @@
                     <button name="button_proforma_voucher_bypass" string="Pay" class="oe_highlight" type="object" groups="lct_tos_integration.group_cashier_tos"/>
                 </xpath>
                 <xpath expr="//footer//button[@name='button_proforma_voucher']" position="attributes">
-                    <attribute name="groups">account.group_all_access</attribute>
+                    <attribute name="groups">lct_tos_integration.group_all_access_tos</attribute>
                 </xpath>
             </field>
         </record>
