@@ -30,6 +30,17 @@
             <blockAlignment value="LEFT"/>
             <blockValign value="TOP"/>
         </blockTableStyle>
+        <blockTableStyle id="Table5">
+            <blockAlignment value="LEFT"/>
+            <blockValign value="TOP"/>
+            <blockBackground colorName="yellow"/>
+            <lineStyle kind="LINEBEFORE" colorName="black" start="0,0" stop="0,-1"/>
+            <lineStyle kind="LINEABOVE" colorName="black" start="0,0" stop="0,0"/>
+            <lineStyle kind="LINEBELOW" colorName="black" start="0,-1" stop="0,-1"/>
+            <lineStyle kind="LINEBEFORE" colorName="black" start="1,0" stop="1,-1"/>
+            <lineStyle kind="LINEABOVE" colorName="black" start="1,0" stop="1,0"/>
+            <lineStyle kind="LINEBELOW" colorName="black" start="1,-1" stop="1,-1"/>
+        </blockTableStyle>
         <initialize>
             <paraStyle name="all" alignment="justify"/>
         </initialize>
@@ -42,6 +53,7 @@
         <paraStyle name="P6_bold" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="RIGHT"/>
         <paraStyle name="P7" fontName="Helvetica" fontSize="8.0" leading="10" alignment="LEFT"/>
         <paraStyle name="P8" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="CENTER"/>
+        <paraStyle name="P9" fontName="Helvetica" fontSize="10.0" leading="10" alignment="LEFT"/>
         <paraStyle name="P_SP" fontName="Helvetica-Bold" fontSize="8.0" spaceAfter="12.0"/>
         <paraStyle name="Standard" fontName="Helvetica"/>
         <paraStyle name="Heading" fontName="Helvetica" fontSize="14.0" leading="17" spaceBefore="12.0" spaceAfter="6.0"/>
@@ -224,6 +236,16 @@
         <para style="P7">
             Merci de respecter l'échéance mentionnée ci-dessus
         </para>
+        <para style="P_SP">
+            <font color="white"> </font>
+        </para>
+        <blockTable colWidths="499.0" style="Table5">[[ o.comment or removeParentNode('span') ]]
+            <tr>
+                <td>
+                    <para style="P9">[[ o.comment ]]</para>
+                </td>
+            </tr>
+        </blockTable>
         <para style="P_SP">
             <font color="white"> </font>
         </para>
