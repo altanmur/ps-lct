@@ -688,9 +688,11 @@ class account_invoice(osv.osv):
             'category_id': category_id,
             'size_id': size_id,
         }
+        cfs_activity = line.find('cfs_activity')
+        ignore_ins = (cfs_activity is not None and cfs_activity.text == 'YES')
         service_ids = []
         for shc in line.findall('special_handling_code_id'):
-            if shc is None or not shc.text:
+            if shc is None or not shc.text or (ignore_ins and shc.text == 'INS'):
                 continue
             service_ids.append(self._get_shc_service(cr, uid, shc.text))
         if service_ids:
