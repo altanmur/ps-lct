@@ -440,10 +440,10 @@
             <field name="inherit_id" ref="account_voucher.view_vendor_receipt_dialog_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//footer//button[@name='button_proforma_voucher']" position="before">
-                    <button name="button_proforma_voucher_bypass" string="Pay" class="oe_highlight" type="object" groups="lct_tos_integration.group_cashier_tos"/>
+                    <button name="button_proforma_voucher_bypass" string="Pay" class="oe_highlight" type="object" groups="lct_tos_integration.group_cashier_tos,lct_tos_integration.group_all_access_tos"/>
                 </xpath>
                 <xpath expr="//footer//button[@name='button_proforma_voucher']" position="attributes">
-                    <attribute name="groups">lct_tos_integration.group_all_access_tos</attribute>
+                    <attribute name="invisible">1</attribute>
                 </xpath>
             </field>
         </record>
