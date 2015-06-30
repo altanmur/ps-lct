@@ -42,6 +42,7 @@
         <paraStyle name="P6_bold" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="RIGHT"/>
         <paraStyle name="P7" fontName="Helvetica" fontSize="8.0" leading="10" alignment="LEFT"/>
         <paraStyle name="P8" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="CENTER"/>
+        <paraStyle name="P9" fontName="Helvetica" fontSize="10.0" leading="10" alignment="LEFT"/>
         <paraStyle name="P_SP" fontName="Helvetica-Bold" fontSize="8.0" spaceAfter="12.0"/>
         <paraStyle name="Standard" fontName="Helvetica"/>
         <paraStyle name="Heading" fontName="Helvetica" fontSize="14.0" leading="17" spaceBefore="12.0" spaceAfter="6.0"/>
@@ -224,6 +225,10 @@
         <para style="P7">
             Merci de respecter l'échéance mentionnée ci-dessus
         </para>
+        <para style="P_SP">
+            <font color="white"> </font>
+        </para>
+        <para style="P9">[[ o.comment or removeParentNode('para') ]]</para>
         <para style="P_SP">
             <font color="white"> </font>
         </para>
