@@ -26,35 +26,16 @@ class account_account(osv.osv):
     _inherit = 'account.account'
 
     _columns = {
-        # Overridden; exactly the same:
-        'balance': fields.function(lambda self, *args, **kwargs: self.__compute(*args, **kwargs),
-            digits_compute=dp.get_precision('Account'), string='Balance', multi='balance'),
-        'credit': fields.function(lambda self, *args, **kwargs: self.__compute(*args, **kwargs),
-            fnct_inv=lambda self, *args, **kwargs: self._set_credit_debit(*args, **kwargs),
-            digits_compute=dp.get_precision('Account'), string='Credit', multi='balance'),
-        'debit': fields.function(lambda self, *args, **kwargs: self.__compute(*args, **kwargs),
-            fnct_inv=lambda self, *args, **kwargs: self._set_credit_debit(*args, **kwargs),
-            digits_compute=dp.get_precision('Account'), string='Debit', multi='balance'),
-        'foreign_balance': fields.function(lambda self, *args, **kwargs: self.__compute(*args, **kwargs),
-            digits_compute=dp.get_precision('Account'), string='Foreign Balance', multi='balance',
-            help="Total amount (in Secondary currency) for transactions held in secondary currency for this account."),
-        'adjusted_balance': fields.function(lambda self, *args, **kwargs: self.__compute(*args, **kwargs),
-            digits_compute=dp.get_precision('Account'), string='Adjusted Balance', multi='balance',
-            help="Total amount (in Company currency) for transactions held in secondary currency for this account."),
-        'unrealized_gain_loss': fields.function(lambda self, *args, **kwargs: self.__compute(*args, **kwargs),
-            digits_compute=dp.get_precision('Account'), string='Unrealized Gain or Loss', multi='balance',
-            help="Value of Loss or Gain due to changes in exchange rate when doing multi-currency transactions."),
-        # Added
-        'prev_credit': fields.function(lambda self, *args, **kwargs: self.__compute(*args, **kwargs),
+        'prev_credit': fields.function(lambda self, *args, **kwargs: self.__compute_prev(*args, **kwargs),
             digits_compute=dp.get_precision('Account'), string='Previous Credit', multi='balance'),
-        'prev_debit': fields.function(lambda self, *args, **kwargs: self.__compute(*args, **kwargs),
+        'prev_debit': fields.function(lambda self, *args, **kwargs: self.__compute_prev(*args, **kwargs),
             digits_compute=dp.get_precision('Account'), string='Previous Debit', multi='balance'),
-        'prev_balance': fields.function(lambda self, *args, **kwargs: self.__compute(*args, **kwargs),
+        'prev_balance': fields.function(lambda self, *args, **kwargs: self.__compute_prev(*args, **kwargs),
             digits_compute=dp.get_precision('Account'), string='Previous Balance', multi='balance'),
         # 'start_balance': fields.float('Starting Balance', digits=(16, 2)),
     }
 
-    def __compute(self, cr, uid, ids, field_names, arg=None, context=None,
+    def __compute_prev(self, cr, uid, ids, field_names, arg=None, context=None,
                   query='', query_params=()):
         """ compute the balance, debit and/or credit for the provided
         account ids
