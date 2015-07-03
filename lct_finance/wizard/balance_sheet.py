@@ -26,6 +26,7 @@ import StringIO
 import base64
 from datetime import datetime
 import os
+from openerp.exceptions import Warning
 
 class balance_sheet(osv.osv_memory):
 
@@ -66,26 +67,33 @@ class balance_sheet(osv.osv_memory):
 
         browser = self.browse(cr,uid,ids,context=context)[0]
         today_s = datetime.today().strftime("%d-%m-%Y")
-        date1 = None
-        date2 = None
+        date_from = None
+        date_to = None
 
-        if browser.date_from and browser.date_to :
-            date1 = browser.date_from
-            date2 = browser.date_to
-        elif browser.period_from and browser.period_to :
-            date1 = browser.period_from.date_start
-            date2 = browser.period_to.date_stop
+        if browser.filter == 'filter_date':
+            if not (browser.date_from and browser.date_to):
+                raise Warning('You need to specify a start date and an end date')
+            context['date_from'] = date_from = browser.date_from
+            context['date_to'] = date_to = browser.date_to
+
+        if browser.filter == 'filter_period':
+            if not (browser.period_from and browser.period_to):
+                raise Warning('You need to specify a start period and an end period')
+            context['period_from'] = browser.period_from.id
+            context['period_to'] = browser.period_to.id
+            date_from = browser.period_from.date_start
+            date_to = browser.period_to.date_stop
+
         else :
             self._setOutCell(rs, 1, 7, "Date of report :")
             self._setOutCell(rs, 2, 7, today_s)
 
-        if date1 and date2 :
-            context['date_from'] = date1
-            context['date_to'] = date2
+        context['state'] = 'posted'
+        if date_from and date_to:
             self._setOutCell(rs, 1, 7, "Start date :")
             self._setOutCell(rs, 1, 8, "End date :")
-            self._setOutCell(rs, 2, 7, datetime.strptime(date1,"%Y-%m-%d").strftime("%d-%m-%Y"))
-            self._setOutCell(rs, 2, 8, datetime.strptime(date2,"%Y-%m-%d").strftime("%d-%m-%Y"))
+            self._setOutCell(rs, 2, 7, datetime.strptime(date_from, "%Y-%m-%d").strftime("%d-%m-%Y"))
+            self._setOutCell(rs, 2, 8, datetime.strptime(date_to, "%Y-%m-%d").strftime("%d-%m-%Y"))
             self._setOutCell(rs, 1, 6, "Date of report :")
             self._setOutCell(rs, 2, 6, today_s)
 
