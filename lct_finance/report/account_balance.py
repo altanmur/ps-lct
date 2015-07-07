@@ -85,6 +85,7 @@ class account_balance_report(report_sxw.rml_parse):
             'total_credit': total_credit,
             'total_balance_debit': total_balance_debit,
             'total_balance_credit': total_balance_credit,
+            'total_balance': total_balance_debit - total_balance_credit,
             'lines': lines,
             })
 
