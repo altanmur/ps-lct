@@ -459,7 +459,10 @@ class account_invoice(osv.osv):
             raise osv.except_osv(('Error'), (invoice_map['partner_id'] + ' should be a number'))
         partner = self.pool.get('res.partner').browse(cr, uid, int(vals['partner_id']), context=context)
         if partner.exists():
-            vals['partner_id'] = partner.id
+            onchange_partner = self.onchange_partner_id(cr, uid, [], 'out_invoice', partner_id, context=context)
+            onchange_vals = onchange_partner and onchange_partner.get('value', {})
+            onchange_vals.update(vals)
+            vals = dict(onchange_vals, partner_id=partner.id)
         else:
             raise osv.except_osv(('Error'), ('No customer with this id (%s) was found' % vals['partner_id'] ))
 
@@ -724,17 +727,20 @@ class account_invoice(osv.osv):
             raise osv.except_osv(('Error'), ('No account receivable could be found on customer %s' % partner.name))
         date_invoice = datetime.today().strftime('%Y-%m-%d')
 
-        app_vals = {
-            'individual_cust': individual_cust,
-            'partner_id': partner_id,
-            'appoint_ref': self._get_elmnt_text(appointment, 'appointment_reference'),
-            'appoint_date': self._get_elmnt_text(appointment, 'appointment_date'),
-            'date_due': self._get_elmnt_text(appointment, 'pay_through_date'),
-            'account_id': account.id,
-            'date_invoice': date_invoice,
-            'type2': 'appointment',
-            'currency_id': partner.property_product_pricelist.currency_id.id,
-        }
+        onchange_partner = self.onchange_partner_id(cr, uid, [], 'out_invoice', partner_id, context=context)
+        app_vals = onchange_partner and onchange_partner.get('value', {})
+
+        app_vals.update({
+                'individual_cust': individual_cust,
+                'partner_id': partner_id,
+                'appoint_ref': self._get_elmnt_text(appointment, 'appointment_reference'),
+                'appoint_date': self._get_elmnt_text(appointment, 'appointment_date'),
+                'date_due': self._get_elmnt_text(appointment, 'pay_through_date'),
+                'account_id': account.id,
+                'date_invoice': date_invoice,
+                'type2': 'appointment',
+                'currency_id': partner.property_product_pricelist.currency_id.id,
+            })
 
         app_id = self.create(cr, uid, app_vals, context=context)
 
@@ -1035,12 +1041,14 @@ class account_invoice(osv.osv):
             if not account:
                 raise osv.except_osv(('Error'), ('No account receivable could be found on customer %s' % partner.name))
             pricelist_id = partner.property_product_pricelist.id
-            invoice_vals = {
-                'partner_id': partner_id,
-                'account_id': account.id,
-                'date_invoice': date_invoice,
-                'currency_id': partner.property_product_pricelist.currency_id.id,
-            }
+            onchange_partner = self.onchange_partner_id(cr, uid, [], 'out_invoice', partner_id, context=context)
+            invoice_vals = onchange_partner and onchange_partner.get('value', {})
+            invoice_vals.update({
+                    'partner_id': partner_id,
+                    'account_id': account.id,
+                    'date_invoice': date_invoice,
+                    'currency_id': partner.property_product_pricelist.currency_id.id,
+                })
             for vessel_id, invoices_by_product in invoice.iteritems():
                 invoice_id = invoice_model.create(cr, uid, invoice_vals, context=context)
                 invoice_ids.append(invoice_id)
