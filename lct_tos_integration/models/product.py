@@ -49,6 +49,9 @@ class product_product(osv.osv):
         if 'category_id' in properties:
             domain.append(('category_id', '=', properties['category_id']))
             del properties['category_id']
+        if properties.get('service_id'):
+            domain.append(('service_id', '=', properties['service_id']))
+            del properties['service_id']
 
         if ids is not None:
             if not ids:
