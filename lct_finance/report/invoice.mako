@@ -94,8 +94,8 @@
 						</td>
 						<td></td>
 						<td>${line.account_id.name}</td>
-						<td>${line.price_subtotal}</td>
 						<td></td>
+						<td>${line.price_subtotal}</td>
 					</tr>
 				%endfor
 				%for tax_line in invoice.tax_line:
@@ -107,8 +107,8 @@
 						</td>
 						<td></td>
 						<td>${tax_line.name}</td>
-						<td>${tax_line.amount}</td>
 						<td></td>
+						<td>${tax_line.amount}</td>
 					</tr>
 				%endfor
 				<tr>
@@ -127,8 +127,8 @@
 							${invoice.account_id.name}
 						%endif
 					</td>
-					<td></td>
 					<td>${invoice.amount_total}</td>
+					<td></td>
 				</tr>
 				<tr>
 					<td colspan="3">TOTAUX</td>
