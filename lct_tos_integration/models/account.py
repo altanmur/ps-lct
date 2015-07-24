@@ -495,9 +495,11 @@ class account_invoice(osv.osv):
         if p_type in ['RE', 'RS', 'RT', 'TH', 'HR']:
             type_xml_id = 'lct_product_type_reeferdg'
             service_xml_id = 'lct_product_service_stevedoringcharges'
-        else:
+        elif p_type in ['BU', 'GP', 'UT', 'PC', 'PF', 'TA', 'TN']:
             type_xml_id = 'lct_product_type_gp'
             service_xml_id = 'lct_product_service_stevedoringcharges'
+        else:
+            raise osv.except_osv(('Error'), ('Unknown container_type: %s') % (p_type,))
 
         imd_model = self.pool.get('ir.model.data')
         type_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', type_xml_id)
@@ -855,12 +857,12 @@ class account_invoice(osv.osv):
     def _get_vbl_type(self, cr, uid, p_type):
         imd_model = self.pool.get('ir.model.data')
         module = 'lct_tos_integration'
-        if p_type == 'GP':
+        if p_type in ['BU', 'GP', 'UT', 'PC', 'PF', 'TA', 'TN']:
             type_id = imd_model.get_record_id(cr, uid, module, 'lct_product_type_gp')
-        elif p_type == 'RE':
+        elif p_type in ['RE', 'RS', 'RT', 'TH', 'HR']:
             type_id = imd_model.get_record_id(cr, uid, module, 'lct_product_type_reeferdg')
         else:
-            type_id = False
+            raise osv.except_osv(('Error'), ('Unknown container_type: %s') % (p_type,))
         return type_id
 
     def _prepare_invoice_line_dict(self, invoice_lines, partner_id, vessel_id, product_id):
@@ -1225,12 +1227,12 @@ class account_invoice(osv.osv):
 
     def _get_yac_type(self, cr, uid, p_type):
         imd_model = self.pool.get('ir.model.data')
-        if p_type == 'GP':
+        if p_type in ['BU', 'GP', 'UT', 'PC', 'PF', 'TA', 'TN']:
             xml_id = 'lct_product_type_gp'
-        elif p_type == 'RE':
+        elif p_type in ['RE', 'RS', 'RT', 'TH', 'HR']:
             xml_id = 'lct_product_type_reeferdg'
         else:
-            return False
+            raise osv.except_osv(('Error'), ('Unknown container_type: %s') % (p_type,))
         return imd_model.get_record_id(cr, uid, 'lct_tos_integration', xml_id)
 
     def xml_to_yac(self, cr, uid, imp_data_id, context=None):
