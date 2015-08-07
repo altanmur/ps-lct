@@ -94,8 +94,14 @@
 						</td>
 						<td></td>
 						<td>${line.account_id.name}</td>
-						<td>${line.price_subtotal}</td>
-						<td></td>
+						%if invoice.type == 'out_invoice':
+							<td>${line.price_subtotal}</td>
+							<td></td>
+						%endif
+						%if invoice.type == 'in_invoice':
+							<td></td>
+							<td>${line.price_subtotal}</td>
+						%endif
 					</tr>
 				%endfor
 				%for tax_line in invoice.tax_line:
@@ -107,8 +113,14 @@
 						</td>
 						<td></td>
 						<td>${tax_line.name}</td>
-						<td>${tax_line.amount}</td>
-						<td></td>
+						%if invoice.type == 'out_invoice':
+							<td>${tax_line.amount}</td>
+							<td></td>
+						%endif
+						%if invoice.type == 'in_invoice':
+							<td></td>
+							<td>${tax_line.amount}</td>
+						%endif
 					</tr>
 				%endfor
 				<tr>
@@ -127,8 +139,14 @@
 							${invoice.account_id.name}
 						%endif
 					</td>
-					<td></td>
-					<td>${invoice.amount_total}</td>
+					%if invoice.type == 'out_invoice':
+						<td></td>
+						<td>${invoice.amount_total}</td>
+					%endif
+					%if invoice.type == 'in_invoice':
+						<td>${invoice.amount_total}</td>
+						<td></td>
+					%endif
 				</tr>
 				<tr>
 					<td colspan="3">TOTAUX</td>
