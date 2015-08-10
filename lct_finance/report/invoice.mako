@@ -95,12 +95,12 @@
 						<td></td>
 						<td>${line.account_id.name}</td>
 						%if invoice.type == 'out_invoice':
-							<td>${line.price_subtotal}</td>
 							<td></td>
+							<td>${line.price_subtotal}</td>
 						%endif
 						%if invoice.type == 'in_invoice':
-							<td></td>
 							<td>${line.price_subtotal}</td>
+							<td></td>
 						%endif
 					</tr>
 				%endfor
@@ -114,12 +114,12 @@
 						<td></td>
 						<td>${tax_line.name}</td>
 						%if invoice.type == 'out_invoice':
-							<td>${tax_line.amount}</td>
 							<td></td>
+							<td>${tax_line.amount}</td>
 						%endif
 						%if invoice.type == 'in_invoice':
-							<td></td>
 							<td>${tax_line.amount}</td>
+							<td></td>
 						%endif
 					</tr>
 				%endfor
@@ -140,12 +140,12 @@
 						%endif
 					</td>
 					%if invoice.type == 'out_invoice':
-						<td></td>
 						<td>${invoice.amount_total}</td>
+						<td></td>
 					%endif
 					%if invoice.type == 'in_invoice':
-						<td>${invoice.amount_total}</td>
 						<td></td>
+						<td>${invoice.amount_total}</td>
 					%endif
 				</tr>
 				<tr>
