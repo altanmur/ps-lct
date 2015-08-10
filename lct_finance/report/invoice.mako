@@ -94,11 +94,11 @@
 						</td>
 						<td></td>
 						<td>${line.account_id.name}</td>
-						%if invoice.type == 'out_invoice':
+						%if invoice.type in ['out_invoice', 'in_refund']:
 							<td></td>
 							<td>${line.price_subtotal}</td>
 						%endif
-						%if invoice.type == 'in_invoice':
+						%if invoice.type in ['in_invoice', 'out_refund']:
 							<td>${line.price_subtotal}</td>
 							<td></td>
 						%endif
@@ -113,11 +113,11 @@
 						</td>
 						<td></td>
 						<td>${tax_line.name}</td>
-						%if invoice.type == 'out_invoice':
+						%if invoice.type in ['out_invoice', 'in_refund']:
 							<td></td>
 							<td>${tax_line.amount}</td>
 						%endif
-						%if invoice.type == 'in_invoice':
+						%if invoice.type in ['in_invoice', 'out_refund']:
 							<td>${tax_line.amount}</td>
 							<td></td>
 						%endif
@@ -139,11 +139,11 @@
 							${invoice.account_id.name}
 						%endif
 					</td>
-					%if invoice.type == 'out_invoice':
+					%if invoice.type in ['out_invoice', 'in_refund']:
 						<td>${invoice.amount_total}</td>
 						<td></td>
 					%endif
-					%if invoice.type == 'in_invoice':
+					%if invoice.type in ['in_invoice', 'out_refund']:
 						<td></td>
 						<td>${invoice.amount_total}</td>
 					%endif
