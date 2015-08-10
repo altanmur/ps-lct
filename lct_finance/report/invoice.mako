@@ -94,8 +94,14 @@
 						</td>
 						<td></td>
 						<td>${line.account_id.name}</td>
-						<td></td>
-						<td>${line.price_subtotal}</td>
+						%if invoice.type in ['out_invoice', 'in_refund']:
+							<td></td>
+							<td>${line.price_subtotal}</td>
+						%endif
+						%if invoice.type in ['in_invoice', 'out_refund']:
+							<td>${line.price_subtotal}</td>
+							<td></td>
+						%endif
 					</tr>
 				%endfor
 				%for tax_line in invoice.tax_line:
@@ -107,8 +113,14 @@
 						</td>
 						<td></td>
 						<td>${tax_line.name}</td>
-						<td></td>
-						<td>${tax_line.amount}</td>
+						%if invoice.type in ['out_invoice', 'in_refund']:
+							<td></td>
+							<td>${tax_line.amount}</td>
+						%endif
+						%if invoice.type in ['in_invoice', 'out_refund']:
+							<td>${tax_line.amount}</td>
+							<td></td>
+						%endif
 					</tr>
 				%endfor
 				<tr>
@@ -127,8 +139,14 @@
 							${invoice.account_id.name}
 						%endif
 					</td>
-					<td>${invoice.amount_total}</td>
-					<td></td>
+					%if invoice.type in ['out_invoice', 'in_refund']:
+						<td>${invoice.amount_total}</td>
+						<td></td>
+					%endif
+					%if invoice.type in ['in_invoice', 'out_refund']:
+						<td></td>
+						<td>${invoice.amount_total}</td>
+					%endif
 				</tr>
 				<tr>
 					<td colspan="3">TOTAUX</td>
