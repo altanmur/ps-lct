@@ -57,7 +57,7 @@
 				<tr>
 					<td></td>
 					<td></td>
-					<th style="text-decoration:underline;">MONTANT FCFA : </th>
+					<th style="text-decoration:underline;">MONTANT ${invoice.currency_id.name} : </th>
 					<td class="boxed data">${invoice.amount_total}</td>
 				</tr>
 				<tr>
