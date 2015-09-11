@@ -363,4 +363,173 @@ class general_ledger_xls(report_xls):
 general_ledger_xls('report.xls.general_ledger', 'account.account',
     parser=general_ledger_xls_parser)
 
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+
+from openpyxl import Workbook
+from openpyxl.styles import Style, Font, Alignment, Border, Side, colors
+import cStringIO
+
+from openerp import pooler
+from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
+from openerp.report.report_sxw import report_sxw
+
+COLUMN_WIDTH = 15
+
+class general_ledger_xlsx_parser(general_ledger):
+
+    def __init__(self, cr, uid, name, context):
+        super(general_ledger_xlsx_parser, self).__init__(cr, uid, name, context=context)
+        self.context = context
+        self.localcontext.update({
+            'datetime': datetime,
+        })
+
+
+class general_ledger_xlsx(report_sxw):
+
+    def __init__(self, name, table, rml=False, parser=False, header=True, store=False):
+        super(general_ledger_xlsx, self).__init__(name, table, rml, parser, header, store)
+        alignment_center = Alignment(horizontal='center')
+        self.styles = {
+            'normal': Style(font=Font(name='Arial', size=10)),
+            'title': Style(font=Font(bold=True, name='Arial', size=12), alignment=alignment_center),
+            'label': Style(font=Font(bold=True, name='Arial', size=10), alignment=alignment_center),
+            'label2': Style(font=Font(bold=True, name='Arial', size=10), alignment=alignment_center, border=Border(bottom=Side(border_style='thin', color=colors.BLACK, ))),
+        }
+
+        self.style_classes = {
+            'font': Font,
+            'alignment': Alignment,
+            'border': Border
+        }
+
+    def _get_style(self, name=None):
+        if name not in self.styles:
+            name = 'normal'
+        return self.styles[name]
+
+    def _set_cell(self, ws, pos1, pos2=None, value=None, style=None):
+        if pos2 is not None:
+            ws.merge_cells(None, *(pos1 + pos2))
+
+        cell = ws.cell(None, *pos1)
+        cell.value = value
+        cell.style = self._get_style(style)
+
+    def create(self, cr, uid, ids, data, context=None):
+        self.pool = pooler.get_pool(cr.dbname)
+        self.cr = cr
+        self.uid = uid
+        report_obj = self.pool.get('ir.actions.report.xml')
+        report_ids = report_obj.search(
+            cr, uid, [('report_name', '=', self.name[7:])], context=context)
+        self.table = data.get('model') or self.table
+        return self.create_source_xlsx(cr, uid, ids, data, context)
+
+    def create_source_xlsx(self, cr, uid, ids, data, context=None):
+        if not context:
+            context = {}
+        parser_instance = self.parser(cr, uid, self.name2, context)
+        self.parser_instance = parser_instance
+        self.context = context
+        objs = self.getObjects(cr, uid, ids, context)
+        parser_instance.set_context(objs, data, ids, 'xls')
+        objs = parser_instance.localcontext['objects']
+
+        wb = Workbook()
+        local_context = parser_instance.localcontext
+
+        self.generate_xlsx_report(parser_instance.localcontext, data, objs, wb)
+
+        n = cStringIO.StringIO()
+        wb.save(n)
+        n.seek(0)
+        return (n.read(), 'xlsx')
+
+    def _write_header(self, parser, data, objects, ws):
+        self._set_cell(ws, [1, 1], [1, 9], "General Ledger", style='title')
+
+        display_account = {
+            'all': 'All',
+            'movement': 'With movements',
+            'not_zero': 'With balance is not equal to 0'
+        }[data['form']['display_account']]
+
+        filter_by = data['form']['filter']
+        if filter_by == 'filter_date':
+            filter_cells = [
+                ([(4, 7)], 'Start Date'),
+                ([(4, 8)], 'End Date'),
+                ([(5, 7)], parser['get_start_date'](data)),
+                ([(5, 8)], parser['get_end_date'](data)),
+            ]
+        elif filter_by == 'filter_period':
+            filter_cells = [
+                ([(4, 7)], 'Start Period'),
+                ([(4, 8)], 'End Period'),
+                ([(5, 7)], parser['get_start_period'](data)),
+                ([(5, 8)], parser['get_end_period'](data)),
+            ]
+        else:
+            filter_cells = [
+                ([(4, 7), (4, 8)], "No filters"),
+            ]
+
+        cells_by_style = {
+            'label': [
+                ([(3, 1), (3, 2)], "Chart of Accounts"),
+                ([(3, 3)], "Fiscal Year"),
+                ([(3, 4), (3, 5)], "Journals"),
+                ([(3, 6)], "Display Account"),
+                ([(3, 7), (3, 8)], "Filter By"),
+                ([(3, 9)], "Entries Sorted By"),
+                ([(3, 10)], "Target Moves"),
+            ],
+            'normal': [
+                ([(4, 1), (4, 2)], objects and objects[0].name),
+                ([(4, 3)], parser['get_fiscalyear'](data)),
+                ([(4, 4), (4, 5)], ', '.join([ lt or '' for lt in parser['get_journal'](data) ])),
+                ([(4, 6)], display_account),
+                ([(4, 9)], parser['get_sortby'](data)),
+                ([(4, 10)], parser['get_target_move'](data)),
+            ] + filter_cells,
+            'label2': [
+                ([(6, 1)], "Date"),
+                ([(6, 2)], "Code"),
+                ([(6, 3)], "Period"),
+                ([(6, 4)], "JRNL"),
+                ([(6, 5)], "Partner"),
+                ([(6, 6)], "Move"),
+                ([(6, 7)], "Entry Label"),
+                ([(6, 8)], "Debit"),
+                ([(6, 9)], "Credit"),
+                ([(6, 10)], "Solde"),
+            ]
+        }
+
+        for style, cells in cells_by_style.iteritems():
+            for cell in cells:
+                self._set_cell(ws, *cell[0], value=cell[1], style=style)
+
+    def _format_sheet(self, ws):
+        for i in xrange(10):
+            ws.cell(row=1, column=i+1)
+        for dimension in ws.column_dimensions.itervalues():
+            dimension.width = COLUMN_WIDTH
+
+    def generate_xlsx_report(self, parser, data, objects, wb):
+        """
+            parser: parser
+            data: {}
+            objects: account.account browse objects
+            wb: xlsx workbook
+        """
+
+        ws = wb.active
+
+        self._format_sheet(ws)
+
+        self._write_header(parser, data, objects, ws)
+
+
+general_ledger_xlsx('report.xlsx.general_ledger', 'account.account',
+    parser=general_ledger_xlsx_parser)
