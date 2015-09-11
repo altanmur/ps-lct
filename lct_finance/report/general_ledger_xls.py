@@ -365,7 +365,7 @@ general_ledger_xls('report.xls.general_ledger', 'account.account',
 
 
 from openpyxl import Workbook
-from openpyxl.styles import Style, Font, Alignment, Border, Side, colors
+from openpyxl.styles import Style, Font, Alignment, Border, Side, PatternFill, colors
 import cStringIO
 
 from openerp import pooler
@@ -393,7 +393,10 @@ class general_ledger_xlsx(report_sxw):
             'normal': Style(font=Font(name='Arial', size=10)),
             'title': Style(font=Font(bold=True, name='Arial', size=12), alignment=alignment_center),
             'label': Style(font=Font(bold=True, name='Arial', size=10), alignment=alignment_center),
-            'label2': Style(font=Font(bold=True, name='Arial', size=10), alignment=alignment_center, border=Border(bottom=Side(border_style='thin', color=colors.BLACK, ))),
+            'label2': Style(font=Font(bold=True, name='Arial', size=10), alignment=alignment_center,
+                            border=Border(bottom=Side(border_style='thin', color=colors.BLACK)),
+                            fill=PatternFill(fgColor=colors.Color(indexed=26), patternType='solid')),
+            'account_header': Style(font=Font(bold=True, name='Arial', size=10)),
         }
 
         self.style_classes = {
@@ -415,13 +418,18 @@ class general_ledger_xlsx(report_sxw):
         cell.value = value
         cell.style = self._get_style(style)
 
+    def _set_cells(self, ws, cells_by_style):
+        for style, cells in cells_by_style.iteritems():
+            for cell in cells:
+                self._set_cell(ws, *cell[0], value=cell[1], style=style)
+
     def _format_sheet(self, ws):
         for i in xrange(10):
             ws.cell(row=1, column=i+1)
         for dimension in ws.column_dimensions.itervalues():
             dimension.width = COLUMN_WIDTH
 
-    def _write_header(self, parser, data, objects, ws):
+    def _write_header(self, parser, data, chart_of_account, ws):
         self._set_cell(ws, [1, 1], [1, 9], "General Ledger", style='title')
 
         display_account = {
@@ -461,7 +469,7 @@ class general_ledger_xlsx(report_sxw):
                 ([(3, 10)], "Target Moves"),
             ],
             'normal': [
-                ([(4, 1), (4, 2)], objects and objects[0].name),
+                ([(4, 1), (4, 2)], chart_of_account.name),
                 ([(4, 3)], parser['get_fiscalyear'](data)),
                 ([(4, 4), (4, 5)], ', '.join([ lt or '' for lt in parser['get_journal'](data) ])),
                 ([(4, 6)], display_account),
@@ -481,22 +489,55 @@ class general_ledger_xlsx(report_sxw):
                 ([(6, 10)], "Solde"),
             ]
         }
+        self._set_cells(ws, cells_by_style)
 
-        for style, cells in cells_by_style.iteritems():
-            for cell in cells:
-                self._set_cell(ws, *cell[0], value=cell[1], style=style)
+    def _write_lines(self, parser, data, chart_of_account, ws):
+        current_row = 7
+        for account in parser['get_children_accounts'](chart_of_account):
+            debit = parser['sum_debit_account'](account)
+            credit = parser['sum_credit_account'](account)
+            balance = parser['sum_balance_account'](account)
+
+            cells = {
+                'account_header': [
+                    ([(current_row, 2)], "%s %s" % (account.code, account.name)),
+                    ([(current_row, 3), (current_row, 7)], None),
+                    ([(current_row, 8)], debit),
+                    ([(current_row, 9)], credit),
+                    ([(current_row, 10)], balance),
+                ],
+            }
+            current_row += 1
+            self._set_cells(ws, cells)
+
+            code = account.code
+            lines = parser['lines'](account)
+
+            for line in lines:
+                cells = {
+                    'normal': [
+                        ([(current_row, 1)], line['ldate'].split()[0]),
+                        ([(current_row, 2)], code),
+                        ([(current_row, 3)], line['period_code']),
+                        ([(current_row, 4)], line['lcode']),
+                        ([(current_row, 5)], line['partner_name']),
+                        ([(current_row, 6)], line['move']),
+                        ([(current_row, 7)], line['lname']),
+                        ([(current_row, 8)], line['debit']),
+                        ([(current_row, 9)], line['credit']),
+                        ([(current_row, 10)], line['progress']),
+                    ]
+                }
+                self._set_cells(ws, cells)
+                current_row += 1
 
     def generate_xlsx_report(self, parser, data, objects, wb):
-        """
-            parser: parser
-            data: {}
-            objects: account.account browse objects
-            wb: xlsx workbook
-        """
-
+        if not objects:
+            return
         ws = wb.active
         self._format_sheet(ws)
-        self._write_header(parser, data, objects, ws)
+        self._write_header(parser, data, objects[0], ws)
+        self._write_lines(parser, data, objects[0], ws)
 
     def create_source_xlsx(self, cr, uid, ids, data, context=None):
         if not context:
