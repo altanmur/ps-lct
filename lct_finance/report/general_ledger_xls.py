@@ -415,35 +415,11 @@ class general_ledger_xlsx(report_sxw):
         cell.value = value
         cell.style = self._get_style(style)
 
-    def create(self, cr, uid, ids, data, context=None):
-        self.pool = pooler.get_pool(cr.dbname)
-        self.cr = cr
-        self.uid = uid
-        report_obj = self.pool.get('ir.actions.report.xml')
-        report_ids = report_obj.search(
-            cr, uid, [('report_name', '=', self.name[7:])], context=context)
-        self.table = data.get('model') or self.table
-        return self.create_source_xlsx(cr, uid, ids, data, context)
-
-    def create_source_xlsx(self, cr, uid, ids, data, context=None):
-        if not context:
-            context = {}
-        parser_instance = self.parser(cr, uid, self.name2, context)
-        self.parser_instance = parser_instance
-        self.context = context
-        objs = self.getObjects(cr, uid, ids, context)
-        parser_instance.set_context(objs, data, ids, 'xls')
-        objs = parser_instance.localcontext['objects']
-
-        wb = Workbook()
-        local_context = parser_instance.localcontext
-
-        self.generate_xlsx_report(parser_instance.localcontext, data, objs, wb)
-
-        n = cStringIO.StringIO()
-        wb.save(n)
-        n.seek(0)
-        return (n.read(), 'xlsx')
+    def _format_sheet(self, ws):
+        for i in xrange(10):
+            ws.cell(row=1, column=i+1)
+        for dimension in ws.column_dimensions.itervalues():
+            dimension.width = COLUMN_WIDTH
 
     def _write_header(self, parser, data, objects, ws):
         self._set_cell(ws, [1, 1], [1, 9], "General Ledger", style='title')
@@ -510,12 +486,6 @@ class general_ledger_xlsx(report_sxw):
             for cell in cells:
                 self._set_cell(ws, *cell[0], value=cell[1], style=style)
 
-    def _format_sheet(self, ws):
-        for i in xrange(10):
-            ws.cell(row=1, column=i+1)
-        for dimension in ws.column_dimensions.itervalues():
-            dimension.width = COLUMN_WIDTH
-
     def generate_xlsx_report(self, parser, data, objects, wb):
         """
             parser: parser
@@ -525,10 +495,38 @@ class general_ledger_xlsx(report_sxw):
         """
 
         ws = wb.active
-
         self._format_sheet(ws)
-
         self._write_header(parser, data, objects, ws)
+
+    def create_source_xlsx(self, cr, uid, ids, data, context=None):
+        if not context:
+            context = {}
+        parser_instance = self.parser(cr, uid, self.name2, context)
+        self.parser_instance = parser_instance
+        self.context = context
+        objs = self.getObjects(cr, uid, ids, context)
+        parser_instance.set_context(objs, data, ids, 'xls')
+        objs = parser_instance.localcontext['objects']
+
+        wb = Workbook()
+        local_context = parser_instance.localcontext
+
+        self.generate_xlsx_report(parser_instance.localcontext, data, objs, wb)
+
+        n = cStringIO.StringIO()
+        wb.save(n)
+        n.seek(0)
+        return (n.read(), 'xlsx')
+
+    def create(self, cr, uid, ids, data, context=None):
+        self.pool = pooler.get_pool(cr.dbname)
+        self.cr = cr
+        self.uid = uid
+        report_obj = self.pool.get('ir.actions.report.xml')
+        report_ids = report_obj.search(
+            cr, uid, [('report_name', '=', self.name[7:])], context=context)
+        self.table = data.get('model') or self.table
+        return self.create_source_xlsx(cr, uid, ids, data, context)
 
 
 general_ledger_xlsx('report.xlsx.general_ledger', 'account.account',
