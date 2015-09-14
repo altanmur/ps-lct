@@ -48,6 +48,11 @@ class account_report_general_ledger(osv.osv_memory):
         data['form'].update(self.read(cr, uid, ids, ['landscape',  'initial_balance', 'amount_currency', 'sortby'])[0])
         if not data['form']['fiscalyear_id']:# GTK client problem onchange does not consider in save record
             data['form'].update({'initial_balance': False})
+        if context.get('xlsx_export'):
+            return {'type': 'ir.actions.report.xml',
+                    'report_name': 'xlsx.general_ledger',
+                    'datas': data,
+                    'context': context}
         if context.get('xls_export'):
             return {'type': 'ir.actions.report.xml',
                     'report_name': 'xls.general_ledger',
