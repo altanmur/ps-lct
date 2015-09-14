@@ -25,7 +25,7 @@
             <field name="model">account.asset.asset</field>
             <field name="arch" type="xml">
                 <field position="replace" name="purchase_date">
-                	<field name="purchase_date" string="Date of 1st Depreciation" />
+                	<field name="purchase_date" string="Purchase date" />
                 </field>
             </field>
         </record>
