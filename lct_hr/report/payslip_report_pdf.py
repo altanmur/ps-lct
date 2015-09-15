@@ -20,7 +20,7 @@
 ##############################################################################
 
 from report import report_sxw
-from datetime import datetime
+from datetime import datetime,timedelta
 from collections import OrderedDict
 
 class payslip_report_pdf(report_sxw.rml_parse):
@@ -128,18 +128,32 @@ class payslip_report_pdf(report_sxw.rml_parse):
         patronal_costs_rule_id = imd_model.get_object_reference(cr, uid, 'lct_hr', 'hr_salary_rule_33')[1]
         net_salary_rule_id = imd_model.get_object_reference(cr, uid, 'lct_hr', 'hr_salary_rule_27')[1]
         benefits_in_kind_rule_id = imd_model.get_object_reference(cr, uid, 'lct_hr', 'hr_salary_rule_29')[1]
+        
+        resource_calendar_week_id = imd_model.get_object_reference(cr, uid, 'lct_hr', 'working_week')[1]
+        resource_calendar_week = self.pool.get('resource.calendar').browse(cr, uid, resource_calendar_week_id, context=context)
+        
 
         gross = sum(x.total for x in lines if x.salary_rule_id.id == gross_rule_id)
         salarial_costs = sum(x.total for x in lines if x.salary_rule_id.id == salarial_costs_rule_id)
         patronal_costs = sum(x.total for x in lines if x.salary_rule_id.id == patronal_costs_rule_id)
         net_salary = sum(x.total for x in lines if x.salary_rule_id.id == net_salary_rule_id)
         benefits_in_kind = sum(x.total for x in lines if x.salary_rule_id.id == benefits_in_kind_rule_id)
-        # For now, it's 160, except the 1st month, when it's prorata.
-        days_in_service = (datetime.strptime(payslip.date_to, '%Y-%m-%d') \
-            - datetime.strptime(payslip.employee_id.start_date, '%Y-%m-%d')).days
-        days_in_month = (datetime.strptime(payslip.date_to, '%Y-%m-%d') \
-            - datetime.strptime(payslip.date_from, '%Y-%m-%d')).days
-        worked_hours = int(160 * min(1, float(days_in_service) / days_in_month))
+        # For now, it's 160h, except the 1st month, when it's prorata.
+        current_day = max(datetime.strptime(payslip.date_from, '%Y-%m-%d'),datetime.strptime(payslip.employee_id.start_date, '%Y-%m-%d'))
+        worked_hours = 0
+        days_in_month = 0
+        leaves = self.pool.get('resource.calendar')._get_leaves(cr, uid, resource_calendar_week_id, False) 
+        leaves = [datetime.strptime(leave, '%Y-%m-%d') for leave in leaves]
+        personal_leaves = self.pool.get('resource.calendar')._get_leaves(cr, uid, resource_calendar_week_id, payslip.employee_id.resource_id.id) 
+        personal_leaves = [datetime.strptime(leave, '%Y-%m-%d') for leave in personal_leaves]
+
+        while current_day <= datetime.strptime(payslip.date_to, '%Y-%m-%d'):
+            if current_day not in set(leaves + personal_leaves):
+                worked_hours += self.pool.get('resource.calendar').working_hours_on_day(cr, uid, resource_calendar_week, current_day, context=context)
+                if self.pool.get('resource.calendar').working_hours_on_day(cr, uid, resource_calendar_week, current_day, context=context):
+                    days_in_month += 1
+            current_day += timedelta(days=1)
+
         # worked_hours = sum([x.number_of_hours for x in payslip.worked_days_line_ids])
         worked_days = sum([x.number_of_days for x in payslip.worked_days_line_ids])
         if not yearly:

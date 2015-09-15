@@ -29,16 +29,22 @@ class payslip_report(TransientModel):
     _name = 'payslip_report'
     _description = "Payslip report"
 
+        
     _columns = {
         'export_selected_only': fields.boolean('Export selected payslips only'),
         'dt_start': fields.date('Start date'),
         'dt_end': fields.date('End date'),
+        'sort_by': fields.selection([
+            ('alphabetical','Alphabetical'),
+            ('registration', 'Registration number')], string="Sort By"),
+        'single_active': fields.boolean('Single active id?'),
     }
 
     _defaults = {
         'export_selected_only': True,
         'dt_start': lambda self, *args, **kwargs: self._get_dt_start(*args, **kwargs),
         'dt_end': lambda self, *args, **kwargs: self._get_dt_end(*args, **kwargs),
+        'single_active': lambda self, *args, **kwargs: self._compute_active(*args, **kwargs),
     }
 
     def _get_dt_start(self, cr, uid, context=None):
@@ -49,6 +55,9 @@ class payslip_report(TransientModel):
         end_of_month = (date.today() + relativedelta(months=1)).replace(day=1)
         return end_of_month.strftime("%Y-%m-%d")
 
+    def _compute_active(self, cr, uid, context=None):
+        return len(context.get('active_ids')) == 1
+
     def print_report(self, cr, uid, ids, context=None):
         signature = self.pool.get('hr.config.settings')\
                     .get_payslip_signature_big(cr, uid, ids, context=context)
@@ -56,10 +65,24 @@ class payslip_report(TransientModel):
             payslip_ids = []
             if report.export_selected_only:
                 payslip_ids = context.get('active_ids')
+                payslips = self.pool.get('hr.payslip').browse(cr, uid, payslip_ids, context=context)
+                if report.sort_by == 'registration':
+                    payslips = sorted(payslips, key=lambda r: r.employee_id.reg_nbr)
+                    payslip_ids = [x.id for x in payslips]
+                elif report.sort_by == 'alphabetical':
+                    payslips = sorted(payslips, key=lambda r: r.employee_id.name)
+                    payslip_ids = [x.id for x in payslips]
             else:
                 payslip_ids = self.pool.get('hr.payslip').search(cr, uid,
                     [('date_from', '>=', report.dt_start),
                     ('date_to', '<=', report.dt_end)], context=context)
+                payslips = self.pool.get('hr.payslip').browse(cr, uid, payslip_ids, context=context)
+                if report.sort_by == 'registration':
+                    payslips = sorted(payslips, key=lambda r: r.employee_id.reg_nbr)
+                    payslip_ids = [x.id for x in payslips]
+                elif report.sort_by == 'alphabetical':
+                    payslips = sorted(payslips, key=lambda r: r.employee_id.name)
+                    payslip_ids = [x.id for x in payslips]
             context.update({
                 'active_ids': payslip_ids,
                 'signature': signature
@@ -69,3 +92,5 @@ class payslip_report(TransientModel):
                 'report_name': 'webkit.payslip_report_pdf',
                 'context': context,
             }
+
+

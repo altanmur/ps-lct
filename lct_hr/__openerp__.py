@@ -34,6 +34,7 @@ HR Module for LCT
         'data/hr.salary.rule.xml',
         'data/hr.payroll.structure.xml',
         'data/ir.header_webkit.xml',
+        'data/resource_calendar.xml',
         'views/hr_contract.xml',
         'views/hr_employee.xml',
         'views/res_config.xml',

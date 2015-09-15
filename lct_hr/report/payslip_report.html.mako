@@ -305,7 +305,7 @@
                     </td>
                     <td rowspan="2" style="text-align:left;width:2.267cm; " class="ce1">
                         <p>
-                            NOMBRE DE JOURS
+                            Nbe jours
                         </p>
                     </td>
                     <td rowspan="2" style="text-align:left;width:2.267cm; " class="ce1">
@@ -368,204 +368,206 @@
 
 
                 %for line in context.get('payslips').get(payslip).get('lines'):
-                % if line.category_id.code == 'NET':
-                <!-- -->
-                %else:
-                <tr class="ro2">
-                    <td style="text-align:left;" class="ce7">
-                        <p>
-                            ${line.code}
-                        </p>
-                    </td>
-                    <td colspan="2" style="text-align:left;" class="ce3">
-                        %if line.category_id.code in ['GROSS', 'TOTAL_EMPLOYEE_CONTRIB','TOTAL_EMPLOYER_CONTRIB','OTHER_DED_TOT']:
-                        <p style="font-weight:bold">
-                            ${line.name}
-                        </p>
+                    % if line.total or line.amount:
+                        % if line.category_id.code == 'NET':
+                        <!-- -->
                         %else:
-                        <p>
-                            ${line.name}
-                        </p>
+                        <tr class="ro2">
+                            <td style="text-align:left;" class="ce7">
+                                <p>
+                                    ${line.code}
+                                </p>
+                            </td>
+                            <td colspan="2" style="text-align:left;" class="ce3" nowrap>
+                                %if line.category_id.code in ['GROSS', 'TOTAL_EMPLOYEE_CONTRIB','TOTAL_EMPLOYER_CONTRIB','OTHER_DED_TOT']:
+                                <p style="font-weight:bold">
+                                    ${line.name}
+                                </p>
+                                %else:
+                                <p>
+                                    ${line.name}
+                                </p>
+                                %endif
+                            </td>
+                            <td style="text-align:right;" class="ce3">
+                                <p>
+                                    <!-- For now, leave empty. Will be used in Phase 2 when timesheeting is implemented. -->
+                                    <!-- ${context.get('payslips').get(payslip).get('worked_days')} -->
+                                </p>
+                            </td>
+
+                            <!-- From here on, it depends on which line we're printing, exactly... -->
+                            %if line.category_id.code in ['GROSS']:
+                                <td style="text-align:left;" class="ce3">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:right;" class="ce15">
+                                    <p style="font-weight: bold">
+                                        ${'{0:,.0f}'.format(line.total).replace(',', '.')}
+                                    </p>
+                                </td>
+                                <td style="text-align:left" class="ce15">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                            %elif line.category_id.code in ['TOTAL_EMPLOYEE_CONTRIB','OTHER_DED_TOT']:
+                                <td style="text-align:left;" class="ce3">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:right;" class="ce15">
+
+                                </td>
+                                <td style="text-align:right;" class="ce15">
+                                    <p style="font-weight: bold">
+                                        ${'{0:,.0f}'.format(line.total).replace(',', '.')}
+                                    </p>
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                            %elif line.category_id.code in ['TOTAL_EMPLOYER_CONTRIB']:
+                                <td style="text-align:left;" class="ce3">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:right;" class="ce15">
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:right;" class="ce15">
+                                    <p style="font-weight: bold">
+                                        ${'{0:,.0f}'.format(line.total).replace(',', '.')}
+                                    </p>
+                                </td>
+                            %elif line.category_id.code in ['CNSS']:
+                                <td style="text-align:right;" class="ce3">
+                                    <p>
+                                        ${'{0:,.0f}'.format(line.amount).replace(',', '.')}
+                                    </p>
+                                </td>
+                                <td style="text-align:right;" class="ce15">
+                                    <p>
+                                        ${line.amount_percentage}%
+                                    </p>
+                                </td>
+                                <td style="text-align:right;" class="ce15">
+                                </td>
+                                <td style="text-align:right;" class="ce15">
+                                    <p>
+                                        ${'{0:,.0f}'.format(line.total).replace(',', '.')}
+                                    </p>
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+                                </td>
+                            %elif line.category_id.code in ['TCS', 'IRPP', 'OTHER_DED']:
+                                <td style="text-align:left;" class="ce3">
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+                                </td>
+                                <td style="text-align:right;" class="ce15">
+                                </td>
+                                <td style="text-align:right;" class="ce15">
+                                    <p>
+                                        ${'{0:,.0f}'.format(line.total).replace(',', '.')}
+                                    </p>
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+                                </td>
+                            %elif line.category_id.code in ['EMPLOYER_CONTRIB']:
+                                <td style="text-align:right;" class="ce3">
+                                    <p>
+                                        ${'{0:,.0f}'.format(line.amount).replace(',', '.')}
+                                    </p>
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:right;" class="ce15">
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+                                </td>
+                                <td style="text-align:right;" class="ce15">
+                                    <p>
+                                        ${line.amount_percentage}%
+                                    </p>
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:right;" class="ce15">
+                                    <p>
+                                        ${'{0:,.0f}'.format(line.total).replace(',', '.')}
+                                    </p>
+                                </td>
+                            % else:
+                                <td style="text-align:left;" class="ce3">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:right;" class="ce15">
+                                    <p>
+                                        ${'{0:,.0f}'.format(line.total).replace(',', '.')}
+                                    </p>
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                                <td style="text-align:left;" class="ce15">
+
+                                </td>
+                            %endif
+                        </tr>
                         %endif
-                    </td>
-                    <td style="text-align:right;" class="ce3">
-                        <p>
-                            <!-- For now, leave empty. Will be used in Phase 2 when timesheeting is implemented. -->
-                            <!-- ${context.get('payslips').get(payslip).get('worked_days')} -->
-                        </p>
-                    </td>
-
-                    <!-- From here on, it depends on which line we're printing, exactly... -->
-                    %if line.category_id.code in ['GROSS']:
-                        <td style="text-align:left;" class="ce3">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:right;" class="ce15">
-                            <p style="font-weight: bold">
-                                ${'{0:,.0f}'.format(line.total).replace(',', '.')}
-                            </p>
-                        </td>
-                        <td style="text-align:left" class="ce15">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                    %elif line.category_id.code in ['TOTAL_EMPLOYEE_CONTRIB','OTHER_DED_TOT']:
-                        <td style="text-align:left;" class="ce3">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:right;" class="ce15">
-
-                        </td>
-                        <td style="text-align:right;" class="ce15">
-                            <p style="font-weight: bold">
-                                ${'{0:,.0f}'.format(line.total).replace(',', '.')}
-                            </p>
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                    %elif line.category_id.code in ['TOTAL_EMPLOYER_CONTRIB']:
-                        <td style="text-align:left;" class="ce3">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:right;" class="ce15">
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:right;" class="ce15">
-                            <p style="font-weight: bold">
-                                ${'{0:,.0f}'.format(line.total).replace(',', '.')}
-                            </p>
-                        </td>
-                    %elif line.category_id.code in ['CNSS']:
-                        <td style="text-align:right;" class="ce3">
-                            <p>
-                                ${'{0:,.0f}'.format(line.amount).replace(',', '.')}
-                            </p>
-                        </td>
-                        <td style="text-align:right;" class="ce15">
-                            <p>
-                                ${line.amount_percentage}%
-                            </p>
-                        </td>
-                        <td style="text-align:right;" class="ce15">
-                        </td>
-                        <td style="text-align:right;" class="ce15">
-                            <p>
-                                ${'{0:,.0f}'.format(line.total).replace(',', '.')}
-                            </p>
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-                        </td>
-                    %elif line.category_id.code in ['TCS', 'IRPP', 'OTHER_DED']:
-                        <td style="text-align:left;" class="ce3">
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-                        </td>
-                        <td style="text-align:right;" class="ce15">
-                        </td>
-                        <td style="text-align:right;" class="ce15">
-                            <p>
-                                ${'{0:,.0f}'.format(line.total).replace(',', '.')}
-                            </p>
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-                        </td>
-                    %elif line.category_id.code in ['EMPLOYER_CONTRIB']:
-                        <td style="text-align:right;" class="ce3">
-                            <p>
-                                ${'{0:,.0f}'.format(line.amount).replace(',', '.')}
-                            </p>
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:right;" class="ce15">
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-                        </td>
-                        <td style="text-align:right;" class="ce15">
-                            <p>
-                                ${line.amount_percentage}%
-                            </p>
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:right;" class="ce15">
-                            <p>
-                                ${'{0:,.0f}'.format(line.total).replace(',', '.')}
-                            </p>
-                        </td>
-                    % else:
-                        <td style="text-align:left;" class="ce3">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:right;" class="ce15">
-                            <p>
-                                ${'{0:,.0f}'.format(line.total).replace(',', '.')}
-                            </p>
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
-                        <td style="text-align:left;" class="ce15">
-
-                        </td>
                     %endif
-                </tr>
-                %endif
                 %endfor
 
 
