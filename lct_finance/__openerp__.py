@@ -45,6 +45,7 @@ Small modifications to the account and account_budget modules.
         'wizard/account_report_menu.xml',
         'wizard/cash_flow.xml',
         'wizard/depreciation_table.xml',
+        'wizard/vessel_revenue.xml',
         'wizard/liasse_fiscale.xml',
         'wizard/balance_sheet.xml',
         'wizard/profit_loss.xml',
