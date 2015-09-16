@@ -20,6 +20,7 @@
 ##############################################################################
 
 from openerp.osv import fields, osv
+from openerp.exceptions import Warning
 
 class account_report_general_ledger(osv.osv_memory):
     _inherit = "account.report.general.ledger"
@@ -54,10 +55,7 @@ class account_report_general_ledger(osv.osv_memory):
                     'datas': data,
                     'context': context}
         if context.get('xls_export'):
-            return {'type': 'ir.actions.report.xml',
-                    'report_name': 'xls.general_ledger',
-                    'datas': data,
-                    'context': context}
+            raise Warning("The xls report is deprecated, use the xlsx report")
         elif data['form']['landscape']:
             return { 'type': 'ir.actions.report.xml', 'report_name': 'account.general.ledger_landscape', 'datas': data}
         return { 'type': 'ir.actions.report.xml', 'report_name': 'account.general.ledger', 'datas': data}
