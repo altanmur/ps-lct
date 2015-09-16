@@ -888,6 +888,7 @@ class account_invoice(osv.osv):
         vbillings = ET.fromstring(content)
 
         invoice_lines = {}
+        isps_lines = {}
         for vbilling in vbillings.findall('vbilling'):
             partner_id = self._get_partner(cr, uid, vbilling, 'customer_id')
             partner = partner_model.browse(cr, uid, partner_id, context=context)
@@ -927,6 +928,7 @@ class account_invoice(osv.osv):
             lines = vbilling.find('lines')
             if lines is None:
                 continue
+            restow_qty = 0
             for line in lines.findall('line'):
                 partner_id = self._get_partner(cr, uid, line, 'container_customer_id', context=context)
 
@@ -937,7 +939,7 @@ class account_invoice(osv.osv):
                 category = self._get_elmnt_text(line, 'transaction_category_id')
                 if category == 'R':
                     partner_id = self._get_partner(cr, uid, vbilling, 'customer_id', context=context)
-
+                    restow_qty += 1
                 if category == 'T':
                     direction = self._get_elmnt_text(line, 'transaction_direction')
                     category_id, service_ids = self._get_vbl_category_service(cr, uid, category, direction)
@@ -1016,11 +1018,12 @@ class account_invoice(osv.osv):
                             invoice_lines[partner_id][vessel_id][expst_product_id].append(cont_nr_id)
 
                     pending_yac_model.write(cr, uid, pending_yac_ids, {'status': 'processed'}, context=context)
-
-        invoice_ids = self._create_invoices(cr, uid, invoice_lines, context=context)
+            isps_lines[vessel_id] = len(lines) - restow_qty
+        invoice_ids = self._create_invoices(cr, uid, invoice_lines, isps_lines, context=context)
         invoice_model.write(cr, uid, invoice_ids, {'type2': 'vessel'})
 
-    def _create_invoices(self, cr, uid, invoice_lines, context=None):
+    def _create_invoices(self, cr, uid, invoice_lines, isps_lines, context=None):
+
         partner_model = self.pool.get('res.partner')
         pricelist_model = self.pool.get('product.pricelist')
         invoice_model = self.pool.get('account.invoice')
@@ -1093,6 +1096,34 @@ class account_invoice(osv.osv):
                     })
                     line_id = invoice_line_model.create(cr, uid, line_vals, context=context)
                     cont_nr_model.write(cr, uid, cont_nr_ids, {'invoice_line_id': line_id}, context=context)
+
+                product_isps_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'isps')
+                product_isps = product_model.browse(cr, uid, product_isps_id, context=context)
+                if isps_lines.get(vessel_id,False):
+                    account_isps = product_isps.property_account_income or (product_isps.categ_id and product_isps.categ_id.property_account_income_categ) or False
+                    isps_line_vals = {
+                        'invoice_id': invoice_id,
+                        'product_id': product_isps_id,
+                        'name': product_isps.name,
+                        'quantity': isps_lines.get(vessel_id,False),
+                        'price_unit': product_isps.list_price,
+                        'account_id': account_isps.id,
+                    }
+                    invoice_line_model.create(cr, uid, isps_line_vals, context=context)
+
+                product_dockage_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'dockage_fixed')
+                product_dockage = product_model.browse(cr, uid, product_dockage_id, context=context)
+                account_dockage = product_dockage.property_account_income or (product_dockage.categ_id and product_dockage.categ_id.property_account_income_categ) or False
+                dockage_line_vals = {
+                    'invoice_id': invoice_id,
+                    'product_id': product_dockage_id,
+                    'name': product_dockage.name,
+                    'quantity': 1,
+                    'price_unit': product_dockage.list_price,
+                    'account_id': account_dockage.id,
+                }
+                invoice_line_model.create(cr, uid, dockage_line_vals, context=context)
+
         return invoice_ids
 
 
