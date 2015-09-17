@@ -126,6 +126,15 @@
                             <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and "Navire :" or '']]</para></td>
                             <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and o.vessel_id or '']]</para></td>
                         </tr><tr>
+                            <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and "Nom navire :" or '']]</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and o.vessel_name or '']]</para></td>
+                        </tr><tr>
+                            <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and "Voyage in :" or '']]</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and o.voyage_number_in or '']]</para></td>
+                        </tr><tr>
+                            <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and "Voyage out :" or '']]</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and o.voyage_number_out or '']]</para></td>
+                        </tr><tr>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and "Arrivée :" or '']]</para></td>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and formatLang(o.berth_time, date_time=True) or '']]</para></td>
                         </tr><tr>

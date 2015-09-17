@@ -34,6 +34,8 @@ class lct_tos_vessel(osv.Model):
         'vessel_in_voyage_number': fields.char('Vessel In Voyage Number'),
         'vessel_out_voyage_number': fields.char('Vessel Out Voyage Number'),
         'vessel_eta': fields.datetime('ETA'),
+        'loa': fields.integer('Length'),
+        'woa': fields.integer('Width'),
     }
 
     def xml_to_vessel(self, cr, uid, imp_data_id, context=None):
@@ -46,7 +48,6 @@ class lct_tos_vessel(osv.Model):
             vessel_eta = vessel.find('vessel_eta').text
             if self.search(cr, uid, [('vessel_id','=',vessel_id), ('vessel_eta','=',vessel_eta)], context=context):
                 raise osv.except_osv(('Error'), ('Another vessel with the same ID and ETA already exists.'))
-
             vals = {
                 'name': vessel.find('name').text,
                 'call_sign': vessel.find('call_sign').text,

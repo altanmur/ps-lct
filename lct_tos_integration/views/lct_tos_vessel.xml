@@ -13,6 +13,8 @@
                                 <field name="name" />
                                 <field name="call_sign" />
                                 <field name="lloyds_number" />
+                                <field name="loa" />
+                                <field name="woa" />
                             </group>
                             <group colspan="2" col="2">
                                 <field name="vessel_in_voyage_number"/>
