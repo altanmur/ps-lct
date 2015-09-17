@@ -11,6 +11,13 @@
       <field name="name">Dockage Quai Fixed Charge</field>
       <field name="category_id" ref="lct_product_category_dockage"/>
     </record>
+    <record id="reefer_electricity" model="product.product">
+      <field name="name">Reefer electricity</field>
+      <field name="uom_id" ref="product.product_uom_hour"/>
+      <field name="uom_po_id" ref="product.product_uom_hour"/>
+      <field name="service_id" ref="lct_product_service_reeferelectricity"/>
+    </record>
+
     <record id="import_storage_localimport_20_gp" model="product.product">
       <field name="name">Import Storage Local import 20 GP</field>
       <field name="category_id" ref="lct_product_category_import"/>
