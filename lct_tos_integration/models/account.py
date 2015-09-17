@@ -459,7 +459,7 @@ class account_invoice(osv.osv):
             raise osv.except_osv(('Error'), (invoice_map['partner_id'] + ' should be a number'))
         partner = self.pool.get('res.partner').browse(cr, uid, int(vals['partner_id']), context=context)
         if partner.exists():
-            onchange_partner = self.onchange_partner_id(cr, uid, [], 'out_invoice', partner_id, context=context)
+            onchange_partner = self.onchange_partner_id(cr, uid, [], 'out_invoice', partner.id, context=context)
             onchange_vals = onchange_partner and onchange_partner.get('value', {})
             onchange_vals.update(vals)
             vals = dict(onchange_vals, partner_id=partner.id)
