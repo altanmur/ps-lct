@@ -28,3 +28,11 @@ class account_move(orm.Model):
     _columns = {
         'create_date': fields.datetime("Creation Date", readonly=True),
     }
+
+class account_move_line(orm.Model):
+    _inherit = 'account.move.line'
+
+    _sql_constraints = [
+        ('credit_debit2', 'CHECK (1=1)', 'Allow credit or debit to be negative !'),
+    ]
+
