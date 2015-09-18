@@ -1076,6 +1076,7 @@ class account_invoice(osv.osv):
                     'invoice_id': invoice_id,
                 }
                 new_invoice_vals = {'vessel_id': vessel_id}
+                new_invoice_vals.update(self._get_data_from_last_vcl(cr, uid, vessel_id, context=context))
 
                 for product_id, cont_nr_ids in invoices_by_product.iteritems():
                     product = product_model.browse(cr, uid, product_id, context=context)
@@ -1340,6 +1341,20 @@ class account_invoice(osv.osv):
         invoice_model.write(cr, uid, invoice_ids, {'type2': 'yactivity'})
 
 
+    def _get_data_from_last_vcl(self, cr, uid, vessel_id, context=None):
+        vcl_billing_ids = self.search(cr, uid, [('type2','=','dockage'), ('vessel_id','=',vessel_id)] ,context=context)
+        invoice_vals = {}
+        if vcl_billing_ids:
+            vcl_billings = self.browse(cr, uid, vcl_billing_ids, context=context)
+            vcl_billings = sorted(vcl_billings, key=lambda x: x.date_invoice, reverse=True)
+            vcl_billing = vcl_billings[0]
+            invoice_vals = {
+                'voyage_number_out': vcl_billing.voyage_number_out,
+                'voyage_number_in': vcl_billing.voyage_number_in,
+                'loa': vcl_billing.loa,
+                'woa': vcl_billing.woa,
+                }
+        return invoice_vals
 
 class account_invoice_group(osv.osv_memory):
     _name = 'account.invoice.group'
