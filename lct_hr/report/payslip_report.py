@@ -56,7 +56,7 @@ class payslip_report(TransientModel):
         return end_of_month.strftime("%Y-%m-%d")
 
     def _compute_active(self, cr, uid, context=None):
-        return len(context.get('active_ids')) == 1
+        return context.get('active_ids', False) and len(context.get('active_ids')) == 1
 
     def print_report(self, cr, uid, ids, context=None):
         signature = self.pool.get('hr.config.settings')\
