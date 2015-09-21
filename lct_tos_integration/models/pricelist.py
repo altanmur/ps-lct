@@ -226,6 +226,8 @@ class product_pricelist(osv.Model):
                             if res['slab_rate']:
                                 for key in ['free_period', 'first_slab_last_day', 'second_slab_last_day']:
                                     res[key] = min(res[key] or 0, qty)
+                                if products_dict[product_id].additional_storage:
+                                    res['free_period'] = 0
                                 for key in ['price_discount_rate1', 'price_surcharge_rate1', 'price_discount_rate2', 'price_surcharge_rate2', 'price_discount_rate3', 'price_surcharge_rate3']:
                                     res[key] = res[key] or 0.0
 
