@@ -466,7 +466,7 @@ class account_invoice(osv.osv):
                 'voyage_number_in': 'voyage_number_in',
                 'voyage_number_out': 'voyage_number_out',
                 'loa': 'loa',
-                # 'woa': 'woa',
+                'woa': 'beam',
                 'off_window': 'off_window',
             }
         vals = {}
