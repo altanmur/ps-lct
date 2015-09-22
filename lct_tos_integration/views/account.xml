@@ -75,11 +75,18 @@
                             <field name="woa"/>
                         </group>
                     </page>
+                    <page string="Yard activity Billing Info" attrs="{'invisible':[('type2','!=','yactivity')]}">
+                        <group col="4">
+                            <field name="vessel_name_yac"/>
+                            <field name="vessel_id_yac"/>
+                            <field name="voyage_number_in_yac"/>
+                            <field name="voyage_number_out_yac"/>
+                            <field name="loa_yac"/>
+                            <field name="woa_yac"/>
+                        </group>
+                    </page>
                 </xpath>
-                <xpath expr="//field[@name='date_due']" position="after">
-                    <field name="vessel_id_yac" attrs="{'invisible': [('type2', '!=', 'yactivity')]}" />
-                    <field name="vessel_name_yac" attrs="{'invisible': [('type2', '!=', 'yactivity')]}" />
-                </xpath>
+                
                 <xpath expr="//field[@name='invoice_line']" position="attributes">
                     <attribute name="attrs">{'invisible':[('type2', 'in', ['vessel', 'appointment', 'dockage'])]}</attribute>
                 </xpath>
