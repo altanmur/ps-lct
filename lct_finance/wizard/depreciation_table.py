@@ -66,19 +66,23 @@ class depreciation_table(osv.osv_memory):
         ctx_jan1 = dict(context)
         ctx_jan1['date_to'] = str(self.today.year) + '-01-01'
         acc_jan1 = self._get_account(cr, uid, ids, code, context=ctx_jan1)
+        output = {key: [] for key in range(1,29)}
         if acc :
             sheet = self.sheet
             i = self.current_line
             sheet.write(i,1,acc.name,xl_module.line_left)
             sheet.write(i,2,acc.code)
             sheet.write(i,6,acc_jan1.balance)
+            output[6].append(acc_jan1.balance)
             for j in (13,14):
                 sheet.write(i,j,"",xl_module.black_line)
             for j in range(15,28):
                 sheet.write(i,j,"",xl_module.blue_line)
             sheet.write(i,28,acc.balance,xl_module.line_right)
+            output[28].append(acc.balance)
 
             self.current_line += 1
+        return output
 
     def _write_lines(self, cr, uid, ids, category_names, context=None) :
         i = self.current_line
@@ -97,6 +101,7 @@ class depreciation_table(osv.osv_memory):
         if not assets:
             self.current_line += 1
             return
+        output = {key: [] for key in range(1,29)}
         for asset in assets :
             purchase_date = datetime.strptime(asset.purchase_date_2,'%Y-%m-%d')
             if purchase_date > today:
@@ -125,23 +130,35 @@ class depreciation_table(osv.osv_memory):
             sheet.write(i,3,asset.allocation or "")
             sheet.write(i,4,purchase_date.strftime('%d/%m/%Y'),xl_module.line)
             sheet.write(i,5,purchase_value,xl_module.line)
-            sheet.write(i,6,pre_value if purchase_date.year < year else 0)
+            output[5].append(purchase_value)
+            sheet.write(i,6,pre_value if purchase_date.year < year else '')
+            output[6].append(pre_value if purchase_date.year < year else 0)
             sheet.write(i,7,purchase_value if purchase_date.year == year else '')
-            sheet.write(i,10,xl_module.list_sum([[i,5,+1],[i,8,-1]]),xl_module.line)
+            output[7].append(purchase_value if purchase_date.year == year else 0)
+            sheet.write(i,10,purchase_value,xl_module.line)
+            output[10].append(purchase_value)
             sheet.write(i,11,str(int(100.0/(asset.category_id.method_number/12.0))) + "%",xl_module.line)
-            sheet.write(i,12,xl_module.list_sum([[i,5,+1],[i,6,-1]]) if purchase_date.year < year else 0,xl_module.line)
+            sheet.write(i,12,purchase_value- pre_value if purchase_date.year < year else 0,xl_module.line)
+            output[12].append(purchase_value- pre_value if purchase_date.year < year else 0)
             sheet.write(i,13,an_dot,xl_module.black_line)
+            output[13].append(an_dot)
             sheet.write(i,14,sum(m_deprec),xl_module.black_red_line)
+            output[14].append(sum(m_deprec))
             for j in range(0,11):
                 sheet.write(i,15+j,m_deprec[j],xl_module.blue_line)
+                output[15+j].append(m_deprec[j])
+
             sheet.write(i,26,m_deprec[11],xl_module.blue_red_line)
+            output[26].append(m_deprec[11])
             sheet.write(i,27,sum(m_deprec),xl_module.blue_red_line)
+            output[27].append(sum(m_deprec))
             sheet.write(i,28,remaining_value,xl_module.line_right)
+            output[28].append(remaining_value)
             i += 1
         self.current_line = i
+        return output
 
-
-    def _write_total(self, title, i1, i2):
+    def _write_total(self, title, i1, i2,vals):
         self.current_line += 1
         i = self.current_line
         sheet = self.sheet
@@ -151,7 +168,6 @@ class depreciation_table(osv.osv_memory):
             sheet.write(i-1,j,"",xl_module.black_line)
         for j in range(15,28):
             sheet.write(i-1,j,"",xl_module.blue_line)
-        self.total_lines.append(self.current_line)
         sheet.row(self.current_line).height_mismatch = True
         sheet.row(self.current_line).height = 256*3
         sheet.write(self.current_line,1,title,xl_module.total_left)
@@ -159,16 +175,23 @@ class depreciation_table(osv.osv_memory):
             sheet.write(self.current_line,j,"",xl_module.total_center)
         if i1<=i2 :
             for j in (5,6,7,8,10,12) :
-                sheet.write(self.current_line,j,xl_module.range_sum(i1,j,i2,j),xl_module.total_center)
-            sheet.write(self.current_line,13,xl_module.range_sum(i1,13,i2,13),xl_module.total_black)
-            sheet.write(self.current_line,14,xl_module.range_sum(i1,14,i2,14),xl_module.total_black_red)
+                sheet.write(self.current_line,j,sum(vals[j]),xl_module.total_center)
+                self.total_lines[j].append(sum(vals[j]))
+            sheet.write(self.current_line,13,sum(vals[13]),xl_module.total_black)
+            self.total_lines[13].append(sum(vals[13]))
+            sheet.write(self.current_line,14,sum(vals[14]),xl_module.total_black_red)
+            self.total_lines[14].append(sum(vals[14]))
 
             for j in range(15,26) :
-                sheet.write(self.current_line,j,xl_module.range_sum(i1,j,i2,j),xl_module.total_blue)
+                sheet.write(self.current_line,j,sum(vals[j]),xl_module.total_blue)
+                self.total_lines[j].append(sum(vals[j]))
 
-            sheet.write(self.current_line,26,xl_module.range_sum(i1,26,i2,26),xl_module.total_blue_red)
-            sheet.write(self.current_line,27,xl_module.range_sum(i1,27,i2,27),xl_module.total_blue_red)
-            sheet.write(self.current_line,28,xl_module.range_sum(i1,28,i2,28),xl_module.total_right)
+            sheet.write(self.current_line,26,sum(vals[26]),xl_module.total_blue_red)
+            self.total_lines[26].append(sum(vals[26]))
+            sheet.write(self.current_line,27,sum(vals[27]),xl_module.total_blue_red)
+            self.total_lines[27].append(sum(vals[27]))
+            sheet.write(self.current_line,28,sum(vals[28]),xl_module.total_right)
+            self.total_lines[28].append(sum(vals[28]))
         self.current_line += 1
 
     def _write_total_total(self,title):
@@ -180,6 +203,9 @@ class depreciation_table(osv.osv_memory):
         sheet.row(self.current_line).height = 256*3
         sheet.write(self.current_line,1,title,xl_module.total_left)
         i = self.current_line
+        for j in (2,3,5) :
+            sheet.write(self.current_line,j,"",xl_module.total_center)
+        sheet.write(self.current_line,28,"",xl_module.line_right)
         for j in (13,14):
             sheet.write(i-1,j,"",xl_module.black_line)
         for j in range(15,28):
@@ -187,35 +213,15 @@ class depreciation_table(osv.osv_memory):
         for j in (4,9,11) :
             sheet.write(self.current_line,j,"",xl_module.total_center)
         for j in (6,7,8,10,12) :
-            cell_list = []
-            for k in self.total_lines :
-                cell_list.append([k,j,+1])
-            sheet.write(self.current_line,j,xl_module.list_sum(cell_list),xl_module.total_center)
-        cell_list = []
-        for k in self.total_lines :
-            cell_list.append([k,13,+1])
-        sheet.write(self.current_line,13,xl_module.list_sum(cell_list),xl_module.total_black)
-        cell_list = []
-        for k in self.total_lines :
-            cell_list.append([k,14,+1])
-        sheet.write(self.current_line,14,xl_module.list_sum(cell_list),xl_module.total_black)
+            sheet.write(self.current_line,j,sum(self.total_lines[j]),xl_module.total_center)
+        sheet.write(self.current_line,13,sum(self.total_lines[13]),xl_module.total_black)
+        sheet.write(self.current_line,14,sum(self.total_lines[14]),xl_module.total_black)
         for j in range(15,26) :
-            cell_list = []
-            for k in self.total_lines :
-                cell_list.append([k,j,+1])
-            sheet.write(self.current_line,j,xl_module.list_sum(cell_list),xl_module.total_blue)
-        cell_list = []
-        for k in self.total_lines :
-            cell_list.append([k,26,+1])
-        sheet.write(self.current_line,26,xl_module.list_sum(cell_list),xl_module.total_blue_red)
-        cell_list = []
-        for k in self.total_lines :
-            cell_list.append([k,27,+1])
-        sheet.write(self.current_line,27,xl_module.list_sum(cell_list),xl_module.total_blue_red)
-        cell_list = []
-        for k in self.total_lines :
-            cell_list.append([k,28,+1])
-        sheet.write(self.current_line,29,xl_module.list_sum(cell_list),xl_module.total_right)
+            sheet.write(self.current_line,j,sum(self.total_lines[j]),xl_module.total_blue)
+        sheet.write(self.current_line,26,sum(self.total_lines[26]),xl_module.total_blue_red)
+        sheet.write(self.current_line,27,sum(self.total_lines[27]),xl_module.total_blue_red)
+        sheet.write(self.current_line,29,sum(self.total_lines[28]),xl_module.total_right)
+        
         self.current_line += 1
 
 
@@ -223,7 +229,7 @@ class depreciation_table(osv.osv_memory):
 
         sheet = self.sheet
         self.current_line = 0
-        self.total_lines = []
+        self.total_lines = {key: [] for key in range(1,29)}
 
         # Date
         today = self.today
@@ -314,10 +320,11 @@ class depreciation_table(osv.osv_memory):
             sheet.write(i-1,j,"",xl_module.black_line)
         for j in range(15,28):
             sheet.write(i-1,j,"",xl_module.blue_line)
-        self._write_account(cr, uid, ids, '20110000', context=context)
-        self._write_account(cr, uid, ids, '20140000', context=context)
-        self._write_account(cr, uid, ids, '20280000', context=context)
-        self._write_total(u"Total Charges immobilisées",i,self.current_line-1)
+        vals1 = self._write_account(cr, uid, ids, '20110000', context=context)
+        vals2 = self._write_account(cr, uid, ids, '20140000', context=context)
+        vals3= self._write_account(cr, uid, ids, '20280000', context=context)
+        vals = {key: vals1[key]+vals2[key]+vals3[key] for key in vals1}
+        self._write_total(u"Total Charges immobilisées",i,self.current_line-1, vals)
 
 
         self.current_line = 14
@@ -327,8 +334,9 @@ class depreciation_table(osv.osv_memory):
         sheet.write(self.current_line,1,"Licences et Logiciels",xl_module.as_name)
         sheet.write(self.current_line,28,"",xl_module.line_right)
         self.current_line += 1
-        self._write_lines(cr, uid, ids, ("Licences", "Logiciels"), context=None)
-        self._write_total(u"Total logiciels",i,self.current_line-1)
+        i = self.current_line
+        vals = self._write_lines(cr, uid, ids, ("Licences", "Logiciels"), context=None)
+        self._write_total(u"Total logiciels",i,self.current_line-1, vals)
 
         # Bâtiments, Installation techn. Agencements
         sheet.row(self.current_line).height_mismatch = True
@@ -337,6 +345,7 @@ class depreciation_table(osv.osv_memory):
         sheet.write(self.current_line,28,"",xl_module.line_right)
         self.current_line += 1
         i = self.current_line
+        vals = {key: [] for key in range(1,29)}
         for j in (13,14):
             sheet.write(i-1,j,"",xl_module.black_line)
         for j in range(15,28):
@@ -346,35 +355,44 @@ class depreciation_table(osv.osv_memory):
             j = self.current_line
             sheet.write(j,1,"Terminal en cours de construction",xl_module.line_left)
             sheet.write(j,6,acc.balance)
+            vals[6].append(acc.balance)
             self.current_line += 1
             for k in (13,14):
                 sheet.write(j,k,"",xl_module.black_line)
             for k in range(15,28):
                 sheet.write(j,k,"",xl_module.blue_line)
             sheet.write(j,28,acc.balance,xl_module.line_right)
+            vals[28].append(acc.balance)
+
         acc = self._get_account(cr, uid, ids, '23910000', context=context)
         if acc :
             j = self.current_line
             sheet.write(j,1,u"Bâtiments et installations en cours",xl_module.line_left)
             sheet.write(j,6,acc.balance)
+            vals[6].append(acc.balance)
             self.current_line += 1
             for k in (13,14):
                 sheet.write(j,k,"",xl_module.black_line)
             for k in range(15,28):
                 sheet.write(j,k,"",xl_module.blue_line)
             sheet.write(j,28,acc.balance,xl_module.line_right)
+            vals[28].append(acc.balance)
+            
+
         acc = self._get_account(cr, uid, ids, '23400000', context=context)
         if acc :
             j = self.current_line
             sheet.write(j,1,u"Installations Techniques (Groupes élèctrogènes)",xl_module.line_left)
             sheet.write(j,6,acc.balance)
+            vals[6].append(acc.balance)
             self.current_line += 1
             for k in (13,14):
                 sheet.write(j,k,"",xl_module.black_line)
             for k in range(15,28):
                 sheet.write(j,k,"",xl_module.blue_line)
             sheet.write(j,28,acc.balance,xl_module.line_right)
-        self._write_total(u"Bâtiments, Installation techn. Agencements",i,self.current_line-1)
+            vals[28].append(acc.balance)
+        self._write_total(u"Bâtiments, Installation techn. Agencements",i,self.current_line-1, vals)
 
 
         # Mobilier de bureau
@@ -384,8 +402,8 @@ class depreciation_table(osv.osv_memory):
         sheet.write(self.current_line,28,"",xl_module.line_right)
         self.current_line += 1
         i = self.current_line
-        self._write_lines(cr, uid, ids, ("Mobilier de bureau",), context=None)
-        self._write_total(u"Total mobilier de bureau",i,self.current_line-1)
+        vals = self._write_lines(cr, uid, ids, ("Mobilier de bureau",), context=None)
+        self._write_total(u"Total mobilier de bureau",i,self.current_line-1, vals)
 
         # Matériel de bureau
         sheet.row(self.current_line).height_mismatch = True
@@ -394,8 +412,8 @@ class depreciation_table(osv.osv_memory):
         sheet.write(self.current_line,28,"",xl_module.line_right)
         self.current_line += 1
         i = self.current_line
-        self._write_lines(cr, uid, ids, ("Matériel de bureau",), context=None)
-        self._write_total(u"Total matériel de bureau",i,self.current_line-1)
+        vals = self._write_lines(cr, uid, ids, ("Matériel de bureau",), context=None)
+        self._write_total(u"Total matériel de bureau",i,self.current_line-1, vals)
 
         # Matériel de transport
         sheet.row(self.current_line).height_mismatch = True
@@ -404,8 +422,8 @@ class depreciation_table(osv.osv_memory):
         sheet.write(self.current_line,28,"",xl_module.line_right)
         self.current_line += 1
         i = self.current_line
-        self._write_lines(cr, uid, ids, ("Matériel de transport (25%)","Matériel de transport (33%)",), context=None)
-        self._write_total(u"Total matériel de transport",i,self.current_line-1)
+        vals = self._write_lines(cr, uid, ids, ("Matériel de transport (25%)","Matériel de transport (33%)",), context=None)
+        self._write_total(u"Total matériel de transport",i,self.current_line-1, vals)
 
         # Matériel informatique
         sheet.row(self.current_line).height_mismatch = True
@@ -414,8 +432,8 @@ class depreciation_table(osv.osv_memory):
         sheet.write(self.current_line,28,"",xl_module.line_right)
         self.current_line += 1
         i = self.current_line
-        self._write_lines(cr, uid, ids, ("Matériel informatique",), context=None)
-        self._write_total(u"Total matériel informatique",i,self.current_line-1)
+        vals =  self._write_lines(cr, uid, ids, ("Matériel informatique",), context=None)
+        self._write_total(u"Total matériel informatique",i,self.current_line-1, vals)
 
         # Matériel et mobilier des logements du personnel
         sheet.row(self.current_line).height_mismatch = True
@@ -424,10 +442,11 @@ class depreciation_table(osv.osv_memory):
         sheet.write(self.current_line,28,"",xl_module.line_right)
         self.current_line += 1
         i = self.current_line
-        self._write_lines(cr, uid, ids, ("Matériel et mobilier des logements du personnel",), context=None)
-        self._write_total(u"Total matériel et mobilier des logements du personnel",i,self.current_line-1)
+        vals = self._write_lines(cr, uid, ids, ("Matériel et mobilier des logements du personnel",), context=None)
+        self._write_total(u"Total matériel et mobilier des logements du personnel",i,self.current_line-1, vals)
 
         # Matériel en cours
+        vals = {key: [] for key in range(1,29)}
         sheet.row(self.current_line).height_mismatch = True
         sheet.row(self.current_line).height = 256/2*3
         sheet.write(self.current_line,1,u"Matériels en cours",xl_module.as_name)
@@ -440,7 +459,7 @@ class depreciation_table(osv.osv_memory):
             for k in range(15,28):
                 sheet.write(i,k,"",xl_module.blue_line)
         self.current_line += 15
-        self._write_total(u"Total matériels en cours",self.current_line-14,self.current_line-1)
+        self._write_total(u"Total matériels en cours",self.current_line-14,self.current_line-1, vals)
 
         # Total
         self._write_total_total(u"Total immobilisations")
