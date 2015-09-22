@@ -263,7 +263,6 @@ class vessel_revenue(osv.osv_memory):
                             },
                         }
         self.current_line = 4
-        sheet_appointment.write_merge(self.current_line,self.current_line,0,2,part_mod.browse(cr, uid, partner_id, context=context).name,xl_module.bold)
         sheet_appointment.write(self.current_line+1,0,"Product Name",xl_module.line_name)
         sheet_appointment.write(self.current_line+1,1,"Quantity",xl_module.line_name)
         sheet_appointment.write(self.current_line+1,2,"Price",xl_module.line_name)
