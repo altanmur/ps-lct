@@ -38,3 +38,16 @@ class account_invoice(orm.Model):
         # For the invoice report (fiche d'imputation)
         'create_date': fields.datetime('Creation Date' , readonly=True),
     }
+
+
+    def invoice_validate(self, cr, uid, ids, context=None):
+        for invoice in self.browse(cr, uid, ids, context):
+            for line in invoice.invoice_line:
+                if not line.invoice_line_tax_id and line.product_id:
+                    if line.product_id.vat_free_income_account_id:
+                        line.write({'account_id': line.product_id.vat_free_income_account_id.id}, context=context)
+                    elif line.product_id.categ_id and line.product_id.categ_id.vat_free_income_account_id:
+                        line.write({'account_id': line.product_id.categ_id.vat_free_income_account_id.id}, context=context)
+        res = super(account_invoice, self).invoice_validate(cr, uid, ids, context=context)
+        return res
+        
