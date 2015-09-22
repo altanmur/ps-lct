@@ -39,6 +39,7 @@ Small modifications to the account and account_budget modules.
         'data/ir.header_webkit.xml',
         'views/account_invoice.xml',
         'views/res_partner_bank.xml',
+        'views/product.xml',
         'data/ir_header_webkit_finance_portrait.xml',
         'data/ir_header_webkit_finance_landscape.xml',
         'report/reports.xml',

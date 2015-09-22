@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_product_product_form" model="ir.ui.view">
+            <field name="name">product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="account.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='property_account_income']" position="after">
+                    <field name="vat_free_income_account_id"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_product_category_form" model="ir.ui.view">
+            <field name="name">product.category.form</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="account.view_category_property_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='property_account_income_categ']" position="after">
+                    <field name="vat_free_income_account_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
