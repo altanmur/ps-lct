@@ -119,6 +119,7 @@
                             <field name="po_nr" attrs="{'readonly': [('state','=','synchronized')]}"/>
                             <field name="po_line" attrs="{'readonly': [('state','=','synchronized')]}"/>
                             <field name="asset" attrs="{'readonly': [('state','=','synchronized')]}"/>
+                            <field name="asset_category_id"/>
                             <field name="deviation" attrs="{'readonly': [('state','=','synchronized')]}"/>
                             <field name="product_id" invisible="1" attrs="{'readonly': [('state','=','synchronized')]}"/>
                             <field name="company_id" invisible="1" attrs="{'readonly': [('state','=','synchronized')]}"/>
