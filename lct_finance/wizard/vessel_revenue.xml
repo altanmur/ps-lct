@@ -38,7 +38,7 @@
 
         <menuitem
             icon="STOCK_PRINT"
-            name="Vessel Revenue"
+            name="Revenue Report"
             action="action_account_report_vr"
             id="menu_account_report_vr"
             parent="menu_account_report_revenue"
