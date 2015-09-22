@@ -238,6 +238,7 @@ class account_voucher(osv.osv):
 
     _columns = {
         'cashier_rcpt_nr': fields.char('Cashier receipt number'),
+        'generic_customer_name': fields.char("Customer Name"),
     }
 
     def create(self, cr, uid, vals, context=None):
@@ -253,6 +254,8 @@ class account_voucher(osv.osv):
         invoice_id = context.get('invoice_id', False)
         if invoice_id:
             inv = self.pool.get('account.invoice').browse(cr, uid, invoice_id, context=context)
+            if inv.partner_id.id == self.pool.get('ir.model.data').get_object_reference(cr, uid, 'lct_tos_integration', 'lct_generic_customer')[1]:
+                self.write(cr, uid, ids, {'generic_customer_name': inv.generic_customer_name}, context=context)
             if inv.type2 != 'appointment' or not inv.individual_cust:
                 return res
             amount = 0.0
