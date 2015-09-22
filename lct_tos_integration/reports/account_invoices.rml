@@ -102,6 +102,12 @@
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">Termes de Paiement :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ o.payment_term and o.payment_term.name or '' ]]</para></td>
+                        </tr><tr>
+                            <td><para style="terp_5f_default_5f_8">Date :</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ time.strftime("%d-%m-%Y") ]]</para></td>
+                        </tr><tr>
+                            <td><para style="terp_5f_default_5f_8">Devises :</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ o.currency_id and o.currency_id.symbol or '' ]]</para></td>
                         </tr>
                     </blockTable>
                 </td>
@@ -113,12 +119,6 @@
                         </tr><tr>[[ o.type2 == 'appointment' or removeParentNode('tr') ]]
                             <td><para style="terp_5f_default_5f_8">Appointment :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ o.appoint_ref ]]</para></td>
-                        </tr><tr>
-                            <td><para style="terp_5f_default_5f_8">Date :</para></td>
-                            <td><para style="terp_5f_default_5f_8">[[ time.strftime("%d-%m-%Y") ]]</para></td>
-                        </tr><tr>
-                            <td><para style="terp_5f_default_5f_8">Devises :</para></td>
-                            <td><para style="terp_5f_default_5f_8">[[ o.currency_id and o.currency_id.symbol or '' ]]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and "Numéro d'appel :" or '']]</para></td>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and o.call_sign_vbl or '']]</para></td>
