@@ -3,7 +3,7 @@
     <data>
 
         <record id="depreciation_table_view_togo" model="ir.ui.view">
-            <field name="name">Vessel Revenue</field>
+            <field name="name">Revenue Report</field>
             <field name="model">lct_finance.vessel.revenue.report</field>
             <field name="arch" type="xml">
                 <form string="Report Options" version="7.0">
@@ -21,7 +21,7 @@
         </record>
 
         <record id="action_account_report_vr" model="ir.actions.act_window">
-             <field name="name">Vessel Revenue Report</field>
+             <field name="name">Revenue Report</field>
              <field name="res_model">lct_finance.vessel.revenue.report</field>
              <field name="type">ir.actions.act_window</field>
              <field name="view_type">form</field>
