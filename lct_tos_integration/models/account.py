@@ -324,7 +324,8 @@ class account_invoice(osv.osv):
         if not invoice_id:
             return {}
         invoice = self.browse(cr, uid, invoice_id, context=context)
-        self.write(cr, uid, [invoice_id], {'printed': invoice.printed + 1}, context=context)
+        if invoice.state in ['open', 'paid']:
+            self.write(cr, uid, [invoice_id], {'printed': invoice.printed + 1}, context=context)
         report_model = self.pool.get('ir.actions.report.xml')
         report_ids = report_model.search(cr, uid, [('report_name', '=', 'account.invoice')], context=context)
         if not report_ids:
