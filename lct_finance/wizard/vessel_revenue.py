@@ -155,8 +155,8 @@ class vessel_revenue(osv.osv_memory):
                 if product_id:
                     sheet_vessel.write(self.current_line,0,prod_mod.browse(cr, uid, product_id, context=context).name,xl_module.line_name)
                     sheet_vessel.write(self.current_line,1,prod_dict['qty'],xl_module.number)
-                    sheet_vessel.write(self.current_line,2,prod_dict['price'],xl_module.number)
-                    sheet_vessel.write(self.current_line,3,prod_dict['revenue'],xl_module.number)
+                    sheet_vessel.write(self.current_line,2,round(prod_dict['price']),xl_module.number)
+                    sheet_vessel.write(self.current_line,3,round(prod_dict['revenue']),xl_module.number)
                     self.current_line += 1
                     if vessels_total.get(product_id):
                         vessels_total[product_id]['qty'] += prod_dict['qty']
@@ -172,8 +172,8 @@ class vessel_revenue(osv.osv_memory):
                     for description, noprod_dict in prod_dict.iteritems():
                         sheet_vessel.write(self.current_line,0,description,xl_module.line_name)
                         sheet_vessel.write(self.current_line,1,noprod_dict['qty'],xl_module.number)
-                        sheet_vessel.write(self.current_line,2,noprod_dict['price'],xl_module.number)
-                        sheet_vessel.write(self.current_line,3,noprod_dict['revenue'],xl_module.number)
+                        sheet_vessel.write(self.current_line,2,round(noprod_dict['price']),xl_module.number)
+                        sheet_vessel.write(self.current_line,3,round(noprod_dict['revenue']),xl_module.number)
                         self.current_line += 1
 
                         if vessels_total.get(product_id):
@@ -211,15 +211,15 @@ class vessel_revenue(osv.osv_memory):
             if product_id:
                 sheet_vessel.write(self.current_line,0,prod_mod.browse(cr, uid, product_id, context=context).name,xl_module.line_name)
                 sheet_vessel.write(self.current_line,1,prod_dict['qty'],xl_module.number)
-                sheet_vessel.write(self.current_line,2,prod_dict['price'],xl_module.number)
-                sheet_vessel.write(self.current_line,3,prod_dict['revenue'],xl_module.number)
+                sheet_vessel.write(self.current_line,2,round(prod_dict['price']),xl_module.number)
+                sheet_vessel.write(self.current_line,3,round(prod_dict['revenue']),xl_module.number)
                 self.current_line += 1
             else: 
                 for description, noprod_dict in prod_dict.iteritems():
                     sheet_vessel.write(self.current_line,0,description,xl_module.line_name)
                     sheet_vessel.write(self.current_line,1,noprod_dict['qty'],xl_module.number)
-                    sheet_vessel.write(self.current_line,2,noprod_dict['price'],xl_module.number)
-                    sheet_vessel.write(self.current_line,3,noprod_dict['revenue'],xl_module.number)
+                    sheet_vessel.write(self.current_line,2,round(noprod_dict['price']),xl_module.number)
+                    sheet_vessel.write(self.current_line,3,round(noprod_dict['revenue']),xl_module.number)
                     self.current_line += 1
 
         self.current_line += 1
