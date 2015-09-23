@@ -40,14 +40,14 @@ class account_invoice(orm.Model):
     }
 
 
-    def invoice_validate(self, cr, uid, ids, context=None):
-        for invoice in self.browse(cr, uid, ids, context):
+    def action_date_assign(self, cr, uid, ids, *args):
+        for invoice in self.browse(cr, uid, ids):
             for line in invoice.invoice_line:
                 if not line.invoice_line_tax_id and line.product_id:
                     if line.product_id.vat_free_income_account_id:
-                        line.write({'account_id': line.product_id.vat_free_income_account_id.id}, context=context)
+                        line.write({'account_id': line.product_id.vat_free_income_account_id.id})
                     elif line.product_id.categ_id and line.product_id.categ_id.vat_free_income_account_id:
-                        line.write({'account_id': line.product_id.categ_id.vat_free_income_account_id.id}, context=context)
-        res = super(account_invoice, self).invoice_validate(cr, uid, ids, context=context)
+                        line.write({'account_id': line.product_id.categ_id.vat_free_income_account_id.id})
+        res = super(account_invoice, self).action_date_assign(cr, uid, ids, *args)
         return res
         
