@@ -1363,7 +1363,7 @@ class account_invoice(osv.osv):
                     self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_id, product_id)
                     cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals), context=context)
                     invoice_lines[partner_id][vessel_id][product_id].append(cont_nr_id)
-        invoice_ids = self._create_invoices(cr, uid, invoice_lines, context=context)
+        invoice_ids = self._create_invoices(cr, uid, invoice_lines, {}, {}, context=context)
         invoice_model.write(cr, uid, invoice_ids, {'type2': 'yactivity'})
 
 
