@@ -160,13 +160,13 @@ class vessel_revenue(osv.osv_memory):
                     self.current_line += 1
                     if vessels_total.get(product_id):
                         vessels_total[product_id]['qty'] += prod_dict['qty']
-                        vessels_total[product_id]['revenue'] += prod_dict['price']
+                        vessels_total[product_id]['revenue'] += prod_dict['revenue']
                         vessels_total[product_id]['price'] += prod_dict['revenue']
                     else:
                         vessels_total[product_id] = {
                                 'qty': prod_dict['qty'],
-                                'revenue': prod_dict['price'],
-                                'price': prod_dict['revenue'], 
+                                'revenue': prod_dict['revenue'],
+                                'price': prod_dict['price'], 
                             }
                 else: 
                     for description, noprod_dict in prod_dict.iteritems():
@@ -179,22 +179,22 @@ class vessel_revenue(osv.osv_memory):
                         if vessels_total.get(product_id):
                             if vessels_total[product_id].get(description):
                                 vessels_total[product_id][description]['qty'] += noprod_dict['qty']
-                                vessels_total[product_id][description]['revenue'] += noprod_dict['price']
-                                vessels_total[product_id][description]['price'] += noprod_dict['revenue']
+                                vessels_total[product_id][description]['revenue'] += noprod_dict['revenue']
+                                vessels_total[product_id][description]['price'] += noprod_dict['price']
                             else:
                                 vessels_total[product_id].update({
                                     description : {
                                         'qty': noprod_dict['qty'],
-                                        'revenue': noprod_dict['price'],
-                                        'price': noprod_dict['revenue'], 
+                                        'revenue': noprod_dict['revenue'],
+                                        'price': noprod_dict['price'], 
                                         },
                                     })
                         else:
                             vessels_total[product_id] = {
                                 description : {
                                     'qty': noprod_dict['qty'],
-                                    'revenue': noprod_dict['price'],
-                                    'price': noprod_dict['revenue'], 
+                                    'revenue': noprod_dict['revenue'],
+                                    'price': noprod_dict['price'], 
                                     },
                                 }
             self.current_line += 1
@@ -272,15 +272,15 @@ class vessel_revenue(osv.osv_memory):
             if product_id:
                 sheet_appointment.write(self.current_line,0,prod_mod.browse(cr, uid, product_id, context=context).name,xl_module.line_name)
                 sheet_appointment.write(self.current_line,1,prod_dict['qty'],xl_module.number)
-                sheet_appointment.write(self.current_line,2,prod_dict['price'],xl_module.number)
-                sheet_appointment.write(self.current_line,3,prod_dict['revenue'],xl_module.number)
+                sheet_appointment.write(self.current_line,2,round(prod_dict['price']),xl_module.number)
+                sheet_appointment.write(self.current_line,3,round(prod_dict['revenue']),xl_module.number)
                 self.current_line += 1
             else:
                 for description, noprod_dict in prod_dict.iteritems():
                     sheet_appointment.write(self.current_line,0,description,xl_module.line_name)
                     sheet_appointment.write(self.current_line,1,noprod_dict['qty'],xl_module.number)
-                    sheet_appointment.write(self.current_line,2,noprod_dict['price'],xl_module.number)
-                    sheet_appointment.write(self.current_line,3,noprod_dict['revenue'],xl_module.number)
+                    sheet_appointment.write(self.current_line,2,round(noprod_dict['price']),xl_module.number)
+                    sheet_appointment.write(self.current_line,3,round(noprod_dict['revenue']),xl_module.number)
                     self.current_line += 1
         self.current_line += 1
 
