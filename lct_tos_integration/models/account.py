@@ -1138,8 +1138,8 @@ class account_invoice(osv.osv):
                         'price_unit': product_elec.list_price,
                         'account_id': account_elec.id,
                         'cont_nr_ids': [(0,0,{
-                                'quantity': isps_lines.get(vessel_id,False),
-                                'pricelist_qty': isps_lines.get(vessel_id,False),
+                                'quantity': plugged_hours.get(vessel_id,False),
+                                'pricelist_qty': plugged_hours.get(vessel_id,False),
                             })],
                     }
                     invoice_line_model.create(cr, uid, elec_line_vals, context=context)
@@ -1157,8 +1157,8 @@ class account_invoice(osv.osv):
                     'price_unit': product_dockage.list_price,
                     'account_id': account_dockage.id,
                     'cont_nr_ids': [(0,0,{
-                            'quantity': isps_lines.get(vessel_id,False),
-                            'pricelist_qty': isps_lines.get(vessel_id,False),
+                            'quantity': 1,
+                            'pricelist_qty': 1,
                         })],
                 }
                 invoice_line_model.create(cr, uid, dockage_line_vals, context=context)
