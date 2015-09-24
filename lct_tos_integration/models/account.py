@@ -1004,7 +1004,6 @@ class account_invoice(osv.osv):
                     for pending_yac in pending_yac_model.browse(cr, uid, pending_yac_ids, context=context):
                         if pending_yac.type == 'reefe':
                             reefe_qties.append(pending_yac.plugged_time)
-                            plugged_time +=  pending_yac.plugged_time*24
                         elif pending_yac.type == 'expst':
                             dep_date = datetime.strptime(pending_yac.dep_timestamp, "%Y-%m-%d %H:%M:%S").date()
                             arr_date = datetime.strptime(pending_yac.arr_timestamp, "%Y-%m-%d %H:%M:%S").date()
@@ -1019,8 +1018,12 @@ class account_invoice(osv.osv):
                         for quantity in expst_qties:
                             cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=quantity, quantity=quantity), context=context)
                             invoice_lines[partner_id][vessel_id][expst_product_id].append(cont_nr_id)
-
                     pending_yac_model.write(cr, uid, pending_yac_ids, {'status': 'processed'}, context=context)
+            
+                ref_power_days = self._get_elmnt_text(line, 'ref_power_days')
+                if ref_power_days and ref_power_days.isdigit():
+                    plugged_time +=  float(ref_power_days)*24
+
             plugged_hours[vessel_id] = plugged_time
             isps_lines[vessel_id] = len(lines) - restow_qty
         invoice_ids = self._create_invoices(cr, uid, invoice_lines, isps_lines, plugged_hours, context=context)
