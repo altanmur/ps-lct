@@ -538,10 +538,10 @@
               <para style="terp_default_7">[[ strip_name(line['line_corresp'],18) ]]</para>
             </td>
             <td>
-              <para style="terp_default_Right_7">[[ formatLang(line['debit'], digits=0, grouping=True).replace(',', ' ') ]]</para>
+              <para style="terp_default_Right_7">[[ formatLang(line['debit'] if not line['is_negative'] else -line['credit'] if line['credit'] else 0, digits=0, grouping=True).replace(',', ' ') ]]</para>
             </td>
             <td>
-              <para style="terp_default_Right_7">[[ formatLang(line['credit'], digits=0, grouping=True).replace(',', ' ') ]]</para>
+              <para style="terp_default_Right_7">[[ formatLang(line['credit'] if not line['is_negative'] else -line['debit'] if line['debit'] else 0, digits=0, grouping=True).replace(',', ' ') ]]</para>
             </td>
             <td>
               <para style="terp_default_Right_7">[[ formatLang(line['progress'], digits=0, grouping=True, currency_obj=company.currency_id).replace(',', ' ') ]]</para>
@@ -625,10 +625,10 @@
               <para style="terp_default_7">[[ strip_name(line['lname'],70) ]]</para>
             </td>
             <td>
-              <para style="terp_default_Right_7">[[ formatLang(line['debit'], digits=0, grouping=True).replace(',', ' ') ]]</para>
+              <para style="terp_default_Right_7">[[ formatLang(line['debit'] if not line['is_negative'] else 0 -line['credit'] if line['credit'] else 0, digits=0, grouping=True).replace(',', ' ') ]]</para>
             </td>
             <td>
-              <para style="terp_default_Right_7">[[ formatLang(line['credit'], digits=0, grouping=True).replace(',', ' ') ]]</para>
+              <para style="terp_default_Right_7">[[ formatLang(line['credit'] if not line['is_negative'] else -line['debit'] if line['debit'] else 0, digits=0, grouping=True).replace(',', ' ') ]]</para>
             </td>
             <td>
               <para style="terp_default_Right_7">[[ formatLang(line['progress'], digits=0, grouping=True, currency_obj=company.currency_id).replace(',', ' ') ]] </para>

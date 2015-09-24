@@ -55,7 +55,7 @@ def patch_lines(self, account):
         sql_sort='l.create_date, l.move_id'
     sql = """
         SELECT l.id AS lid, l.create_date AS ldate, j.code AS lcode, l.currency_id, l.amount_currency, l.ref AS lref,
-            l.name AS lname, COALESCE(l.debit,0) AS debit, COALESCE(l.credit,0) AS credit, l.period_id AS lperiod_id,
+            l.name AS lname, l.is_negative AS is_negative, COALESCE(l.debit,0) AS debit, COALESCE(l.credit,0) AS credit, l.period_id AS lperiod_id,
             l.partner_id AS lpartner_id, m.name AS move_name, m.id AS mmove_id,per.code as period_code,
             c.symbol AS currency_code, i.id AS invoice_id, i.type AS invoice_type, i.number AS invoice_number,
             p.name AS partner_name
@@ -75,7 +75,7 @@ def patch_lines(self, account):
         #FIXME: replace the label of lname with a string translatable
         sql = """
             SELECT 0 AS lid, '' AS ldate, '' AS lcode, COALESCE(SUM(l.amount_currency),0.0) AS amount_currency,
-                '' AS lref, 'Initial Balance' AS lname, COALESCE(SUM(l.debit),0.0) AS debit,
+                '' AS lref, 'Initial Balance' AS lname, l.is_negative AS is_negative, COALESCE(SUM(l.debit),0.0) AS debit,
                 COALESCE(SUM(l.credit),0.0) AS credit, '' AS lperiod_id, '' AS lpartner_id, '' AS move_name,
                 '' AS mmove_id, '' AS period_code, '' AS currency_code, NULL AS currency_id, '' AS invoice_id,
                 '' AS invoice_type, '' AS invoice_number, '' AS partner_name

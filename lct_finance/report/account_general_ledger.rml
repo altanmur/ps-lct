@@ -506,10 +506,10 @@
               <para style="terp_default_Centre_8">[[ strip_name(line['line_corresp'].replace(', ',','),10) ]]</para>
             </td>
             <td>
-              <para style="terp_default_Right_8">[[ formatLang(line['debit'], digits=get_digits(dp='Account')) ]]</para>
+              <para style="terp_default_Right_8">[[ formatLang(line['debit'] if not line['is_negative'] else 0 -line['credit'] if line['credit'] else 0, digits=get_digits(dp='Account')) ]]</para>
             </td>
             <td>
-              <para style="terp_default_Right_8">[[ formatLang(line['credit'], digits=get_digits(dp='Account')) ]]</para>
+              <para style="terp_default_Right_8">[[ formatLang(line['credit'] if not line['is_negative'] else -line['debit'] if line['debit'] else 0, digits=get_digits(dp='Account')) ]]</para>
             </td>
             <td>
               <para style="terp_default_Right_8">[[ formatLang(line['progress'], digits=get_digits(dp='Account'),currency_obj=company.currency_id) ]] </para>
@@ -593,10 +593,10 @@
               <para style="terp_default_8">[[ strip_name(line['lname'],18) ]]</para>
             </td>
             <td>
-              <para style="terp_default_Right_8">[[ formatLang(line['debit'], digits=get_digits(dp='Account')) ]]</para>
+              <para style="terp_default_Right_8">[[ formatLang(line['debit'] if not line['is_negative'] else 0 -line['credit'] if line['credit'] else 0, digits=get_digits(dp='Account')) ]]</para>
             </td>
             <td>
-              <para style="terp_default_Right_8">[[ formatLang(line['credit'], digits=get_digits(dp='Account')) ]]</para>
+              <para style="terp_default_Right_8">[[ formatLang(line['credit'] if not line['is_negative'] else -line['debit'] if line['debit'] else 0, digits=get_digits(dp='Account')) ]]</para>
             </td>
             <td>
               <para style="terp_default_Right_8">[[ formatLang(line['progress'], digits=get_digits(dp='Account'),currency_obj=company.currency_id) ]]</para>

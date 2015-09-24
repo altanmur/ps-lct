@@ -514,6 +514,11 @@ class general_ledger_xlsx(report_sxw):
             lines = parser['lines'](account)
 
             for line in lines:
+                if line['is_negative']:
+                    old_debit = line['debit'] 
+                    old_credit = line['credit']
+                    line['debit'] = - old_credit
+                    line['credit'] = - old_debit
                 cells = {
                     'normal': [
                         ([(current_row, 1)], line['ldate'].split()[0]),
