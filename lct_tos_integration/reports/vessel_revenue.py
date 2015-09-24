@@ -49,7 +49,7 @@ class vessel_revenue(osv.osv_memory):
             partner_id = invoice.partner_id.id
             vessels.setdefault(partner_id, {})
             for line in invoice.invoice_line:
-                product_id = line.product_id and line.product_id.id or line.description
+                product_id = line.product_id and line.product_id.id or line.name
                 vessels[partner_id].setdefault(product_id, {'qty': 0.0, 'revenue': 0.0})
                 vessels[partner_id][product_id]['qty'] += line.quantity
                 vessels[partner_id][product_id]['revenue'] += line.price_subtotal
@@ -72,7 +72,7 @@ class vessel_revenue(osv.osv_memory):
         invoices = self.pool.get('account.invoice').browse(cr, uid, invoice_ids, context=context)
         for invoice in invoices:
             for line in invoice.invoice_line:
-                product_id = line.product_id and line.product_id.id or line.description
+                product_id = line.product_id and line.product_id.id or line.name
                 appointments.setdefault(product_id, {'qty': 0.0, 'revenue': 0.0})
                 appointments[product_id]['qty'] += line.quantity
                 appointments[product_id]['revenue'] += line.price_subtotal
