@@ -32,7 +32,8 @@ class account_move(orm.Model):
 class account_move_line(orm.Model):
     _inherit = 'account.move.line'
 
-    _sql_constraints = [
-        ('credit_debit2', 'CHECK (1=1)', 'Allow credit or debit to be negative !'),
-    ]
+    _columns = {
+        'is_negative': fields.boolean("Negative entry"),
+    }
+
 
