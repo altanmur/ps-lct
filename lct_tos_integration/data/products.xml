@@ -129,6 +129,152 @@
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="type_id" ref="lct_product_type_reeferdg"/>
     </record>
+
+    <record id="import_storage_localimport_20_gp_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="import_storage_localimport_20_gp_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_storage_localimport_40_gp_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="import_storage_localimport_40_gp_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_storage_localimport_20_reeferdg_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="import_storage_localimport_20_reeferdg_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_storage_localimport_40_reeferdg_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="import_storage_localimport_40_reeferdg_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_storage_transitsahel_20_gp_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="import_storage_transitsahel_20_gp_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_storage_transitsahel_20_reeferdg_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="import_storage_transitsahel_20_reeferdg_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_storage_transitsahel_40_gp_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="import_storage_transitsahel_40_gp_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_storage_transitsahel_40_reeferdg_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="import_storage_transitsahel_40_reeferdg_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_storage_transitcoastal_20_gp_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="import_storage_transitcoastal_20_gp_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_storage_transitcoastal_20_reeferdg_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="import_storage_transitcoastal_20_reeferdg_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_storage_transitcoastal_40_gp_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="import_storage_transitcoastal_40_gp_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_storage_transitcoastal_40_reeferdg_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="import_storage_transitcoastal_40_reeferdg_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_storage_freezone_20_gp_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="import_storage_freezone_20_gp_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_storage_freezone_20_reeferdg_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="import_storage_freezone_20_reeferdg_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="import_storage_freezone_40_gp_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="import_storage_freezone_40_gp_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="import_storage_freezone_40_reeferdg_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="import_storage_freezone_40_reeferdg_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+
     <record id="import_stevedoringcharges_localimport_20" model="product.product">
       <field name="name">Import Stevedoring charges Local import 20</field>
       <field name="category_id" ref="lct_product_category_import"/>
@@ -1041,6 +1187,112 @@
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
+
+    <record id="export_storage_20_full_gp_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="export_storage_20_full_gp_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="export_storage_20_full_reeferdg_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="export_storage_20_full_reeferdg_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_storage_20_empty_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="export_storage_20_empty_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="export_storage_40_full_gp_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="export_storage_40_full_gp_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="export_storage_40_full_reeferdg_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="export_storage_40_full_reeferdg_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="export_storage_40_empty_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="export_storage_40_empty_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="transshipment_storage_20_full_gp_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="transshipment_storage_20_full_gp_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="transshipment_storage_20_full_reeferdg_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="transshipment_storage_20_full_reeferdg_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="transshipment_storage_20_empty_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="transshipment_storage_20_empty_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+    <record id="transshipment_storage_40_full_gp_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="transshipment_storage_40_full_gp_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+    </record>
+    <record id="transshipment_storage_40_full_reeferdg_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="transshipment_storage_40_full_reeferdg_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+    <record id="transshipment_storage_40_empty_add_days" model="product.product">
+      <field name="product_tmpl_id" ref="transshipment_storage_40_empty_product_template"/>
+      <field name="additional_storage" eval="True"/>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+    </record>
+
     <record id="transshipment_reeferelectricity_20" model="product.product">
       <field name="name">Transshipment Reefer electricity 20</field>
       <field name="category_id" ref="lct_product_category_transshipment"/>

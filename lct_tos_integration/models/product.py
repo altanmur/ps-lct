@@ -38,6 +38,11 @@ class product_product(osv.osv):
         'status_id': fields.many2one('lct.product.status', 'Status'),
         'type_id': fields.many2one('lct.product.type', 'Type'),
         'cont_nr_editable': fields.function(_calc_cont_nr_editable, type='boolean', string="Container number editable"),
+        'additional_storage': fields.boolean(string="Additional storage"),
+    }
+
+    _defaults = {
+        'additional_storage': False,
     }
 
     def _is_cont_nr_editable(self, cr, uid, product_id, context=None):

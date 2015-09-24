@@ -489,6 +489,14 @@ class account_invoice(osv.osv):
         })
         return vals
 
+    def _get_additional_storage(self, cr, uid, additional_storage):
+        if additional_storage == 'YES':
+            return True
+        else:
+            return False
+
+    def _get_line_additional_storage(self, cr, uid, line):
+        return self._get_additional_storage(cr, uid, self._get_elmnt_text(line, 'additional_storage'))
 
     # APP
 
@@ -594,6 +602,7 @@ class account_invoice(osv.osv):
 
         category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_category_import')
         size_id = self._get_app_size(cr, uid, line)
+        additional_storage = self._get_line_additional_storage(cr, uid, line)
         sub_category_id = self._get_app_sub_category(cr, uid, line)
         type_id, service_id = self._get_app_type_service_by_type(cr, uid, line)
         if not sub_category_id:
@@ -619,6 +628,7 @@ class account_invoice(osv.osv):
             'size_id': size_id,
             'status_id': False,
             'sub_category_id': sub_category_id,
+            'additional_storage': additional_storage,
         }
 
         quantities_by_products = {}
@@ -636,6 +646,7 @@ class account_invoice(osv.osv):
         else:
             category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_export')
         size_id = self._get_app_size(cr, uid, line)
+        additional_storage = self._get_line_additional_storage(cr, uid, line)
         sub_category_id = self._get_app_sub_category(cr, uid, line)
         if not sub_category_id:
             type_id = False
@@ -647,6 +658,7 @@ class account_invoice(osv.osv):
             'status_id': False,
             'sub_category_id': sub_category_id,
             'service_ids': [service_id],
+            'additional_storage': additional_storage,
         }
         product_ids = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context)
 
@@ -692,10 +704,12 @@ class account_invoice(osv.osv):
     def _get_shc_products(self, cr, uid, line, context=None):
         category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_specialhandlingcode')
         size_id = self._get_app_size(cr, uid, line)
+        additional_storage = self._get_line_additional_storage(cr, uid, line)
 
         properties = {
             'category_id': category_id,
             'size_id': size_id,
+            'additional_storage': additional_storage,
         }
         cfs_activity = line.find('cfs_activity')
         ignore_ins = (cfs_activity is not None and cfs_activity.text == 'YES')
@@ -954,6 +968,8 @@ class account_invoice(osv.osv):
                 status = self._get_elmnt_text(line, 'container_status')
                 status_id = self._get_status(cr, uid, status)
 
+                additional_storage = self._get_line_additional_storage(cr, uid, line)
+
                 if status != 'E':
                     p_type = self._get_elmnt_text(line, 'container_type_id')
                     type_id = self._get_vbl_type(cr, uid, p_type)
@@ -965,6 +981,7 @@ class account_invoice(osv.osv):
                     'size_id': size_id,
                     'status_id': status_id,
                     'type_id': type_id,
+                    'additional_storage': additional_storage,
                 }
 
                 oog = self._get_elmnt_text(line, 'oog')
@@ -1287,12 +1304,15 @@ class account_invoice(osv.osv):
                 else:
                     type_id = False
 
+                additional_storage = self._get_line_additional_storage(cr, uid, line)
+
                 properties = {
                     'category_id': category_id,
                     'service_ids': service_ids,
                     'size_id': size_id,
                     'status_id': status_id,
                     'type_id': type_id,
+                    'additional_storage': additional_storage,
                 }
                 product_ids = product_model.get_products_by_properties(cr, uid, properties, line.sourceline, context=context)
 
