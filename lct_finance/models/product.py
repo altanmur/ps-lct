@@ -19,11 +19,19 @@
 #
 ##############################################################################
 
-import account_analytic_account
-import account_invoice
-import account_move
-import account_voucher
-import auth_signature_position
-import res_partner_bank
-import account_account
-import product
+from openerp.osv import fields, orm
+
+
+class product_template(orm.Model):
+    _inherit = 'product.template'
+
+    _columns = {
+        'vat_free_income_account_id': fields.many2one('account.account', domain=[('type', '!=', 'view')], string='VAT-Free Income Account'),
+    }
+
+class product_category(orm.Model):
+    _inherit = 'product.category'
+
+    _columns = {
+        'vat_free_income_account_id': fields.many2one('account.account', domain=[('type', '!=', 'view')], string='VAT-Free Income Account',),
+    }

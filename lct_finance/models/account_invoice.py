@@ -38,3 +38,15 @@ class account_invoice(orm.Model):
         # For the invoice report (fiche d'imputation)
         'create_date': fields.datetime('Creation Date' , readonly=True),
     }
+
+    def action_move_create(self, cr, uid, ids, context=None):
+        invoice_line_model = self.pool.get('account.invoice.line')
+        for invoice in self.browse(cr, uid, ids, context=context):
+            for line in invoice.invoice_line:
+                if line.invoice_line_tax_id or not line.product_id:
+                    continue
+                if line.product_id.vat_free_income_account_id:
+                    invoice_line_model.write(cr, uid, [line.id], {'account_id': line.product_id.vat_free_income_account_id.id}, context=context)
+                elif line.product_id.categ_id and line.product_id.categ_id.vat_free_income_account_id:
+                    invoice_line_model.write(cr, uid, [line.id], {'account_id': line.product_id.categ_id.vat_free_income_account_id.id}, context=context)
+        return super(account_invoice, self).action_move_create(cr, uid, ids, context=context)
