@@ -88,6 +88,7 @@ def xl_format(f=""):
         "border-t" : 'border : top medium;',
         "background-blue" : 'pattern: pattern solid, fore_color blue;',
         "background-black" : 'pattern: pattern solid, fore_color black;',
+        "b-thin": 'borders: left thin, right thin, top thin, bottom thin;',
     }[f]
 
 
@@ -102,6 +103,30 @@ line = cell_format((
     "vert-center",
     "hor-right",
     "wrap",
+))
+line_name = cell_format((
+    "vert-center",
+    "hor-left",
+    "wrap",
+    "b-thin" ,
+    "text-12" ,
+))
+normal = cell_format((
+    "vert-center",
+    "hor-left",
+    "text-12" ,
+))
+bold = cell_format((
+    "bold",
+    "vert-center",
+    "hor-left",
+    "text-12" ,
+))
+number = cell_format((
+    "vert-center",
+    "hor-right",
+    "b-thin" ,
+    "text-12" ,
 ))
 black_line = cell_format((
     "vert-center",
@@ -200,6 +225,11 @@ title2 = cell_format((
     "vert-center",
     "background-green",
     "text-white",
+    "text-14",
+))
+title3 = cell_format((
+    "vert-center",
+    "bold",
     "text-14",
 ))
 label_left = cell_format((
