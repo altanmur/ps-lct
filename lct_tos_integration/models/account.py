@@ -906,6 +906,8 @@ class account_invoice(osv.osv):
         vbillings = ET.fromstring(content)
 
         invoice_lines = {}
+        isps_lines = {}
+        plugged_hours = {}
         for vbilling in vbillings.findall('vbilling'):
             partner_id = self._get_partner(cr, uid, vbilling, 'customer_id')
             partner = partner_model.browse(cr, uid, partner_id, context=context)
@@ -945,6 +947,8 @@ class account_invoice(osv.osv):
             lines = vbilling.find('lines')
             if lines is None:
                 continue
+            restow_qty = 0
+            plugged_time = 0
             for line in lines.findall('line'):
                 partner_id = self._get_partner(cr, uid, line, 'container_customer_id', context=context)
 
@@ -955,7 +959,7 @@ class account_invoice(osv.osv):
                 category = self._get_elmnt_text(line, 'transaction_category_id')
                 if category == 'R':
                     partner_id = self._get_partner(cr, uid, vbilling, 'customer_id', context=context)
-
+                    restow_qty += 1
                 if category == 'T':
                     direction = self._get_elmnt_text(line, 'transaction_direction')
                     category_id, service_ids = self._get_vbl_category_service(cr, uid, category, direction)
@@ -1035,13 +1039,23 @@ class account_invoice(osv.osv):
                         for quantity in expst_qties:
                             cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=quantity, quantity=quantity), context=context)
                             invoice_lines[partner_id][vessel_id][expst_product_id].append(cont_nr_id)
-
                     pending_yac_model.write(cr, uid, pending_yac_ids, {'status': 'processed'}, context=context)
 
-        invoice_ids = self._create_invoices(cr, uid, invoice_lines, context=context)
+                ref_power_days = self._get_elmnt_text(line, 'ref_power_days')
+                if ref_power_days and ref_power_days.isdigit():
+                    plugged_time +=  float(ref_power_days)*24
+
+            plugged_hours[vessel_id] = plugged_time
+            isps_lines[vessel_id] = len(lines) - restow_qty
+        invoice_ids = self._create_invoices(cr, uid, invoice_lines, isps_lines, plugged_hours, context=context)
         invoice_model.write(cr, uid, invoice_ids, {'type2': 'vessel'})
 
-    def _create_invoices(self, cr, uid, invoice_lines, context=None):
+    def _create_invoices(self, cr, uid, invoice_lines, isps_lines=None, plugged_hours=None, context=None):
+        if isps_lines is None:
+            isps_lines = {}
+        if plugged_hours is None:
+            plugged_hours = {}
+
         partner_model = self.pool.get('res.partner')
         pricelist_model = self.pool.get('product.pricelist')
         invoice_model = self.pool.get('account.invoice')
@@ -1111,9 +1125,69 @@ class account_invoice(osv.osv):
                         'partner_id': partner_id,
                         'quantity': quantity,
                         'price_unit': price/quantity,
+                        'cont_nr_ids': [(0,0,{
+                                'quantity': isps_lines.get(vessel_id,False),
+                                'pricelist_qty': isps_lines.get(vessel_id,False),
+                            })],
                     })
                     line_id = invoice_line_model.create(cr, uid, line_vals, context=context)
                     cont_nr_model.write(cr, uid, cont_nr_ids, {'invoice_line_id': line_id}, context=context)
+
+                product_isps_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'isps')
+                product_isps = product_model.browse(cr, uid, product_isps_id, context=context)
+                if isps_lines.get(vessel_id,False):
+                    account_isps = product_isps.property_account_income or (product_isps.categ_id and product_isps.categ_id.property_account_income_categ) or False
+                    isps_line_vals = {
+                        'invoice_id': invoice_id,
+                        'product_id': product_isps_id,
+                        'name': product_isps.name,
+                        'quantity': isps_lines.get(vessel_id,False),
+                        'price_unit': product_isps.list_price,
+                        'account_id': account_isps.id,
+                        'cont_nr_ids': [(0,0,{
+                                'quantity': isps_lines.get(vessel_id,False),
+                                'pricelist_qty': isps_lines.get(vessel_id,False),
+                            })],
+                    }
+                    invoice_line_model.create(cr, uid, isps_line_vals, context=context)
+
+                product_elec_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'reefer_electricity')
+                product_elec = product_model.browse(cr, uid, product_elec_id, context=context)
+                if plugged_hours.get(vessel_id,False):
+                    account_elec = product_elec.property_account_income or (product_elec.categ_id and product_elec.categ_id.property_account_income_categ) or False
+                    elec_line_vals = {
+                        'invoice_id': invoice_id,
+                        'product_id': product_elec_id,
+                        'name': product_elec.name,
+                        'quantity': plugged_hours.get(vessel_id,False),
+                        'price_unit': product_elec.list_price,
+                        'account_id': account_elec.id,
+                        'cont_nr_ids': [(0,0,{
+                                'quantity': plugged_hours.get(vessel_id,False),
+                                'pricelist_qty': plugged_hours.get(vessel_id,False),
+                            })],
+                    }
+                    invoice_line_model.create(cr, uid, elec_line_vals, context=context)
+
+
+
+                product_dockage_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'dockage_fixed')
+                product_dockage = product_model.browse(cr, uid, product_dockage_id, context=context)
+                account_dockage = product_dockage.property_account_income or (product_dockage.categ_id and product_dockage.categ_id.property_account_income_categ) or False
+                dockage_line_vals = {
+                    'invoice_id': invoice_id,
+                    'product_id': product_dockage_id,
+                    'name': product_dockage.name,
+                    'quantity': 1,
+                    'price_unit': product_dockage.list_price,
+                    'account_id': account_dockage.id,
+                    'cont_nr_ids': [(0,0,{
+                            'quantity': 1,
+                            'pricelist_qty': 1,
+                        })],
+                }
+                invoice_line_model.create(cr, uid, dockage_line_vals, context=context)
+
         return invoice_ids
 
 
