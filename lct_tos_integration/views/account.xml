@@ -41,11 +41,16 @@
                 <xpath expr="//page[@string='Invoice Lines']" position="after">
                     <page string="Vessel Billing Info" attrs="{'invisible':[('type2','!=','vessel')]}">
                         <group col="4">
+                            <field name="vessel_name_vbl"/>
                             <field name="vessel_id_vbl"/>
                             <field name="call_sign_vbl"/>
                             <field name="lloyds_nr_vbl"/>
                             <field name="berth_time_vbl"/>
                             <field name="dep_time_vbl"/>
+                            <field name="voyage_number_in_vbl"/>
+                            <field name="voyage_number_out_vbl"/>
+                            <field name="loa_vbl"/>
+                            <field name="woa_vbl"/>
                         </group>
                     </page>
                     <page string="Appointment Info" attrs="{'invisible':[('type2','!=','appointment')]}">
@@ -59,6 +64,7 @@
                         <group col="4">
                             <field name="call_sign"/>
                             <field name="lloyds_nr"/>
+                            <field name="vessel_name"/>
                             <field name="vessel_id"/>
                             <field name="berth_time"/>
                             <field name="dep_time"/>
@@ -66,12 +72,21 @@
                             <field name="voyage_number_out"/>
                             <field name="off_window"/>
                             <field name="loa"/>
+                            <field name="woa"/>
+                        </group>
+                    </page>
+                    <page string="Yard activity Billing Info" attrs="{'invisible':[('type2','!=','yactivity')]}">
+                        <group col="4">
+                            <field name="vessel_name_yac"/>
+                            <field name="vessel_id_yac"/>
+                            <field name="voyage_number_in_yac"/>
+                            <field name="voyage_number_out_yac"/>
+                            <field name="loa_yac"/>
+                            <field name="woa_yac"/>
                         </group>
                     </page>
                 </xpath>
-                <xpath expr="//field[@name='date_due']" position="after">
-                    <field name="vessel_id_yac" attrs="{'invisible': [('type2', '!=', 'yactivity')]}" />
-                </xpath>
+                
                 <xpath expr="//field[@name='invoice_line']" position="attributes">
                     <attribute name="attrs">{'invisible':[('type2', 'in', ['vessel', 'appointment', 'dockage'])]}</attribute>
                 </xpath>

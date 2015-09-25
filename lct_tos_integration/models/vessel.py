@@ -34,6 +34,8 @@ class lct_tos_vessel(osv.Model):
         'vessel_in_voyage_number': fields.char('Vessel In Voyage Number'),
         'vessel_out_voyage_number': fields.char('Vessel Out Voyage Number'),
         'vessel_eta': fields.datetime('ETA'),
+        'loa': fields.integer('Length'),
+        'woa': fields.integer('Width'),
     }
 
     def xml_to_vessel(self, cr, uid, imp_data_id, context=None):

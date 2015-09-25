@@ -272,6 +272,14 @@ class account_voucher(osv.osv):
 class account_invoice(osv.osv):
     _inherit = 'account.invoice'
 
+    def _get_vessel_name(self, cr, uid, ids, fields, arg, context=None):
+        res = {}
+        vsl_model = self.pool.get('lct.tos.vessel')
+        for line in self.browse(cr, uid, ids, context=context):
+            if line.vessel_id:
+                res[line.id]  = vsl_model.browse(cr,uid, vsl_model.search(cr, uid, [('vessel_id','=',line.vessel_id)],context=context), context=context)[0].name
+        return res
+
     _columns = {
         'type2': fields.selection([
             ('vessel','Vessel Billing'),
@@ -281,15 +289,19 @@ class account_invoice(osv.osv):
             ], 'Type of invoice'),
         'call_sign': fields.char('Call sign'),
         'lloyds_nr': fields.char('Lloyds number'),
+        'vessel_name': fields.function(_get_vessel_name, type='char', string="Vessel name"),
         'vessel_id': fields.char('Vessel ID'),
         'berth_time': fields.datetime('Berthing time'),
         'dep_time': fields.datetime('Departure time'),
         'call_sign_vbl': fields.related('call_sign', type='char', string='Call sign'),
         'lloyds_nr_vbl': fields.related('lloyds_nr', type='char', string='Lloyds number'),
         'vessel_id_vbl': fields.related('vessel_id', type='char', string='Vessel ID'),
+        'vessel_name_vbl': fields.related('vessel_name', type='char', string='Vessel name'),
         'berth_time_vbl': fields.related('berth_time', type='datetime', string='Berthing time'),
         'dep_time_vbl': fields.related('dep_time', type='datetime', string='Departure time'),
         'vessel_id_yac': fields.related('vessel_id', type='char', string='Vessel ID'),
+        'vessel_name_yac': fields.related('vessel_name', type='char', string='Vessel name'),
+
         'individual_cust': fields.boolean('Individual customer'),
         'appoint_ref': fields.char('Appointment reference'),
         'appoint_date': fields.datetime('Appointment date'),
@@ -297,8 +309,17 @@ class account_invoice(osv.osv):
         'invoice_line_appoint': fields.related('invoice_line', type='one2many', relation='account.invoice.line', string="Invoice lines"),
         'voyage_number_in': fields.char('Voyage Number In'),
         'voyage_number_out': fields.char('Voyage Number Out'),
+        'voyage_number_in_vbl': fields.related('voyage_number_in', type='char', string='Voyage Number In'),
+        'voyage_number_out_vbl': fields.related('voyage_number_out', type='char', string='Voyage Number Out'),
+        'voyage_number_in_yac': fields.related('voyage_number_in', type='char', string='Voyage Number In'),
+        'voyage_number_out_yac': fields.related('voyage_number_out', type='char', string='Voyage Number Out'),
         'off_window': fields.boolean('OFF window'),
-        'loa': fields.integer('LOA'),
+        'loa': fields.integer('Length'),
+        'woa': fields.integer('Width'),
+        'loa_vbl': fields.related('loa', type='integer', string='Length'),
+        'woa_vbl': fields.related('woa', type='integer', string='Width'),
+        'loa_yac': fields.related('loa', type='integer', string='Length'),
+        'woa_yac': fields.related('woa', type='integer', string='Width'),
         'imported_file_id': fields.many2one('lct.tos.import.data', string="Imported File", ondelete='restrict'),
         'printed': fields.integer('Already printed'),
         'generic_customer': fields.related('partner_id', 'generic_customer', type='boolean', string="Generic customer"),
@@ -453,6 +474,7 @@ class account_invoice(osv.osv):
                 'voyage_number_in': 'voyage_number_in',
                 'voyage_number_out': 'voyage_number_out',
                 'loa': 'loa',
+                'woa': 'beam',
                 'off_window': 'off_window',
             }
         vals = {}
@@ -1093,6 +1115,7 @@ class account_invoice(osv.osv):
                     'invoice_id': invoice_id,
                 }
                 new_invoice_vals = {'vessel_id': vessel_id}
+                new_invoice_vals.update(self._get_data_from_last_vcl(cr, uid, vessel_id, context=context))
 
                 for product_id, cont_nr_ids in invoices_by_product.iteritems():
                     product = product_model.browse(cr, uid, product_id, context=context)
@@ -1271,6 +1294,7 @@ class account_invoice(osv.osv):
         vdockage_ids = []
 
         invoice_model = self.pool.get('account.invoice')
+        vsl_model = self.pool.get('lct.tos.vessel')
         for dockage in vdockages.findall('call'):
             dockage_vals = self._get_invoice_vals(cr, uid, dockage, 'vcl', context=context)
             dockage_vals['type2'] = 'dockage'
@@ -1281,6 +1305,11 @@ class account_invoice(osv.osv):
             if 'voyage_number_in' in dockage_vals and dockage_vals['voyage_number_in'] and 'dep_time' in dockage_vals and dockage_vals['dep_time'] \
                 and self.search(cr, uid, [('voyage_number_in', '=', dockage_vals['voyage_number_in']), ('dep_time', '=', dockage_vals['dep_time'])], context=context):
                 raise osv.except_osv(('Error'), ('Another Vessel Dockage with the same voyage number in and same departure time already exists.'))
+
+            vsl_vals = {field_name: dockage_vals[field_name] for field_name in ['loa', 'woa'] if dockage_vals.get(field_name)}
+            if dockage_vals.get('vessel_id') and vsl_vals:
+                vessel_ids = vsl_model.search(cr, uid, [('vessel_id', '=', dockage_vals.get('vessel_id'))], context=context)
+                vsl_model.write(cr, uid, vessel_ids, vsl_vals, context=context)
             vdockage_ids.append(invoice_model.create(cr, uid, dockage_vals, context=context))
         return vdockage_ids
 
@@ -1413,6 +1442,18 @@ class account_invoice(osv.osv):
         invoice_ids = self._create_invoices(cr, uid, invoice_lines, context=context)
         invoice_model.write(cr, uid, invoice_ids, {'type2': 'yactivity'})
 
+    def _get_data_from_last_vcl(self, cr, uid, vessel_id, context=None):
+        vcl_billing_ids = self.search(cr, uid, [('type2', '=', 'dockage'), ('vessel_id', '=', vessel_id)], order='date_invoice DESC', limit=1, context=context)
+        if not vcl_billing_ids:
+            return {}
+        vcl_billing = self.browse(cr, uid, vcl_billing_ids[0], context=context)
+        return {
+            'voyage_number_out': vcl_billing.voyage_number_out,
+            'voyage_number_in': vcl_billing.voyage_number_in,
+            'loa': vcl_billing.loa,
+            'woa': vcl_billing.woa,
+            'vessel_id': vessel_id,
+        }
 
 
 class account_invoice_group(osv.osv_memory):
