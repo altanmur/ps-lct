@@ -31,6 +31,10 @@ class account_balance_report(report_sxw.rml_parse):
     _description = "Trial Balance"
 
     def __init__(self, cr, uid, name, context):
+        if context is None:
+            context = {}
+        if not context.get('report'):
+            context.update({'report': True})
         self.context = context
         self.sum_debit = 0.00
         self.sum_credit = 0.00
@@ -89,9 +93,13 @@ class account_balance_report(report_sxw.rml_parse):
             'lines': lines,
             })
 
-    def lines(self, form, ids=None, done=None):
+    def lines(self, form, ids=None, done=None, context=None):
+        if context is None:
+            context = {}
         account_filter = form['accounts_to_print']
-        def _process_child(accounts, disp_acc, parent):
+        if not context.get('report'):
+            context.update({'report': True})
+        def _process_child(accounts, disp_acc, parent, context=None):
                 account_rec = [acct for acct in accounts if acct['id']==parent][0]
                 currency_obj = self.pool.get('res.currency')
                 acc_id = self.pool.get('account.account').browse(self.cr, self.uid, account_rec['id'])
@@ -114,7 +122,7 @@ class account_balance_report(report_sxw.rml_parse):
                 }
                 self.sum_debit += account_rec['debit']
                 self.sum_credit += account_rec['credit']
-                if _keep_node(account_rec, account_filter):
+                if _keep_node(account_rec, account_filter, context=context):
                     if disp_acc == 'movement':
                         if not currency_obj.is_zero(self.cr, self.uid, currency, res['credit']) \
                            or not currency_obj.is_zero(self.cr, self.uid, currency, res['debit']) \
@@ -130,9 +138,9 @@ class account_balance_report(report_sxw.rml_parse):
 
                 if account_rec['child_id']:
                     for child in account_rec['child_id']:
-                        _process_child(accounts,disp_acc,child)
+                        _process_child(accounts,disp_acc,child, context=context)
 
-        def _keep_node(node, account_filter):
+        def _keep_node(node, account_filter, context=None):
             if account_filter == 'parents':
                 return node['type'] == 'view'
             elif account_filter == 'children':
@@ -173,7 +181,7 @@ class account_balance_report(report_sxw.rml_parse):
                 if parent in done:
                     continue
                 done[parent] = 1
-                _process_child(accounts,form['display_account'],parent)
+                _process_child(accounts,form['display_account'],parent, context=context)
         return self.result_acc
 
 

@@ -32,6 +32,8 @@ class account_account(osv.osv):
             digits_compute=dp.get_precision('Account'), string='Previous Debit', multi='balance'),
         'prev_balance': fields.function(lambda self, *args, **kwargs: self.__compute_prev(*args, **kwargs),
             digits_compute=dp.get_precision('Account'), string='Previous Balance', multi='balance'),
+        'credit': fields.function(lambda self, *args, **kwargs: self.__compute_prev(*args, **kwargs), fnct_inv=lambda self, *args, **kwargs: self._set_credit_debit(*args, **kwargs), digits_compute=dp.get_precision('Account'), string='Credit', multi='balance'),
+        'debit': fields.function(lambda self, *args, **kwargs: self.__compute_prev(*args, **kwargs), fnct_inv=lambda self, *args, **kwargs: self._set_credit_debit(*args, **kwargs), digits_compute=dp.get_precision('Account'), string='Debit', multi='balance'),
         # 'start_balance': fields.float('Starting Balance', digits=(16, 2)),
     }
 
@@ -49,13 +51,24 @@ class account_account(osv.osv):
                         (__compute will handle their escaping) as a
                         tuple
         """
-        mapping = {
-            'balance': "COALESCE(SUM(l.debit),0) - COALESCE(SUM(l.credit), 0) as balance",
-            'debit': "COALESCE(SUM(l.debit), 0) as debit",
-            'credit': "COALESCE(SUM(l.credit), 0) as credit",
-            # by convention, foreign_balance is 0 when the account has no secondary currency, because the amounts may be in different currencies
-            'foreign_balance': "(SELECT CASE WHEN currency_id IS NULL THEN 0 ELSE COALESCE(SUM(l.amount_currency), 0) END FROM account_account WHERE id IN (l.account_id)) as foreign_balance",
-        }
+        if context is None:
+            context = {}
+        if not context.get('report'):
+            mapping = {
+                'balance': "COALESCE(SUM(l.debit),0) - COALESCE(SUM(l.credit), 0) as balance",
+                'debit': "COALESCE(SUM(l.debit), 0) as debit",
+                'credit': "COALESCE(SUM(l.credit), 0) as credit",
+                # by convention, foreign_balance is 0 when the account has no secondary currency, because the amounts may be in different currencies
+                'foreign_balance': "(SELECT CASE WHEN currency_id IS NULL THEN 0 ELSE COALESCE(SUM(l.amount_currency), 0) END FROM account_account WHERE id IN (l.account_id)) as foreign_balance",
+            }
+        else:
+            mapping = {
+                'balance': "COALESCE(SUM(CASE WHEN l.is_negative THEN -l.credit ELSE l.debit END),0) - COALESCE(SUM(CASE WHEN l.is_negative THEN -l.debit ELSE l.credit END), 0) as balance",
+                'debit': "COALESCE(SUM(CASE WHEN l.is_negative THEN -l.credit ELSE l.debit END), 0) as debit",
+                'credit': "COALESCE(SUM(CASE WHEN l.is_negative THEN -l.debit ELSE l.credit END), 0) as credit",
+                # by convention, foreign_balance is 0 when the account has no secondary currency, because the amounts may be in different currencies
+                'foreign_balance': "(SELECT CASE WHEN currency_id IS NULL THEN 0 ELSE COALESCE(SUM(l.amount_currency), 0) END FROM account_account WHERE id IN (l.account_id)) as foreign_balance",
+            }
         #get all the necessary accounts
         children_and_consolidated = self._get_children_and_consol(cr, uid, ids, context=context)
         #compute for each account the balance/debit/credit from the move lines
