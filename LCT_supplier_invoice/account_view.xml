@@ -119,6 +119,7 @@
                             <field name="po_nr" attrs="{'readonly': [('state','=','synchronized')]}"/>
                             <field name="po_line" attrs="{'readonly': [('state','=','synchronized')]}"/>
                             <field name="asset" attrs="{'readonly': [('state','=','synchronized')]}"/>
+                            <field name="asset_category_id"/>
                             <field name="deviation" attrs="{'readonly': [('state','=','synchronized')]}"/>
                             <field name="product_id" invisible="1" attrs="{'readonly': [('state','=','synchronized')]}"/>
                             <field name="company_id" invisible="1" attrs="{'readonly': [('state','=','synchronized')]}"/>
@@ -203,6 +204,7 @@
                                 <field name="invoice_line_tax_id" widget="many2many_tags"/>
                                 <field name="account_analytic_id" string="Cost Center" groups="analytic.group_analytic_accounting"/>
                                 <field name="company_id" groups="base.group_multi_company" readonly="1"/>
+                                <field name="asset_category_id"/>
                             </group>
                             <group>
                                 <field name="cost_purpose"/>

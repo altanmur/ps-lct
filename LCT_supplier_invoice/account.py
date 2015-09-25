@@ -56,7 +56,7 @@ class account_invoice_line(osv.osv):
         'po_line': fields.char('PO Line'),
         'asset': fields.char('Asset', size=80),
         'deviation': fields.char('Deviation', size=80),
-        'state': fields.related('invoice_id', 'state', type="char", string="Status"),
+        'state': fields.related('invoice_id', 'state', type="char", string="Status", store=True),
     }
 
 
