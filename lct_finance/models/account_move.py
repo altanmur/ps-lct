@@ -33,7 +33,14 @@ class account_move_line(orm.Model):
     _inherit = 'account.move.line'
 
     _columns = {
-        'is_negative': fields.boolean("Negative entry"),
+        'is_negative' : fields.related('move_id', 'is_negative', type='boolean', string='Negative entry'),
     }
 
+
+class account_move(orm.Model):
+    _inherit = 'account.move'
+
+    _columns = {
+        'is_negative': fields.boolean("Negative entry"),
+    }
 
