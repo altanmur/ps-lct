@@ -517,9 +517,6 @@ class account_invoice(osv.osv):
         else:
             return False
 
-    def _get_line_additional_storage(self, cr, uid, line):
-        return self._get_additional_storage(cr, uid, self._get_elmnt_text(line, 'additional_storage'))
-
     # APP
 
     def _get_app_type_service_by_type(self, cr, uid, line):
@@ -616,7 +613,7 @@ class account_invoice(osv.osv):
                     return int(plugged_time)
         return 0
 
-    def _get_app_import_line_quantities_by_products(self, cr, uid, line, context=None):
+    def _get_app_import_line_quantities_by_products(self, cr, uid, line, additional_storage, context=None):
         imd_model = self.pool.get('ir.model.data')
         module = 'lct_tos_integration'
 
@@ -624,7 +621,6 @@ class account_invoice(osv.osv):
 
         category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_category_import')
         size_id = self._get_app_size(cr, uid, line)
-        additional_storage = self._get_line_additional_storage(cr, uid, line)
         sub_category_id = self._get_app_sub_category(cr, uid, line)
         type_id, service_id = self._get_app_type_service_by_type(cr, uid, line)
         if not sub_category_id:
@@ -662,13 +658,12 @@ class account_invoice(osv.osv):
 
         return quantities_by_products
 
-    def _get_app_export_line_quantities_by_products(self, cr, uid, line, empty_release=False, context=None):
+    def _get_app_export_line_quantities_by_products(self, cr, uid, line, additional_storage, empty_release=False, context=None):
         if empty_release:
             category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_export_e_r')
         else:
             category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_export')
         size_id = self._get_app_size(cr, uid, line)
-        additional_storage = self._get_line_additional_storage(cr, uid, line)
         sub_category_id = self._get_app_sub_category(cr, uid, line)
         if not sub_category_id:
             type_id = False
@@ -723,10 +718,9 @@ class account_invoice(osv.osv):
 
         return self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', xml_id)
 
-    def _get_shc_products(self, cr, uid, line, context=None):
+    def _get_shc_products(self, cr, uid, line, additional_storage, context=None):
         category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_specialhandlingcode')
         size_id = self._get_app_size(cr, uid, line)
-        additional_storage = self._get_line_additional_storage(cr, uid, line)
 
         properties = {
             'category_id': category_id,
@@ -755,6 +749,7 @@ class account_invoice(osv.osv):
         pricelist_model = self.pool.get('product.pricelist')
 
         ind_cust = self._get_elmnt_text(appointment, 'individual_customer')
+        additional_storage = self._get_additional_storage(cr, uid, self._get_elmnt_text(appointment, 'additional_storage'))
         if ind_cust=='IND':
             individual_cust = True
             partner_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'lct_generic_customer')
@@ -797,9 +792,9 @@ class account_invoice(osv.osv):
         for line in lines.findall('line'):
             category = self._get_elmnt_text(line, 'category')
             if category == 'I':
-                quantities_by_products = self._get_app_import_line_quantities_by_products(cr, uid, line, context=context)
+                quantities_by_products = self._get_app_import_line_quantities_by_products(cr, uid, line, additional_storage, context=context)
             elif category in ['E', 'Z']:
-                quantities_by_products = self._get_app_export_line_quantities_by_products(cr, uid, line, empty_release=(category == 'Z'), context=context)
+                quantities_by_products = self._get_app_export_line_quantities_by_products(cr, uid, line, additional_storage, empty_release=(category == 'Z'), context=context)
 
 
             bundle = self._get_elmnt_text(line, 'bundles')
@@ -807,7 +802,7 @@ class account_invoice(osv.osv):
                 bundle_product_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'bundle')
                 quantities_by_products[bundle_product_id] = 1
 
-            shc_product_ids = self._get_shc_products(cr, uid, line, context=context)
+            shc_product_ids = self._get_shc_products(cr, uid, line, additional_storage, context=context)
 
             oog = self._get_elmnt_text(line, 'oog')
             oog = True if oog=='YES' else False
@@ -994,8 +989,6 @@ class account_invoice(osv.osv):
                 status = self._get_elmnt_text(line, 'container_status')
                 status_id = self._get_status(cr, uid, status)
 
-                additional_storage = self._get_line_additional_storage(cr, uid, line)
-
                 if status != 'E':
                     p_type = self._get_elmnt_text(line, 'container_type_id')
                     type_id = self._get_vbl_type(cr, uid, p_type)
@@ -1007,7 +1000,6 @@ class account_invoice(osv.osv):
                     'size_id': size_id,
                     'status_id': status_id,
                     'type_id': type_id,
-                    'additional_storage': additional_storage,
                 }
 
                 oog = self._get_elmnt_text(line, 'oog')
@@ -1407,7 +1399,6 @@ class account_invoice(osv.osv):
                 else:
                     type_id = False
 
-                additional_storage = self._get_line_additional_storage(cr, uid, line)
 
                 properties = {
                     'category_id': category_id,
@@ -1415,7 +1406,6 @@ class account_invoice(osv.osv):
                     'size_id': size_id,
                     'status_id': status_id,
                     'type_id': type_id,
-                    'additional_storage': additional_storage,
                 }
                 product_ids = product_model.get_products_by_properties(cr, uid, properties, line.sourceline, context=context)
 
