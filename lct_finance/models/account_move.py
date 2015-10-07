@@ -42,7 +42,7 @@ class account_move_line(orm.Model):
 
 
     _columns = {
-        'is_negative' : fields.related('move_id', 'is_negative', string='Period', type='boolean',
+        'is_negative' : fields.related('move_id', 'is_negative', string='egative entry', type='boolean',
                                 store = {
                                     'account.move': (_get_move_lines, ['is_negative'], 20)
                                 }),
