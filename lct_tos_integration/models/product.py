@@ -109,6 +109,11 @@ class product_product(osv.osv):
             service_ids = [False]
 
         product_ids = []
+
+        storage_service_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'lct_tos_integration', 'lct_product_service_storage')[1]
+        if storage_service_id not in service_ids:
+            properties.pop('additional_storage', False)
+
         for service_id in service_ids:
             properties['service_id'] = service_id
             product_id = self.search(cr, uid, [(prop, '=', prop_id) for prop, prop_id in properties.iteritems()])

@@ -649,10 +649,14 @@ class account_invoice(osv.osv):
             'additional_storage': additional_storage,
         }
 
+        stevedoring_service_id = imd_model.get_object_reference(cr, uid, module, 'lct_product_service_stevedoringcharges')[1]
+        shorehandling_service_id = imd_model.get_object_reference(cr, uid, module, 'lct_product_service_shorehandling')[1]
         quantities_by_products = {}
         for service_id, type_quantity in type_quantities_by_services.iteritems():
             properties['service_ids'] = [service_id]
             properties['type_id'] = type_quantity[0]
+            if (stevedoring_service_id in properties.get('service_ids') or shorehandling_service_id in properties.get('service_ids')) and properties.get('additional_storage'):
+                continue
             product_id = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context)[0]
             quantities_by_products[product_id] = type_quantity[1]
 
