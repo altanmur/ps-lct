@@ -18,6 +18,9 @@
                 <xpath expr="//field[@name='line_id']/tree/field[@name='reconcile_partial_id']" position="after">
                     <field name="is_negative"/>
                 </xpath>
+                <xpath expr="//field[@name='line_id']" position="attributes">
+                    <attribute name="context">{'line_id': line_id , 'journal_id': journal_id, 'default_is_negative': is_negative}</attribute>
+                </xpath>
             </field>
         </record>
 
@@ -27,7 +30,7 @@
             <field name="inherit_id" ref="account.view_move_line_tree"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='reconcile']" position="after">
-                    <field name="is_negative"/>
+                    <field name="is_negative" />
                 </xpath>
             </field>
         </record>

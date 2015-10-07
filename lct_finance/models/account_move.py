@@ -32,8 +32,20 @@ class account_move(orm.Model):
 class account_move_line(orm.Model):
     _inherit = 'account.move.line'
 
+
+    def _get_move_lines(self, cr, uid, ids, context=None):
+        result = []
+        for move in self.pool.get('account.move').browse(cr, uid, ids, context=context):
+            for line in move.line_id:
+                result.append(line.id)
+        return result
+
+
     _columns = {
-        'is_negative' : fields.related('move_id', 'is_negative', type='boolean', string='Negative entry'),
+        'is_negative' : fields.related('move_id', 'is_negative', string='Period', type='boolean',
+                                store = {
+                                    'account.move': (_get_move_lines, ['is_negative'], 20)
+                                }),
     }
 
 
