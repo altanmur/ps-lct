@@ -32,6 +32,11 @@ class account_asset_asset(osv.osv):
         'dep_2013' : fields.float('Sum of depreciations until 31/12/2013')
     }
 
+    def create(self, cr, uid, vals, context=None):
+        if not vals.get('purchase_date_2',False):
+            vals.update({'purchase_date_2': vals.get('purchase_date',False)})
+        return super(account_asset_asset, self).create(cr, uid, vals, context=context)
+
 class account_asset_depreciation_line(osv.osv):
 
     _inherit = "account.asset.depreciation.line"

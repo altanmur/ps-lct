@@ -205,7 +205,6 @@ class depreciation_table(osv.osv_memory):
         i = self.current_line
         for j in (2,3,5) :
             sheet.write(self.current_line,j,"",xl_module.total_center)
-        sheet.write(self.current_line,28,"",xl_module.line_right)
         for j in (13,14):
             sheet.write(i-1,j,"",xl_module.black_line)
         for j in range(15,28):
@@ -220,7 +219,7 @@ class depreciation_table(osv.osv_memory):
             sheet.write(self.current_line,j,sum(self.total_lines[j]),xl_module.total_blue)
         sheet.write(self.current_line,26,sum(self.total_lines[26]),xl_module.total_blue_red)
         sheet.write(self.current_line,27,sum(self.total_lines[27]),xl_module.total_blue_red)
-        sheet.write(self.current_line,29,sum(self.total_lines[28]),xl_module.total_right)
+        sheet.write(self.current_line,28,sum(self.total_lines[28]),xl_module.total_right)
         
         self.current_line += 1
 
