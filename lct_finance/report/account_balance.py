@@ -31,6 +31,9 @@ class account_balance_report(report_sxw.rml_parse):
     _description = "Trial Balance"
 
     def __init__(self, cr, uid, name, context):
+        if context is None:
+            context = {}
+        context['report'] = True
         self.context = context
         self.sum_debit = 0.00
         self.sum_credit = 0.00
@@ -94,7 +97,7 @@ class account_balance_report(report_sxw.rml_parse):
         def _process_child(accounts, disp_acc, parent):
                 account_rec = [acct for acct in accounts if acct['id']==parent][0]
                 currency_obj = self.pool.get('res.currency')
-                acc_id = self.pool.get('account.account').browse(self.cr, self.uid, account_rec['id'])
+                acc_id = self.pool.get('account.account').browse(self.cr, self.uid, account_rec['id'], context=self.context)
                 currency = acc_id.currency_id and acc_id.currency_id or acc_id.company_id.currency_id
                 res = {
                     'id': account_rec['id'],

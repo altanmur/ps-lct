@@ -27,4 +27,5 @@ class account_move(orm.Model):
 
     _columns = {
         'create_date': fields.datetime("Creation Date", readonly=True),
+        'is_negative': fields.boolean("Negative entry"),
     }

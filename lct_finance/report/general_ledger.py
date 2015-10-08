@@ -55,7 +55,8 @@ def patch_lines(self, account):
         sql_sort='l.create_date, l.move_id'
     sql = """
         SELECT l.id AS lid, l.create_date AS ldate, j.code AS lcode, l.currency_id, l.amount_currency, l.ref AS lref,
-            l.name AS lname, COALESCE(l.debit,0) AS debit, COALESCE(l.credit,0) AS credit, l.period_id AS lperiod_id,
+            l.name AS lname, COALESCE(CASE WHEN m.is_negative THEN -l.credit ELSE l.debit END, 0) AS debit,
+            COALESCE(CASE WHEN m.is_negative THEN -l.debit ELSE l.credit END, 0) AS credit, l.period_id AS lperiod_id,
             l.partner_id AS lpartner_id, m.name AS move_name, m.id AS mmove_id,per.code as period_code,
             c.symbol AS currency_code, i.id AS invoice_id, i.type AS invoice_type, i.number AS invoice_number,
             p.name AS partner_name
@@ -75,8 +76,8 @@ def patch_lines(self, account):
         #FIXME: replace the label of lname with a string translatable
         sql = """
             SELECT 0 AS lid, '' AS ldate, '' AS lcode, COALESCE(SUM(l.amount_currency),0.0) AS amount_currency,
-                '' AS lref, 'Initial Balance' AS lname, COALESCE(SUM(l.debit),0.0) AS debit,
-                COALESCE(SUM(l.credit),0.0) AS credit, '' AS lperiod_id, '' AS lpartner_id, '' AS move_name,
+                '' AS lref, 'Initial Balance' AS lname, COALESCE(CASE WHEN m.is_negative THEN -l.credit ELSE l.debit END, 0) AS debit,
+                COALESCE(CASE WHEN m.is_negative THEN -l.debit ELSE l.credit END, 0) AS credit, '' AS lperiod_id, '' AS lpartner_id, '' AS move_name,
                 '' AS mmove_id, '' AS period_code, '' AS currency_code, NULL AS currency_id, '' AS invoice_id,
                 '' AS invoice_type, '' AS invoice_number, '' AS partner_name
             FROM account_move_line l
@@ -141,5 +142,60 @@ def patch_get_children_accounts(self, account):
         return [account]
     return res
 
+def patch_sum_debit_account(self, account):
+    if account.type == 'view':
+        return account.debit
+    move_state = ['draft','posted']
+    if self.target_move == 'posted':
+        move_state = ['posted','']
+    self.cr.execute('SELECT SUM(CASE WHEN am.is_negative THEN -l.credit ELSE l.debit END) \
+            FROM account_move_line l \
+            JOIN account_move am ON (am.id = l.move_id) \
+            WHERE (l.account_id = %s) \
+            AND (am.state IN %s) \
+            AND '+ self.query +' '
+            ,(account.id, tuple(move_state)))
+    sum_debit = self.cr.fetchone()[0] or 0.0
+    if self.init_balance:
+        self.cr.execute('SELECT SUM(CASE WHEN am.is_negative THEN -l.credit ELSE l.debit END) \
+                FROM account_move_line l \
+                JOIN account_move am ON (am.id = l.move_id) \
+                WHERE (l.account_id = %s) \
+                AND (am.state IN %s) \
+                AND '+ self.init_query +' '
+                ,(account.id, tuple(move_state)))
+        # Add initial balance to the result
+        sum_debit += self.cr.fetchone()[0] or 0.0
+    return sum_debit
+
+def patch_sum_credit_account(self, account):
+    if account.type == 'view':
+        return account.credit
+    move_state = ['draft','posted']
+    if self.target_move == 'posted':
+        move_state = ['posted','']
+    self.cr.execute('SELECT SUM(CASE WHEN am.is_negative THEN -l.debit ELSE l.credit END) \
+            FROM account_move_line l \
+            JOIN account_move am ON (am.id = l.move_id) \
+            WHERE (l.account_id = %s) \
+            AND (am.state IN %s) \
+            AND '+ self.query +' '
+            ,(account.id, tuple(move_state)))
+    sum_credit = self.cr.fetchone()[0] or 0.0
+    if self.init_balance:
+        self.cr.execute('SELECT SUM(CASE WHEN am.is_negative THEN -l.debit ELSE l.credit END) \
+                FROM account_move_line l \
+                JOIN account_move am ON (am.id = l.move_id) \
+                WHERE (l.account_id = %s) \
+                AND (am.state IN %s) \
+                AND '+ self.init_query +' '
+                ,(account.id, tuple(move_state)))
+        # Add initial balance to the result
+        sum_credit += self.cr.fetchone()[0] or 0.0
+    return sum_credit
+
+
 general_ledger.lines = patch_lines
 general_ledger.get_children_accounts = patch_get_children_accounts
+general_ledger._sum_debit_account = patch_sum_debit_account
+general_ledger._sum_credit_account = patch_sum_credit_account

@@ -360,6 +360,7 @@ class liasse_fiscale(osv.osv_memory):
         context['prev_fiscalyear'] = fiscalyear_ids and fiscalyear_ids[0] or False
         context['date_from'] = '1000-01-01'
         context['date_to'] = self.browse(cr, uid, ids[0], context=context).date_of_report
+        context['report'] = True
         module_path = __file__.split('wizard')[0]
         xls_path = os.path.join(module_path, 'data', 'Donnees liasse fiscale.xls')
         template = open_workbook(xls_path, formatting_info=True)

@@ -31,9 +31,11 @@ import logging
 _logger = logging.getLogger(__name__)
 
 # Some nonsense because I'm monkey patching...
-from .general_ledger import patch_lines, patch_get_children_accounts
+from .general_ledger import patch_lines, patch_get_children_accounts, patch_sum_debit_account, patch_sum_credit_account
 general_ledger.lines = patch_lines
 general_ledger.get_children_accounts = patch_get_children_accounts
+general_ledger._sum_debit_account = patch_sum_debit_account
+general_ledger._sum_credit_account = patch_sum_credit_account
 
 
 class general_ledger_xls_parser(general_ledger):
