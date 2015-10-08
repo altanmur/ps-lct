@@ -649,6 +649,11 @@ class account_invoice(osv.osv):
             'additional_storage': additional_storage,
         }
 
+        if additional_storage:
+            for xml_id in ['lct_product_service_stevedoringcharges', 'lct_product_service_shorehandling']:
+                to_remove_service_id = imd_model.get_object_reference(cr, uid, module, xml_id)[1]
+                type_quantities_by_services.pop(to_remove_service_id, None)
+
         quantities_by_products = {}
         for service_id, type_quantity in type_quantities_by_services.iteritems():
             properties['service_ids'] = [service_id]
