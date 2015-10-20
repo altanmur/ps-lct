@@ -104,6 +104,8 @@ class product_product(osv.osv):
 
     def get_products_by_properties(self, cr, uid, properties, line=False, context=None):
         properties = dict(properties)
+        if 'additional_storage' not in properties:
+            properties['additional_storage'] = False
         service_ids = properties.pop('service_ids', False)
         if not service_ids:
             service_ids = [False]

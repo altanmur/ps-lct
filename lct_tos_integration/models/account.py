@@ -362,12 +362,14 @@ class account_invoice(osv.osv):
         res['value']['generic_customer'] = self.pool.get('res.partner').browse(cr, uid, partner_id, context=context).generic_customer
         return res
 
-    def _get_elmnt_text(self, elmnt, tag):
+    def _get_elmnt_text(self, elmnt, tag, raise_if_not_found=True):
         sub_elmnt = elmnt.find(tag)
         if sub_elmnt is not None:
             return sub_elmnt.text
-        else:
+        elif raise_if_not_found:
             raise osv.except_osv(('Error'),('Unable to find tag %s\nin element : %s' % (tag, elmnt.tag)))
+        else:
+            return False
 
     def _get_product_info(self, cr, uid, model, field, value, label):
         ids = self.pool.get(model).search(cr, uid, [(field, '=', value)])
@@ -1060,7 +1062,7 @@ class account_invoice(osv.osv):
                             invoice_lines[partner_id][vessel_id][expst_product_id].append(cont_nr_id)
                     pending_yac_model.write(cr, uid, pending_yac_ids, {'status': 'processed'}, context=context)
 
-                ref_power_days = self._get_elmnt_text(line, 'ref_power_days')
+                ref_power_days = self._get_elmnt_text(line, 'ref_power_days', False)
                 if ref_power_days and ref_power_days.isdigit():
                     plugged_time +=  float(ref_power_days)*24
 
