@@ -1147,10 +1147,6 @@ class account_invoice(osv.osv):
                         'partner_id': partner_id,
                         'quantity': quantity,
                         'price_unit': price/quantity,
-                        'cont_nr_ids': [(0,0,{
-                                'quantity': isps_lines.get(vessel_id,False),
-                                'pricelist_qty': isps_lines.get(vessel_id,False),
-                            })],
                     })
                     line_id = invoice_line_model.create(cr, uid, line_vals, context=context)
                     cont_nr_model.write(cr, uid, cont_nr_ids, {'invoice_line_id': line_id}, context=context)
