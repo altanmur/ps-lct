@@ -1448,6 +1448,10 @@ class account_invoice(osv.osv):
             'vessel_id': vessel_id,
         }
 
+    def _prepare_refund(self, cr, uid, invoice, date=None, period_id=None, description=None, journal_id=None, context=None):
+        res = super(account_invoice, self)._prepare_refund(cr, uid, invoice, date=date, period_id=period_id, description=description, journal_id=journal_id, context=context)
+        res['type2'] = invoice.type2
+        return res
 
 class account_invoice_group(osv.osv_memory):
     _name = 'account.invoice.group'
