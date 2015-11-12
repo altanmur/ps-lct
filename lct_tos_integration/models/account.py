@@ -972,6 +972,7 @@ class account_invoice(osv.osv):
             if lines is None:
                 continue
             restow_qty = 0
+            full_container = 0
             plugged_time = 0
             for line in lines.findall('line'):
                 partner_id = self._get_partner(cr, uid, line, 'container_customer_id', context=context)
@@ -983,7 +984,6 @@ class account_invoice(osv.osv):
                 category = self._get_elmnt_text(line, 'transaction_category_id')
                 if category == 'R':
                     partner_id = self._get_partner(cr, uid, vbilling, 'customer_id', context=context)
-                    restow_qty += 1
                 if category == 'T':
                     direction = self._get_elmnt_text(line, 'transaction_direction')
                     category_id, service_ids = self._get_vbl_category_service(cr, uid, category, direction)
@@ -1008,6 +1008,10 @@ class account_invoice(osv.osv):
                     'status_id': status_id,
                     'type_id': type_id,
                 }
+                if status == 'F':
+                    full_container += 1
+                if category == 'R' and status == 'F':
+                    restow_qty += 1
 
                 oog = self._get_elmnt_text(line, 'oog')
                 oog = True if oog=='YES' else False
@@ -1067,7 +1071,7 @@ class account_invoice(osv.osv):
                     plugged_time +=  float(ref_power_days)*24
 
             plugged_hours[vessel_id] = plugged_time
-            isps_lines[vessel_id] = len(lines) - restow_qty
+            isps_lines[vessel_id] = full_container - restow_qty
         invoice_ids = self._create_invoices(cr, uid, invoice_lines, isps_lines, plugged_hours, context=context)
         invoice_model.write(cr, uid, invoice_ids, {'type2': 'vessel'})
 
