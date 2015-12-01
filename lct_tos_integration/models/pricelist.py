@@ -74,7 +74,34 @@ class product_pricelist_item(osv.Model):
 class product_pricelist(osv.Model):
     _inherit = 'product.pricelist'
 
+    def price_get_multi_from_to(self, cr, uid, pricelist_ids, products_by_from_by_to_by_partner, context=None):
+        products_by_from_by_partner = [(t[0], t[1], t[3]) for t in products_by_from_by_to_by_partner]
+        products_by_to_by_partner = [(t[0], t[2], t[3]) for t in products_by_from_by_to_by_partner]
+
+        result_from = self.price_get_multi(cr, uid, pricelist_ids, products_by_from_by_partner, context)
+        result_to = self.price_get_multi(cr, uid, pricelist_ids, products_by_to_by_partner, context)
+
+        print "FROM: %s" %result_from
+        print "TO: %s" %result_to
+
+        for product_id, from_day, to_day, partner_id in products_by_from_by_to_by_partner:
+            for pricelist_id in pricelist_ids:
+                to_cost = result_to.get(product_id, {}).get(pricelist_id, 0) * to_day
+                from_cost = result_from.get(product_id, {}).get(pricelist_id, 0) * from_day
+                unit_cost = (to_cost - from_cost) / (to_day - from_day) if to_day - from_day else 0
+
+                if not result_to.get(product_id):
+                    result_to.update({
+                        product_id: {},
+                        })
+                result_to[product_id].update({
+                    pricelist_id: unit_cost,
+                    })
+
+        return result_to
+
     def price_get_multi(self, cr, uid, pricelist_ids, products_by_qty_by_partner, context=None):
+
         """multi products 'price_get'.
            @param pricelist_ids:
            @param products_by_qty:
@@ -226,8 +253,8 @@ class product_pricelist(osv.Model):
                             if res['slab_rate']:
                                 for key in ['free_period', 'first_slab_last_day', 'second_slab_last_day']:
                                     res[key] = min(res[key] or 0, qty)
-                                if products_dict[product_id].additional_storage:
-                                    res['free_period'] = 0
+                                # if products_dict[product_id].additional_storage:
+                                #     res['free_period'] = 0
                                 for key in ['price_discount_rate1', 'price_surcharge_rate1', 'price_discount_rate2', 'price_surcharge_rate2', 'price_discount_rate3', 'price_surcharge_rate3']:
                                     res[key] = res[key] or 0.0
 
@@ -268,6 +295,7 @@ class product_pricelist(osv.Model):
                 else:
                     results[product_id] = {pricelist_id: price}
 
+        print "PRICELIST RESULTS: %s" %results
         return results
 
 

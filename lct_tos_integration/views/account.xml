@@ -86,7 +86,7 @@
                         </group>
                     </page>
                 </xpath>
-                
+
                 <xpath expr="//field[@name='invoice_line']" position="attributes">
                     <attribute name="attrs">{'invisible':[('type2', 'in', ['vessel', 'appointment', 'dockage'])]}</attribute>
                 </xpath>
@@ -96,6 +96,9 @@
                     <field name="state" invisible="1"/>
                     <button name="button_edit" string="Edit line" type="object" icon="STOCK_EDIT"
                             attrs="{'invisible': ['|', ('cont_nr_editable', '!=', True), ('state', 'not in', ['draft', 'synchronized'])]}"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="attributes">
+                    <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="after">
                     <field name="billed_quantity" readonly="1"/>
@@ -121,7 +124,7 @@
                                 on_change="onchange_account_id(product_id, parent.partner_id, parent.type, parent.fiscal_position,account_id)"/>
                             <field name="account_analytic_id" groups="analytic.group_analytic_accounting"
                                 domain="[('type','!=','view'), ('company_id', '=', parent.company_id)]" string="Profit Center"/>
-                            <field name="quantity" attrs="{'readonly': [('cont_nr_editable', '=', True)]}" on_change="onchange_quantity(product_id, quantity, cont_nr_ids, parent.partner_id)"/>
+                            <field name="quantity" attrs="{'readonly': [('cont_nr_editable', '=', True)]}" on_change="onchange_quantity(product_id, quantity, cont_nr_ids, parent.partner_id)" invisible="1"/>
                             <field name="billed_quantity" readonly="1"/>
                             <field name="uos_id" groups="product.group_uom"
                                 on_change="uos_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id)"/>
@@ -143,6 +146,7 @@
                                     attrs="{'invisible': ['|', ('cont_nr_editable', '!=', True), ('state', 'not in', ['draft', 'synchronized'])]}"/>
                             <field name="product_id"
                                 on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id, cont_nr_ids)"/>
+                            <field name="slab_desc"/>
                             <field name="name"/>
                             <field name="company_id" invisible="1"/>
                             <field name="account_id" groups="account.group_account_user"
@@ -150,7 +154,7 @@
                                 on_change="onchange_account_id(product_id, parent.partner_id, parent.type, parent.fiscal_position,account_id)"/>
                             <field name="account_analytic_id" groups="analytic.group_analytic_accounting"
                                 domain="[('type','!=','view'), ('company_id', '=', parent.company_id)]" string="Profit Center"/>
-                            <field name="quantity" attrs="{'readonly': [('cont_nr_editable', '=', True)]}" on_change="onchange_quantity(product_id, quantity, cont_nr_ids, parent.partner_id)"/>
+                            <field name="quantity" attrs="{'readonly': [('cont_nr_editable', '=', True)]}" on_change="onchange_quantity(product_id, quantity, cont_nr_ids, parent.partner_id)" invisible="1"/>
                             <field name="billed_quantity" readonly="1"/>
                             <field name="uos_id" groups="product.group_uom"
                                 on_change="uos_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id)"/>
@@ -428,7 +432,8 @@
                 <form string="Invoice Line" version="7.0">
                     <h1><field name="name" readonly="1"/></h1>
                     <group>
-                        <field name="quantity" string="Line quantity" readonly="1"/>
+                        <field name="quantity" string="Line quantity" readonly="1" invisible="1"/>
+                        <field name="billed_quantity" string="Line quantity" readonly="1"/>
                         <field name="price_subtotal" string="Subtotal" readonly="1"/>
                     </group>
                     <separator string="Line Items"/>
