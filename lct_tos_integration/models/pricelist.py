@@ -81,9 +81,6 @@ class product_pricelist(osv.Model):
         result_from = self.price_get_multi(cr, uid, pricelist_ids, products_by_from_by_partner, context)
         result_to = self.price_get_multi(cr, uid, pricelist_ids, products_by_to_by_partner, context)
 
-        print "FROM: %s" %result_from
-        print "TO: %s" %result_to
-
         for product_id, from_day, to_day, partner_id in products_by_from_by_to_by_partner:
             for pricelist_id in pricelist_ids:
                 to_cost = result_to.get(product_id, {}).get(pricelist_id, 0) * to_day
@@ -294,8 +291,6 @@ class product_pricelist(osv.Model):
                     results[product_id][pricelist_id] = price
                 else:
                     results[product_id] = {pricelist_id: price}
-
-        print "PRICELIST RESULTS: %s" %results
         return results
 
 

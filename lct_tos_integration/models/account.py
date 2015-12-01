@@ -148,7 +148,6 @@ class account_invoice_line(osv.osv):
         mult_rate = self.pool.get('lct.multiplying.rate').get_active_rate(cr, uid, context=context)
 
         for pricelist_qty, oog in pricelist_qties_and_oog:
-            print "ONCHANGE CONT NR IDS"
             price_multi = self.pool.get('product.pricelist').price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner.id)], context=context)
             value['price_subtotal'] += pricelist_qty*price_multi[product_id][pricelist_id] * (oog and mult_rate or 1.)
         return {'value': value}
@@ -164,12 +163,10 @@ class account_invoice_line(osv.osv):
             price_subtotal = 0.
             for cont_nr in self.pool.get('lct.container.number').browse(cr, uid, cont_nr_ids, context=context):
                 pricelist_qty = cont_nr.pricelist_qty
-                print "_COMPUTE PRICE UNIT"
                 price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
                 price_subtotal += pricelist_qty * price_multi[product_id][pricelist_id] * (cont_nr.oog and mult_rate or 1.)
             return price_subtotal / quantity
         else:
-            print "_COMPUTE PRICE UNIT 2"
             price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, quantity, partner_id)], context=context)
             return price_multi[product_id][pricelist_id]
 
@@ -314,11 +311,9 @@ class account_invoice_line(osv.osv):
         return line_id
 
     def write(self, cr, uid, ids, vals, context=None):
-        print "\033[42mVALS: %s\033[0m" %vals
         if not context.get("price_update"):
             vals.pop("price_unit", None)
         context.pop("price_update", None)
-        print "\033[42mVALS: %s\033[0m" %vals
         return super(account_invoice_line, self).write(cr, uid, ids, vals, context=context)
 
     def button_edit(self, cr, uid, ids, context=None):
@@ -356,7 +351,6 @@ class account_invoice_line(osv.osv):
         for cont_nr in cont_nrs:
             pricelist_qty = cont_nr.pricelist_qty
             oog = cont_nr.oog
-            print "BUTTON CONFIRM EDIT"
             price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
             price_subtotal += pricelist_qty*price_multi[product_id][pricelist_id] * (oog and mult_rate or 1.)
 
@@ -586,7 +580,6 @@ class account_invoice(osv.osv):
         if not account:
             raise osv.except_osv(('Error'), ('Could not find an income account on product %s ') % product.name)
 
-        print "_GET VCL LINES"
         price_unit = pricelist_model.price_get_multi(cr, uid, [pricelist.id], [(product.id, 1, partner.id)], context=context)[product.id][pricelist.id]
 
         line = {
@@ -979,7 +972,6 @@ class account_invoice(osv.osv):
                 pricelist_qty = cont_nr.pricelist_qty
                 oog = cont_nr.oog
                 quantity += pricelist_qty
-                print "CREATE APP"
                 price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
                 price += pricelist_qty*price_multi[product_id][pricelist_id] * (oog and mult_rate or 1.)
             line_vals = {
@@ -1278,7 +1270,6 @@ class account_invoice(osv.osv):
                     for cont_nr in cont_nrs:
                         pricelist_qty = cont_nr.pricelist_qty
                         oog = cont_nr.oog
-                        print "CREATE INVOICES"
                         price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
                         price += pricelist_qty*price_multi[product_id][pricelist_id] * (oog and mult_rate or 1.)
 
