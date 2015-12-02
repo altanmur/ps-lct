@@ -46,6 +46,7 @@ class lct_container_number(osv.osv):
         'oog': fields.boolean('OOG'),
         'from_day': fields.integer('From'),
         'to_day': fields.integer('To'),
+        'storage_offset': fields.integer("Storage Offset"),
     }
 
 
@@ -252,22 +253,25 @@ class account_invoice_line(osv.osv):
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
 
 
-
-
         cont_ids = vals.pop("cont_nr_ids", [0,0,[]])[0][2]
         line_ids = [None]*4
 
+        def _compute_offset(a, b):
+            return max(a-b, 0), max(b-a, 0)
+
         for container in cont_nr_obj.browse(cr, uid, cont_ids, context=context):
+            offset = container.storage_offset
+
             remaining_days = container.pricelist_qty
-            free_duration = min(remaining_days, item.free_period)
+            free_duration, offset = _compute_offset(min(remaining_days, item.free_period), offset)
             remaining_days -= free_duration
 
             slab1_max_duration = item.first_slab_last_day - item.free_period
-            slab1_duration = min(slab1_max_duration, remaining_days)
+            slab1_duration, offset = _compute_offset(min(slab1_max_duration, remaining_days), offset)
             remaining_days -= slab1_duration
 
             slab2_max_duration = item.second_slab_last_day - item.first_slab_last_day
-            slab2_duration = min(slab2_max_duration, remaining_days)
+            slab2_duration, offset = _compute_offset(min(slab2_max_duration, remaining_days), offset)
             remaining_days -= slab2_duration
 
             slab3_duration = remaining_days
@@ -945,10 +949,20 @@ class account_invoice(osv.osv):
             oog = self._get_elmnt_text(line, 'oog')
             oog = True if oog=='YES' else False
 
+            offset = 0
+            if additional_storage:
+                arrival_timestamp = self._get_elmnt_text(line, "arrival_timestamp")
+                appointment_date = self._get_elmnt_text(appointment, "appointment_date")
+                appointment_day = datetime.strptime(appointment_date, "%Y-%m-%d %H:%M:%S").replace(hour=12, minute=0, second=0)
+                arrival_day = datetime.strptime(arrival_timestamp, "%Y-%m-%d %H:%M:%S").replace(hour=12, minute=0, second=0)
+                delta_day = appointment_day - arrival_day
+                offset = delta_day.days if delta_day.days > 0 else 0
+
             cont_nr_vals = {
                 'name': self._get_elmnt_text(line, 'container_number'),
                 'cont_operator': self._get_elmnt_text(line, 'container_operator'),
                 'oog': oog,
+                'storage_offset': offset,
             }
 
             for product_id, quantity in quantities_by_products.iteritems():
