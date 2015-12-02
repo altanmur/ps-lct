@@ -260,36 +260,37 @@ class account_invoice_line(osv.osv):
             return max(a-b, 0), max(b-a, 0)
 
         for container in cont_nr_obj.browse(cr, uid, cont_ids, context=context):
-            offset = container.storage_offset
+            if container:
+                offset = container.storage_offset
 
-            remaining_days = container.pricelist_qty
-            free_duration, offset = _compute_offset(min(remaining_days, item.free_period), offset)
-            remaining_days -= free_duration
+                remaining_days = container.pricelist_qty
+                free_duration, offset = _compute_offset(min(remaining_days, item.free_period), offset)
+                remaining_days -= free_duration
 
-            slab1_max_duration = item.first_slab_last_day - item.free_period
-            slab1_duration, offset = _compute_offset(min(slab1_max_duration, remaining_days), offset)
-            remaining_days -= slab1_duration
+                slab1_max_duration = item.first_slab_last_day - item.free_period
+                slab1_duration, offset = _compute_offset(min(slab1_max_duration, remaining_days), offset)
+                remaining_days -= slab1_duration
 
-            slab2_max_duration = item.second_slab_last_day - item.first_slab_last_day
-            slab2_duration, offset = _compute_offset(min(slab2_max_duration, remaining_days), offset)
-            remaining_days -= slab2_duration
+                slab2_max_duration = item.second_slab_last_day - item.first_slab_last_day
+                slab2_duration, offset = _compute_offset(min(slab2_max_duration, remaining_days), offset)
+                remaining_days -= slab2_duration
 
-            slab3_duration = remaining_days
+                slab3_duration = remaining_days
 
-            cpt_line = 0
-            cumul_duration = 0
-            for duration in [free_duration, slab1_duration, slab2_duration, slab3_duration]:
-                if duration:
-                    if not line_ids[cpt_line]:
-                        line_ids[cpt_line] = super(account_invoice_line, self).create(cr, uid, vals, context=context)
-                    cont_nr_obj.copy(cr, uid, container.id, {
-                        "pricelist_qty": duration,
-                        "invoice_line_id": line_ids[cpt_line],
-                        "from_day": cumul_duration,
-                        "to_day": cumul_duration + duration,
-                        }, context=context)
-                cumul_duration += duration
-                cpt_line += 1
+                cpt_line = 0
+                cumul_duration = 0
+                for duration in [free_duration, slab1_duration, slab2_duration, slab3_duration]:
+                    if duration:
+                        if not line_ids[cpt_line]:
+                            line_ids[cpt_line] = super(account_invoice_line, self).create(cr, uid, vals, context=context)
+                        cont_nr_obj.copy(cr, uid, container.id, {
+                            "pricelist_qty": duration,
+                            "invoice_line_id": line_ids[cpt_line],
+                            "from_day": cumul_duration,
+                            "to_day": cumul_duration + duration,
+                            }, context=context)
+                    cumul_duration += duration
+                    cpt_line += 1
 
         slab_str = [
             "Free (%s days)" %item.free_period,
