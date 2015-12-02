@@ -363,7 +363,7 @@ class account_invoice_line(osv.osv):
 
         vals = {
             'quantity': quantity,
-            'price_unit': price_subtotal/quantity,
+            'price_unit': price_subtotal/quantity if quantity else 0,
         }
         self.write(cr, uid, [invoice_line.id], vals, context=context)
         return {}
