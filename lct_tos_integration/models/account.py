@@ -84,14 +84,17 @@ class account_invoice_line(osv.osv):
             pricelist = invoice and invoice.partner_id.property_product_pricelist or False
 
             pricelist_qties = [cont_nr.pricelist_qty for cont_nr in line.cont_nr_ids]
-            billed_quantity = self._compute_billed_quantity(cr, uid, product and product.id or False,
-                pricelist and pricelist.id or False,
-                line.cont_nr_editable, line.quantity, pricelist_qties, context=context)
+            if line.group_id:
+                billed_quantity = sum(cont.pricelist_qty for cont in line.cont_nr_ids)
+            else:
+                billed_quantity = self._compute_billed_quantity(cr, uid, product and product.id or False,
+                    pricelist and pricelist.id or False,
+                    line.cont_nr_editable, line.quantity, pricelist_qties, context=context)
 
             res[line.id] = {
                 'billed_quantity': billed_quantity,
                 # 'billed_price_unit': billed_quantity > 0 and line.price_unit * line.quantity / billed_quantity or 0,
-                'billed_price_unit': billed_quantity > 0 and line.price_unit or 0,
+                'billed_price_unit': line.price_unit,
             }
 
         return res
@@ -285,10 +288,10 @@ class account_invoice_line(osv.osv):
                 cpt_line += 1
 
         slab_str = [
-            "Slab-3 (Unlimited)",
-            "Slab-2 (%s days)" %(item.second_slab_last_day - item.first_slab_last_day),
-            "Slab-1 (%s days)" %(item.first_slab_last_day - item.free_period),
             "Free (%s days)" %item.free_period,
+            "Slab-1 (%s days)" %(item.first_slab_last_day - item.free_period),
+            "Slab-2 (%s days)" %(item.second_slab_last_day - item.first_slab_last_day),
+            "Slab-3 (Unlimited)",
             ]
 
         group = group_model.create(cr, uid, {'name': 'noname'}, context=context)
@@ -305,7 +308,7 @@ class account_invoice_line(osv.osv):
                 self.write(cr, uid, line_id, {
                     "quantity": qty,
                     "price_unit": price/qty if qty else 0,
-                    "slab_desc": slab_str.pop(),
+                    "slab_desc": slab_str[line_ids.index(line_id)],
                     "group_id": group,
                     }, context=context)
         return line_id
