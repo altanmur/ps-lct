@@ -262,6 +262,7 @@ class account_invoice_line(osv.osv):
         for container in cont_nr_obj.browse(cr, uid, cont_ids, context=context):
             if container:
                 offset = container.storage_offset
+                cumul_duration = offset
 
                 remaining_days = container.pricelist_qty
                 free_duration, offset = _compute_offset(min(remaining_days, item.free_period), offset)
@@ -278,7 +279,6 @@ class account_invoice_line(osv.osv):
                 slab3_duration = remaining_days
 
                 cpt_line = 0
-                cumul_duration = 0
                 for duration in [free_duration, slab1_duration, slab2_duration, slab3_duration]:
                     if duration:
                         if not line_ids[cpt_line]:
