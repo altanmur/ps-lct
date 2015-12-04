@@ -244,7 +244,7 @@ class account_invoice_line(osv.osv):
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
         version = pricelist.version_id[0]
 
-        items = [item for item in version.items_id if item.product_id == product] or [item for item in version.items_id if not item.product_id]
+        items = [item for item in version.items_id if item.product_tmpl_id == product.product_tmpl_id] or [item for item in version.items_id if not item.product_id]
         if len(items) != 1:
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
         item = items[0]
