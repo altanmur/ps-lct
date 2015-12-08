@@ -94,7 +94,6 @@ class account_invoice_line(osv.osv):
 
             res[line.id] = {
                 'billed_quantity': billed_quantity,
-                # 'billed_price_unit': billed_quantity > 0 and line.price_unit * line.quantity / billed_quantity or 0,
                 'billed_price_unit': line.price_unit,
             }
 
@@ -214,7 +213,7 @@ class account_invoice_line(osv.osv):
     def create(self, cr, uid, vals, context=None):
         pricelist_obj = self.pool.get('product.pricelist')
         cont_nr_obj = self.pool["lct.container.number"]
-        group_model = self.pool["account.invoice.line.group"]
+        group_obj = self.pool["account.invoice.line.group"]
 
         if 'invoice_id' in vals and vals['invoice_id']:
             invoice = self.pool.get('account.invoice').browse(cr, uid, vals['invoice_id'], context=context)
@@ -223,13 +222,12 @@ class account_invoice_line(osv.osv):
                 if tax:
                     vals['invoice_line_tax_id'] = [(6, False, [tax.id])]
 
-        group_id = self.pool["account.invoice.line.group"].create(cr, uid, {}, context=context)
-
         if not vals.get("product_id"):
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
         product = self.pool["product.product"].browse(cr, uid, vals["product_id"], context=context)
 
-        if not product.service_id or product.service_id.name != "Storage":
+        storage_service = self.pool["ir.model.data"].get_object(cr, uid, "lct_tos_integration", "lct_product_service_storage")
+        if not product.service_id or not storage_service or product.service_id.name != storage_service.name:
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
 
         if not vals.get("invoice_id"):
@@ -260,37 +258,38 @@ class account_invoice_line(osv.osv):
             return max(a-b, 0), max(b-a, 0)
 
         for container in cont_nr_obj.browse(cr, uid, cont_ids, context=context):
-            if container:
-                offset = container.storage_offset
-                cumul_duration = offset
+            if not container:
+                continue
+            offset = container.storage_offset
+            cumul_duration = offset
 
-                remaining_days = container.pricelist_qty
-                free_duration, offset = _compute_offset(min(remaining_days, item.free_period), offset)
-                remaining_days -= free_duration
+            remaining_days = container.pricelist_qty
+            free_duration, offset = _compute_offset(min(remaining_days, item.free_period), offset)
+            remaining_days -= free_duration
 
-                slab1_max_duration = item.first_slab_last_day - item.free_period
-                slab1_duration, offset = _compute_offset(min(slab1_max_duration, remaining_days), offset)
-                remaining_days -= slab1_duration
+            slab1_max_duration = item.first_slab_last_day - item.free_period
+            slab1_duration, offset = _compute_offset(min(slab1_max_duration, remaining_days), offset)
+            remaining_days -= slab1_duration
 
-                slab2_max_duration = item.second_slab_last_day - item.first_slab_last_day
-                slab2_duration, offset = _compute_offset(min(slab2_max_duration, remaining_days), offset)
-                remaining_days -= slab2_duration
+            slab2_max_duration = item.second_slab_last_day - item.first_slab_last_day
+            slab2_duration, offset = _compute_offset(min(slab2_max_duration, remaining_days), offset)
+            remaining_days -= slab2_duration
 
-                slab3_duration = remaining_days
+            slab3_duration = remaining_days
 
-                cpt_line = 0
-                for duration in [free_duration, slab1_duration, slab2_duration, slab3_duration]:
-                    if duration:
-                        if not line_ids[cpt_line]:
-                            line_ids[cpt_line] = super(account_invoice_line, self).create(cr, uid, vals, context=context)
-                        cont_nr_obj.copy(cr, uid, container.id, {
-                            "pricelist_qty": duration,
-                            "invoice_line_id": line_ids[cpt_line],
-                            "from_day": cumul_duration,
-                            "to_day": cumul_duration + duration,
-                            }, context=context)
-                    cumul_duration += duration
-                    cpt_line += 1
+            cpt_line = 0
+            for duration in [free_duration, slab1_duration, slab2_duration, slab3_duration]:
+                if duration:
+                    if not line_ids[cpt_line]:
+                        line_ids[cpt_line] = super(account_invoice_line, self).create(cr, uid, vals, context=context)
+                    cont_nr_obj.copy(cr, uid, container.id, {
+                        "pricelist_qty": duration,
+                        "invoice_line_id": line_ids[cpt_line],
+                        "from_day": cumul_duration,
+                        "to_day": cumul_duration + duration,
+                        }, context=context)
+                cumul_duration += duration
+                cpt_line += 1
 
         slab_str = [
             "Free (%s days)" %item.free_period,
@@ -299,7 +298,7 @@ class account_invoice_line(osv.osv):
             "Slab-3 (Unlimited)",
             ]
 
-        group = group_model.create(cr, uid, {'name': 'noname'}, context=context)
+        group = group_obj.create(cr, uid, {'name': 'noname'}, context=context)
         for line_id in line_ids:
             if line_id:
                 line = self.browse(cr, uid, line_id, context=context)
@@ -1003,7 +1002,6 @@ class account_invoice(osv.osv):
                 'cont_nr_ids': [(6, 0, cont_nr_ids)],
             }
             line_id = invoice_line_model.create(cr, uid, line_vals, context=context)
-            # cont_nr_model.write(cr, uid, cont_nr_ids, {'invoice_line_id': line_id}, context=context)
 
         return app_id
 
