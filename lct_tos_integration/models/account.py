@@ -25,6 +25,7 @@ from openerp import SUPERUSER_ID
 from lxml import etree as ET
 from datetime import datetime
 import re
+import openerp.addons.decimal_precision as dp
 
 class lct_container_number(osv.osv):
     _name = 'lct.container.number'
@@ -43,11 +44,35 @@ class lct_container_number(osv.osv):
         'invoice_line_id': fields.many2one('account.invoice.line', string="Invoice line"),
         'type2': fields.related('invoice_line_id', 'invoice_id', 'type2', type='char', string="Invoice Type", readonly=True),
         'oog': fields.boolean('OOG'),
+        'from_day': fields.integer('From'),
+        'to_day': fields.integer('To'),
+        'storage_offset': fields.integer("Storage Offset"),
+    }
+
+
+class account_invoice_line_group(osv.osv):
+    _name = "account.invoice.line.group"
+    _columns = {
+        'name': fields.char(),
+        'line_ids': fields.one2many("account.invoice.line", "group_id"),
     }
 
 
 class account_invoice_line(osv.osv):
     _inherit = 'account.invoice.line'
+
+    def _amount_line(self, cr, uid, ids, prop, unknow_none, unknow_dict):
+        res = {}
+        tax_obj = self.pool.get('account.tax')
+        cur_obj = self.pool.get('res.currency')
+        for line in self.browse(cr, uid, ids):
+            price = line.price_unit * (1-(line.discount or 0.0)/100.0)
+            taxes = tax_obj.compute_all(cr, uid, line.invoice_line_tax_id, price, line.billed_quantity, product=line.product_id, partner=line.invoice_id.partner_id)
+            res[line.id] = taxes['total']
+            if line.invoice_id:
+                cur = line.invoice_id.currency_id
+                res[line.id] = cur_obj.round(cr, uid, cur, res[line.id])
+        return res
 
     def _get_ids_from_invoice(self, cr, uid, ids, context=None):
         return self.pool.get("account.invoice.line").search(cr, uid, [('invoice_id', 'in', ids)], context=context)
@@ -60,13 +85,16 @@ class account_invoice_line(osv.osv):
             pricelist = invoice and invoice.partner_id.property_product_pricelist or False
 
             pricelist_qties = [cont_nr.pricelist_qty for cont_nr in line.cont_nr_ids]
-            billed_quantity = self._compute_billed_quantity(cr, uid, product and product.id or False,
-                pricelist and pricelist.id or False,
-                line.cont_nr_editable, line.quantity, pricelist_qties, context=context)
+            if line.group_id:
+                billed_quantity = sum(cont.pricelist_qty for cont in line.cont_nr_ids)
+            else:
+                billed_quantity = self._compute_billed_quantity(cr, uid, product and product.id or False,
+                    pricelist and pricelist.id or False,
+                    line.cont_nr_editable, line.quantity, pricelist_qties, context=context)
 
             res[line.id] = {
                 'billed_quantity': billed_quantity,
-                'billed_price_unit': billed_quantity > 0 and line.price_unit * line.quantity / billed_quantity or 0,
+                'billed_price_unit': line.price_unit,
             }
 
         return res
@@ -81,9 +109,12 @@ class account_invoice_line(osv.osv):
             'account.invoice.line': (lambda self, cr, uid, ids, context={}: ids, ['invoice_id'], 20),
             'account.invoice': (_get_ids_from_invoice, ['state'], 20),
             }),
-        'billed_quantity': fields.function(_billed_quantity, type='float', string="Billed quantity", multi='billed_unit_price_quantity'),
+        'billed_quantity': fields.function(_billed_quantity, type='float', string="Quantity", multi='billed_unit_price_quantity'),
         'billed_price_unit': fields.function(_billed_quantity, type='float', string="Unit Price", multi='billed_unit_price_quantity'),
-
+        'group_id': fields.many2one("account.invoice.line.group"),
+        'slab_desc': fields.char("Slab"),
+        'price_subtotal': fields.function(_amount_line, string='Amount', type="float",
+            digits_compute= dp.get_precision('Account'), store=True),
     }
 
 
@@ -180,13 +211,117 @@ class account_invoice_line(osv.osv):
         return line1.id
 
     def create(self, cr, uid, vals, context=None):
+        pricelist_obj = self.pool.get('product.pricelist')
+        cont_nr_obj = self.pool["lct.container.number"]
+        group_obj = self.pool["account.invoice.line.group"]
+
         if 'invoice_id' in vals and vals['invoice_id']:
             invoice = self.pool.get('account.invoice').browse(cr, uid, vals['invoice_id'], context=context)
             if invoice.type2 and 'partner_id' in invoice and invoice.partner_id:
                 tax = invoice.partner_id.tax_id
                 if tax:
                     vals['invoice_line_tax_id'] = [(6, False, [tax.id])]
-        return super(account_invoice_line, self).create(cr, uid, vals, context=context)
+
+        if not vals.get("product_id"):
+            return super(account_invoice_line, self).create(cr, uid, vals, context=context)
+        product = self.pool["product.product"].browse(cr, uid, vals["product_id"], context=context)
+
+        storage_service = self.pool["ir.model.data"].get_object(cr, uid, "lct_tos_integration", "lct_product_service_storage")
+        if not product.service_id or not storage_service or product.service_id.name != storage_service.name:
+            return super(account_invoice_line, self).create(cr, uid, vals, context=context)
+
+        if not vals.get("invoice_id"):
+            return super(account_invoice_line, self).create(cr, uid, vals, context=context)
+        invoice = self.pool["account.invoice"].browse(cr, uid, vals["invoice_id"], context=context)
+
+        if not invoice.partner_id or not invoice.partner_id.property_product_pricelist:
+            return super(account_invoice_line, self).create(cr, uid, vals, context=context)
+        pricelist = invoice.partner_id.property_product_pricelist
+
+        if len(pricelist.version_id) != 1:
+            return super(account_invoice_line, self).create(cr, uid, vals, context=context)
+        version = pricelist.version_id[0]
+
+        items = [item for item in version.items_id if item.product_tmpl_id == product.product_tmpl_id] or [item for item in version.items_id if not item.product_id]
+        if len(items) != 1:
+            return super(account_invoice_line, self).create(cr, uid, vals, context=context)
+        item = items[0]
+
+        if not item.slab_rate:
+            return super(account_invoice_line, self).create(cr, uid, vals, context=context)
+
+
+        cont_ids = vals.pop("cont_nr_ids", [0,0,[]])[0][2]
+        line_ids = [None]*4
+
+        def _compute_offset(a, b):
+            return max(a-b, 0), max(b-a, 0)
+
+        for container in cont_nr_obj.browse(cr, uid, cont_ids, context=context):
+            if not container:
+                continue
+            offset = container.storage_offset
+            cumul_duration = offset
+
+            remaining_days = container.pricelist_qty
+            free_duration, offset = _compute_offset(min(remaining_days, item.free_period), offset)
+            remaining_days -= free_duration
+
+            slab1_max_duration = item.first_slab_last_day - item.free_period
+            slab1_duration, offset = _compute_offset(min(slab1_max_duration, remaining_days), offset)
+            remaining_days -= slab1_duration
+
+            slab2_max_duration = item.second_slab_last_day - item.first_slab_last_day
+            slab2_duration, offset = _compute_offset(min(slab2_max_duration, remaining_days), offset)
+            remaining_days -= slab2_duration
+
+            slab3_duration = remaining_days
+
+            cpt_line = 0
+            for duration in [free_duration, slab1_duration, slab2_duration, slab3_duration]:
+                if duration:
+                    if not line_ids[cpt_line]:
+                        line_ids[cpt_line] = super(account_invoice_line, self).create(cr, uid, vals, context=context)
+                    cont_nr_obj.copy(cr, uid, container.id, {
+                        "pricelist_qty": duration,
+                        "invoice_line_id": line_ids[cpt_line],
+                        "from_day": cumul_duration,
+                        "to_day": cumul_duration + duration,
+                        }, context=context)
+                cumul_duration += duration
+                cpt_line += 1
+
+        slab_str = [
+            "Free (%s days)" %item.free_period,
+            "Slab-1 (%s days)" %(item.first_slab_last_day - item.free_period),
+            "Slab-2 (%s days)" %(item.second_slab_last_day - item.first_slab_last_day),
+            "Slab-3 (Unlimited)",
+            ]
+
+        group = group_obj.create(cr, uid, {'name': 'noname'}, context=context)
+        for line_id in line_ids:
+            if line_id:
+                line = self.browse(cr, uid, line_id, context=context)
+                price, qty = 0, 0
+                for cont in line.cont_nr_ids:
+                    price_multi = pricelist_obj.price_get_multi_from_to(cr, uid, [pricelist.id], [(product.id, cont.from_day, cont.to_day, line.invoice_id.partner_id.id)], context=context)
+                    price += cont.pricelist_qty * price_multi[product.id][pricelist.id]
+                    qty += cont.pricelist_qty
+
+                context.update({"price_update": True})
+                self.write(cr, uid, line_id, {
+                    "quantity": qty,
+                    "price_unit": price/qty if qty else 0,
+                    "slab_desc": slab_str[line_ids.index(line_id)],
+                    "group_id": group,
+                    }, context=context)
+        return line_id
+
+    def write(self, cr, uid, ids, vals, context=None):
+        if not context.get("price_update"):
+            vals.pop("price_unit", None)
+        context.pop("price_update", None)
+        return super(account_invoice_line, self).write(cr, uid, ids, vals, context=context)
 
     def button_edit(self, cr, uid, ids, context=None):
         return {
@@ -228,7 +363,7 @@ class account_invoice_line(osv.osv):
 
         vals = {
             'quantity': quantity,
-            'price_unit': price_subtotal/quantity,
+            'price_unit': price_subtotal/quantity if quantity else 0,
         }
         self.write(cr, uid, [invoice_line.id], vals, context=context)
         return {}
@@ -814,10 +949,20 @@ class account_invoice(osv.osv):
             oog = self._get_elmnt_text(line, 'oog')
             oog = True if oog=='YES' else False
 
+            offset = 0
+            if additional_storage:
+                arrival_timestamp = self._get_elmnt_text(line, "arrival_timestamp")
+                appointment_date = self._get_elmnt_text(appointment, "appointment_date")
+                appointment_day = datetime.strptime(appointment_date, "%Y-%m-%d %H:%M:%S").replace(hour=12, minute=0, second=0)
+                arrival_day = datetime.strptime(arrival_timestamp, "%Y-%m-%d %H:%M:%S").replace(hour=12, minute=0, second=0)
+                delta_day = appointment_day - arrival_day
+                offset = delta_day.days if delta_day.days > 0 else 0
+
             cont_nr_vals = {
                 'name': self._get_elmnt_text(line, 'container_number'),
                 'cont_operator': self._get_elmnt_text(line, 'container_operator'),
                 'oog': oog,
+                'storage_offset': offset,
             }
 
             for product_id, quantity in quantities_by_products.iteritems():
@@ -854,9 +999,9 @@ class account_invoice(osv.osv):
                 'partner_id': partner_id,
                 'quantity': quantity,
                 'price_unit': price/quantity,
+                'cont_nr_ids': [(6, 0, cont_nr_ids)],
             }
             line_id = invoice_line_model.create(cr, uid, line_vals, context=context)
-            cont_nr_model.write(cr, uid, cont_nr_ids, {'invoice_line_id': line_id}, context=context)
 
         return app_id
 
