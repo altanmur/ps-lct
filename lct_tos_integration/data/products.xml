@@ -11,6 +11,12 @@
       <field name="name">Dockage Quai Fixed Charge</field>
       <field name="category_id" ref="lct_product_category_dockage"/>
     </record>
+    <record id="dockage_day" model="product.product">
+      <field name="name">Dockage quay expense per day</field>
+      <field name="category_id" ref="lct_product_category_dockage"/>
+      <field name="uom_id" ref="product.product_uom_day"/>
+      <field name="uom_po_id" ref="product.product_uom_day"/>
+    </record>
     <record id="reefer_electricity" model="product.product">
       <field name="name">Reefer electricity (hours)</field>
       <field name="uom_id" ref="product.product_uom_hour"/>
