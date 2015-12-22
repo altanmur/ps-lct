@@ -889,6 +889,7 @@ class account_invoice(osv.osv):
         invoice_line_model = self.pool.get('account.invoice.line')
         partner_model = self.pool.get('res.partner')
         pricelist_model = self.pool.get('product.pricelist')
+        module = 'lct_tos_integration'
 
         ind_cust = self._get_elmnt_text(appointment, 'individual_customer')
         additional_storage = self._get_additional_storage(cr, uid, self._get_elmnt_text(appointment, 'additional_storage'))
@@ -964,16 +965,24 @@ class account_invoice(osv.osv):
                 'oog': oog,
                 'storage_offset': offset,
             }
+            service_elec = imd_model.get_record_id(cr, uid, module, 'lct_product_service_reeferelectricity')
+            service_storage = imd_model.get_record_id(cr, uid, module, 'lct_product_service_storage')
 
             for product_id, quantity in quantities_by_products.iteritems():
                 if product_id not in invoice_lines:
                     invoice_lines[product_id] = []
+                product = product_model.browse(cr, uid, product_id, context=context)
+                if additional_storage and ((product.service_id and product.service_id.id not in [service_elec, service_storage]) or not product.service_id):
+                    continue
                 cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=quantity, quantity=1), context=context)
                 invoice_lines[product_id].append(cont_nr_id)
 
             for shc_product_id in shc_product_ids:
                 if shc_product_id not in invoice_lines:
                     invoice_lines[shc_product_id] = []
+                product = product_model.browse(cr, uid, shc_product_id, context=context)
+                if additional_storage and ((product.service_id and product.service_id.id not in [service_elec, service_storage]) or not product.service_id):
+                    continue
                 cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=1, quantity=1), context=context)
                 invoice_lines[shc_product_id].append(cont_nr_id)
 
