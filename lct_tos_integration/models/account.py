@@ -1226,10 +1226,10 @@ class account_invoice(osv.osv):
 
             plugged_hours[vessel_id] = plugged_time
             isps_lines[vessel_id] = full_container - restow_qty
-        invoice_ids = self._create_invoices(cr, uid, invoice_lines, isps_lines, plugged_hours, context=context)
+        invoice_ids = self._create_invoices(cr, uid, invoice_lines, isps_lines, plugged_hours, docking_fees=True, context=context)
         invoice_model.write(cr, uid, invoice_ids, {'type2': 'vessel'})
 
-    def _create_invoices(self, cr, uid, invoice_lines, isps_lines=None, plugged_hours=None, context=None):
+    def _create_invoices(self, cr, uid, invoice_lines, isps_lines=None, plugged_hours=None, docking_fees=False, context=None):
         if isps_lines is None:
             isps_lines = {}
         if plugged_hours is None:
@@ -1363,6 +1363,26 @@ class account_invoice(osv.osv):
                         })],
                 }
                 invoice_line_model.create(cr, uid, dockage_line_vals, context=context)
+
+                if docking_fees:
+                    product_docking_day_fee_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'dockage_day')
+                    product_docking_day_fee = product_model.browse(cr, uid, product_docking_day_fee_id, context=context)
+                    account_dockage = product_dockage.property_account_income or (product_dockage.categ_id and product_dockage.categ_id.property_account_income_categ) or False
+                    invoice = invoice_model.browse(cr, uid, invoice_id, context=context)
+                    dockage_day_line_vals = {
+                        'invoice_id': invoice_id,
+                        'product_id': product_docking_day_fee_id,
+                        'name': product_docking_day_fee.name,
+                        'quantity': (datetime.strptime(invoice.dep_time, "%Y-%m-%d %H:%M:%S").date() -  datetime.strptime(invoice.berth_time, "%Y-%m-%d %H:%M:%S").date()).days + 1,
+                        'price_unit': 0.14*(invoice.woa_vbl*invoice.loa_vbl)*(1.5/1000),
+                        'uos_id': product_docking_day_fee.uom_id.id,
+                        'account_id': account_dockage.id,
+                        'cont_nr_ids': [(0,0,{
+                                'quantity': (datetime.strptime(invoice.dep_time, "%Y-%m-%d %H:%M:%S").date() -  datetime.strptime(invoice.berth_time, "%Y-%m-%d %H:%M:%S").date()).days + 1,
+                                'pricelist_qty': (datetime.strptime(invoice.dep_time, "%Y-%m-%d %H:%M:%S").date() -  datetime.strptime(invoice.berth_time, "%Y-%m-%d %H:%M:%S").date()).days + 1,
+                            })],
+                    }
+                    invoice_line_model.create(cr, uid, dockage_day_line_vals, context=context)
 
         return invoice_ids
 
