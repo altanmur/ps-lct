@@ -178,7 +178,7 @@
                         <tr>
                             <td>
                                 <para style="P5">[[ repeatIn( group.line_ids, 'line' ) ]]</para>
-                                <blockTable colWidths="20.0,230.0,80.0,80.0,89.0" style="Table3">
+                                <blockTable colWidths="20.0,222.0,81.0,81.0,90.0" style="Table3">
                                     <tr>
                                         <td/>
                                         <td>
@@ -230,7 +230,7 @@
         </blockTable>
 
         <!-- Totals -->
-        <blockTable colWidths="390.0,109.0" style="Table3">
+        <blockTable colWidths="393.0,115.0" style="Table3">
             <tr>[[o.amount_tax or removeParentNode('tr')]]
                 <td>
                     <para style="P6_bold">Total</para>
