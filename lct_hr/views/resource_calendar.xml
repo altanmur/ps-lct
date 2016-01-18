@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="action_ressource_calendar" model="ir.actions.act_window">
+            <field name="name">Resource Calendar</field>
+            <field name="res_model">resource.calendar</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            id="menu_resource_calendar"
+            name="Resource Calendar"
+            action="action_ressource_calendar"
+            parent="resource.menu_resource_config"
+            sequence="10"
+            />
+    </data>
+</openerp>

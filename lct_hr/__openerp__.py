@@ -39,6 +39,7 @@ HR Module for LCT
         'views/res_config.xml',
         'views/hr_evaluation_interview.xml',
         'views/hr_applicant.xml',
+        'views/resource_calendar.xml',
         'report/paybook_report.xml',
         'report/payslip_report.xml',
         'report/reports.xml',
