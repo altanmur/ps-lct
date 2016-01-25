@@ -221,6 +221,10 @@ class account_invoice_line(osv.osv):
                 tax = invoice.partner_id.tax_id
                 if tax:
                     vals['invoice_line_tax_id'] = [(6, False, [tax.id])]
+        if 'invoice_line_tax_id' not in vals and "product_id" in vals:
+            product = self.pool.get('product.product').browse(cr, uid, vals["product_id"], context=context)
+            if product.taxes_id:
+                vals['invoice_line_tax_id'] = [(6, False, [taxe.id for taxe in product.taxes_id])]
 
         if not vals.get("product_id"):
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
