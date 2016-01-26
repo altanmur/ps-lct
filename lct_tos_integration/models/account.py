@@ -254,8 +254,7 @@ class account_invoice_line(osv.osv):
         if not item.slab_rate:
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
 
-
-        cont_ids = vals.pop("cont_nr_ids", [0,0,[]])[0][2]
+        cont_ids = vals.pop("cont_nr_ids", [(0,0,[])])[0][2]
         line_ids = [None]*4
 
         def _compute_offset(a, b):
@@ -319,7 +318,7 @@ class account_invoice_line(osv.osv):
                     "slab_desc": slab_str[line_ids.index(line_id)],
                     "group_id": group,
                     }, context=context)
-        return line_id
+        return line_id or super(account_invoice_line, self).create(cr, uid, vals, context=context)
 
     def write(self, cr, uid, ids, vals, context=None):
         if not context.get("price_update"):
