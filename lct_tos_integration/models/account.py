@@ -230,6 +230,7 @@ class account_invoice_line(osv.osv):
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
         product = self.pool["product.product"].browse(cr, uid, vals["product_id"], context=context)
 
+
         storage_service = self.pool["ir.model.data"].get_object(cr, uid, "lct_tos_integration", "lct_product_service_storage")
         if not product.service_id or not storage_service or product.service_id.name != storage_service.name:
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
