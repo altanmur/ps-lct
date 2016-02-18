@@ -318,7 +318,7 @@ class account_invoice_line(osv.osv):
                     "slab_desc": slab_str[line_ids.index(line_id)],
                     "group_id": group,
                     }, context=context)
-        return line_id or super(account_invoice_line, self).create(cr, uid, vals, context=context)
+        return max(line_ids) or super(account_invoice_line, self).create(cr, uid, vals, context=context)
 
     def write(self, cr, uid, ids, vals, context=None):
         if not context.get("price_update"):
