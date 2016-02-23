@@ -178,7 +178,7 @@
                         <tr>
                             <td>
                                 <para style="P5">[[ repeatIn( group.line_ids, 'line' ) ]]</para>
-                                <blockTable colWidths="20.0,230.0,80.0,80.0,89.0" style="Table3">
+                                <blockTable colWidths="14.0,230.0,80.0,80.0,89.0" style="Table3">
                                     <tr>
                                         <td/>
                                         <td>
