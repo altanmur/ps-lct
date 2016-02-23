@@ -230,7 +230,7 @@
         </blockTable>
 
         <!-- Totals -->
-        <blockTable colWidths="390.0,109.0" style="Table3">
+        <blockTable colWidths="390.0,121.0" style="Table3">
             <tr>[[o.amount_tax or removeParentNode('tr')]]
                 <td>
                     <para style="P6_bold">Total</para>
