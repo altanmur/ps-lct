@@ -321,6 +321,8 @@ class account_invoice_line(osv.osv):
         return max(line_ids) or super(account_invoice_line, self).create(cr, uid, vals, context=context)
 
     def write(self, cr, uid, ids, vals, context=None):
+        if context==None:
+            context={}
         if not context.get("price_update"):
             vals.pop("price_unit", None)
         context.pop("price_update", None)
