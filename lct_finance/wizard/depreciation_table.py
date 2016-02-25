@@ -97,11 +97,11 @@ class depreciation_table(osv.osv_memory):
             sheet.write(i-1,j,"",xl_module.black_line)
         for j in range(15,28):
             sheet.write(i-1,j,"",xl_module.blue_line)
+        output = {key: [] for key in range(1,29)}
         assets = self._get_assets(cr, uid, ids, category_names=category_names, context=context)
         if not assets:
-            self.current_line += 1
-            return
-        output = {key: [] for key in range(1,29)}
+            # self.current_line += 1
+            return {key: [] for key in range(1,29)}
         for asset in assets :
             purchase_date = datetime.strptime(asset.purchase_date_2,'%Y-%m-%d')
             if purchase_date > today:
@@ -173,25 +173,25 @@ class depreciation_table(osv.osv_memory):
         sheet.write(self.current_line,1,title,xl_module.total_left)
         for j in (2,3,4,9,11) :
             sheet.write(self.current_line,j,"",xl_module.total_center)
-        if i1<=i2 :
-            for j in (5,6,7,8,10,12) :
-                sheet.write(self.current_line,j,sum(vals[j]),xl_module.total_center)
-                self.total_lines[j].append(sum(vals[j]))
-            sheet.write(self.current_line,13,sum(vals[13]),xl_module.total_black)
-            self.total_lines[13].append(sum(vals[13]))
-            sheet.write(self.current_line,14,sum(vals[14]),xl_module.total_black_red)
-            self.total_lines[14].append(sum(vals[14]))
+        # if i1<=i2 :
+        for j in (5,6,7,8,10,12) :
+            sheet.write(self.current_line,j,sum(vals[j]),xl_module.total_center)
+            self.total_lines[j].append(sum(vals[j]))
+        sheet.write(self.current_line,13,sum(vals[13]),xl_module.total_black)
+        self.total_lines[13].append(sum(vals[13]))
+        sheet.write(self.current_line,14,sum(vals[14]),xl_module.total_black_red)
+        self.total_lines[14].append(sum(vals[14]))
 
-            for j in range(15,26) :
-                sheet.write(self.current_line,j,sum(vals[j]),xl_module.total_blue)
-                self.total_lines[j].append(sum(vals[j]))
+        for j in range(15,26) :
+            sheet.write(self.current_line,j,sum(vals[j]),xl_module.total_blue)
+            self.total_lines[j].append(sum(vals[j]))
 
-            sheet.write(self.current_line,26,sum(vals[26]),xl_module.total_blue_red)
-            self.total_lines[26].append(sum(vals[26]))
-            sheet.write(self.current_line,27,sum(vals[27]),xl_module.total_blue_red)
-            self.total_lines[27].append(sum(vals[27]))
-            sheet.write(self.current_line,28,sum(vals[28]),xl_module.total_right)
-            self.total_lines[28].append(sum(vals[28]))
+        sheet.write(self.current_line,26,sum(vals[26]),xl_module.total_blue_red)
+        self.total_lines[26].append(sum(vals[26]))
+        sheet.write(self.current_line,27,sum(vals[27]),xl_module.total_blue_red)
+        self.total_lines[27].append(sum(vals[27]))
+        sheet.write(self.current_line,28,sum(vals[28]),xl_module.total_right)
+        self.total_lines[28].append(sum(vals[28]))
         self.current_line += 1
 
     def _write_total_total(self,title):
