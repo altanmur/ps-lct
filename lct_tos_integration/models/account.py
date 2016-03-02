@@ -211,6 +211,7 @@ class account_invoice_line(osv.osv):
         return line1.id
 
     def create(self, cr, uid, vals, context=None):
+        context = context or {}
         pricelist_obj = self.pool.get('product.pricelist')
         cont_nr_obj = self.pool["lct.container.number"]
         group_obj = self.pool["account.invoice.line.group"]
