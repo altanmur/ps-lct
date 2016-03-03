@@ -324,9 +324,10 @@ class account_invoice_line(osv.osv):
     def write(self, cr, uid, ids, vals, context=None):
         if context==None:
             context={}
-        if not context.get("price_update"):
+        lines = self.browse(cr, uid, ids, context)
+        is_slab_rate = any([line.slab_desc for line in lines]) if isinstance(lines, list) else lines.slab_desc
+        if is_slab_rate and not context.pop("price_update", None):
             vals.pop("price_unit", None)
-        context.pop("price_update", None)
         return super(account_invoice_line, self).write(cr, uid, ids, vals, context=context)
 
     def button_edit(self, cr, uid, ids, context=None):
