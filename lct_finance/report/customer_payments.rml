@@ -2,7 +2,7 @@
 <document filename="test.pdf">
     <template pageSize="(612.0,792.0)" title="Customer Payments" author="Juan Rial" allowSplitting="20">
         <pageTemplate id="first">
-            <frame id="first" x1="57" y1="0" width="498" height="750"/>
+            <frame id="first" x1="57" y1="-180" width="498" height="1060"/>
         </pageTemplate>
     </template>
     <stylesheet>
@@ -19,12 +19,13 @@
         <blockTableStyle id="Table2">
             <blockAlignment value="LEFT"/>
             <blockValign value="TOP"/>
-            <blockTopPadding length="10"/>
-            <lineStyle kind="LINEABOVE" colorName="#000000" start="0,0" stop="-1,0"/>
+            <blockTopPadding length="85"/>
+            <!-- <lineStyle kind="LINEABOVE" colorName="#000000" start="0,0" stop="-1,0"/> -->
         </blockTableStyle>
         <blockTableStyle id="Table3">
             <blockAlignment value="LEFT"/>
             <blockValign value="TOP"/>
+            <!-- <lineStyle kind="LINEBELOW" colorName="#000000" start="0,0" stop="-1,0"/> -->
         </blockTableStyle>
         <blockTableStyle id="Table4">
             <blockAlignment value="LEFT"/>
