@@ -1636,6 +1636,13 @@ class account_invoice(osv.osv):
     def _prepare_refund(self, cr, uid, invoice, date=None, period_id=None, description=None, journal_id=None, context=None):
         res = super(account_invoice, self)._prepare_refund(cr, uid, invoice, date=date, period_id=period_id, description=description, journal_id=journal_id, context=context)
         res['type2'] = invoice.type2
+        old_group_ids = set([x[2].get('group_id') for x in res.get('invoice_line') if x[2].get('group_id')])
+        newgroup_dict = {}
+        for old_group_id in old_group_ids:
+            old_group = self.pool.get('account.invoice.line.group').browse(cr, uid, old_group_id, context=context)
+            newgroup_dict[old_group_id] = self.pool.get('account.invoice.line.group').create(cr, uid, {'name': old_group.name}, context=context)
+        for line in res.get('invoice_line'):
+            line[2]['group_id'] = newgroup_dict.get(line[2]['group_id'], False)
         return res
 
 class account_invoice_group(osv.osv_memory):
