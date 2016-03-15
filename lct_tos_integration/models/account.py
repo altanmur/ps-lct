@@ -1318,6 +1318,8 @@ class account_invoice(osv.osv):
 
                 product_isps_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'isps')
                 product_isps = product_model.browse(cr, uid, product_isps_id, context=context)
+                price_multi_isps = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_isps_id, pricelist_qty, partner_id)], context=context)
+                price_unit_isps = price_multi_isps[product_isps_id][pricelist_id]
                 if isps_lines.get(vessel_id,False):
                     account_isps = product_isps.property_account_income or (product_isps.categ_id and product_isps.categ_id.property_account_income_categ) or False
                     isps_line_vals = {
@@ -1325,7 +1327,7 @@ class account_invoice(osv.osv):
                         'product_id': product_isps_id,
                         'name': product_isps.name,
                         'quantity': isps_lines.get(vessel_id,False),
-                        'price_unit': product_isps.list_price,
+                        'price_unit': price_unit_isps,
                         'account_id': account_isps.id,
                         'cont_nr_ids': [(0,0,{
                                 'quantity': isps_lines.get(vessel_id,False),
@@ -1336,6 +1338,8 @@ class account_invoice(osv.osv):
 
                 product_elec_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'reefer_electricity')
                 product_elec = product_model.browse(cr, uid, product_elec_id, context=context)
+                price_multi_elec = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_elec_id, pricelist_qty, partner_id)], context=context)
+                price_unit_elec = price_multi_elec[product_elec_id][pricelist_id]
                 if plugged_hours.get(vessel_id,False):
                     account_elec = product_elec.property_account_income or (product_elec.categ_id and product_elec.categ_id.property_account_income_categ) or False
                     elec_line_vals = {
@@ -1343,7 +1347,7 @@ class account_invoice(osv.osv):
                         'product_id': product_elec_id,
                         'name': product_elec.name,
                         'quantity': plugged_hours.get(vessel_id,False),
-                        'price_unit': product_elec.list_price,
+                        'price_unit': price_unit_elec,
                         'account_id': account_elec.id,
                         'cont_nr_ids': [(0,0,{
                                 'quantity': plugged_hours.get(vessel_id,False),
@@ -1356,13 +1360,15 @@ class account_invoice(osv.osv):
 
                 product_dockage_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'dockage_fixed')
                 product_dockage = product_model.browse(cr, uid, product_dockage_id, context=context)
+                price_multi_dockage = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_dockage_id, pricelist_qty, partner_id)], context=context)
+                price_unit_dockage = price_multi_dockage[product_dockage_id][pricelist_id]
                 account_dockage = product_dockage.property_account_income or (product_dockage.categ_id and product_dockage.categ_id.property_account_income_categ) or False
                 dockage_line_vals = {
                     'invoice_id': invoice_id,
                     'product_id': product_dockage_id,
                     'name': product_dockage.name,
                     'quantity': 1,
-                    'price_unit': product_dockage.list_price,
+                    'price_unit': price_unit_dockage,
                     'account_id': account_dockage.id,
                     'cont_nr_ids': [(0,0,{
                             'quantity': 1,
@@ -1621,15 +1627,18 @@ class account_invoice(osv.osv):
         invoice_model.write(cr, uid, invoice_ids, {'type2': 'yactivity'})
 
     def _get_data_from_last_vcl(self, cr, uid, vessel_id, context=None):
-        vcl_billing_ids = self.search(cr, uid, [('type2', '=', 'dockage'), ('vessel_id', '=', vessel_id)], order='date_invoice DESC', limit=1, context=context)
-        if not vcl_billing_ids:
+        context = context or {}
+        vessel_model = self.pool.get('lct.tos.vessel')
+        domain = [('vessel_id', '=', vessel_id)]
+        vessel_ids = vessel_model.search(cr, uid, domain, context=context)
+        if len(vessel_ids) != 1:
             return {}
-        vcl_billing = self.browse(cr, uid, vcl_billing_ids[0], context=context)
+        vessel = vessel_model.browse(cr, uid, vessel_ids[0], context=context)
         return {
-            'voyage_number_out': vcl_billing.voyage_number_out,
-            'voyage_number_in': vcl_billing.voyage_number_in,
-            'loa': vcl_billing.loa,
-            'woa': vcl_billing.woa,
+            'voyage_number_out': vessel.vessel_out_voyage_number,
+            'voyage_number_in': vessel.vessel_in_voyage_number,
+            'loa': vessel.loa,
+            'woa': vessel.woa,
             'vessel_id': vessel_id,
         }
 
