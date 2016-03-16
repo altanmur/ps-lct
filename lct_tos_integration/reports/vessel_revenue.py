@@ -73,9 +73,10 @@ class vessel_revenue(osv.osv_memory):
         for invoice in invoices:
             for line in invoice.invoice_line:
                 product_id = line.product_id and line.product_id.id or line.name
-                appointments.setdefault(product_id, {'qty': 0.0, 'revenue': 0.0})
-                appointments[product_id]['qty'] += line.quantity
-                appointments[product_id]['revenue'] += line.price_subtotal
+                slab_desc = line.slab_desc.split()[0] if line.slab_desc else None
+                appointments.setdefault((product_id, slab_desc), {'qty': 0.0, 'revenue': 0.0})
+                appointments[(product_id, slab_desc)]['qty'] += line.quantity
+                appointments[(product_id, slab_desc)]['revenue'] += line.price_subtotal
 
         for product_dict in appointments.itervalues():
             product_dict['price'] = product_dict['revenue'] / product_dict['qty']
@@ -96,6 +97,29 @@ class vessel_revenue(osv.osv_memory):
                 product_name = product_model.browse(cr, uid, product_id, context=context).name
             else:
                 product_name = product_id
+            sheet.write(current_line, 0, product_name, xl_module.line_name)
+            sheet.write(current_line, 1, prod_dict['qty'], xl_module.number)
+            sheet.write(current_line, 2, round(prod_dict['price']), xl_module.number)
+            sheet.write(current_line, 3, round(prod_dict['revenue']), xl_module.number)
+            current_line += 1
+        return current_line + 1
+
+    def _write_products_dict_with_slab(self, cr, uid, products_dict, sheet, line_start, context=None):
+        current_line = line_start
+        product_model = self.pool.get('product.product')
+
+        sheet.write(current_line + 1, 0, "Product Name", xl_module.line_name)
+        sheet.write(current_line + 1, 1, "Quantity", xl_module.line_name)
+        sheet.write(current_line + 1, 2, "Price", xl_module.line_name)
+        sheet.write(current_line + 1, 3, "Revenue", xl_module.line_name)
+        current_line += 2
+        for (product_id, slab_desc), prod_dict in sorted(products_dict.iteritems()):
+            if isinstance(product_id, int):
+                product_name = product_model.browse(cr, uid, product_id, context=context).name
+            else:
+                product_name = product_id
+            if slab_desc:
+                product_name += " (%s)" %slab_desc
             sheet.write(current_line, 0, product_name, xl_module.line_name)
             sheet.write(current_line, 1, prod_dict['qty'], xl_module.number)
             sheet.write(current_line, 2, round(prod_dict['price']), xl_module.number)
@@ -166,7 +190,7 @@ class vessel_revenue(osv.osv_memory):
         current_line = 4
 
         appointments = self._get_appointment_data(cr, uid, date_from, date_to, context=context)
-        self._write_products_dict(cr, uid, appointments, sheet, current_line, context=context)
+        self._write_products_dict_with_slab(cr, uid, appointments, sheet, current_line, context=context)
 
     def _write_report(self, cr, uid, ids, wb, context=None):
         wizard = self.browse(cr, uid, ids, context=context)[0]
