@@ -43,19 +43,26 @@ class vessel_revenue(osv.osv_memory):
     def _get_vessel_data(self, cr, uid, date_from, date_to, context=None):
         vessels = {}
         vessels_total = {}
-        invoice_ids = self.pool.get('account.invoice').search(cr, uid, [('date_invoice', '>=', date_from), ('date_invoice', '<=', date_to), ('type2', '=', 'vessel')], context=context)
+        invoice_ids = self.pool.get('account.invoice').search(cr, uid, [
+            ('date_invoice', '>=', date_from),
+            ('date_invoice', '<=', date_to),
+            ('type2', '=', 'vessel'),
+            ('type', 'in', ['out_invoice', 'out_refund']),
+            ('state', '!=', 'cancel'),
+            ], context=context)
         invoices = self.pool.get('account.invoice').browse(cr, uid, invoice_ids, context=context)
         for invoice in invoices:
+            coef = 1 if invoice.type == "out_invoice" else -1
             partner_id = invoice.partner_id.id
             vessels.setdefault(partner_id, {})
             for line in invoice.invoice_line:
                 product_id = line.product_id and line.product_id.id or line.name
                 vessels[partner_id].setdefault(product_id, {'qty': 0.0, 'revenue': 0.0})
-                vessels[partner_id][product_id]['qty'] += line.quantity
-                vessels[partner_id][product_id]['revenue'] += line.price_subtotal
+                vessels[partner_id][product_id]['qty'] += coef * line.quantity
+                vessels[partner_id][product_id]['revenue'] += coef * line.price_subtotal
                 vessels_total.setdefault(product_id, {'qty': 0.0, 'revenue': 0.0})
-                vessels_total[product_id]['qty'] += line.quantity
-                vessels_total[product_id]['revenue'] += line.price_subtotal
+                vessels_total[product_id]['qty'] += coef * line.quantity
+                vessels_total[product_id]['revenue'] += coef * line.price_subtotal
 
         for product_dict in vessels_total.itervalues():
             product_dict['price'] = product_dict['revenue'] / product_dict['qty']
@@ -68,15 +75,22 @@ class vessel_revenue(osv.osv_memory):
 
     def _get_appointment_data(self, cr, uid, date_from, date_to, context=None):
         appointments = {}
-        invoice_ids = self.pool.get('account.invoice').search(cr, uid, [('date_invoice', '>=', date_from), ('date_invoice', '<=', date_to), ('type2', '=', 'appointment')], context=context)
+        invoice_ids = self.pool.get('account.invoice').search(cr, uid, [
+            ('date_invoice', '>=', date_from),
+            ('date_invoice', '<=', date_to),
+            ('type2', '=', 'appointment'),
+            ('type', 'in', ['out_invoice', 'out_refund']),
+            ('state', '!=', 'cancel'),
+            ], context=context)
         invoices = self.pool.get('account.invoice').browse(cr, uid, invoice_ids, context=context)
         for invoice in invoices:
+            coef = 1 if invoice.type == "out_invoice" else -1
             for line in invoice.invoice_line:
                 product_id = line.product_id and line.product_id.id or line.name
                 slab_desc = line.slab_desc.split()[0] if line.slab_desc else None
                 appointments.setdefault((product_id, slab_desc), {'qty': 0.0, 'revenue': 0.0})
-                appointments[(product_id, slab_desc)]['qty'] += line.quantity
-                appointments[(product_id, slab_desc)]['revenue'] += line.price_subtotal
+                appointments[(product_id, slab_desc)]['qty'] += coef * line.quantity
+                appointments[(product_id, slab_desc)]['revenue'] += coef * line.price_subtotal
 
         for product_dict in appointments.itervalues():
             product_dict['price'] = product_dict['revenue'] / product_dict['qty']
