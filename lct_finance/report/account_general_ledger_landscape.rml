@@ -622,7 +622,7 @@
               <para style="terp_default_7">[[ line['move'] ]]</para>
             </td>
             <td>
-              <para style="terp_default_7">[[ strip_name(line['lname'],70) ]]</para>
+              <para style="terp_default_7">[[ strip_name(line['lname'],61) ]]</para>
             </td>
             <td>
               <para style="terp_default_Right_7">[[ formatLang(line['debit'], digits=0, grouping=True).replace(',', ' ') ]]</para>

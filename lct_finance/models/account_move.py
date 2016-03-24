@@ -19,7 +19,7 @@
 #
 ##############################################################################
 
-from openerp.osv import fields, orm
+from openerp.osv import fields, orm, osv
 
 
 class account_move(orm.Model):
@@ -29,3 +29,11 @@ class account_move(orm.Model):
         'create_date': fields.datetime("Creation Date", readonly=True),
         'is_negative': fields.boolean("Negative entry"),
     }
+
+
+class account_move_line(osv.osv):
+    _inherit = "account.move.line"
+
+    _columns = {
+        'name': fields.char('Name', required=True),
+        }

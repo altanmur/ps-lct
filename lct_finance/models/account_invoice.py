@@ -19,7 +19,7 @@
 #
 ##############################################################################
 
-from openerp.osv import fields, orm
+from openerp.osv import fields, orm, osv
 
 
 class account_invoice(orm.Model):
@@ -50,3 +50,17 @@ class account_invoice(orm.Model):
                 elif line.product_id.categ_id and line.product_id.categ_id.vat_free_income_account_id:
                     invoice_line_model.write(cr, uid, [line.id], {'account_id': line.product_id.categ_id.vat_free_income_account_id.id}, context=context)
         return super(account_invoice, self).action_move_create(cr, uid, ids, context=context)
+
+    def line_get_convert(self, cr, uid, x, part, date, context=None):
+        res = super(account_invoice, self).line_get_convert(cr, uid, x, part, date, context)
+        res['name'] = x['name']
+        return res
+
+
+class account_invoice_line(osv.osv):
+    _inherit = "account.invoice.line"
+
+    def move_line_get_item(self, cr, uid, line, context=None):
+        res = super(account_invoice_line, self).move_line_get_item(cr, uid, line, context)
+        res['name'] = line.name.split('\n')[0]
+        return res
