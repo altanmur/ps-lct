@@ -255,7 +255,7 @@ class account_invoice_line(osv.osv):
         if not item.slab_rate:
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
 
-        cont_ids = vals.pop("cont_nr_ids", [(0,0,[])])[0][2]
+        cont_ids = (vals.pop("cont_nr_ids", None) or [(0,0,[])])[0][2]
         line_ids = [None]*4
 
         def _compute_offset(a, b):
