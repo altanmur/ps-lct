@@ -64,9 +64,11 @@ class vessel_revenue(osv.osv_memory):
                 vessels_total[product_id]['qty'] += coef * line.quantity
                 vessels_total[product_id]['revenue'] += coef * line.price_subtotal
 
+        vessels_total = {k:v for k,v in vessels_total.items() if v['qty']}
         for product_dict in vessels_total.itervalues():
             product_dict['price'] = product_dict['revenue'] / product_dict['qty']
 
+        vessels = {k:{k1:v1 for k1,v1 in v.items() if v1['qty']} for k,v in vessels.items()}
         for partner_dict in vessels.itervalues():
             for product_dict in partner_dict.itervalues():
                 product_dict['price'] = product_dict['revenue'] / product_dict['qty']
@@ -92,6 +94,7 @@ class vessel_revenue(osv.osv_memory):
                 appointments[(product_id, slab_desc)]['qty'] += coef * line.quantity
                 appointments[(product_id, slab_desc)]['revenue'] += coef * line.price_subtotal
 
+        appointments = {k:v for k,v in appointments.items() if v['qty']}
         for product_dict in appointments.itervalues():
             product_dict['price'] = product_dict['revenue'] / product_dict['qty']
 
