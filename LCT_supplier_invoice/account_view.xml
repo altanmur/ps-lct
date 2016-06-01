@@ -149,7 +149,7 @@
             </field>
         </record>
 
-        
+
 
         <record id="view_invoice_line_tree" model="ir.ui.view">
             <field name="name">account.invoice.line.tree</field>

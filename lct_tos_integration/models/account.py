@@ -303,13 +303,14 @@ class account_invoice_line(osv.osv):
             ]
 
         group = group_obj.create(cr, uid, {'name': 'noname'}, context=context)
+        mult_rate = self.pool.get('lct.multiplying.rate').get_active_rate(cr, uid, context=context)
         for line_id in line_ids:
             if line_id:
                 line = self.browse(cr, uid, line_id, context=context)
                 price, qty = 0, 0
                 for cont in line.cont_nr_ids:
                     price_multi = pricelist_obj.price_get_multi_from_to(cr, uid, [pricelist.id], [(product.id, cont.from_day, cont.to_day, line.invoice_id.partner_id.id)], context=context)
-                    price += cont.pricelist_qty * price_multi[product.id][pricelist.id]
+                    price += cont.pricelist_qty * price_multi[product.id][pricelist.id] * (mult_rate if cont.oog else 1)
                     qty += cont.pricelist_qty
 
                 context.update({"price_update": True})
