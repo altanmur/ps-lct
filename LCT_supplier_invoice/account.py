@@ -161,15 +161,15 @@ class account_voucher(osv.osv):
     _name = 'account.voucher'
     _inherit = 'account.voucher'
 
-    def proforma_voucher(self, cr, uid, ids, context=None):
-        for voucher in self.browse(cr, uid, ids, context=context):
-            for elmt in voucher.line_dr_ids:
-                if elmt.move_line_id:
-                    invoice = elmt.move_line_id.invoice
-                    if invoice and invoice.type and invoice.type == 'in_invoice':
-                        if not 'state' in invoice or not invoice.state or not invoice.state == 'open' or not 'approved' in invoice or (not invoice.approved == 'A' and not invoice.approved == 'a'):
-                            raise osv.except_osv(_('Error!'),_("The invoice must be approved before payment."))
-        return super(account_voucher, self).proforma_voucher(cr, uid, ids, context=context)
+    # def proforma_voucher(self, cr, uid, ids, context=None):
+    #     for voucher in self.browse(cr, uid, ids, context=context):
+    #         for elmt in voucher.line_dr_ids:
+    #             if elmt.move_line_id:
+    #                 invoice = elmt.move_line_id.invoice
+    #                 if invoice and invoice.type and invoice.type == 'in_invoice':
+    #                     if not 'state' in invoice or not invoice.state or not invoice.state == 'open' or not 'approved' in invoice or (not invoice.approved == 'A' and not invoice.approved == 'a'):
+    #                         raise osv.except_osv(_('Error!'),_("The invoice must be approved before payment."))
+    #     return super(account_voucher, self).proforma_voucher(cr, uid, ids, context=context)
 
     def button_proforma_voucher(self, cr, uid, ids, context=None):
         context = context or {}
