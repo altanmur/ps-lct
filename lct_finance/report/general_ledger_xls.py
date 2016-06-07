@@ -542,7 +542,8 @@ class general_ledger_xlsx(report_sxw):
                 ws.title = obj.code[:sheet_name_max]
                 first_sheet = False
             else:
-                ws = wb.create_sheet(obj.code[:sheet_name_max])
+                ws = wb.create_sheet()
+                ws.title = obj.code[:sheet_name_max]
             self._format_sheet(ws)
             self._write_header(parser, data, obj, ws)
             self._write_lines(parser, data, obj, ws)
