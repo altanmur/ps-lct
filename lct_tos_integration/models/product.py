@@ -39,6 +39,8 @@ class product_product(osv.osv):
         'type_id': fields.many2one('lct.product.type', 'Type'),
         'cont_nr_editable': fields.function(_calc_cont_nr_editable, type='boolean', string="Container number editable"),
         'additional_storage': fields.boolean(string="Additional storage"),
+        'active_reefer': fields.boolean(string="Active Reefer")
+        'hazardous_class': fields.boolean(string="Hazardous Class")
     }
 
     _defaults = {

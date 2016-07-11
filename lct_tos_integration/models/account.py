@@ -810,6 +810,12 @@ class account_invoice(osv.osv):
         if status == "F" and categ == "I":
             serv_id = self.pool["ir.model.data"].get_object(cr, uid, module, "lct_product_service_weighing").id
             properties.update({"service_ids": [serv_id]})
+            hazardous_class = self._get_elmnt_text(line, 'container_hazardous_class')
+            if hazardous_class:
+                properties.update({"hazardous_class": hazardous_class == "YES"})
+            active_reefer = self._get_elmnt_text(line, 'active_reefer')
+            if active_reefer:
+                properties.update({"active_reefer": active_reefer == "YES"})
             weighing_id = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context)[0]
             quantities_by_products.update({weighing_id: 1})
 
