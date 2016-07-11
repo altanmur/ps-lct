@@ -807,10 +807,10 @@ class account_invoice(osv.osv):
 
         status = self._get_elmnt_text(line, 'status')
         categ = self._get_elmnt_text(line, 'category')
-        container_size = self._get_elmnt_text(line, 'container_size')
         if status == "F" and categ == "I":
-            weighing_xml_id = "export_weighing_service_%s_full" %container_size
-            weighing_id = self.pool["ir.model.data"].get_object(cr, uid, module, weighing_xml_id).id
+            serv_id = self.pool["ir.model.data"].get_object(cr, uid, module, "lct_product_service_weighing").id
+            properties.update({"service_ids": [serv_id]})
+            weighing_id = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context)[0]
             quantities_by_products.update({weighing_id: 1})
 
         return quantities_by_products
