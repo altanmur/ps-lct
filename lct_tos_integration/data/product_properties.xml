@@ -134,7 +134,9 @@
     <record id="lct_product_service_oog" model="lct.product.service">
       <field name="name">oog</field>
     </record>
-
+    <record id="lct_product_service_weighing" model="lct.product.service">
+      <field name="name">Weighing</field>
+    </record>
 
     <!-- STATUS -->
     <record id="lct_product_status_full" model="lct.product.status">

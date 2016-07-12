@@ -808,6 +808,8 @@ class account_invoice(osv.osv):
         return quantities_by_products
 
     def _get_app_export_line_quantities_by_products(self, cr, uid, line, additional_storage, empty_release=False, context=None):
+        imd_model = self.pool.get('ir.model.data')
+        module = 'lct_tos_integration'
         if empty_release:
             category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_export_e_r')
         else:
@@ -836,6 +838,19 @@ class account_invoice(osv.osv):
         product_ids.extend(self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context))
 
         quantities_by_products = dict([(product_id, 1) for product_id in product_ids])
+        status = self._get_elmnt_text(line, 'status')
+        categ = self._get_elmnt_text(line, 'category')
+        if status == "F" and categ == "E":
+            serv_id = self.pool["ir.model.data"].get_object(cr, uid, module, "lct_product_service_weighing").id
+            properties.update({"service_ids": [serv_id]})
+            hazardous_class = self._get_elmnt_text(line, 'container_hazardous_class')
+            if hazardous_class:
+                properties.update({"hazardous_class": hazardous_class == "YES"})
+            active_reefer = self._get_elmnt_text(line, 'active_reefer')
+            if active_reefer:
+                properties.update({"active_reefer": active_reefer == "YES"})
+            weighing_id = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context)[0]
+            quantities_by_products.update({weighing_id: 1})
 
         return quantities_by_products
 
