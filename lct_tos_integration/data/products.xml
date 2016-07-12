@@ -1966,7 +1966,7 @@
 
     <record id="export_weighing_service_20_full" model="product.product">
       <field name="name">Export Weighing 20 Full</field>
-      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="category_id" ref="lct_product_category_export"/>
       <field name="service_id" ref="lct_product_service_weighing"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="status_id" ref="lct_product_status_full"/>
@@ -1974,7 +1974,7 @@
     </record>
     <record id="export_weighing_service_40_full" model="product.product">
       <field name="name">Export Weighing 40 Full</field>
-      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="category_id" ref="lct_product_category_export"/>
       <field name="service_id" ref="lct_product_service_weighing"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="status_id" ref="lct_product_status_full"/>
