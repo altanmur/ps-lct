@@ -24,7 +24,7 @@ from openerp import SUPERUSER_ID
 from openerp.osv import fields,osv
 from lxml import etree
 
-CATEGORIES = ['Accounting & Finance', 'Human Resources', 'Administration', 'TOS']
+CATEGORIES = ['Accounting & Finance', 'Human Resources', 'Administration', 'TOS (old)', "TOS (new)"]
 GROUPS = ['Invoicing & Payments', 'HR Base group', 'Officer', 'Access Rights', 'Accountant']
 
 class res_users(osv.osv):
