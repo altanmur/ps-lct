@@ -65,6 +65,7 @@
         'security_new/ir.module.category.csv',
         'security_new/res.groups.csv',
         'security_new/ir.model.access.csv',
+        'security_new/ir_values.xml',
         ],
     'images': [],
     'demo': [],
