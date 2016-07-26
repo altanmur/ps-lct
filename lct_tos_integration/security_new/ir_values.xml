@@ -6,6 +6,7 @@
             <field name="model">res.users</field>
             <field name="value_unpickle">False</field>
             <field name="key">default</field>
+            <field name="key2"/>
         </record>
     </data>
 </openerp>
