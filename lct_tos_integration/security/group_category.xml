@@ -1,7 +1,7 @@
 <openerp>
     <data>
         <record id="module_category_tos" model="ir.module.category">
-            <field name="name">TOS</field>
+            <field name="name">TOS (old)</field>
         </record>
     </data>
 </openerp>

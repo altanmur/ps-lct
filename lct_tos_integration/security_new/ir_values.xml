@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+        <record id="no_group_on_user_create" model="ir.values">
+            <field name="name">groups_id</field>
+            <field name="model">res.users</field>
+            <field name="value_unpickle">False</field>
+            <field name="key">default</field>
+            <field name="key2"/>
+        </record>
+    </data>
+</openerp>
