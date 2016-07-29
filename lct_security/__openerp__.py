@@ -23,16 +23,22 @@
     'name': 'LCT security',
     'author': 'OpenERP SA',
     'version': '0.1',
-    'depends': ['base'],
+    'depends': [
+        'base',
+        'auth_crypt',
+        'LCT_supplier_invoice',
+    ],
     'category' : 'Tools',
     'summary': 'LCT security',
     'description': """
         LCT security
     """,
     'data': [
-        "views/res_groups.xml",
-        "cron/update_tmp_acl.xml",
+        'views/res_groups.xml',
+        'views/change_password_user.xml',
+        'cron/update_tmp_acl.xml',
         ],
+    'js': ['static/src/js/coresetup.js'],
     'images': [],
     'demo': [],
     'installable': True,

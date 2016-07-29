@@ -35,7 +35,7 @@
         'config_parameter.xml'
     ],
     'css':['static/src/css/lct.css'],
-    'js': ['static/src/js/lct.js'],
+    # 'js': ['static/src/js/lct.js'],
     'images': [],
     'demo': [],
     'installable': True,
