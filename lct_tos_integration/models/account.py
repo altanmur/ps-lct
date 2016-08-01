@@ -1150,6 +1150,7 @@ class account_invoice(osv.osv):
             restow_qty = 0
             full_container = 0
             plugged_time = 0
+            isps_qty = 0
             for line in lines.findall('line'):
                 partner_id = self._get_partner(cr, uid, line, 'container_customer_id', context=context)
 
@@ -1188,6 +1189,8 @@ class account_invoice(osv.osv):
                     full_container += 1
                 if category == 'R' and status == 'F':
                     restow_qty += 1
+                if status == "F" and category in "IE":
+                    isps_qty += 1
 
                 oog = self._get_elmnt_text(line, 'oog')
                 oog = True if oog=='YES' else False
@@ -1247,7 +1250,7 @@ class account_invoice(osv.osv):
                     plugged_time +=  float(ref_power_days)*24
 
             plugged_hours[vessel_id] = plugged_time
-            isps_lines[vessel_id] = full_container - restow_qty
+            isps_lines[vessel_id] = isps_qty
         invoice_ids = self._create_invoices(cr, uid, invoice_lines, isps_lines, plugged_hours, docking_fees=True, context=context)
         invoice_model.write(cr, uid, invoice_ids, {'type2': 'vessel'})
 
