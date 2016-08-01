@@ -375,6 +375,7 @@ class account_invoice_line(osv.osv):
         self.write(cr, uid, [invoice_line.id], vals, context=context)
         return {}
 
+
 class account_voucher(osv.osv):
     _inherit = 'account.voucher'
 
@@ -410,6 +411,23 @@ class account_voucher(osv.osv):
     def button_proforma_voucher_bypass(self, cr, uid, ids, context=None):
         self.button_proforma_voucher(cr, SUPERUSER_ID, ids, context=context)
 
+
+class account_direction(osv.osv):
+    _name = 'account.direction'
+
+    _columns = {
+        'name': fields.char('Name'),
+        'cfs_activity': fields.selection([
+            ('YES', 'YES'),
+            ('NO', 'NO'),
+            ], 'CFS Activity'),
+        'categ_id': fields.many2one('lct.product.category', string='Category'),
+        'sub_categ_id': fields.many2one('lct.product.sub.category', string='Sub-category'),
+    }
+
+    _sql_constraints = [
+        ('cfs_categ_subcateg_uniq', 'unique(cfs_activity, categ, sub_categ)', 'CFS Activity, Category and Sub-category must be unique combinaison'),
+    ]
 
 class account_invoice(osv.osv):
     _inherit = 'account.invoice'
@@ -466,6 +484,7 @@ class account_invoice(osv.osv):
         'printed': fields.integer('Already printed'),
         'generic_customer': fields.related('partner_id', 'generic_customer', type='boolean', string="Generic customer"),
         'generic_customer_name': fields.char("Customer Name"),
+        'direction_id': fields.many2one('account.direction', string='Direction'),
     }
 
     _defaults = {
@@ -723,6 +742,16 @@ class account_invoice(osv.osv):
             return False
         return self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', xml_id)
 
+    def _get_app_category(self, cr, uid, line):
+        category = line.find('category')
+        category_xml_id = {
+            'E': 'lct_product_category_export',
+            'I': 'lct_product_category_import',
+        }
+        if category is None or not category.text or category.text not in category_xml_id:
+            return False
+        return self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', category_xml_id.get(category.text))
+
     def _get_app_sub_category(self, cr, uid, line):
         sub_category = line.find('subcategory')
         if sub_category is None or not sub_category.text:
@@ -738,6 +767,18 @@ class account_invoice(osv.osv):
             else:
                 return False
         return self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', xml_id)
+
+    def _get_app_direction(self, cr, uid, line):
+        sub_categ_id = self._get_app_sub_category(cr, uid, line)
+        categ_id = self._get_app_category(cr, uid, line)
+        cfs_activity = self._get_elmnt_text(line, 'cfs_activity')
+        res = self.pool.get('account.direction').search(cr, uid, [
+            ('cfs_activity', '=', cfs_activity),
+            ('categ_id', '=', categ_id),
+            ('sub_categ_id', '=', sub_categ_id),
+            ], limit=1)
+        if res:
+            return res[0]
 
     def _get_app_import_storage(self, line):
         storage = line.find('storage')
@@ -952,6 +993,9 @@ class account_invoice(osv.osv):
         if lines is None:
             return app_id
 
+        app_direction_id = None
+        first_line = True
+
         mult_rate = self.pool.get('lct.multiplying.rate').get_active_rate(cr, uid, context=context)
         invoice_lines = {}
         for line in lines.findall('line'):
@@ -961,6 +1005,9 @@ class account_invoice(osv.osv):
             elif category in ['E', 'Z']:
                 quantities_by_products = self._get_app_export_line_quantities_by_products(cr, uid, line, additional_storage, empty_release=(category == 'Z'), context=context)
 
+            if first_line:
+                first_line = False
+                app_direction_id = self._get_app_direction(cr, uid, line)
 
             bundle = self._get_elmnt_text(line, 'bundles')
             if bundle=='YES':
@@ -1034,6 +1081,7 @@ class account_invoice(osv.osv):
             }
             line_id = invoice_line_model.create(cr, uid, line_vals, context=context)
 
+        self.write(cr, uid, app_id, {"direction_id": app_direction_id})
         return app_id
 
     def xml_to_app(self, cr, uid, imp_data_id, context=None):

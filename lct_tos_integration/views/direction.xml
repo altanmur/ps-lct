@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record id="view_direction_form_lct" model="ir.ui.view">
+            <field name="name">direction_form</field>
+            <field name="model">account.direction</field>
+            <field name="arch" type="xml">
+                <form string="Direction" version="7.0">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="cfs_activity"/>
+                            </group>
+                            <group>
+                                <field name="categ_id"/>
+                                <field name="sub_categ_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_direciton_tree_lct" model="ir.ui.view">
+            <field name="name">Direction Tree</field>
+            <field name="model">account.direction</field>
+            <field name="arch" type="xml">
+                <tree string="Direction" version="7.0">
+                    <field name="name"/>
+                    <field name="cfs_activity"/>
+                    <field name="categ_id"/>
+                    <field name="sub_categ_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_direction_lct" model="ir.actions.act_window">
+            <field name="name">Directions</field>
+            <field name="res_model">account.direction</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="tos_integ_ftp_config_menu" sequence="12" action="action_direction_lct" name="Directions" parent="tos_integ_ftp_menu"/>
+    </data>
+</openerp>
