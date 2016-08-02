@@ -113,8 +113,7 @@ class account_invoice_line(osv.osv):
         'billed_price_unit': fields.function(_billed_quantity, type='float', string="Unit Price", multi='billed_unit_price_quantity'),
         'group_id': fields.many2one("account.invoice.line.group"),
         'slab_desc': fields.char("Slab"),
-        'price_subtotal': fields.function(_amount_line, string='Amount', type="float",
-            digits_compute= dp.get_precision('Account'), store=True),
+        'price_subtotal': fields.function(_amount_line, string='Amount', type="float", digits_compute= dp.get_precision('Account'), store=True),
     }
 
 
@@ -485,6 +484,7 @@ class account_invoice(osv.osv):
         'generic_customer': fields.related('partner_id', 'generic_customer', type='boolean', string="Generic customer"),
         'generic_customer_name': fields.char("Customer Name"),
         'direction_id': fields.many2one('account.direction', string='Direction'),
+        'expiry_date': fields.datetime(string='Expiry Date'),
     }
 
     _defaults = {
@@ -979,6 +979,7 @@ class account_invoice(osv.osv):
                 'appoint_ref': self._get_elmnt_text(appointment, 'appointment_reference'),
                 'appoint_date': self._get_elmnt_text(appointment, 'appointment_date'),
                 'date_due': self._get_elmnt_text(appointment, 'pay_through_date'),
+                'berth_time': self._get_elmnt_text(appointment, 'berthing_time'),
                 'account_id': account.id,
                 'date_invoice': date_invoice,
                 'type2': 'appointment',
