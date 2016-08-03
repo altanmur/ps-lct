@@ -22,6 +22,8 @@
 
 from openerp.addons import web
 from datetime import datetime
+import operator
+from openerp.tools.translate import _
 
 def session_authenticate(self, db, login, password, env=None):
     uid = self.proxy('common').authenticate(db, login, password, env)
@@ -66,5 +68,23 @@ def ctrl_authenticate(self, req, db, login, password, base_location=None):
     })
     return res
 
+@web.http.jsonrequest
+def ctrl_change_password (self, req, fields):
+    old_password, new_password,confirm_password = operator.itemgetter('old_pwd', 'new_password','confirm_pwd')(
+            dict(map(operator.itemgetter('name', 'value'), fields)))
+    if not (old_password.strip() and new_password.strip() and confirm_password.strip()):
+        return {'error':_('You cannot leave any password empty.'),'title': _('Change Password')}
+    if new_password != confirm_password:
+        return {'error': _('The new password and its confirmation must be identical.'),'title': _('Change Password')}
+    try:
+        if req.session.model('res.users').change_password(
+            old_password, new_password):
+            return {'new_password':new_password}
+    except Exception, e:
+        return {'error': _(e.faultCode), 'title': _('')}
+    return {'error': _('Error, password not changed !'), 'title': _('Change Password')}
+
+
 web.session.OpenERPSession.authenticate = session_authenticate
 web.controllers.main.Session.authenticate = ctrl_authenticate
+web.controllers.main.Session.change_password = ctrl_change_password

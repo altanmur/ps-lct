@@ -36,7 +36,10 @@ class res_users(osv.osv):
 
     def write(self, cr, uid, ids, vals, context=None):
         if "password" in vals:
-            vals.update({"last_changed": fields.datetime.now()})
+            vals.update({
+                "last_changed": fields.datetime.now(),
+                "failed_conn": 0,
+                })
         return super(res_users, self).write(cr, uid, ids, vals, context)
 
     def authenticate(self, db, login, password, user_agent_env):
@@ -53,3 +56,19 @@ class res_users(osv.osv):
             cr.execute("UPDATE res_users SET failed_conn = %s WHERE login = %s", [failed_conn, login])
         cr.close()
         return res
+
+    def change_password(self, cr, uid, old_passwd, new_passwd, context=None):
+        """Change current user password. Old password must be provided explicitly
+        to prevent hijacking an existing user session, or for cases where the cleartext
+        password is not used to authenticate requests.
+
+        :return: True
+        :raise: openerp.exceptions.AccessDenied when old password is wrong
+        :raise: except_osv when new password is not set or empty
+        """
+        self.check(cr.dbname, uid, old_passwd)
+        user = self.browse(cr, uid, uid, context)
+        self.pool.get("change.password.user")._security_password(user.login, old_passwd, new_passwd, user.user_id.password_crypt)
+        if new_passwd:
+            return self.write(cr, SUPERUSER_ID, uid, {'password': new_passwd})
+        raise osv.except_osv(_('Warning!'), _("Setting empty passwords is not allowed for security reasons!"))

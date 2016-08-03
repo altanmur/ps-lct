@@ -139,16 +139,20 @@ class change_password_user(osv.TransientModel):
         "uid": fields.integer("uid"),
     }
 
-    def change_password_button(self, cr, uid, ids, context=None):
-        def _get_max_ss_len(s1, s2):
-            m = [[0] * (1 + len(s2)) for i in xrange(1 + len(s1))]
-            for x in xrange(len(s1)):
-                for y in xrange(len(s2)):
-                    if s1[x] == s2[y]:
-                        m[x+1][y+1] = m[x][y] + 1
-            return max(max(r) for r in m)
+    def _security_password(self, login, old_passwd, new_passwd, stored_passwd, min_len=8, max_ss_len=4):
+            error_title = ""
+            if not self.confirm_password(old_passwd, stored_passwd):
+                raise osv.except_osv(_(error_title), _("Old password did not match"))
+            if login == new_passwd:
+                raise osv.except_osv(_(error_title), _("Password and Login must be different"))
+            if len(new_passwd) < min_len:
+                raise osv.except_osv(_(error_title), _("Password must be at least %s characters long" %min_len))
+            if old_passwd:
+                ss_len = self._get_max_ss_len(old_passwd, new_passwd)
+                if ss_len >= max_ss_len:
+                    raise osv.except_osv(_(error_title), _("Old and New Passwords must have less than %s subsequent characters in common" %max_ss_len))
 
-        def confirm_password(old, store):
+    def confirm_password(self, old, store):
             if not old or not store:
                 return True
             if store[:len(magic_md5)] == magic_md5:
@@ -156,24 +160,17 @@ class change_password_user(osv.TransientModel):
                 if store == md5crypt(old, salt):
                     return True
 
-        def _security_password(user, min_len=8, max_ss_len=4):
-            error_title = "Unsecure Password"
-            login = user.user_login
-            old_passwd = user.old_passwd
-            stored_passwd = user.user_id.password_crypt
-            if not confirm_password(old_passwd, stored_passwd):
-                raise osv.except_osv(_(error_title), _("Old password did not match"))
-            new_passwd = user.new_passwd
-            if login == new_passwd:
-                raise osv.except_osv(_(error_title), _("Password and Login must not be the same"))
-            if len(new_passwd) < min_len:
-                raise osv.except_osv(_(error_title), _("Password must be at least %s characters long" %min_len))
-            if old_passwd:
-                ss_len = _get_max_ss_len(old_passwd, new_passwd)
-                if ss_len >= max_ss_len:
-                    raise osv.except_osv(_(error_title), _("Old and New Password must have less than %s character substring" %max_ss_len))
+    def _get_max_ss_len(self, s1, s2):
+        m = [[0] * (1 + len(s2)) for i in xrange(1 + len(s1))]
+        for x in xrange(len(s1)):
+            for y in xrange(len(s2)):
+                if s1[x] == s2[y]:
+                    m[x+1][y+1] = m[x][y] + 1
+        return max(max(r) for r in m)
+
+    def change_password_button(self, cr, uid, ids, context=None):
 
         for user in self.browse(cr, uid, ids, context=context):
-            _security_password(user)
+            self._security_password(user.login, user.old_passwd, user.new_passwd, user.user_id.password_crypt)
 
         super(change_password_user, self).change_password_button(cr, uid, ids, context)
