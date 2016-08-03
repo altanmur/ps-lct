@@ -147,7 +147,7 @@ instance.web.Session = instance.web.JsonRPC.extend( /** @lends instance.web.Sess
                         window.location = "/";
                         }
                     }
-                }).html(_t('Password expires in ' + (30 - result.last_changed) + ' days.</br>Change it!'));
+                }).html(_t('Password expires in ' + (30 - result.last_changed) + ' days.</br>Please change it'));
             }
             return self.load_modules();
         });
