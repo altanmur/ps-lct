@@ -117,7 +117,7 @@ instance.web.Session = instance.web.JsonRPC.extend( /** @lends instance.web.Sess
                 }).html(_t('Password has expired.</br>Please contact your administrator'));
                 return $.Deferred().reject();
             }
-            if (result.failed_conn > 5) {
+            if (result.failed_conn >= 5) {
                 $('<div>').dialog({
                 modal: true,
                 title: 'Connection Failed!',
@@ -137,7 +137,7 @@ instance.web.Session = instance.web.JsonRPC.extend( /** @lends instance.web.Sess
             if (!_volatile) {
                 self.set_cookie('session_id', self.session_id);
             }
-            if (result.last_changed > 25) {
+            if (result.last_changed > 27) {
                 $('<div>').dialog({
                 modal: true,
                 title: 'Password Update!',

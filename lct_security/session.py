@@ -43,7 +43,7 @@ def session_authenticate(self, db, login, password, env=None):
             last_changed_days = (datetime.now() - dt_last_changed).days
         failed_conn = user_infos[0].get("failed_conn")
 
-    if last_changed_days > 30 or failed_conn > 5:
+    if last_changed_days > 30 or failed_conn >= 5:
         uid = None
     else:
         self.get_context()
