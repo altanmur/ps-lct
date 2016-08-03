@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record id="ir_cron_update_tmp_acl" model="ir.cron">
+            <field name="name">Update Temporary Access Rights</field>
+            <field name="interval_number">10</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'res.groups'"/>
+            <field name="function" eval="'update_tmp_acl'"/>
+            <field name="args" eval="'()'"/>
+            <field name="active" eval="True"/>
+        </record>
+
+    </data>
+</openerp>

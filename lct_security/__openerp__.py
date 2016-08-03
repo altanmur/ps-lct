@@ -20,25 +20,27 @@
 ##############################################################################
 
 {
-    'name': 'LCT supplier invoice',
+    'name': 'LCT security',
     'author': 'OpenERP SA',
-    'version': '0.2',
-    'depends': ['base', 'account', 'account_voucher', 'account_asset'],
+    'version': '0.1',
+    'depends': [
+        'base',
+        'auth_crypt',
+        'LCT_supplier_invoice',
+    ],
     'category' : 'Tools',
-    'summary': 'LCT supplier invoice',
+    'summary': 'LCT security',
     'description': """
-        LCT supplier invoice
+        LCT security
     """,
     'data': [
-        'account_view.xml',
-        'cron/export_supplier_invoices.xml',
-        'config_parameter.xml'
-    ],
-    'css':['static/src/css/lct.css'],
-    # 'js': ['static/src/js/lct.js'],
+        'views/res_groups.xml',
+        'views/change_password_user.xml',
+        'cron/update_tmp_acl.xml',
+        ],
+    'js': ['static/src/js/coresetup.js'],
     'images': [],
     'demo': [],
     'installable': True,
     'application' : True,
-    'certificate' : '001292377792581874189',
 }
