@@ -271,7 +271,7 @@ class account_invoice_line(osv.osv):
         diff_days = _get_timedelta_days(pay_through - berth)
         if not invoice.expiry_date:
             invoice.write({
-                "expiry_date": berth + timedelta(days=items.free_period) if diff_days < item.free_period else pay_through,
+                "expiry_date": berth + timedelta(days=item.free_period) if diff_days < item.free_period else pay_through,
                 })
 
         for container in cont_nr_obj.browse(cr, uid, cont_ids, context=context):
