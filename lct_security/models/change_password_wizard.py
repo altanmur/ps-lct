@@ -171,6 +171,6 @@ class change_password_user(osv.TransientModel):
     def change_password_button(self, cr, uid, ids, context=None):
 
         for user in self.browse(cr, uid, ids, context=context):
-            self._security_password(user.login, user.old_passwd, user.new_passwd, user.user_id.password_crypt)
+            self._security_password(user.user_login, user.old_passwd, user.new_passwd, user.user_id.password_crypt)
 
         super(change_password_user, self).change_password_button(cr, uid, ids, context)
