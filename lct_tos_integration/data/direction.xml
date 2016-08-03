@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="1">
+        <record model="account.direction" id="direction_1_i">
+            <field name="name">CFS Import Local</field>
+            <field name="cfs_activity">YES</field>
+            <field name="categ_id" ref="lct_product_category_import"/>
+            <field name="sub_categ_id"/>
+        </record>
+        <record model="account.direction" id="direction_1_i_t1">
+            <field name="name">CFS Import Transit Sahel</field>
+            <field name="cfs_activity">YES</field>
+            <field name="categ_id" ref="lct_product_category_import"/>
+            <field name="sub_categ_id" ref="lct_product_sub_category_transitsahel"/>
+        </record>
+        <record model="account.direction" id="direction_1_i_t2">
+            <field name="name">CFS Import Transit Coastal</field>
+            <field name="cfs_activity">YES</field>
+            <field name="categ_id" ref="lct_product_category_import"/>
+            <field name="sub_categ_id" ref="lct_product_sub_category_transitcoastal"/>
+        </record>
+        <record model="account.direction" id="direction_1_i_fz">
+            <field name="name">CFS Import Transit Free Zone</field>
+            <field name="cfs_activity">YES</field>
+            <field name="categ_id" ref="lct_product_category_import"/>
+            <field name="sub_categ_id" ref="lct_product_sub_category_freezone"/>
+        </record>
+        <record model="account.direction" id="direction_0_i">
+            <field name="name">Truck Delivery Import Local</field>
+            <field name="cfs_activity">NO</field>
+            <field name="categ_id" ref="lct_product_category_import"/>
+            <field name="sub_categ_id"/>
+        </record>
+        <record model="account.direction" id="direction_0_i_t1">
+            <field name="name">Truck Delivery Import Transit Sahel</field>
+            <field name="cfs_activity">NO</field>
+            <field name="categ_id" ref="lct_product_category_import"/>
+            <field name="sub_categ_id" ref="lct_product_sub_category_transitsahel"/>
+        </record>
+        <record model="account.direction" id="direction_0_i_t2">
+            <field name="name">Truck Delivery Import Transit Costal</field>
+            <field name="cfs_activity">NO</field>
+            <field name="categ_id" ref="lct_product_category_import"/>
+            <field name="sub_categ_id" ref="lct_product_sub_category_transitcoastal"/>
+        </record>
+        <record model="account.direction" id="direction_0_i_fz">
+            <field name="name">Truck Delivery Import Free Zone</field>
+            <field name="cfs_activity">NO</field>
+            <field name="categ_id" ref="lct_product_category_import"/>
+            <field name="sub_categ_id" ref="lct_product_sub_category_freezone"/>
+        </record>
+        <record model="account.direction" id="direction_1_e">
+            <field name="name">CFS Export Local</field>
+            <field name="cfs_activity">YES</field>
+            <field name="categ_id" ref="lct_product_category_export"/>
+            <field name="sub_categ_id"/>
+        </record>
+        <record model="account.direction" id="direction_1_e_t1">
+            <field name="name">CFS Export Transit Sahel</field>
+            <field name="cfs_activity">YES</field>
+            <field name="categ_id" ref="lct_product_category_export"/>
+            <field name="sub_categ_id" ref="lct_product_sub_category_transitsahel"/>
+        </record>
+        <record model="account.direction" id="direction_1_e_t2">
+            <field name="name">CFS Export Transit Coastal</field>
+            <field name="cfs_activity">YES</field>
+            <field name="categ_id" ref="lct_product_category_export"/>
+            <field name="sub_categ_id" ref="lct_product_sub_category_transitcoastal"/>
+        </record>
+        <record model="account.direction" id="direction_1_e_fz">
+            <field name="name">CFS Export Free Zone</field>
+            <field name="cfs_activity">YES</field>
+            <field name="categ_id" ref="lct_product_category_export"/>
+            <field name="sub_categ_id" ref="lct_product_sub_category_freezone"/>
+        </record>
+        <record model="account.direction" id="direction_0_e">
+            <field name="name">Truck Delivery Export Local</field>
+            <field name="cfs_activity">NO</field>
+            <field name="categ_id" ref="lct_product_category_export"/>
+            <field name="sub_categ_id"/>
+        </record>
+        <record model="account.direction" id="direction_0_e_t1">
+            <field name="name">Truck Receive Export Transit Sahel</field>
+            <field name="cfs_activity">NO</field>
+            <field name="categ_id" ref="lct_product_category_export"/>
+            <field name="sub_categ_id" ref="lct_product_sub_category_transitsahel"/>
+        </record>
+        <record model="account.direction" id="direction_0_e_t2">
+            <field name="name">Truck Receive Export Coastal</field>
+            <field name="cfs_activity">NO</field>
+            <field name="categ_id" ref="lct_product_category_export"/>
+            <field name="sub_categ_id" ref="lct_product_sub_category_transitcoastal"/>
+        </record>
+        <record model="account.direction" id="direction_0_e_fz">
+            <field name="name">Truck Receive ExportFree Zone</field>
+            <field name="cfs_activity">NO</field>
+            <field name="categ_id" ref="lct_product_category_export"/>
+            <field name="sub_categ_id" ref="lct_product_sub_category_freezone"/>
+        </record>
+    </data>
+</openerp>

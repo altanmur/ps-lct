@@ -61,6 +61,8 @@
         'views/res_users.xml',
         'views/export_button.xml',
         'reports/vessel_revenue.xml',
+        'views/direction.xml',
+        'data/direction.xml',
 
         'security_new/ir.module.category.csv',
         'security_new/res.groups.csv',
