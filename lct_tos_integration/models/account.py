@@ -23,7 +23,7 @@ from openerp.osv import fields, osv
 from openerp import SUPERUSER_ID
 
 from lxml import etree as ET
-from datetime import datetime
+from datetime import datetime, timedelta
 import re
 import openerp.addons.decimal_precision as dp
 

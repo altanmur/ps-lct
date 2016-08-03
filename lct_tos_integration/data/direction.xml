@@ -74,25 +74,25 @@
             <field name="sub_categ_id" ref="lct_product_sub_category_freezone"/>
         </record>
         <record model="account.direction" id="direction_0_e">
-            <field name="name">Truck Delivery Export</field>
+            <field name="name">Truck Delivery Export Local</field>
             <field name="cfs_activity">NO</field>
             <field name="categ_id" ref="lct_product_category_export"/>
             <field name="sub_categ_id"/>
         </record>
         <record model="account.direction" id="direction_0_e_t1">
-            <field name="name">Truck Delivery Export Transit Sahel</field>
+            <field name="name">Truck Receive Export Transit Sahel</field>
             <field name="cfs_activity">NO</field>
             <field name="categ_id" ref="lct_product_category_export"/>
             <field name="sub_categ_id" ref="lct_product_sub_category_transitsahel"/>
         </record>
         <record model="account.direction" id="direction_0_e_t2">
-            <field name="name">Truck Delivery Export Coastal</field>
+            <field name="name">Truck Receive Export Coastal</field>
             <field name="cfs_activity">NO</field>
             <field name="categ_id" ref="lct_product_category_export"/>
             <field name="sub_categ_id" ref="lct_product_sub_category_transitcoastal"/>
         </record>
         <record model="account.direction" id="direction_0_e_fz">
-            <field name="name">Truck Delivery ExportFree Zone</field>
+            <field name="name">Truck Receive ExportFree Zone</field>
             <field name="cfs_activity">NO</field>
             <field name="categ_id" ref="lct_product_category_export"/>
             <field name="sub_categ_id" ref="lct_product_sub_category_freezone"/>
