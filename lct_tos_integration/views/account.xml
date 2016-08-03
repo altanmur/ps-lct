@@ -59,6 +59,7 @@
                             <field name="appoint_ref"/>
                             <field name="appoint_date"/>
                             <field name="direction_id" readonly="1"/>
+                            <field name="expiry_date" readonly="1"/>
                         </group>
                     </page>
                     <page string="Dockage Info" attrs="{'invisible':[('type2','!=','dockage')]}">

@@ -214,6 +214,7 @@ class account_invoice_line(osv.osv):
         pricelist_obj = self.pool.get('product.pricelist')
         cont_nr_obj = self.pool["lct.container.number"]
         group_obj = self.pool["account.invoice.line.group"]
+        invoice_obj = self.pool["account.invoice"]
 
         if 'invoice_id' in vals and vals['invoice_id']:
             invoice = self.pool.get('account.invoice').browse(cr, uid, vals['invoice_id'], context=context)
@@ -260,13 +261,26 @@ class account_invoice_line(osv.osv):
         def _compute_offset(a, b):
             return max(a-b, 0), max(b-a, 0)
 
+        def _get_timedelta_days(td):
+            return td.days + (td.seconds !=0)
+
+        invoice_id = vals.get("invoice_id")
+        invoice = invoice_obj.browse(cr, uid, invoice_id, context)
+        pay_through = datetime.strptime(invoice.pay_through_date, "%Y-%m-%d %H:%M:%S")
+        berth = datetime.strptime(invoice.berth_time, "%Y-%m-%d %H:%M:%S")
+        diff_days = _get_timedelta_days(pay_through - berth)
+        if not invoice.expiry_date:
+            invoice.write({
+                "expiry_date": berth + timedelta(days=items.free_period) if diff_days < item.free_period else pay_through,
+                })
+
         for container in cont_nr_obj.browse(cr, uid, cont_ids, context=context):
             if not container:
                 continue
             offset = container.storage_offset
             cumul_duration = offset
 
-            remaining_days = container.pricelist_qty
+            remaining_days = diff_days if diff_days < item.free_period else container.pricelist_qty
             free_duration, offset = _compute_offset(min(remaining_days, item.free_period), offset)
             remaining_days -= free_duration
 
@@ -485,6 +499,7 @@ class account_invoice(osv.osv):
         'generic_customer_name': fields.char("Customer Name"),
         'direction_id': fields.many2one('account.direction', string='Direction'),
         'expiry_date': fields.datetime(string='Expiry Date'),
+        'pay_through_date': fields.datetime(string='Pay Through Date'),
     }
 
     _defaults = {
@@ -979,6 +994,7 @@ class account_invoice(osv.osv):
                 'appoint_ref': self._get_elmnt_text(appointment, 'appointment_reference'),
                 'appoint_date': self._get_elmnt_text(appointment, 'appointment_date'),
                 'date_due': self._get_elmnt_text(appointment, 'pay_through_date'),
+                'pay_through_date': self._get_elmnt_text(appointment, 'pay_through_date'),
                 'berth_time': self._get_elmnt_text(appointment, 'berthing_time'),
                 'account_id': account.id,
                 'date_invoice': date_invoice,
