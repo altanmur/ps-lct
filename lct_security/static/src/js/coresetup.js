@@ -107,7 +107,7 @@ instance.web.Session = instance.web.JsonRPC.extend( /** @lends instance.web.Sess
             if (result.last_changed > 30) {
                 $('<div>').dialog({
                 modal: true,
-                title: 'Connexion Failed!',
+                title: 'Connection Failed!',
                 buttons: {
                     Ok: function() {
                         $(this).dialog("close");
@@ -120,14 +120,14 @@ instance.web.Session = instance.web.JsonRPC.extend( /** @lends instance.web.Sess
             if (result.failed_conn > 5) {
                 $('<div>').dialog({
                 modal: true,
-                title: 'Connexion Failed!',
+                title: 'Connection Failed!',
                 buttons: {
                     Ok: function() {
                         $(this).dialog("close");
                         window.location = "/";
                         }
                     }
-                }).html(_t('Limit failed connexion reached.</br>Please contact your administrator'));
+                }).html(_t('Limit of connection attempts exceeded.</br>Please contact your administrator.'));
                 return $.Deferred().reject();
             }
             if (!result.uid) {
