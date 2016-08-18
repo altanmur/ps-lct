@@ -21,21 +21,60 @@
 
 from openerp.osv import fields, osv
 from datetime import datetime, date
+from openerp.exceptions import Warning
+
 
 class account_asset_asset(osv.osv):
 
     _inherit = "account.asset.asset"
 
+    def _get_move_line(self, cr, uid, ids, move_type, context=None):
+        result = {}
+        for record in self.browse(cr, uid, ids, context=context):
+            result.update({
+                record.id: [move_line.id for move_line in record.move_line_ids if move_line.get_asset_move_type() == move_type],
+            })
+        return result
+
+    def _get_aquisition_ids(self, cr, uid, ids, field_name, arg, context=None):
+        return self._get_move_line(cr, uid, ids, "aquisition", context)
+
+    def _get_transfer_ids(self, cr, uid, ids, field_name, arg, context=None):
+        return self._get_move_line(cr, uid, ids, "transfer", context)
+
+    def _get_scrap_ids(self, cr, uid, ids, field_name, arg, context=None):
+        return self._get_move_line(cr, uid, ids, "scrap", context)
+
     _columns = {
         'purchase_date_2': fields.date('Purchase Date', required=True),
         'allocation' : fields.char('Allocation'),
-        'dep_2013' : fields.float('Sum of depreciations until 31/12/2013')
+        'dep_2013' : fields.float('Sum of depreciations until 31/12/2013'),
+        'move_line_ids': fields.one2many("account.move.line", "to_update_asset_id", string="Move Lines"),
+        'aquisition_ids': fields.function(_get_aquisition_ids, type="many2many", relation="account.move.line", string="Aquisitions"),
+        'transfer_ids': fields.function(_get_transfer_ids, type="many2many", relation="account.move.line", string="Transfers"),
+        'scrap_ids': fields.function(_get_scrap_ids, type="many2many", relation="account.move.line", string="Scraps"),
     }
 
     def create(self, cr, uid, vals, context=None):
         if not vals.get('purchase_date_2', False):
             vals['purchase_date_2'] = vals.get('purchase_date', False)
         return super(account_asset_asset, self).create(cr, uid, vals, context=context)
+
+    def add_value(self, cr, uid, id, value, context=None):
+        record = self.browse(cr, uid, id, context)
+        if record.value_residual + value < 0:
+            raise Warning("Credit is too important.\nResidual Value of the asset cannot be negative.")
+        save_state = record.state
+        if save_state not in "opendraft":
+            return
+        if save_state == "open":
+            record.set_to_draft()
+        record.write({
+            "purchase_value": record.purchase_value + value,
+        })
+        if save_state == "open":
+            record.validate()
+        record.compute_depreciation_board()
 
 
 class account_asset_depreciation_line(osv.osv):
