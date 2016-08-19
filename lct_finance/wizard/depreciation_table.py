@@ -45,7 +45,6 @@ class depreciation_table(osv.osv_memory):
 
     def _write_report(self, cr, uid, ids, context=None):
         D_FORMAT = "%d/%m/%Y"
-        HEADER_ROW = 4
         HEIGHT = 256
         WIDTH = 1000
         report_date = self.browse(cr, uid, ids[0], context).report_date
@@ -58,14 +57,9 @@ class depreciation_table(osv.osv_memory):
             crd["row"] += spacing
             crd["col"] = 0
 
-        def _set_height(sheet, crd, height):
-            row = sheet.row(crd["row"])
-            row.height_mismatch
-            row.height = height
-
         def _write(sheet, crd, label, format_=None, height=0, width=0):
             if height:
-                _set_height(sheet, crd, height)
+                sheet.row(crd["row"]).height = height
             if width:
                 sheet.col(crd["col"]).width = width
             if format_:
@@ -76,7 +70,7 @@ class depreciation_table(osv.osv_memory):
 
         def _write_merge(sheet, crd, size, label, format_=None, spacing=0, height=0):
             if height:
-                _set_height(sheet, crd, height)
+                sheet.row(crd["row"]).height = height
             if format_:
                 sheet.write_merge(crd["row"], crd["row"], crd["col"], crd["col"] + size - 1, label, format_)
             else:
@@ -121,7 +115,7 @@ class depreciation_table(osv.osv_memory):
             _write(sheet, crd, asset.purchase_date_2)
             for i in xrange(4):
                 _write(sheet, crd, asset_data[i])
-            _write(sheet, crd, 12./asset.method_number)
+            _write(sheet, crd, "%.2f%%" %(1200./asset.method_number) if asset.method_number else "")
             for i in xrange(REPORT_DATE.month + 1):
                 _write(sheet, crd, asset_data[~0][i])
             _write(sheet, crd, asset_data[3])
@@ -144,8 +138,11 @@ class depreciation_table(osv.osv_memory):
             res = {}
             move_line_obj = self.pool.get("account.move.line")
             asset_obj = self.pool.get("account.asset.asset")
-            for asset_id in asset_obj.search(cr, uid, [("state", "=", "open")], context=context):
+            # for asset_id in asset_obj.search(cr, uid, [("state", "=", "open")], context=context):
+            print "Precessing data..."
+            for asset_id in asset_obj.search(cr, uid, [], context=context):
                 asset = asset_obj.browse(cr, uid, asset_id, context=context)
+                print "Asset [%s]: %s" %(asset_id, asset.name)
                 category = asset.category_id
                 if not res.get(category):
                     res.update({category: {}})
