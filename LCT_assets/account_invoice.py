@@ -27,6 +27,7 @@ class account_invoice_line(osv.osv):
 
     _columns = {
         'first_depreciation_date': fields.date('First Depreciation Date'),
+        'asset_id': fields.many2one('account.asset.asset', string="Asset")
     }
 
     def asset_create(self, cr, uid, lines, context=None):

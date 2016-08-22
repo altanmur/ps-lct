@@ -56,6 +56,12 @@ class account_invoice(orm.Model):
         res['name'] = x['name']
         return res
 
+    def line_get_convert(self, cr, uid, x, part, date, context=None):
+        res = super(account_invoice, self).line_get_convert(cr, uid, x, part, date, context=context)
+        line = self.pool.get('account.invoice.line').browse(cr, uid, x.get('invl_id'), context=context)
+        if line and line.asset_id:
+            res.update({"to_update_asset_id": line.asset_id.id})
+        return res
 
 class account_invoice_line(osv.osv):
     _inherit = "account.invoice.line"
