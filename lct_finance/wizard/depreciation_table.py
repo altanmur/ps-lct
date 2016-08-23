@@ -138,11 +138,8 @@ class depreciation_table(osv.osv_memory):
             res = {}
             move_line_obj = self.pool.get("account.move.line")
             asset_obj = self.pool.get("account.asset.asset")
-            # for asset_id in asset_obj.search(cr, uid, [("state", "=", "open")], context=context):
-            print "Precessing data..."
-            for asset_id in asset_obj.search(cr, uid, [], context=context):
+            for asset_id in asset_obj.search(cr, uid, [("state", "=", "open")], context=context):
                 asset = asset_obj.browse(cr, uid, asset_id, context=context)
-                print "Asset [%s]: %s" %(asset_id, asset.name)
                 category = asset.category_id
                 if not res.get(category):
                     res.update({category: {}})
