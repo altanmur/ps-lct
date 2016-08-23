@@ -52,6 +52,7 @@ class depreciation_table(osv.osv_memory):
         REPORT_DATE_S = REPORT_DATE.strftime(D_FORMAT)
         JAN1_DATE_S = REPORT_DATE.strftime("01/01/%Y")
         JAN1_DATE = datetime.strptime(JAN1_DATE_S, D_FORMAT)
+        NEXT_DAY = self.today + timedelta(days=1)
 
         def _next_line(crd, spacing=1):
             crd["row"] += spacing
@@ -86,7 +87,7 @@ class depreciation_table(osv.osv_memory):
 
             _write(sheet, crd, u"Désignation de l'immobilisation", xl_module.label_center, width=10*WIDTH, height=4*HEIGHT)
             _write(sheet, crd, u"N° compte", xl_module.label_center, width=3*WIDTH)
-            _write(sheet, crd, u"Date d'aquistion", xl_module.label_center, width=6*WIDTH)
+            _write(sheet, crd, u"Date d'aquisition", xl_module.label_center, width=6*WIDTH)
             _write_merge(sheet, crd, 4, u"Valeur brute", xl_module.label_center)
             _write(sheet, crd, u"Taux d'amort.", xl_module.label_center, width=3*WIDTH)
             _write(sheet, crd, u"", xl_module.label_center, width=6*WIDTH)
@@ -97,10 +98,10 @@ class depreciation_table(osv.osv_memory):
             _write_merge(sheet, crd, 3, u"", height=3*HEIGHT)
             _write(sheet, crd, u"VALEURS AU %s" %JAN1_DATE_S, xl_module.label_center, width=6*WIDTH)
             _write(sheet, crd, u"ACQUISITIONS", xl_module.label_center, width=6*WIDTH)
-            _write(sheet, crd, u"SORTIES OU TRANSFERS", xl_module.label_center, width=6*WIDTH)
+            _write(sheet, crd, u"SORTIES OU TRANSFERtS", xl_module.label_center, width=6*WIDTH)
             _write(sheet, crd, u"VALEURS AU %s" %REPORT_DATE_S, xl_module.label_center, width=6*WIDTH)
             _write(sheet, crd, u"")
-            _write(sheet, crd, u"Amortisements cumulés au 31/12/%s" %(REPORT_DATE.year - 1), xl_module.label_center, width=6*WIDTH)
+            _write(sheet, crd, u"Amortissements cumulés au 31/12/%s" %(REPORT_DATE.year - 1), xl_module.label_center, width=6*WIDTH)
             for m in xrange(REPORT_DATE.month):
                 _write(sheet, crd, date(1900, m+1, 1).strftime("%B"), xl_module.label_month, width=3*WIDTH)
 
@@ -113,8 +114,11 @@ class depreciation_table(osv.osv_memory):
             _write(sheet, crd, asset.name)
             _write(sheet, crd, categ.account_asset_id.code if categ.account_asset_id else "")
             _write(sheet, crd, asset.purchase_date_2)
-            for i in xrange(4):
+            cumul = 0
+            for i in xrange(3):
+                cumul += asset_data[i]
                 _write(sheet, crd, asset_data[i])
+            _write(sheet, crd, cumul)
             _write(sheet, crd, "%.2f%%" %(1200./asset.method_number) if asset.method_number else "")
             for i in xrange(REPORT_DATE.month + 1):
                 _write(sheet, crd, asset_data[~0][i])
@@ -125,8 +129,12 @@ class depreciation_table(osv.osv_memory):
             _write(sheet, crd, "Total %s" %name, xl_module.total_center, height=height)
             _write(sheet, crd, "", xl_module.total_center)
             _write(sheet, crd, "", xl_module.total_center)
-            for i in xrange(4):
-                _write(sheet, crd, sum([l[i] for l in lines]), xl_module.total_center)
+            cumul = 0
+            for i in xrange(3):
+                val = sum([l[i] for l in lines])
+                cumul += val
+                _write(sheet, crd, val, xl_module.total_center)
+            _write(sheet, crd, cumul, xl_module.total_center)
             _write(sheet, crd, "", xl_module.total_center)
             for i in xrange(REPORT_DATE.month + 1):
                 _write(sheet, crd, sum(l[~0][i] for l in lines), xl_module.total_center)
@@ -170,8 +178,8 @@ class depreciation_table(osv.osv_memory):
                 aquitition_jan1 = sum([mv.debit - mv.credit for mv in move_jan1 if mv.get_asset_move_type() == "aquisition"])
                 transfer_jan1 = sum([mv.debit - mv.credit for mv in move_jan1 if mv.get_asset_move_type() in ("transfer", "scrap")])
 
-                value_report_date = asset.value_residual + dep_report_date + aquitition_report_date + transfer_report_date
-                value_jan1 = value_report_date + dep_jan1 + aquitition_jan1 + transfer_jan1
+                value_report_date = asset.value_residual + dep_report_date - aquitition_report_date - transfer_report_date
+                value_jan1 = value_report_date + dep_jan1 - aquitition_jan1 - transfer_jan1
 
                 res[category].update({asset: [value_jan1, aquitition_jan1, transfer_jan1, value_report_date, deps]})
             return res

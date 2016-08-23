@@ -18,7 +18,7 @@
                 </field>
                 <xpath expr="//notebook" position="inside">
                     <page string="Moves">
-                        <separator string="Aquisitions"/>
+                        <separator string="Acquisitions"/>
                         <field name="aquisition_ids"/>
                         <separator string="Transfers"/>
                         <field name="transfer_ids"/>
