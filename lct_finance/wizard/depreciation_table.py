@@ -168,12 +168,12 @@ class depreciation_table(osv.osv_memory):
                         continue
                     deps[dep_dt.month] += dep.amount
 
-                move_report_date_ids = move_line_obj.search(cr, uid, [("to_update_asset_id", "=", asset_id), ("date", "<=", self.today), ("date", ">=", REPORT_DATE)], context=context)
+                move_report_date_ids = move_line_obj.search(cr, uid, [("to_update_asset_id", "=", asset_id), ("date", "<=", self.today), ("date", ">", REPORT_DATE)], context=context)
                 move_report_date = move_line_obj.browse(cr, uid, move_report_date_ids, context=context)
                 aquitition_report_date = sum([mv.debit - mv.credit for mv in move_report_date if mv.get_asset_move_type() == "aquisition"])
                 transfer_report_date = sum([mv.debit - mv.credit for mv in move_report_date if mv.get_asset_move_type() in ("transfer", "scrap")])
 
-                move_jan1_ids = move_line_obj.search(cr, uid, [("to_update_asset_id", "=", asset_id), ("date", "<", REPORT_DATE), ("date", ">=", JAN1_DATE)], context=context)
+                move_jan1_ids = move_line_obj.search(cr, uid, [("to_update_asset_id", "=", asset_id), ("date", "<=", REPORT_DATE), ("date", ">=", JAN1_DATE)], context=context)
                 move_jan1 = move_line_obj.browse(cr, uid, move_jan1_ids, context=context)
                 aquitition_jan1 = sum([mv.debit - mv.credit for mv in move_jan1 if mv.get_asset_move_type() == "aquisition"])
                 transfer_jan1 = sum([mv.debit - mv.credit for mv in move_jan1 if mv.get_asset_move_type() in ("transfer", "scrap")])
