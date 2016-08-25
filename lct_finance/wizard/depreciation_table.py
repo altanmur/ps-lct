@@ -32,6 +32,7 @@ from tempfile import TemporaryFile
 import calendar
 import copy
 import xl_module
+from babel.dates import format_date
 
 class depreciation_table(osv.osv_memory):
 
@@ -81,7 +82,7 @@ class depreciation_table(osv.osv_memory):
             else:
                 crd["col"] += size
 
-        def _write_header(sheet, crd):
+        def _write_header(sheet, crd, user):
             _write_merge(sheet, crd, 10, "LCT SA", xl_module.title1, spacing=1, height=HEIGHT)
             _write_merge(sheet, crd, 10, "TABLEAU DES IMMOBILISATIONS AU %s" %REPORT_DATE_S, xl_module.title2, spacing=3, height=5*HEIGHT)
 
@@ -103,7 +104,7 @@ class depreciation_table(osv.osv_memory):
             _write(sheet, crd, u"")
             _write(sheet, crd, u"Amortissements cumulés au 31/12/%s" %(REPORT_DATE.year - 1), xl_module.label_center, width=6*WIDTH)
             for m in xrange(REPORT_DATE.month):
-                _write(sheet, crd, date(1900, m+1, 1).strftime("%B"), xl_module.label_month, width=3*WIDTH)
+                _write(sheet, crd, format_date(date(1900, m+1, 1), "MMM", locale=user.lang), xl_module.label_month, width=3*WIDTH)
 
         def _write_categ_line(sheet, crd, categ):
             _next_line(crd)
@@ -184,15 +185,10 @@ class depreciation_table(osv.osv_memory):
                 res[category].update({asset: [value_jan1, aquitition_jan1, transfer_jan1, value_report_date, deps]})
             return res
 
-        try:
-            import locale
-            user = self.pool.get("res.users").browse(cr, uid, uid, context=context)
-            locale.setlocale(locale.LC_TIME, "%s-UTF-8" %user.lang)
-        except:
-            pass
         sheet = self.sheet
         crd = {'row': 0, 'col': 0}
-        _write_header(sheet, crd)
+        user = self.pool.get("res.users").browse(cr, uid, uid, context=context)
+        _write_header(sheet, crd, user)
         data = _get_data()
         for categ, categ_data in data.items():
             _write_categ_line(sheet, crd, categ)
