@@ -21,11 +21,13 @@
 
 from openerp.osv import fields, osv
 
+
 class account_move_line(osv.osv):
     _inherit = "account.move.line"
 
     _columns = {
         'to_update_asset_id': fields.many2one('account.asset.asset', string='Asset'),
+        'asset_date': fields.related('move_id', 'date', type='date'),
     }
 
     def create(self, cr, uid, vals, context=None):

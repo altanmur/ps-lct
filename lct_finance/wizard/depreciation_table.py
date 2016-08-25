@@ -87,7 +87,7 @@ class depreciation_table(osv.osv_memory):
 
             _write(sheet, crd, u"Désignation de l'immobilisation", xl_module.label_center, width=10*WIDTH, height=4*HEIGHT)
             _write(sheet, crd, u"N° compte", xl_module.label_center, width=3*WIDTH)
-            _write(sheet, crd, u"Date d'aquisition", xl_module.label_center, width=6*WIDTH)
+            _write(sheet, crd, u"Date d'acquisition", xl_module.label_center, width=6*WIDTH)
             _write_merge(sheet, crd, 4, u"Valeur brute", xl_module.label_center)
             _write(sheet, crd, u"Taux d'amort.", xl_module.label_center, width=3*WIDTH)
             _write(sheet, crd, u"", xl_module.label_center, width=6*WIDTH)
@@ -98,7 +98,7 @@ class depreciation_table(osv.osv_memory):
             _write_merge(sheet, crd, 3, u"", height=3*HEIGHT)
             _write(sheet, crd, u"VALEURS AU %s" %JAN1_DATE_S, xl_module.label_center, width=6*WIDTH)
             _write(sheet, crd, u"ACQUISITIONS", xl_module.label_center, width=6*WIDTH)
-            _write(sheet, crd, u"SORTIES OU TRANSFERtS", xl_module.label_center, width=6*WIDTH)
+            _write(sheet, crd, u"SORTIES OU TRANSFERTS", xl_module.label_center, width=6*WIDTH)
             _write(sheet, crd, u"VALEURS AU %s" %REPORT_DATE_S, xl_module.label_center, width=6*WIDTH)
             _write(sheet, crd, u"")
             _write(sheet, crd, u"Amortissements cumulés au 31/12/%s" %(REPORT_DATE.year - 1), xl_module.label_center, width=6*WIDTH)
@@ -168,12 +168,12 @@ class depreciation_table(osv.osv_memory):
                         continue
                     deps[dep_dt.month] += dep.amount
 
-                move_report_date_ids = move_line_obj.search(cr, uid, [("to_update_asset_id", "=", asset_id), ("date", "<=", self.today), ("date", ">", REPORT_DATE)], context=context)
+                move_report_date_ids = move_line_obj.search(cr, uid, [("to_update_asset_id", "=", asset_id), ("asset_date", "<=", self.today), ("asset_date", ">", REPORT_DATE)], context=context)
                 move_report_date = move_line_obj.browse(cr, uid, move_report_date_ids, context=context)
                 aquitition_report_date = sum([mv.debit - mv.credit for mv in move_report_date if mv.get_asset_move_type() == "aquisition"])
                 transfer_report_date = sum([mv.debit - mv.credit for mv in move_report_date if mv.get_asset_move_type() in ("transfer", "scrap")])
 
-                move_jan1_ids = move_line_obj.search(cr, uid, [("to_update_asset_id", "=", asset_id), ("date", "<=", REPORT_DATE), ("date", ">=", JAN1_DATE)], context=context)
+                move_jan1_ids = move_line_obj.search(cr, uid, [("to_update_asset_id", "=", asset_id), ("asset_date", "<=", REPORT_DATE), ("asset_date", ">=", JAN1_DATE)], context=context)
                 move_jan1 = move_line_obj.browse(cr, uid, move_jan1_ids, context=context)
                 aquitition_jan1 = sum([mv.debit - mv.credit for mv in move_jan1 if mv.get_asset_move_type() == "aquisition"])
                 transfer_jan1 = sum([mv.debit - mv.credit for mv in move_jan1 if mv.get_asset_move_type() in ("transfer", "scrap")])
@@ -184,6 +184,12 @@ class depreciation_table(osv.osv_memory):
                 res[category].update({asset: [value_jan1, aquitition_jan1, transfer_jan1, value_report_date, deps]})
             return res
 
+        try:
+            import locale
+            user = self.pool.get("res.users").browse(cr, uid, uid, context=context)
+            locale.setlocale(locale.LC_TIME, "%s-UTF-8" %user.lang)
+        except:
+            pass
         sheet = self.sheet
         crd = {'row': 0, 'col': 0}
         _write_header(sheet, crd)
