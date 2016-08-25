@@ -462,7 +462,7 @@ class general_ledger_xlsx(report_sxw):
 
         cells_by_style = {
             'label': [
-                ([(3, 1), (3, 2)], "Chart of Accounts"),
+                ([(3, 1), (3, 2)], "Company"),
                 ([(3, 3)], "Fiscal Year"),
                 ([(3, 4), (3, 5)], "Journals"),
                 ([(3, 6)], "Display Account"),
@@ -471,7 +471,7 @@ class general_ledger_xlsx(report_sxw):
                 ([(3, 10)], "Target Moves"),
             ],
             'normal': [
-                ([(4, 1), (4, 2)], chart_of_account.name),
+                ([(4, 1), (4, 2)], chart_of_account.company_id.name if chart_of_account.company_id else ""),
                 ([(4, 3)], parser['get_fiscalyear'](data)),
                 ([(4, 4), (4, 5)], ', '.join([ lt or '' for lt in parser['get_journal'](data) ])),
                 ([(4, 6)], display_account),
@@ -493,8 +493,7 @@ class general_ledger_xlsx(report_sxw):
         }
         self._set_cells(ws, cells_by_style)
 
-    def _write_lines(self, parser, data, chart_of_account, ws):
-        current_row = 7
+    def _write_lines(self, parser, data, chart_of_account, ws, current_row):
         for account in parser['get_children_accounts'](chart_of_account):
             debit = parser['sum_debit_account'](account)
             credit = parser['sum_credit_account'](account)
@@ -532,14 +531,16 @@ class general_ledger_xlsx(report_sxw):
                 }
                 self._set_cells(ws, cells)
                 current_row += 1
+        return current_row
 
     def generate_xlsx_report(self, parser, data, objects, wb):
-        if not objects:
-            return
         ws = wb.active
         self._format_sheet(ws)
         self._write_header(parser, data, objects[0], ws)
-        self._write_lines(parser, data, objects[0], ws)
+
+        current_row = 7
+        for obj in objects:
+            current_row = self._write_lines(parser, data, obj, ws, current_row)
 
     def create_source_xlsx(self, cr, uid, ids, data, context=None):
         if not context:
