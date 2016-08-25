@@ -20,7 +20,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='invoice_pay_customer']" position="replace">
                     <!-- <button name="invoice_pay_customer" type="object" string="Pay" attrs="{'invisible': ['!', '|', '&amp;', ('state', '=', 'synchronized'), ('is_cmms_supplier', '=', True), '&amp;', ('state', '=', 'open'), ('is_cmms_supplier', '=', False)]}" class="oe_highlight" groups="base.group_user"/>         -->
-                    <button name="invoice_pay_customer" type="object" string="Pay" invisible="0"/>
+                    <button name="invoice_pay_customer" type="object" string="Pay" attrs="{'invisible': [('state', '!=', 'open')]}"/>
                 </xpath>
             </field>
         </record>
