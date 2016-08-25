@@ -164,7 +164,7 @@ class account_voucher(osv.osv):
     def proforma_voucher(self, cr, uid, ids, context=None):
         for voucher in self.browse(cr, uid, ids, context=context):
             for elmt in voucher.line_dr_ids:
-                if elmt.move_line_id:
+                if elmt.reconcile and elmt.move_line_id:
                     invoice = elmt.move_line_id.invoice
                     if invoice and invoice.type and invoice.type == 'in_invoice':
                         if not 'state' in invoice or not invoice.state or not invoice.state == 'open' or not 'approved' in invoice or (not invoice.approved == 'A' and not invoice.approved == 'a'):
