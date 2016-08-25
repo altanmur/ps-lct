@@ -1,3 +1,4 @@
 import account_asset
 import account_journal
 import account_invoice
+import account_move

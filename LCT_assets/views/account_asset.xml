@@ -16,6 +16,16 @@
                 <field name="code" position="after">
                     <field name="allocation"/>
                 </field>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Moves">
+                        <separator string="Acquisitions"/>
+                        <field name="aquisition_ids"/>
+                        <separator string="Transfers"/>
+                        <field name="transfer_ids"/>
+                        <separator string="Scraps"/>
+                        <field name="scrap_ids"/>
+                    </page>
+                </xpath>
             </field>
         </record>
 

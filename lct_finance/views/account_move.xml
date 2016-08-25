@@ -15,6 +15,20 @@
                 <xpath expr="//field[@name='to_check']" position="after">
                     <field name="is_negative" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                 </xpath>
+                <xpath expr="//field[@name='line_id']/tree/field[@name='reconcile_id']" position="after">
+                    <field name="to_update_asset_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="account_move_line_tree" model="ir.ui.view">
+            <field name="name">account.move.line.tree.lct</field>
+            <field name="inherit_id" ref="account.view_move_line_tree"/>
+            <field name="model">account.move.line</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='reconcile']" position="after">
+                    <field name="to_update_asset_id"/>
+                </xpath>
             </field>
         </record>
     </data>

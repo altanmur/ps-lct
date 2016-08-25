@@ -21,13 +21,20 @@
 
 from openerp.osv import fields, osv
 from datetime import datetime, date
+from openerp.exceptions import Warning
 
 class account_invoice_line(osv.osv):
     _inherit = "account.invoice.line"
 
     _columns = {
         'first_depreciation_date': fields.date('First Depreciation Date'),
+        'asset_id': fields.many2one('account.asset.asset', string="Asset")
     }
+
+    def create(self, cr, uid, vals, context=None):
+        if vals.get("asset_id") and vals.get("asset_category_id"):
+            raise Warning("Asset and Asset Category should not be both set on an invoice move line")
+        return super(account_invoice_line, self).create(cr, uid, vals, context=context)
 
     def asset_create(self, cr, uid, lines, context=None):
         context = context or {}

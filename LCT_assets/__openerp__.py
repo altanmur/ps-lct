@@ -30,7 +30,7 @@
         LCT assets
     """,
     'data': [
-             'views/account_asset.xml', 
+             'views/account_asset.xml',
              'views/account_journal.xml',
              'data/cron.xml',
              ],
