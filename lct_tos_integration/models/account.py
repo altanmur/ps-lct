@@ -1241,7 +1241,13 @@ class account_invoice(osv.osv):
 
                 if status != 'E':
                     p_type = self._get_elmnt_text(line, 'container_type_id')
-                    type_id = self._get_vbl_type(cr, uid, p_type)
+                    origin_type_id = self._get_vbl_type(cr, uid, p_type)
+                    hazardous_class = self._get_elmnt_text(line, 'container_hazardous_class_id')
+                    if p_type and hazardous_class:
+                        type_id = imd_model.get_record_id(cr, uid, module, 'lct_product_type_imo')
+                    else:
+                        type_id = origin_type_id
+                        origin_type_id = None
                 else:
                     type_id = False
                 properties = {
@@ -1286,6 +1292,8 @@ class account_invoice(osv.osv):
                     reefe_properties['status_id'] = False
                     reefe_properties['type_id'] = False
                     expst_properties['service_ids'] = [imd_model.get_record_id(cr, uid, module, 'lct_product_service_storage')]
+                    if origin_type_id:
+                        expst_properties['type_id'] = origin_type_id
 
                     reefe_product_id = product_model.get_products_by_properties(cr, uid, reefe_properties, line.sourceline, context=context)[0]
                     expst_product_id = product_model.get_products_by_properties(cr, uid, expst_properties, line.sourceline, context=context)[0]

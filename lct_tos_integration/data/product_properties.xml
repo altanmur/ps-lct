@@ -163,6 +163,9 @@
     <record id="lct_product_type_gatereceive" model="lct.product.type">
       <field name="name">Gate Receive</field>
     </record>
+    <record id="lct_product_type_imo" model="lct.product.type">
+      <field name="name">IMO</field>
+    </record>
 
 
     <!-- SIZE -->
