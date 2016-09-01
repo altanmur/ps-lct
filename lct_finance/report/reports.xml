@@ -65,7 +65,16 @@
             webkit_header="internal portrait"
             header="False"/>
 
-
-
+        <delete model="ir.actions.report.xml" id="account.account_3rdparty_account_balance"/>
+        <report
+            auto="False"
+            id="account.account_3rdparty_account_balance"
+            menu="False"
+            model="account.account"
+            name="account.partner.balance"
+            rml="lct_finance/report/account_partner_balance_landscape.rml"
+            string="Partner Balance"
+            webkit_header="internal landscape"
+            header="False"/>
     </data>
 </openerp>
