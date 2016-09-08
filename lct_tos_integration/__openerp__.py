@@ -63,6 +63,7 @@
         'reports/vessel_revenue.xml',
         'views/direction.xml',
         'data/direction.xml',
+        'views/account_invoice.xml',
 
         'security_new/ir.module.category.csv',
         'security_new/res.groups.csv',

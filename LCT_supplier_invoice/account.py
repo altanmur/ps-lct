@@ -57,6 +57,7 @@ class account_invoice_line(osv.osv):
         'asset': fields.char('Asset', size=80),
         'deviation': fields.char('Deviation', size=80),
         'state': fields.related('invoice_id', 'state', type="char", string="Status", store=True),
+        'date_invoice': fields.related('invoice_id', 'date_invoice', type='date', string="Invoice Date")
     }
 
 
