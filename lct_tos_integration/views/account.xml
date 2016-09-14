@@ -160,8 +160,8 @@
                             <field name="billed_quantity" readonly="1"/>
                             <field name="uos_id" groups="product.group_uom"
                                 on_change="uos_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.fiscal_position, price_unit, parent.currency_id, context, parent.company_id)"/>
-                            <field name="price_unit" invisible="1"/>
-                            <field name="billed_price_unit"/>
+                            <field name="price_unit" invisible="0"/>
+                            <field name="billed_price_unit" invisible="1"/>
                             <field name="discount" groups="sale.group_discount_per_so_line"/>
                             <field name="book_nr"/>
                             <field name="invoice_line_tax_id" widget="many2many_tags" context="{'type':parent.type}"
