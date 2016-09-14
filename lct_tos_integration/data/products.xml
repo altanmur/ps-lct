@@ -1980,5 +1980,139 @@
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type">service</field>
     </record>
+
+
+<!-- IMO -->
+    <record id="import_discharge_20_full_imo" model="product.product">
+      <field name="name">Import Discharge 20 Full IMO</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_imo"/>
+    </record>
+    <record id="import_discharge_20_empty_imo" model="product.product">
+      <field name="name">Import Discharge 20 Empty IMO</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+      <field name="type_id" ref="lct_product_type_imo"/>
+    </record>
+    <record id="import_discharge_40_full_imo" model="product.product">
+      <field name="name">Import Discharge 40 Full IMO</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_imo"/>
+    </record>
+    <record id="import_discharge_40_empty_imo" model="product.product">
+      <field name="name">Import Discharge 40 Empty IMO</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+      <field name="type_id" ref="lct_product_type_imo"/>
+    </record>
+
+    <record id="transshipment_discharge_20_full_imo" model="product.product">
+      <field name="name">Transshipment Discharge 20 Full IMO</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_imo"/>
+    </record>
+    <record id="transshipment_discharge_20_empty_imo" model="product.product">
+      <field name="name">Transshipment Discharge 20 Empty IMO</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+      <field name="type_id" ref="lct_product_type_imo"/>
+    </record>
+    <record id="transshipment_discharge_40_full_imo" model="product.product">
+      <field name="name">Transshipment Discharge 40 Full IMO</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_imo"/>
+    </record>
+    <record id="transshipment_discharge_40_empty_imo" model="product.product">
+      <field name="name">Transshipment Discharge 40 Empty IMO</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+      <field name="type_id" ref="lct_product_type_imo"/>
+    </record>
+
+    <record id="export_load_20_full_imo" model="product.product">
+      <field name="name">Export Load 20 Full IMO</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_imo"/>
+    </record>
+    <record id="export_load_20_empty_imo" model="product.product">
+      <field name="name">Export Load 20 Empty IMO</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+      <field name="type_id" ref="lct_product_type_imo"/>
+    </record>
+    <record id="export_load_40_full_imo" model="product.product">
+      <field name="name">Export Load 40 Full IMO</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_imo"/>
+    </record>
+    <record id="export_load_40_empty_imo" model="product.product">
+      <field name="name">Export Load 40 Empty IMO</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+      <field name="type_id" ref="lct_product_type_imo"/>
+    </record>
+
+    <record id="transshipment_reload_20_full_imo" model="product.product">
+      <field name="name">Transshipment Reload 20 Full IMO</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_reload"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_imo"/>
+    </record>
+    <record id="transshipment_reload_20_empty_imo" model="product.product">
+      <field name="name">Transshipment Reload 20 Empty IMO</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_reload"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+      <field name="type_id" ref="lct_product_type_imo"/>
+    </record>
+    <record id="transshipment_reload_40_full_imo" model="product.product">
+      <field name="name">Transshipment Reload 40 Full IMO</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_reload"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_imo"/>
+    </record>
+    <record id="transshipment_reload_40_empty_imo" model="product.product">
+      <field name="name">Transshipment Reload 40 Empty IMO</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_reload"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_empty"/>
+      <field name="type_id" ref="lct_product_type_imo"/>
+    </record>
   </data>
 </openerp>
