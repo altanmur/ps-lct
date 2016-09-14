@@ -104,7 +104,8 @@
                             <td><para style="terp_5f_default_5f_8">[[ o.payment_term and o.payment_term.name or '' ]]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">Date :</para></td>
-                            <td><para style="terp_5f_default_5f_8">[[ time.strftime("%d-%m-%Y") ]]</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ "%s%s/%s%s/%s" %('' if time.strptime(o.date_invoice, '%Y-%m-%d').tm_mday &gt; 9 else '0', time.strptime(o.date_invoice, '%Y-%m-%d').tm_mday, '' if time.strptime(o.date_invoice, '%Y-%m-%d').tm_mon &gt; 9 else '0', time.strptime(o.date_invoice, '%Y-%m-%d').tm_mon, time.strptime(o.date_invoice, '%Y-%m-%d').tm_year) ]]</para></td>
+                            <!-- <td><para style="terp_5f_default_5f_8">[[ time.strftime("%d-%m-%Y") ]]</para></td> -->
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">Devises :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ o.currency_id and o.currency_id.symbol or '' ]]</para></td>
