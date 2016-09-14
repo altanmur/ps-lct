@@ -25,7 +25,7 @@
     'version': '0.1',
     'depends': ['base', 'account', 'product', 'account_voucher', 'hr',
                 'base_vat', 'sale', 'account_check_writing', 'lct_finance',
-                'LCT_supplier_invoice'],
+                'LCT_supplier_invoice', 'LCT_supplier_invoice'],
     'category' : 'Tools',
     'summary': 'LCT TOS integration',
     'description': """
@@ -63,6 +63,7 @@
         'reports/vessel_revenue.xml',
         'views/direction.xml',
         'data/direction.xml',
+        'views/account_invoice.xml',
 
         'security_new/ir.module.category.csv',
         'security_new/res.groups.csv',
