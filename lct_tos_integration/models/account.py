@@ -1174,6 +1174,7 @@ class account_invoice(osv.osv):
         invoice_lines = {}
         isps_lines = {}
         plugged_hours = {}
+        oog_lines = {}
         for vbilling in vbillings.findall('vbilling'):
             partner_id = self._get_partner(cr, uid, vbilling, 'customer_id')
             partner = partner_model.browse(cr, uid, partner_id, context=context)
@@ -1217,6 +1218,7 @@ class account_invoice(osv.osv):
             full_container = 0
             plugged_time = 0
             isps_qty = 0
+            oog_qty = 0
             for line in lines.findall('line'):
                 partner_id = self._get_partner(cr, uid, line, 'container_customer_id', context=context)
 
@@ -1259,7 +1261,8 @@ class account_invoice(osv.osv):
                     isps_qty += 1
 
                 oog = self._get_elmnt_text(line, 'oog')
-                oog = True if oog=='YES' else False
+                if oog == "YES":
+                    oog_qty += 1
 
                 product_ids = product_model.get_products_by_properties(cr, uid, dict(properties), line.sourceline, context=context)
                 if not all(product_ids):
@@ -1273,7 +1276,7 @@ class account_invoice(osv.osv):
 
                 for product_id in product_ids:
                     self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_id, product_id)
-                    cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=1, quantity=1, oog=oog), context=context)
+                    cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=1, quantity=1), context=context)
                     invoice_lines[partner_id][vessel_id][product_id].append(cont_nr_id)
                 if category in ['E', 'T']:
                     domain = [('vessel_id', '=', vessel_id), ('name', '=', cont_nr_name), ('status', '=', 'pending')]
@@ -1317,14 +1320,16 @@ class account_invoice(osv.osv):
 
             plugged_hours[vessel_id] = plugged_time
             isps_lines[vessel_id] = isps_qty
-        invoice_ids = self._create_invoices(cr, uid, invoice_lines, isps_lines, plugged_hours, docking_fees=True, context=context)
+            oog_lines[vessel_id] = oog_qty
+        invoice_ids = self._create_invoices(cr, uid, invoice_lines, isps_lines, plugged_hours, oog_lines, docking_fees=True, context=context)
         invoice_model.write(cr, uid, invoice_ids, {'type2': 'vessel'})
 
-    def _create_invoices(self, cr, uid, invoice_lines, isps_lines=None, plugged_hours=None, docking_fees=False, context=None):
+    def _create_invoices(self, cr, uid, invoice_lines, isps_lines=None, plugged_hours=None, oog_lines=None, docking_fees=False, context=None):
         if isps_lines is None:
             isps_lines = {}
         if plugged_hours is None:
             plugged_hours = {}
+        oog_lines = oog_lines or {}
 
         partner_model = self.pool.get('res.partner')
         pricelist_model = self.pool.get('product.pricelist')
@@ -1440,6 +1445,24 @@ class account_invoice(osv.osv):
                     }
                     invoice_line_model.create(cr, uid, elec_line_vals, context=context)
 
+                if oog_lines.get(vessel_id):
+                    product_oog_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'oog')
+                    product_oog = product_model.browse(cr, uid, product_oog_id, context=context)
+                    price_multi_oog = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_oog_id, pricelist_qty, partner_id)], context=context)
+                    account_oog = product_elec.property_account_income or (product_oog.categ_id and product_oog.categ_id.property_account_income_categ) or False
+                    oog_line_vals = {
+                        'invoice_id': invoice_id,
+                        'product_id': product_oog_id,
+                        'name': product_oog.name,
+                        'quantity': oog_lines.get(vessel_id),
+                        'price_unit': price_multi_oog.get(product_oog_id, {}).get(pricelist_id, 0),
+                        'account_id': account_oog.id if account_oog else None,
+                        'cont_nr_ids': [(0, 0, {
+                            'quantity':oog_lines.get(vessel_id),
+                            'pricelist_qty': oog_lines.get(vessel_id),
+                        })]
+                    }
+                    invoice_line_model.create(cr, uid, oog_line_vals, context=context)
 
 
                 product_dockage_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'dockage_fixed')
