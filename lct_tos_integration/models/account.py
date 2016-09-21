@@ -1772,6 +1772,20 @@ class account_invoice(osv.osv):
         res.update({
             'pay_through_date': invoice.pay_through_date,
             'berth_time': invoice.berth_time,
+            'individual_cust': invoice.individual_cust,
+            'appoint_date': invoice.appoint_date,
+            'expiry_date': invoice.expiry_date,
+            'appoint_ref': invoice.appoint_ref,
+            'direction_id': invoice.direction_id.id if invoice.direction_id else None,
+            'vessel_name': invoice.vessel_name,
+            'call_sign': invoice.call_sign,
+            'voyage_number_in': invoice.voyage_number_in,
+            'loa': invoice.loa,
+            'vessel_id': invoice.vessel_id,
+            'lloyds_nr': invoice.lloyds_nr,
+            'dep_time': invoice.dep_time,
+            'voyage_number_out': invoice.voyage_number_out,
+            'woa': invoice.woa,
             })
         for _, _, line_data in res.get('invoice_line', (0, 0, {})):
             line = _get_line(invoice, line_data)
