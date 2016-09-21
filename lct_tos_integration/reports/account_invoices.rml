@@ -82,7 +82,7 @@
 
         <!-- Invoice -->
         <para style="P3"> </para>
-        <para style="P4">FACTURE<span>[[(o.printed > 1 and o.state in ['open','paid']) and ' (DUPLICATA)' or removeParentNode('span')]]</span></para>
+        <para style="P4">Invoice<span>[[(o.printed > 1 and o.state in ['open','paid']) and ' (DUPLICATA)' or removeParentNode('span')]]</span></para>
         <para style="P4"> </para>
         <blockTable colWidths="249.0,250.0" style="Table1">
             <tr>
