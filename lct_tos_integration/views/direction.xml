@@ -42,6 +42,6 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="tos_integ_ftp_config_menu" sequence="12" action="action_direction_lct" name="Directions" parent="tos_integ_ftp_menu"/>
+        <menuitem id="tos_integ_direction_config_menu" sequence="12" action="action_direction_lct" name="Directions" parent="tos_integ_ftp_menu"/>
     </data>
 </openerp>
