@@ -255,7 +255,9 @@ class account_invoice_line(osv.osv):
         if not item.slab_rate:
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
 
-        cont_ids = (vals.pop("cont_nr_ids", None) or [(0,0,[])])[0][2]
+        if isinstance(vals.get('cont_nr_ids', [(0,0,[])])[0][2], dict):
+            return super(account_invoice_line, self).create(cr, uid, vals, context=context)
+        cont_ids = vals.pop("cont_nr_ids", [(0,0,[])])[0][2]
         line_ids = [None]*4
 
         def _compute_offset(a, b):
@@ -1758,6 +1760,37 @@ class account_invoice(osv.osv):
         }
 
     def _prepare_refund(self, cr, uid, invoice, date=None, period_id=None, description=None, journal_id=None, context=None):
+        def _get_line(invoice, line_data):
+            for line in invoice.invoice_line:
+                if line.product_id.id == line_data.get('product_id') and line.price_unit == line_data.get('price_unit'):
+                    return line
+
+        def _get_cont_nr_datas(line):
+            ans = []
+            for cont_nr in line.cont_nr_ids:
+                ans.append(
+                    (0, 0, {
+                        'name': cont_nr.name,
+                        'date_start': cont_nr.date_start,
+                        'quantity': cont_nr.quantity,
+                        'pricelist_qty': cont_nr.pricelist_qty,
+                        'cont_operator': cont_nr.cont_operator,
+                        'call_sign': cont_nr.call_sign,
+                        'lloyds_nr': cont_nr.lloyds_nr,
+                        'vessel_id': cont_nr.vessel_id,
+                        'berth_time': cont_nr.berth_time,
+                        'dep_time': cont_nr.dep_time,
+                        # 'invoice_line_id': cont_nr.invoice_line_id,
+                        'type2': cont_nr.type2,
+                        'oog': cont_nr.oog,
+                        'from_day': cont_nr.from_day,
+                        'to_day': cont_nr.to_day,
+                        'storage_offset': cont_nr.storage_offset,
+                        }),
+                    )
+            return ans
+
+
         res = super(account_invoice, self)._prepare_refund(cr, uid, invoice, date=date, period_id=period_id, description=description, journal_id=journal_id, context=context)
         res['type2'] = invoice.type2
         old_group_ids = set([x[2].get('group_id') for x in res.get('invoice_line') if x[2].get('group_id')])
@@ -1767,6 +1800,30 @@ class account_invoice(osv.osv):
             newgroup_dict[old_group_id] = self.pool.get('account.invoice.line.group').create(cr, uid, {'name': old_group.name}, context=context)
         for line in res.get('invoice_line'):
             line[2]['group_id'] = newgroup_dict.get(line[2]['group_id'], False)
+        res.update({
+            'pay_through_date': invoice.pay_through_date,
+            'berth_time': invoice.berth_time,
+            'individual_cust': invoice.individual_cust,
+            'appoint_date': invoice.appoint_date,
+            'expiry_date': invoice.expiry_date,
+            'appoint_ref': invoice.appoint_ref,
+            'direction_id': invoice.direction_id.id if invoice.direction_id else None,
+            'vessel_name': invoice.vessel_name,
+            'call_sign': invoice.call_sign,
+            'voyage_number_in': invoice.voyage_number_in,
+            'loa': invoice.loa,
+            'vessel_id': invoice.vessel_id,
+            'lloyds_nr': invoice.lloyds_nr,
+            'dep_time': invoice.dep_time,
+            'voyage_number_out': invoice.voyage_number_out,
+            'woa': invoice.woa,
+            })
+        for _, _, line_data in res.get('invoice_line', (0, 0, {})):
+            line = _get_line(invoice, line_data)
+            cont_datas = _get_cont_nr_datas(line)
+            line_data.update({
+                'cont_nr_ids': cont_datas,
+                })
         return res
 
 class account_invoice_group(osv.osv_memory):
