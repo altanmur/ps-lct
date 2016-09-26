@@ -87,10 +87,18 @@ def _get_prev_ctx(self, ctx):
         return {}
     return ctx
 
+def _set_opening_value(d):
+    diff = d.get('opening_debit', 0) - d.get('opening_credit', 0)
+    d.update({
+        'opening_debit': diff if diff > 0 else 0,
+        'opening_credit': 0 if diff > 0 else (-diff if diff else 0),
+        })
+
 def _set_closing_value(d):
     diff = d.get('opening_debit', 0) - d.get('opening_credit', 0) + d.get('move_debit', 0) - d.get('move_credit', 0)
     d.update({
-        'closing_%s' %('debit' if diff > 0 else 'credit'): diff,
+        'closing_debit': diff if diff > 0 else 0,
+        'closing_credit': 0 if diff > 0 else (-diff if diff else 0),
         })
 
 # Monkey patching
@@ -172,7 +180,11 @@ def set_context(self, objects, data, ids, report_type=None):
         acc_lines.sort(key=lambda line: - abs(line.get('type', 1.6) - 1.6))
         lines.extend(acc_lines)
     for line in lines:
+        if line.get('type') != 3:
+            _set_opening_value(line)
         _set_closing_value(line)
+    if self.display_partner == 'non-zero_balance':
+        lines = filter(lambda line: line.get('closing_credit') or line.get('closing_debit'), lines)
 
     col_names = ['opening_debit', 'opening_credit', 'move_debit', 'move_credit']
     sums = {col_name: 0 for col_name in col_names}
