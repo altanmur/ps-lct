@@ -97,6 +97,19 @@ class product_pricelist(osv.Model):
 
         return result_to
 
+    def _get_active_version_id(self, cr, uid, ids, context=None):
+        date = context.get('date') or time.strftime('%Y-%m-%d')
+        version_ids = self.pool.get('product.pricelist.version').search(cr, uid, [
+            ('pricelist_id', 'in', ids),
+            '|',
+                ('date_start', '=', False),
+                ('date_start', '<=', date),
+            '|',
+                ('date_end', '=', False),
+                ('date_end', '>=', date),
+        ])
+        return version_ids[0] if version_ids else None
+
     def price_get_multi(self, cr, uid, pricelist_ids, products_by_qty_by_partner, context=None):
         """multi products 'price_get'.
            @param pricelist_ids:
@@ -106,6 +119,46 @@ class product_pricelist(osv.Model):
              'date': Date of the pricelist (%Y-%m-%d),}
            @return: a dict of dict with product_id as key and a dict 'price by pricelist' as value
         """
+
+        def _get_periods(item, qty):
+            return [
+                min(qty, item.free_period),
+                max(0, min(qty - item.free_period, item.first_slab_last_day - item.free_period)),
+                max(0, min(qty - item.first_slab_last_day, item.second_slab_last_day - item.first_slab_last_day)),
+                max(0, qty - item.second_slab_last_day),
+            ]
+
+        def _get_parent_item(item):
+            if not item.base_pricelist_id:
+                return
+            parent_version_id = item.base_pricelist_id._get_active_version_id()
+            parent_item = item_obj.search(cr, uid, [
+                ('price_version_id', '=', parent_version_id),
+                ('product_tmpl_id', '=', item.product_tmpl_id.id),
+                ])
+            if not parent_item:
+                return
+            return item_obj.browse(cr, uid, parent_item[0], context=context)
+
+        def _get_parent_periods_by_discountcoef_by_surcharge(item, qty, child_periods):
+            if not item:
+                return [[0., 1., 1., 1.], [0., 0., 0., 0.]]
+            if _get_periods(item, qty) != child_periods:
+                raise osv.except_osv(_('Warning!'), _("Periods (free, slab1, slab2), must match in parent pricelist item."))
+            ans = _get_parent_periods_by_discountcoef_by_surcharge(_get_parent_item(item), qty, child_periods)
+            for i in xrange(1,4):
+                for j in xrange(2):
+                    ans[j][i] *= 1 + getattr(item, 'price_discount_rate%s' %i)
+                ans[1][i] += getattr(item, 'price_surcharge_rate%s' %i)
+            return ans
+
+        def _get_periods_by_discountcoef_by_surcharge(res, qty):
+            item = item_obj.browse(cr, uid, res['id'], context=context)
+            periods = _get_periods(item, qty)
+
+            ans = _get_parent_periods_by_discountcoef_by_surcharge(item, qty, periods)
+            ans[:0] = [periods]
+            return zip(*ans)
 
         def _create_parent_category_list(id, lst):
             if not id:
@@ -129,6 +182,7 @@ class product_pricelist(osv.Model):
         product_uom_obj = self.pool.get('product.uom')
         supplierinfo_obj = self.pool.get('product.supplierinfo')
         price_type_obj = self.pool.get('product.price.type')
+        item_obj = self.pool.get('product.pricelist.item')
 
         # product.pricelist.version:
         if not pricelist_ids:
@@ -194,6 +248,9 @@ class product_pricelist(osv.Model):
                 res1 = cr.dictfetchall()
                 uom_price_already_computed = False
                 for res in res1:
+                    # parent pricelist handle with periods_by_discountcoef_by_surcharge
+                    if res['slab_rate']:
+                        res['base'] = 1
                     if res:
                         if res['base'] == -1:
                             if not res['base_pricelist_id']:
@@ -252,12 +309,7 @@ class product_pricelist(osv.Model):
                                 for key in ['price_discount_rate1', 'price_surcharge_rate1', 'price_discount_rate2', 'price_surcharge_rate2', 'price_discount_rate3', 'price_surcharge_rate3']:
                                     res[key] = res[key] or 0.0
 
-                                periods_by_discountcoef_by_surcharge = [
-                                    (res['free_period'], 0.0, 0.0),
-                                    (res['first_slab_last_day'] - res['free_period'], 1.0 + res['price_discount_rate1'], res['price_surcharge_rate1']),
-                                    (res['second_slab_last_day'] - res['first_slab_last_day'], 1.0 + res['price_discount_rate2'], res['price_surcharge_rate2']),
-                                    (qty - res['second_slab_last_day'], 1.0 + res['price_discount_rate3'], res['price_surcharge_rate3']),
-                                ]
+                                periods_by_discountcoef_by_surcharge = _get_periods_by_discountcoef_by_surcharge(res, qty)
                                 price = sum([(period*(coef*price + (period > 0 and surcharge or 0))) for period, coef, surcharge in periods_by_discountcoef_by_surcharge])/qty
                                 if res['price_round']:
                                     price = tools.float_round(price, precision_rounding=res['price_round'])
