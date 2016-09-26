@@ -35,8 +35,8 @@ def _get_prev_range_periods(self, start_period_id, end_period_id):
     date_start = "1900-01-01"
     date_stop = start_period.date_stop
 
-    oldest_period_id = period_obj.search(self.cr, self.uid, [], order='end_date', limit=1)[0]
-    before_start_period_ids = period_obj.search(self.cr, self.uid, [('date_stop', '<', date_stop)], order='end_date desc', limit=1)
+    oldest_period_id = period_obj.search(self.cr, self.uid, [], order='date_stop', limit=1)[0]
+    before_start_period_ids = period_obj.search(self.cr, self.uid, [('date_stop', '<', date_stop)], order='date_stop desc', limit=1)
     if not before_start_period_ids:
         return {}
     before_start_period_id = before_start_period_ids[0]
@@ -87,6 +87,12 @@ def _get_prev_ctx(self, ctx):
         return {}
     return ctx
 
+def _set_closing_value(d):
+    diff = d.get('opening_debit', 0) - d.get('opening_credit', 0) + d.get('move_debit', 0) - d.get('move_credit', 0)
+    d.update({
+        'closing_%s' %('debit' if diff > 0 else 'credit'): diff,
+        })
+
 # Monkey patching
 def set_context(self, objects, data, ids, report_type=None):
     self.display_partner = data['form'].get('display_partner', 'non-zero_balance')
@@ -110,19 +116,8 @@ def set_context(self, objects, data, ids, report_type=None):
                 "AND a.active", (self.ACCOUNT_TYPE,))
     self.account_ids = [a for (a,) in self.cr.fetchall()]
     res = super(partner_balance, self).set_context(objects, data, ids, report_type=report_type)
-    lines = self.lines()
-    sum_debit = sum_credit = sum_litige = 0
-    for line in filter(lambda x: x['type'] == 3, lines):
-        sum_debit += line['debit'] or 0
-        sum_credit += line['credit'] or 0
-        sum_litige += line['enlitige'] or 0
-    self.localcontext.update({
-        'lines': lambda: lines,
-        'sum_debit': lambda: sum_debit,
-        'sum_credit': lambda: sum_credit,
-        'sum_litige': lambda: sum_litige,
-    })
 
+    lines = self.lines()
     ctx = data['form'].get('used_context', {})
     opening_ctx = _get_prev_ctx(self, ctx)
     if opening_ctx:
@@ -145,6 +140,7 @@ def set_context(self, objects, data, ids, report_type=None):
                 'move_credit': line.get('credit'),
                 'code': line.get('code'),
                 'type': line.get('type'),
+                'name': name,
                 },
             })
 
@@ -160,6 +156,7 @@ def set_context(self, objects, data, ids, report_type=None):
             'opening_credit': line.get('credit'),
             'code': line.get('code'),
             'type': line.get('type'),
+            'name': name,
             }
         if name in mix_lines[code]:
             mix_lines[code][name].update(opening_data)
@@ -171,9 +168,23 @@ def set_context(self, objects, data, ids, report_type=None):
     lines = []
     for mix_acc_lines in mix_lines.values():
         acc_lines = [line for line in mix_acc_lines.values()]
+        # sort by type: 3 < 1 < 2 < None
+        acc_lines.sort(key=lambda line: - abs(line.get('type', 1.6) - 1.6))
+        lines.extend(acc_lines)
+    for line in lines:
+        _set_closing_value(line)
 
+    col_names = ['opening_debit', 'opening_credit', 'move_debit', 'move_credit']
+    sums = {col_name: 0 for col_name in col_names}
+    for line in filter(lambda line: line.get('type') == 3, lines):
+        for col_name in col_names:
+            sums[col_name] += line.get(col_name, 0)
+        _set_closing_value(sums)
 
+    self.localcontext.update({
+        'lines': lines,
+        'sums': sums,
+    })
     return res
-
 
 partner_balance.set_context = set_context
