@@ -26,3 +26,4 @@ import wire_transfer
 import account_balance
 import account_balance_xls
 import customer_payments
+import account_partner_balance
