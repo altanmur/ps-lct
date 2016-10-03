@@ -70,5 +70,5 @@ class res_users(osv.osv):
         user = self.browse(cr, uid, uid, context)
         self.pool.get("change.password.user")._security_password(user.login, old_passwd, new_passwd, user.user_id.password_crypt)
         if new_passwd:
-            return self.write(cr, SUPERUSER_ID, uid, {'password': new_passwd})
+            return self.write(cr, 1, uid, {'password': new_passwd})
         raise osv.except_osv(_('Warning!'), _("Setting empty passwords is not allowed for security reasons!"))
