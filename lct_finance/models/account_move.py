@@ -37,3 +37,10 @@ class account_move_line(osv.osv):
     _columns = {
         'name': fields.char('Name', required=True),
         }
+
+    def _check_no_view(self, cr, uid, ids, context=None):
+        # No super because it is not adaptable.
+        for l in lines:
+            if l.account_id.type in ('view'):
+                return False
+        return True
