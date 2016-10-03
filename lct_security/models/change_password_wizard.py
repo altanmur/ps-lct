@@ -147,6 +147,10 @@ class change_password_user(osv.TransientModel):
                 raise osv.except_osv(_(error_title), _("Password and Login must be different"))
             if len(new_passwd) < min_len:
                 raise osv.except_osv(_(error_title), _("Password must be at least %s characters long" %min_len))
+            if not any([c.isupper() for c in new_passwd]):
+                raise osv.except_osv(_(error_title), _("Password must contain at least one capital letter"))
+            if all([c.isupper or c.islower() for c in new_passwd]):
+                raise osv.except_osv(_(error_title), _("Password must contain at least one special character"))
             if old_passwd:
                 ss_len = self._get_max_ss_len(old_passwd, new_passwd)
                 if ss_len >= max_ss_len:
