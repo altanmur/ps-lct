@@ -604,3 +604,13 @@ msgstr "Ce libellé sera affiché sur le rapport pour montrer le solde calculé 
 msgid "account.asset.asset"
 msgstr "account.asset.asset"
 
+
+#. module: lct_finance
+#: selection:account.invoice,report_title:0
+msgid "Credit Note"
+msgstr "Facture d'avoir"
+
+#. module: lct_finance
+#: selection:account.invoice,report_title:0
+msgid "Debit Note"
+msgstr "Facture d'avoir"
