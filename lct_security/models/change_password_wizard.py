@@ -141,6 +141,7 @@ class change_password_user(osv.TransientModel):
 
     def _security_password(self, login, old_passwd, new_passwd, stored_passwd, min_len=8, max_ss_len=4):
             error_title = ""
+            import ipdb; ipdb.set_trace()
             if not self.confirm_password(old_passwd, stored_passwd):
                 raise osv.except_osv(_(error_title), _("Old password did not match"))
             if login == new_passwd:
@@ -149,7 +150,7 @@ class change_password_user(osv.TransientModel):
                 raise osv.except_osv(_(error_title), _("Password must be at least %s characters long" %min_len))
             if not any([c.isupper() for c in new_passwd]):
                 raise osv.except_osv(_(error_title), _("Password must contain at least one capital letter"))
-            if all([c.isupper or c.islower() for c in new_passwd]):
+            if all([c.isupper() or c.islower() or '0'<=c<='9' for c in new_passwd]):
                 raise osv.except_osv(_(error_title), _("Password must contain at least one special character"))
             if old_passwd:
                 ss_len = self._get_max_ss_len(old_passwd, new_passwd)
