@@ -141,7 +141,6 @@ class change_password_user(osv.TransientModel):
 
     def _security_password(self, login, old_passwd, new_passwd, stored_passwd, min_len=8, max_ss_len=4):
             error_title = ""
-            import ipdb; ipdb.set_trace()
             if not self.confirm_password(old_passwd, stored_passwd):
                 raise osv.except_osv(_(error_title), _("Old password did not match"))
             if login == new_passwd:

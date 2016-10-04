@@ -25,7 +25,7 @@
     'version': '0.1',
     'depends': ['base', 'account', 'product', 'account_voucher', 'hr',
                 'base_vat', 'sale', 'account_check_writing', 'lct_finance',
-                'LCT_supplier_invoice', 'LCT_supplier_invoice'],
+                'LCT_supplier_invoice', 'LCT_supplier_invoice', 'lct_security'],
     'category' : 'Tools',
     'summary': 'LCT TOS integration',
     'description': """
