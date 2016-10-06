@@ -5,7 +5,14 @@
 
 
         <record id="account.action_account_invoice_confirm" model="ir.actions.act_window">
-            <field name="groups_id" eval="[(6, 0, [ref('lct_tos_integration.group_all_access_tos')])]"/>
+            <field name="groups_id" eval="[(6, 0, [
+                ref('group_all_access_tos'),
+                ref('group_invoice_clerk'),
+                ref('group_chief_accountant'),
+                ref('group_billing_responsible'),
+                ref('group_ap_accountant'),
+                ref('group_assistant_accountant'),
+                ])]"/>
         </record>
 
         <!-- Customer Invoices -->
@@ -16,20 +23,20 @@
             <field name="priority" eval="100"/>
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='invoice_open' and @states='draft']" position="attributes">
-                    <attribute name="groups">lct_tos_integration.group_all_access_tos</attribute>
+                    <attribute name="groups">lct_tos_integration.group_all_access_tos,lct_tos_integration.group_invoice_clerk,lct_tos_integration.group_chief_accountant,lct_tos_integration.group_billing_responsible,lct_tos_integration.group_ap_accountant,lct_tos_integration.group_assistant_accountant</attribute>
                 </xpath>
                 <xpath expr="//button[@name='invoice_open' and @states='proforma2']" position="attributes">
-                    <attribute name="groups">lct_tos_integration.group_all_access_tos</attribute>
+                    <attribute name="groups">lct_tos_integration.group_all_access_tos,lct_tos_integration.group_invoice_clerk,lct_tos_integration.group_chief_accountant,lct_tos_integration.group_billing_responsible,lct_tos_integration.group_ap_accountant,lct_tos_integration.group_assistant_accountant</attribute>
                 </xpath>
                 <xpath expr="//button[@name='invoice_open' and @states='proforma2']" position="after">
-                    <button name="invoice_open_bypass" type="object" states="draft" string="Validate" class="oe_highlight" groups="lct_tos_integration.group_invoice_validate_tos"/>
-                    <button name="invoice_open_bypass" type="object" states="proforma2" string="Validate" groups="lct_tos_integration.group_invoice_validate_tos"/>
+                    <button name="invoice_open_bypass" type="object" states="draft" string="Validate" class="oe_highlight" groups="lct_tos_integration.group_all_access_tos,lct_tos_integration.group_invoice_clerk,lct_tos_integration.group_chief_accountant,lct_tos_integration.group_billing_responsible,lct_tos_integration.group_ap_accountant,lct_tos_integration.group_assistant_accountant"/>
+                    <button name="invoice_open_bypass" type="object" states="proforma2" string="Validate" groups="lct_tos_integration.group_all_access_tos,lct_tos_integration.group_invoice_clerk,lct_tos_integration.group_chief_accountant,lct_tos_integration.group_billing_responsible,lct_tos_integration.group_ap_accountant,lct_tos_integration.group_assistant_accountant"/>
                 </xpath>
                 <xpath expr="//button[@name='invoice_cancel']" position="attributes">
-                    <attribute name="groups">lct_tos_integration.group_all_access_tos</attribute>
+                    <attribute name="groups">lct_tos_integration.group_all_access_tos,lct_tos_integration.group_invoice_clerk,lct_tos_integration.group_chief_accountant,lct_tos_integration.group_billing_responsible,lct_tos_integration.group_ap_accountant,lct_tos_integration.group_assistant_accountant</attribute>
                 </xpath>
                 <xpath expr="//button[@string='Refund Invoice']" position="attributes">
-                    <attribute name="groups">lct_tos_integration.group_all_access_tos</attribute>
+                    <attribute name="groups">lct_tos_integration.group_all_access_tos,lct_tos_integration.group_invoice_clerk,lct_tos_integration.group_chief_accountant,lct_tos_integration.group_billing_responsible</attribute>
                 </xpath>
                 <field name="partner_id" position="before">
                     <field name="generic_customer" invisible="1"/>
@@ -462,7 +469,7 @@
             <field name="inherit_id" ref="account_voucher.view_vendor_receipt_dialog_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//footer//button[@name='button_proforma_voucher']" position="before">
-                    <button name="button_proforma_voucher_bypass" string="Pay" class="oe_highlight" type="object" groups="lct_tos_integration.group_cashier_tos,lct_tos_integration.group_all_access_tos"/>
+                    <button name="button_proforma_voucher_bypass" string="Pay" class="oe_highlight" type="object" groups="lct_tos_integration.group_cashier_tos,lct_tos_integration.group_all_access_tos,lct_tos_integration.group_chasier_revenue,lct_tos_integration.group_cashier_expense"/>
                 </xpath>
                 <xpath expr="//footer//button[@name='button_proforma_voucher']" position="attributes">
                     <attribute name="invisible">1</attribute>
