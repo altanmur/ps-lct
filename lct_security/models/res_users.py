@@ -34,6 +34,10 @@ class res_users(osv.osv):
         "last_changed": fields.datetime(),
     }
 
+    _default = {
+        "failed_conn": 0,
+    }
+
     def write(self, cr, uid, ids, vals, context=None):
         if "password" in vals:
             vals.update({
