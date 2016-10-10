@@ -38,6 +38,12 @@
         'security/res.groups.csv',
         'security/ir.model.access.csv',
         'security/ir.rule.csv',
+
+        'security_new/ir.module.category.csv',
+        'security_new/res.groups.csv',
+        'security_new/ir.model.access.csv',
+        'security_new/ir_values.xml',
+
         'views/account.xml',
         'views/ftp_config.xml',
         'views/product.xml',
@@ -64,11 +70,6 @@
         'views/direction.xml',
         'data/direction.xml',
         'views/account_invoice.xml',
-
-        'security_new/ir.module.category.csv',
-        'security_new/res.groups.csv',
-        'security_new/ir.model.access.csv',
-        'security_new/ir_values.xml',
         ],
     'images': [],
     'demo': [],
