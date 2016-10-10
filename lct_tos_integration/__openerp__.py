@@ -40,7 +40,7 @@
         'security/ir.rule.csv',
 
         'security_new/ir.module.category.csv',
-        'security_new/res.groups.csv',
+        'predata/res.groups.csv',
         'security_new/ir.model.access.csv',
         'security_new/ir_values.xml',
 
@@ -70,6 +70,8 @@
         'views/direction.xml',
         'data/direction.xml',
         'views/account_invoice.xml',
+
+        'security_new/res.groups.csv',
         ],
     'images': [],
     'demo': [],
