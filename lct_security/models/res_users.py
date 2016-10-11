@@ -54,7 +54,7 @@ class res_users(osv.osv):
         if cr.rowcount:
             failed_conn = cr.fetchone()[0]
             if not res:
-                failed_conn = failed_conn + 1
+                failed_conn = (failed_conn or 0) + 1
             elif failed_conn <= 5:
                 failed_conn = 0
             cr.execute("UPDATE res_users SET failed_conn = %s WHERE login = %s", [failed_conn, login])
