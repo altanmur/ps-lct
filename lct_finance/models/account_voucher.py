@@ -32,6 +32,8 @@ class account_voucher(osv.osv):
         'pos2_id': fields.many2one('auth_signature_position', 'Position 2'),
         'signee1_id': fields.many2one('res.partner', 'Signee 1'),
         'signee2_id': fields.many2one('res.partner', 'Signee 2'),
+        # For the invoice report (fiche d'imputation)
+        'create_date': fields.datetime('Creation Date' , readonly=True),
     }
 
     # account.voucher => account.voucher.line => account.move.line => invoice
