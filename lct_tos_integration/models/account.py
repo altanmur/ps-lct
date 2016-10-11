@@ -1270,7 +1270,10 @@ class account_invoice(osv.osv):
 
                 oog = self._get_elmnt_text(line, 'oog')
                 if oog == "YES":
-                    oog_qty += 1
+                    properties.update({
+                        'type_id': imd_model.get_record_id(cr, uid, module, 'lct_product_type_oog')
+                        })
+                    # oog_qty += 1
 
                 product_ids = product_model.get_products_by_properties(cr, uid, dict(properties), line.sourceline, context=context)
                 if not all(product_ids):

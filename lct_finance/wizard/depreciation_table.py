@@ -180,7 +180,7 @@ class depreciation_table(osv.osv_memory):
                 transfer_jan1 = sum([mv.debit - mv.credit for mv in move_jan1 if mv.get_asset_move_type() in ("transfer", "scrap")])
 
                 value_report_date = asset.value_residual + dep_report_date - aquitition_report_date - transfer_report_date
-                value_jan1 = value_report_date + dep_jan1 - aquitition_jan1 - transfer_jan1
+                value_jan1 = value_report_date + dep_jan1 - aquitition_jan1 - transfer_jan1 + deps[0]
 
                 res[category].update({asset: [value_jan1, aquitition_jan1, transfer_jan1, value_report_date, deps]})
             return res

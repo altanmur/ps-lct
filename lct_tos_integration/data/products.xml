@@ -2114,5 +2114,443 @@
       <field name="status_id" ref="lct_product_status_empty"/>
       <field name="type_id" ref="lct_product_type_imo"/>
     </record>
+
+
+
+
+<!-- OOG -->
+    <record id="import_storage_localimport_20_oog" model="product.product">
+      <field name="name">Import Storage Local import 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="import_storage_localimport_40_oog" model="product.product">
+      <field name="name">Import Storage Local import 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="import_storage_transitsahel_20_oog" model="product.product">
+      <field name="name">Import Storage Transit Sahel 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="import_storage_transitsahel_40_oog" model="product.product">
+      <field name="name">Import Storage Transit Sahel 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="import_storage_transitcoastal_20_oog" model="product.product">
+      <field name="name">Import Storage Transit coastal 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="import_storage_transitcoastal_40_oog" model="product.product">
+      <field name="name">Import Storage Transit coastal 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="import_storage_freezone_20_oog" model="product.product">
+      <field name="name">Import Storage Free zone 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="import_storage_freezone_40_oog" model="product.product">
+      <field name="name">Import Storage Free zone 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+
+    <record id="import_stevedoringcharges_transitsahel_20_oog" model="product.product">
+      <field name="name">Import Stevedoring charges Transit Sahel 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="import_stevedoringcharges_transitsahel_40_oog" model="product.product">
+      <field name="name">Import Stevedoring charges Transit Sahel 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="import_stevedoringcharges_transitcoastal_20_oog" model="product.product">
+      <field name="name">Import Stevedoring charges Transit coastal 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="import_stevedoringcharges_transitcoastal_40_oog" model="product.product">
+      <field name="name">Import Stevedoring charges Transit coastal 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="import_stevedoringcharges_freezone_20_oog" model="product.product">
+      <field name="name">Import Stevedoring charges Free zone 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="import_stevedoringcharges_freezone_40_oog" model="product.product">
+      <field name="name">Import Stevedoring charges Free zone 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="export_stevedoringcharges_transitsahel_20_oog" model="product.product">
+      <field name="name">Export Stevedoring charges Transit Sahel 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="export_stevedoringcharges_transitsahel_40_oog" model="product.product">
+      <field name="name">Export Stevedoring charges Transit Sahel 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="export_stevedoringcharges_transitcoastal_20_oog" model="product.product">
+      <field name="name">Export Stevedoring charges Transit coastal 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="export_stevedoringcharges_transitcoastal_40_oog" model="product.product">
+      <field name="name">Export Stevedoring charges Transit coastal 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="export_stevedoringcharges_freezone_20_oog" model="product.product">
+      <field name="name">Export Stevedoring charges Free zone 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="export_stevedoringcharges_freezone_40_oog" model="product.product">
+      <field name="name">Export Stevedoring charges Free zone 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="import_discharge_20_full_oog" model="product.product">
+      <field name="name">Import Discharge 20 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="import_discharge_40_full_oog" model="product.product">
+      <field name="name">Import Discharge 40 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="export_load_20_full_oog" model="product.product">
+      <field name="name">Export Load 20 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="export_load_40_full_oog" model="product.product">
+      <field name="name">Export Load 40 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_load"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="transshipment_discharge_20_full_oog" model="product.product">
+      <field name="name">Transshipment Discharge 20 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="transshipment_discharge_40_full_oog" model="product.product">
+      <field name="name">Transshipment Discharge 40 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_discharge"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="transshipment_reload_40_full_oog" model="product.product">
+      <field name="name">Transshipment Reload 40 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_reload"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="export_storage_40_full_oog" model="product.product">
+      <field name="name">Export Storage 40 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_export"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="transshipment_storage_20_full_oog" model="product.product">
+      <field name="name">Transshipment Storage 20 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="transshipment_storage_40_full_oog" model="product.product">
+      <field name="name">Transshipment Storage 40 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_transshipment"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="stuffcharges_20_full_oog" model="product.product">
+      <field name="name">Stuff charges 20 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_stuffcharges"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="stuffcharges_40_full_oog" model="product.product">
+      <field name="name">Stuff charges 40 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_stuffcharges"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="stripcharges_20_full_oog" model="product.product">
+      <field name="name">Strip charges 20 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_stripcharges"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="stripcharges_40_full_oog" model="product.product">
+      <field name="name">Strip charges 40 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_stripcharges"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="renominations_20_full_oog" model="product.product">
+      <field name="name">Re-nominations 20 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_renominations"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="renominations_40_full_oog" model="product.product">
+      <field name="name">Re-nominations 40 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_renominations"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="amendmentcharges_20_full_oog" model="product.product">
+      <field name="name">Amendment charges 20 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_amendmentcharges"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="amendmentcharges_40_full_oog" model="product.product">
+      <field name="name">Amendment charges 40 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_amendmentcharges"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="inspection_20_full_oog" model="product.product">
+      <field name="name">Inspection 20 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_inspection"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="inspection_40_full_oog" model="product.product">
+      <field name="name">Inspection 40 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_inspection"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="services_pti_20_full_oog" model="product.product">
+      <field name="name">Services PTI 20 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_services"/>
+      <field name="service_id" ref="lct_product_service_pti"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="services_pti_40_full_oog" model="product.product">
+      <field name="name">Services PTI 40 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_services"/>
+      <field name="service_id" ref="lct_product_service_pti"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="services_washing_20_full_oog" model="product.product">
+      <field name="name">Services Washing 20 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_services"/>
+      <field name="service_id" ref="lct_product_service_washing"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="services_washing_40_full_oog" model="product.product">
+      <field name="name">Services Washing 40 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_services"/>
+      <field name="service_id" ref="lct_product_service_washing"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="sealnumber_20_full_oog" model="product.product">
+      <field name="name">Seal number 20 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_sealnumber"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="sealnumber_40_full_oog" model="product.product">
+      <field name="name">Seal number 40 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_sealnumber"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="seal_20_full_oog" model="product.product">
+      <field name="name">Seal   20 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_seal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="seal_40_full_oog" model="product.product">
+      <field name="name">Seal   40 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_seal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="placards_20_full_oog" model="product.product">
+      <field name="name">Placards 20 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_placards"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="placards_40_full_oog" model="product.product">
+      <field name="name">Placards 40 Full OOG</field>
+      <field name="category_id" ref="lct_product_category_placards"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_transitsahel_20_oog" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges Transit Sahel 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_transitsahel_40_oog" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges Transit Sahel 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_transitcoastal_20_oog" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges Transit coastal 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_transitcoastal_40_oog" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges Transit coastal 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_freezone_20_oog" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges Free zone 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+    <record id="export_e_r_stevedoringcharges_freezone_40_oog" model="product.product">
+      <field name="name">Export Empty Release Stevedoring charges Free zone 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_export_e_r"/>
+      <field name="service_id" ref="lct_product_service_stevedoringcharges"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
   </data>
 </openerp>
