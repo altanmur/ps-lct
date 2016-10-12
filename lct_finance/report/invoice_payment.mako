@@ -20,24 +20,24 @@
         <div>
             <table>
                 <tr>
-                    <th>DATE : </th>
+                    <th>DATE: </th>
                     <td class="data">
                         %if voucher.create_date:
                             ${formatLang(voucher.create_date, date=True)}
                         %endif
                     </td>
                     <td rowspan="4" style="width:20em;"></td>
-                    <th >N° PIECE : </th>
+                    <th >N° PIECE: </th>
                     <td class="data">${voucher.number}</td>
                 </tr>
                 <tr>
                     <td ></td>
                     <td></td>
-                    <th>CODE CONTRAT : </th>
+                    <th>CODE CONTRAT: </th>
                     <td class="data"></td>
                 </tr>
                 <tr>
-                    <th>EXERCICE : </th>
+                    <th>EXERCICE: </th>
                     <td class="data">
                         %if voucher.move_id:
                             %if voucher.move_id.period_id:
@@ -47,7 +47,7 @@
                             %endif
                         %endif
                     </td>
-                    <th>JOURNAL : </th>
+                    <th>JOURNAL: </th>
                     <td class="boxed data">
                         %if voucher.journal_id:
                             ${voucher.journal_id.code}
@@ -57,19 +57,9 @@
                 <tr>
                     <td></td>
                     <td></td>
-                    <th style="text-decoration:underline;">MONTANT ${voucher.currency_id.name} : </th>
+                    <th style="text-decoration:underline;">MONTANT ${voucher.currency_id.name}: </th>
                     <td class="boxed data">${voucher.amount}</td>
                 </tr>
-<!--                 <tr>
-                    <td colspan="5" class="boxed" height="50" style="vertical-align:top;line-height:2;">
-                        LIBELLE :
-                        %for line in voucher.move_ids:
-                            %if line.name:
-                                ${line.name}<br/>
-                            %endif
-                        %endfor
-                    </td>
-                </tr> -->
             </table>
         </div>
 
@@ -87,71 +77,21 @@
                 </tr>
                 %for move in voucher.move_ids:
                     <tr>
+                        <td>${move.account_id.code}</td>
                         <td>
-                            %if line.account_id:
-                                ${line.account_id.code}
+                            %if move.partner_id:
+                                ${move.partner_id.name}
                             %endif
                         </td>
-                        <td></td>
-                        <td>${line.account_id.name}</td>
-                        %if voucher.type in ['out_voucher', 'in_refund']:
-                            <td></td>
-                            <td>${line.price_subtotal}</td>
-                        %endif
-                        %if voucher.type in ['in_voucher', 'out_refund']:
-                            <td>${line.price_subtotal}</td>
-                            <td></td>
-                        %endif
+                        <td>${move.account_id.name}</td>
+                        <td>${move.debit}</td>
+                        <td>${move.credit}</td>
                     </tr>
                 %endfor
-                %for tax_line in voucher.tax_line:
-                    <tr>
-                        <td>
-                            %if tax_line.account_id:
-                                ${tax_line.account_id.code}
-                            %endif
-                        </td>
-                        <td></td>
-                        <td>${tax_line.name}</td>
-                        %if voucher.type in ['out_voucher', 'in_refund']:
-                            <td></td>
-                            <td>${tax_line.amount}</td>
-                        %endif
-                        %if voucher.type in ['in_voucher', 'out_refund']:
-                            <td>${tax_line.amount}</td>
-                            <td></td>
-                        %endif
-                    </tr>
-                %endfor
-                <tr>
-                    <td>
-                        %if voucher.account_id:
-                            ${voucher.account_id.code}
-                        %endif
-                    </td>
-                    <td>
-                            %if voucher.partner_id:
-                                ${voucher.partner_id.name}
-                            %endif
-                    </td>
-                    <td>
-                        %if voucher.account_id:
-                            ${voucher.account_id.name}
-                        %endif
-                    </td>
-                    %if voucher.type in ['out_voucher', 'in_refund']:
-                        <td>${voucher.amount_total}</td>
-                        <td></td>
-                    %endif
-                    %if voucher.type in ['in_voucher', 'out_refund']:
-                        <td></td>
-                        <td>${voucher.amount_total}</td>
-                    %endif
-                </tr>
                 <tr>
                     <td colspan="3">TOTAUX</td>
-                    <td>${voucher.amount_total}</td>
-                    <td>${voucher.amount_total}</td>
+                    <td>${sum([move.debit for move in voucher.move_ids])}</td>
+                    <td>${sum([move.credit for move in voucher.move_ids])}</td>
                 </tr>
             </table>
         </div>
