@@ -126,6 +126,12 @@
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">Expiry Date :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ o.expiry_date ]]</para></td>
+                        </tr><tr>[[ o.type2 == 'appointment' or removeParentNode('tr') ]]]
+                            <td><para style="terp_5f_default_5f_8">Berthing Time :</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ formatLang(o.berth_time, date_time=True) ]]</para></td>
+                        </tr><tr>[[ o.type2 == 'appointment' or removeParentNode('tr') ]]]
+                            <td><para style="terp_5f_default_5f_8">Paythrough Date :</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ formatLang(o.pay_through_date, date_time=True) ]]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and "Numéro d'appel :" or '']]</para></td>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and o.call_sign_vbl or '']]</para></td>
