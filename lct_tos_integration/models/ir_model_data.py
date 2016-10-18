@@ -24,6 +24,39 @@ from openerp.osv import osv
 class ir_model_data(osv.osv):
     _inherit = 'ir.model.data'
 
+    def __init__(self, pool, cr):
+        super(ir_model_data, self).__init__(pool, cr)
+        cr.execute("SELECT id FROM res_groups WHERE name = 'Cashier (for all access inherit)'")
+        groups = cr.fetchall()
+        cr.execute("SELECT id FROM ir_model_data WHERE name = 'cashier_group' AND module = 'lct_tos_integration'")
+        ir_model_datas = cr.fetchall()
+        if groups and not ir_model_datas:
+            group_id = groups[0][0]
+            cr.execute("""
+                INSERT INTO ir_model_data (
+                    create_uid,
+                    create_date,
+                    write_uid,
+                    write_date,
+                    noupdate,
+                    name,
+                    module,
+                    model,
+                    res_id)
+                VALUES (
+                    1,
+                    now(),
+                    1,
+                    now(),
+                    true,
+                    'cashier_group',
+                    'lct_tos_integration',
+                    'res.groups',
+                    %s
+                    )
+                """ %group_id)
+
+
     def get_record_id(self, cr, uid, module, xml_id, context=None):
         model_data_id = self._get_id(cr, uid, module, xml_id)
         model_data = self.browse(cr, uid, model_data_id, context=context)
