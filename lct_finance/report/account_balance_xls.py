@@ -101,6 +101,12 @@ class account_balance_xls(report_xls):
         self.acc_cell_style_center = xlwt.easyxf(acc_cell_format + _xs['center'])
         self.acc_cell_style_date = xlwt.easyxf(acc_cell_format + _xs['left'], num_format_str=report_xls.date_format)
         self.acc_cell_style_decimal = xlwt.easyxf(acc_cell_format + _xs['right'], num_format_str=report_xls.decimal_format)
+        # lines bold
+        acc_cell_format_bold = _xs['borders_all'] + _xs['bold']
+        self.acc_cell_style_bold = xlwt.easyxf(acc_cell_format_bold)
+        self.acc_cell_style_bold_center = xlwt.easyxf(acc_cell_format_bold + _xs['center'])
+        self.acc_cell_style_bold_date = xlwt.easyxf(acc_cell_format_bold + _xs['left'], num_format_str=report_xls.date_format)
+        self.acc_cell_style_bold_decimal = xlwt.easyxf(acc_cell_format_bold + _xs['right'], num_format_str=report_xls.decimal_format)
         # totals
         rt_cell_format = _xs['bold'] + _xs['fill'] + _xs['borders_all']
         self.rt_cell_style = xlwt.easyxf(rt_cell_format)
@@ -235,7 +241,7 @@ class account_balance_xls(report_xls):
             credit_cell = rowcol_to_cell(row_pos, credit_pos)
             c_specs = map(lambda x: self.render(x, self.col_specs_lines_template, 'lines'), wanted_list)
             row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
-            row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=self.acc_cell_style)
+            row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=(self.acc_cell_style_bold if l.get('account_note') == 'IFRS' else self.acc_cell_style))
             if 'draw_line' in l and l['draw_line'] and cnt != acc_cnt:
                 row_pos += 1
 
