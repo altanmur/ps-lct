@@ -99,6 +99,14 @@ class account_invoice_line(osv.osv):
 
         return res
 
+    def _type2(self, cr, uid, ids, fields, arg, context=None):
+        res = {}
+        for line in self.browse(cr, uid, ids, context=context):
+            res.update({
+                line.id: line.invoice_id.type2 or None,
+            })
+        return res
+
     _columns = {
         'cont_nr_ids': fields.one2many('lct.container.number', 'invoice_line_id', 'Containers'),
         'book_nr': fields.char('Booking number'),
@@ -114,6 +122,12 @@ class account_invoice_line(osv.osv):
         'group_id': fields.many2one("account.invoice.line.group"),
         'slab_desc': fields.char("Slab"),
         'price_subtotal': fields.function(_amount_line, string='Amount', type="float", digits_compute= dp.get_precision('Account'), store=True),
+        'type2': fields.function(_type2, type='selection', selection=[
+            ('vessel','Vessel Billing'),
+            ('appointment','Appointment'),
+            ('dockage', 'Vessel Dockage'),
+            ('yactivity', 'Yard Activity'),
+            ], string="Invoice Type", store=True),
     }
 
 
