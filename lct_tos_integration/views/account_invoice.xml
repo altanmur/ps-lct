@@ -9,6 +9,19 @@
             <field name="domain">[('parent_type','=','out_invoice')]</field>
         </record>
 
+        <record id="view_invoice_customer_line_filter" model="ir.ui.view">
+            <field name="name">Customer Invoice Line search</field>
+            <field name="model">account.invoice.line</field>
+            <field name="arch" type="xml">
+                <search string="Search Invoice Line">
+                    <group expand="0" string="Group By...">
+                        <filter string="Type" domain="[]" context="{'group_by':'type2'}"/>
+                        <filter string="Invoice" domain="[]" context="{'group_by':'invoice_id'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+
         <menuitem action="account.action_invoice_tree1" id="account.menu_action_invoice_tree1" parent="account.menu_finance_receivables" sequence="8"/>
         <menuitem action="action_invoice_customer_line" id="menu_action_invoice_customer_line" parent="account.menu_finance_receivables" sequence="8"/>
     </data>
