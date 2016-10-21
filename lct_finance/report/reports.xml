@@ -11,6 +11,18 @@
             report_type="webkit"
             webkit_header="lct_finance.ir_header_webkit_invoice"
             header="False"/>
+
+        <report
+            auto="False"
+            id="report_invoice_payment"
+            model="account.voucher"
+            name="account.invoice.payment"
+            file="lct_finance/report/invoice_payment.mako"
+            string="Invoice Payment File"
+            report_type="webkit"
+            webkit_header="lct_finance.ir_header_webkit_invoice"
+            header="False"/>
+
         <report id="lct_finance.report_wire_transfer_webkit"
             name="webkit.wire_transfer_report"
             auto="False"

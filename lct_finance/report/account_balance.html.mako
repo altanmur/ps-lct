@@ -50,7 +50,7 @@
                 <th>Crédit</th>
             </tr>
             %for line in context.get('lines'):
-            %if line.get('type') == 'view':
+            %if line.get('type') == 'view' or line.get('account_note') == 'IFRS':
             <tr class="acc_type_view">
             %else:
             <tr>

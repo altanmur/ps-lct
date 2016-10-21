@@ -114,6 +114,7 @@ class account_balance_report(report_sxw.rml_parse):
                     'prev_balance': account_rec['prev_balance'],
                     'parent_id': account_rec['parent_id'],
                     'bal_type': '',
+                    'account_note': acc_id.note,
                 }
                 self.sum_debit += account_rec['debit']
                 self.sum_credit += account_rec['credit']
