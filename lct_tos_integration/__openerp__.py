@@ -33,14 +33,16 @@
     """,
     'data': [
         'views/settings_menu.xml',
+
+        'security_new/ir.module.category.csv',
+        'predata/res.groups.csv',
+
         'security/group_category.xml',
         'security/ir.module.category.csv',
         'security/res.groups.csv',
         'security/ir.model.access.csv',
         'security/ir.rule.csv',
 
-        'security_new/ir.module.category.csv',
-        'predata/res.groups.csv',
         'security_new/ir.model.access.csv',
         'security_new/ir_values.xml',
 

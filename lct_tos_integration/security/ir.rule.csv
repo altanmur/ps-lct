@@ -1,2 +1,3 @@
 id,active,perm_create,perm_unlink,perm_read,perm_write,domain_force,groups/id,name,model_id/id
 cashier_cash_journal_rule,True,True,True,True,True,"[('type', 'in', ['cash', 'sale'])]",lct_tos_integration.group_cashier_tos,Cashier cash journal,account.model_account_journal
+chief_accountant_customer_invoice_rule,1,1,1,0,1,"[('type', 'in', ['in_invoice', 'in_refund'])]",lct_tos_integration.group_chief_accountant,Chief Account Customer Invoice,account.model_account_invoice
