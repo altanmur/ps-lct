@@ -21,7 +21,6 @@
 
 from openerp.osv import fields, orm, osv
 
-
 class account_move(orm.Model):
     _inherit = 'account.move'
 
@@ -35,12 +34,17 @@ class account_move_line(osv.osv):
     _inherit = "account.move.line"
 
     _columns = {
-        'name': fields.char('Name', required=True),
+        'name': fields.char('sdgfdsf', required=True),
         }
 
     def _check_no_view(self, cr, uid, ids, context=None):
         # No super because it is not adaptable.
+        lines = self.browse(cr, uid, ids, context=context)
         for l in lines:
             if l.account_id.type in ('view'):
                 return False
         return True
+
+    _constraints = [
+        (_check_no_view, 'You cannot create journal items on an account of type view or consolidation.', ['account_id']),
+    ]
