@@ -35,10 +35,19 @@ class account_invoice(orm.Model):
     def _get_report_title(self, cr, uid, ids, name, arg, context=None):
         return {invoice.id: invoice.type for invoice in self.browse(cr, uid, ids, context=context)}
 
-    def _get_report_title_value(self, cr, uid, ids, context=None):
+    def _get_report_title_value(self, cr, uid, ids, lang, context=None):
         titles = {k:v for k,v in REPORT_TITLE}
         invoice = self.browse(cr, uid, ids[0], context=context)
-        return titles.get(invoice.report_title if invoice else None, '')
+        src = titles.get(invoice.report_title if invoice else None, '')
+        name = 'account.invoice,report_title'
+        translation_id = self.pool.get('ir.translation').search(cr, uid, [
+            ('src', '=', src),
+            ('lang', '=', lang),
+            ('name', '=', name)
+            ], context=context, limit=1)
+        if translation_id:
+            return self.pool.get('ir.translation').browse(cr, uid, translation_id[0], context=context).value
+        return src
 
     _columns = {
         'bank': fields.char('Bank', size=64),
