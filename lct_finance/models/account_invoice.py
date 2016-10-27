@@ -22,11 +22,23 @@
 from openerp.osv import fields, orm, osv
 from openerp.tools.translate import _
 
+REPORT_TITLE = [
+    ('out_invoice','Invoice'),
+    ('in_invoice','Invoice'),
+    ('out_refund','Credit Note'),
+    ('in_refund','Debit Note'),
+    ]
+
 class account_invoice(orm.Model):
     _inherit = 'account.invoice'
 
     def _get_report_title(self, cr, uid, ids, name, arg, context=None):
         return {invoice.id: invoice.type for invoice in self.browse(cr, uid, ids, context=context)}
+
+    def _get_report_title_value(self, cr, uid, ids, context=None):
+        titles = {k:v for k,v in REPORT_TITLE}
+        invoice = self.browse(cr, uid, ids[0], context=context)
+        return titles.get(invoice.report_title if invoice else None, '')
 
     _columns = {
         'bank': fields.char('Bank', size=64),
@@ -40,12 +52,7 @@ class account_invoice(orm.Model):
         'reference' : fields.text('Reference'),
         # For the invoice report (fiche d'imputation)
         'create_date': fields.datetime('Creation Date' , readonly=True),
-        'report_title': fields.function(_get_report_title, type='selection', selection=[
-            ('out_invoice','Invoice'),
-            ('in_invoice','Invoice'),
-            ('out_refund','Credit Note'),
-            ('in_refund','Debit Note'),
-            ], string='Report Title', store=True),
+        'report_title': fields.function(_get_report_title, type='selection', selection=REPORT_TITLE, string='Report Title', store=True),
     }
 
     def action_move_create(self, cr, uid, ids, context=None):
