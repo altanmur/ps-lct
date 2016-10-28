@@ -34,7 +34,7 @@ class account_move_line(osv.osv):
     _inherit = "account.move.line"
 
     _columns = {
-        'name': fields.char('sdgfdsf', required=True),
+        'name': fields.char('Name', required=True),
         }
 
     def _check_no_view(self, cr, uid, ids, context=None):
