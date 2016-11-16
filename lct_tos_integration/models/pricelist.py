@@ -138,6 +138,8 @@ class product_pricelist(osv.Model):
                 ])
             if not parent_item:
                 return
+            if parent_item[0] == item.id:
+                return
             return item_obj.browse(cr, uid, parent_item[0], context=context)
 
         def _get_parent_periods_by_discountcoef_by_surcharge(item, qty, child_periods):
@@ -309,7 +311,17 @@ class product_pricelist(osv.Model):
                                 for key in ['price_discount_rate1', 'price_surcharge_rate1', 'price_discount_rate2', 'price_surcharge_rate2', 'price_discount_rate3', 'price_surcharge_rate3']:
                                     res[key] = res[key] or 0.0
 
-                                periods_by_discountcoef_by_surcharge = _get_periods_by_discountcoef_by_surcharge(res, qty)
+                                if res.get('base') == -1:
+                                    periods_by_discountcoef_by_surcharge = _get_periods_by_discountcoef_by_surcharge(res, qty)
+                                else:
+                                    periods_by_discountcoef_by_surcharge = [
+                                        (res['free_period'], 0.0, 0.0),
+                                        (res['first_slab_last_day'] - res['free_period'], 1.0 + res['price_discount_rate1'], res['price_surcharge_rate1']),
+                                        (res['second_slab_last_day'] - res['first_slab_last_day'], 1.0 + res['price_discount_rate2'], res['price_surcharge_rate2']),
+                                        (qty - res['second_slab_last_day'], 1.0 + res['price_discount_rate3'], res['price_surcharge_rate3']),
+                                    ]
+
+
                                 price = sum([(period*(coef*price + (period > 0 and surcharge or 0))) for period, coef, surcharge in periods_by_discountcoef_by_surcharge])/qty
                                 if res['price_round']:
                                     price = tools.float_round(price, precision_rounding=res['price_round'])

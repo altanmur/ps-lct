@@ -36,7 +36,7 @@ magic_md5 = '$1$'
 magic_sha256 = '$5$'
 
 from openerp.addons.base.res import res_users
-res_users.USER_PRIVATE_FIELDS.append('password_crypt')
+#res_users.USER_PRIVATE_FIELDS.append('password_crypt')
 
 def gen_salt(length=8, symbols=None):
     if symbols is None:
