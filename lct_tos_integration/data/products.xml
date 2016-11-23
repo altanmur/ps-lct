@@ -1195,15 +1195,14 @@
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
     </record>
-    <!--record id="transshipment_storage_40_full_reeferdg" model="product.product">
+    <record id="transshipment_storage_40_full_reeferdg" model="product.product">
       <field name="name">Transshipment Storage 40 Full Reefer/DG</field>
-      <field name="product_tmpl_id" ref="transshipment_storage_40_full_reeferdg_product_template"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="service_id" ref="lct_product_service_storage"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_reeferdg"/>
-    </record-->
+    </record>
     <record id="transshipment_storage_40_empty" model="product.product">
       <field name="name">Transshipment Storage 40 Empty</field>
       <field name="category_id" ref="lct_product_category_transshipment"/>
@@ -1212,7 +1211,7 @@
       <field name="status_id" ref="lct_product_status_empty"/>
     </record>
 
-    <!--record id="export_storage_20_full_gp_add_days" model="product.product">
+    <record id="export_storage_20_full_gp_add_days" model="product.product">
       <field name="product_tmpl_id" ref="export_storage_20_full_gp_product_template"/>
       <field name="additional_storage" eval="True"/>
       <field name="category_id" ref="lct_product_category_export"/>
@@ -1220,8 +1219,8 @@
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
-    </record-->
-    <!--record id="export_storage_20_full_reeferdg_add_days" model="product.product">
+    </record>
+    <record id="export_storage_20_full_reeferdg_add_days" model="product.product">
       <field name="product_tmpl_id" ref="export_storage_20_full_reeferdg_product_template"/>
       <field name="additional_storage" eval="True"/>
       <field name="category_id" ref="lct_product_category_export"/>
@@ -1229,16 +1228,16 @@
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_reeferdg"/>
-    </record-->
-    <!--record id="export_storage_20_empty_add_days" model="product.product">
+    </record>
+    <record id="export_storage_20_empty_add_days" model="product.product">
       <field name="product_tmpl_id" ref="export_storage_20_empty_product_template"/>
       <field name="additional_storage" eval="True"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="service_id" ref="lct_product_service_storage"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="status_id" ref="lct_product_status_empty"/>
-    </record-->
-    <!--record id="export_storage_40_full_gp_add_days" model="product.product">
+    </record>
+    <record id="export_storage_40_full_gp_add_days" model="product.product">
       <field name="product_tmpl_id" ref="export_storage_40_full_gp_product_template"/>
       <field name="additional_storage" eval="True"/>
       <field name="category_id" ref="lct_product_category_export"/>
@@ -1246,8 +1245,8 @@
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
-    </record-->
-    <!--record id="export_storage_40_full_reeferdg_add_days" model="product.product">
+    </record>
+    <record id="export_storage_40_full_reeferdg_add_days" model="product.product">
       <field name="product_tmpl_id" ref="export_storage_40_full_reeferdg_product_template"/>
       <field name="additional_storage" eval="True"/>
       <field name="category_id" ref="lct_product_category_export"/>
@@ -1255,16 +1254,16 @@
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_reeferdg"/>
-    </record-->
-    <!--record id="export_storage_40_empty_add_days" model="product.product">
+    </record>
+    <record id="export_storage_40_empty_add_days" model="product.product">
       <field name="product_tmpl_id" ref="export_storage_40_empty_product_template"/>
       <field name="additional_storage" eval="True"/>
       <field name="category_id" ref="lct_product_category_export"/>
       <field name="service_id" ref="lct_product_service_storage"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="status_id" ref="lct_product_status_empty"/>
-    </record-->
-    <!--record id="transshipment_storage_20_full_gp_add_days" model="product.product">
+    </record>
+    <record id="transshipment_storage_20_full_gp_add_days" model="product.product">
       <field name="product_tmpl_id" ref="transshipment_storage_20_full_gp_product_template"/>
       <field name="additional_storage" eval="True"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
@@ -1272,8 +1271,8 @@
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
-    </record-->
-    <!--record id="transshipment_storage_20_full_reeferdg_add_days" model="product.product">
+    </record>
+    <record id="transshipment_storage_20_full_reeferdg_add_days" model="product.product">
       <field name="product_tmpl_id" ref="transshipment_storage_20_full_reeferdg_product_template"/>
       <field name="additional_storage" eval="True"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
@@ -1281,16 +1280,16 @@
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_reeferdg"/>
-    </record-->
-    <!--record id="transshipment_storage_20_empty_add_days" model="product.product">
+    </record>
+    <record id="transshipment_storage_20_empty_add_days" model="product.product">
       <field name="product_tmpl_id" ref="transshipment_storage_20_empty_product_template"/>
       <field name="additional_storage" eval="True"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="service_id" ref="lct_product_service_storage"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="status_id" ref="lct_product_status_empty"/>
-    </record-->
-    <!--record id="transshipment_storage_40_full_gp_add_days" model="product.product">
+    </record>
+    <record id="transshipment_storage_40_full_gp_add_days" model="product.product">
       <field name="product_tmpl_id" ref="transshipment_storage_40_full_gp_product_template"/>
       <field name="additional_storage" eval="True"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
@@ -1298,10 +1297,9 @@
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_gp"/>
-    </record-->
+    </record>
     <record id="transshipment_storage_40_full_reeferdg_add_days" model="product.product">
-      <!--field name="product_tmpl_id" ref="transshipment_storage_40_full_reeferdg_product_template"/-->
-      <field name="name">Transshipment Storage 40 Full Reefer/DG</field>
+      <field name="product_tmpl_id" ref="transshipment_storage_40_full_reeferdg_product_template"/>
       <field name="additional_storage" eval="True"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="service_id" ref="lct_product_service_storage"/>
@@ -1309,14 +1307,14 @@
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_reeferdg"/>
     </record>
-    <!--record id="transshipment_storage_40_empty_add_days" model="product.product">
+    <record id="transshipment_storage_40_empty_add_days" model="product.product">
       <field name="product_tmpl_id" ref="transshipment_storage_40_empty_product_template"/>
       <field name="additional_storage" eval="True"/>
       <field name="category_id" ref="lct_product_category_transshipment"/>
       <field name="service_id" ref="lct_product_service_storage"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="status_id" ref="lct_product_status_empty"/>
-    </record-->
+    </record>
 
     <record id="transshipment_reeferelectricity_20" model="product.product">
       <field name="name">Transshipment Reefer electricity 20</field>
