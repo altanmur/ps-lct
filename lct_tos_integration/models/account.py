@@ -1257,6 +1257,7 @@ class account_invoice(osv.osv):
                 status = self._get_elmnt_text(line, 'container_status')
                 status_id = self._get_status(cr, uid, status)
 
+                origin_type_id = None
                 if status != 'E':
                     p_type = self._get_elmnt_text(line, 'container_type_id')
                     origin_type_id = self._get_vbl_type(cr, uid, p_type)
