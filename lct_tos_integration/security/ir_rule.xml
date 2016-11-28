@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+        <record id="hide_product_additional_storage" model="ir.rule">
+            <field name="name">Hide Products with Additional Storage</field>
+            <field name="domain_force">[('additional_storage', '=', False)]</field>
+            <field name="model_id" ref="product.model_product_product"/>
+        </record>
+    </data>
+</openerp>

@@ -42,6 +42,7 @@
         'security/res.groups.csv',
         'security/ir.model.access.csv',
         'security/ir.rule.csv',
+        'security/ir_rule.xml',
 
         'security_new/ir.model.access.csv',
         'security_new/ir_values.xml',
