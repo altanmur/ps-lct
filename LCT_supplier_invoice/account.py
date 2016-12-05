@@ -237,7 +237,12 @@ class account_export(osv.osv_memory):
                 invoice_reg.write(cr, uid, [inv.id], {'state': 'sent'}, context=context)
 
         # the export
-        fields = ['id', 'partner_id', 'currency_id', 'date_invoice', 'date_due', 'invoice_line/price_subtotal', 'invoice_line/invoice_line_tax_id', 'amount_total', 'internal_number', 'po_number']
+        fields = [
+            'id', 'partner_id', 'currency_id', 'date_invoice', 'date_due',
+            'invoice_line/price_subtotal', 'invoice_line/invoice_line_tax_id',
+            'amount_total', 'internal_number', 'po_number',
+            'supplier_invoice_number', 'amount_tax',
+            ]
         rows = invoice_reg.export_data(cr, uid, [inv.id for inv in invoice_ids], fields, context=context)
         fp = StringIO()
         writer = csv.writer(fp, quoting=csv.QUOTE_ALL, delimiter=';')
