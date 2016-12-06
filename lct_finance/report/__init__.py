@@ -28,3 +28,4 @@ import account_balance_xls
 import customer_payments
 import account_partner_balance
 import account_aged_partner_balance
+import account_tax_report
