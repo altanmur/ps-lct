@@ -157,3 +157,24 @@ class account_account(osv.osv):
         acc_ids = self.search(cr, uid, [('code', '=', code)], context=context)
         acc_ids = acc_ids or self.search(cr, uid, [('code', 'ilike', code)], context=context)
         return acc_ids and (len(acc_ids) == 1) and acc_ids[0] or False
+
+    def _check_allow_type_change(self, cr, uid, ids, new_type, context=None):
+        # No super because it is not adaptable.
+        restricted_groups = ['view']
+        line_obj = self.pool.get('account.move.line')
+        for account in self.browse(cr, uid, ids, context=context):
+            old_type = account.type
+            account_ids = self.search(cr, uid, [('id', 'child_of', [account.id])])
+            if line_obj.search(cr, uid, [('account_id', 'in', account_ids)]):
+                #Check for 'Closed' type
+                if old_type == 'closed' and new_type !='closed':
+                    raise osv.except_osv(_('Warning!'), _("You cannot change the type of account from 'Closed' to any other type as it contains journal items!"))
+                # Forbid to change an account type for restricted_groups as it contains journal items (or if one of its children does)
+                if (new_type in restricted_groups):
+                    raise osv.except_osv(_('Warning!'), _("You cannot change the type of account to '%s' type as it contains journal items!") % (new_type,))
+        return True
+
+    def _where_calc(self, cr, uid, domain, active_test=True, context=None):
+        res = super(account_account, self)._where_calc(cr, uid, domain, active_test=active_test, context=context)
+        res.where_clause_params = [r if r != 'consolidation' else 'notatype' for r in res.where_clause_params]
+        return res
