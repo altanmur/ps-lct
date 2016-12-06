@@ -22,6 +22,26 @@
 from openerp.osv import fields, osv
 from openerp.exceptions import Warning
 
+class account_range_account(osv.osv_memory):
+    _name = 'account.range.account'
+
+    _columns = {
+        'from_acc': fields.many2one('account.account', 'Account From', required=True),
+        'to_acc': fields.many2one('account.account', 'Account To', required=True),
+        'ledger_id': fields.many2one('account.report.general.ledger'),
+    }
+
+    def _get_account_in_range(self, cr, uid, ids, context=None):
+        context = context or {}
+        res = []
+        acc_obj = self.pool.get('account.account')
+
+        range_accs = self.browse(cr, uid, ids, context=context)
+        for range_acc in range_accs:
+            acc_ids = acc_obj.search(cr, uid, [('code', '>=', range_acc.from_acc.code),('code', '<=', range_acc.to_acc.code),], context=context)
+            res += acc_ids
+        return res
+
 class account_report_general_ledger(osv.osv_memory):
     _inherit = "account.report.general.ledger"
 
@@ -34,13 +54,40 @@ class account_report_general_ledger(osv.osv_memory):
             ('children', 'Children accounts only'),
             ],
             string='Accounts to be printed',
-            required=True)
+            required=True),
+        'range_account_ids': fields.one2many(
+            'account.range.account',
+            'ledger_id',
+            string='Account Ranges',
+            ),
     }
 
     _defaults = {
         'amount_currency': False,
         'accounts_to_print': 'all',
     }
+
+    def add_range(self, cr, uid, ids, context=None):
+        ledgers = self.browse(cr, uid, ids, context=context)
+        for ledger in ledgers:
+            to_add = []
+            for acc_range in ledger.range_account_ids:
+                for acc_id in acc_range._get_account_in_range():
+                    to_add += [(4, acc_id)]
+            ledger.write({
+                'account_ids': to_add,
+                })
+        ledger_form_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'account', 'account_report_general_ledger_view')[1]
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.report.general.ledger',
+            'res_id': ids[0],
+            'view_mode': 'form',
+            'view_type': 'form',
+            'view_id': ledger_form_id,
+            'target': 'new',
+            'context': context,
+        }
 
     def _print_report(self, cr, uid, ids, data, context=None):
         if context is None:

@@ -11,7 +11,16 @@
                 <page string="Journals" position="after">
                     <page string="Accounts">
                         <label for="filter_accounts"/><field name="filter_accounts"/>
-                        <field name="account_ids" attrs="{'invisible': [('filter_accounts', '=', False)], 'required': [('filter_accounts', '=', True)]}"/>
+                        <separator string="Accounts" attrs="{'invisible': [('filter_accounts', '=', False)]}"/>
+                        <field name="account_ids" attrs="{'invisible': [('filter_accounts', '=', False)]}"/>
+                        <separator string="Account Ranges" attrs="{'invisible': [('filter_accounts', '=', False)]}"/>
+                        <button name="add_range" type="object" string="Add Accounts" class="oe_highlight" attrs="{'invisible': [('filter_accounts', '=', False)]}"/>
+                        <field name="range_account_ids" attrs="{'invisible': [('filter_accounts', '=', False)]}">
+                            <tree editable="bottom">
+                                <field name="from_acc"/>
+                                <field name="to_acc"/>
+                            </tree>
+                        </field>
                     </page>
                 </page>
                 <xpath expr="//field[@name='filter']" position="before">
