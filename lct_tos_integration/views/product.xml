@@ -17,6 +17,24 @@
                     <field name="status_id" widget="selection"/>
                     <field name="type_id" widget="selection"/>
                 </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Related Products">
+                        <group>
+                            <group>
+                                <field name="top_id"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <separator string="Children"/>
+                        <field name="sub_ids">
+                            <tree>
+                                <field name="name"/>
+                                <field name="default_code"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
             </field>
         </record>
     </data>

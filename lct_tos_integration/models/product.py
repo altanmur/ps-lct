@@ -41,6 +41,8 @@ class product_product(osv.osv):
         'additional_storage': fields.boolean(string="Additional storage"),
         'active_reefer': fields.boolean(string="Active Reefer"),
         'hazardous_class': fields.boolean(string="Hazardous Class"),
+        'top_id': fields.many2one('product.product', 'Parent'),
+        'sub_ids': fields.one2many('product.product', 'top_id', 'Children'),
     }
 
     _defaults = {
@@ -52,7 +54,7 @@ class product_product(osv.osv):
         return product_id and product_id not in nonvalid_product_ids or False
 
     def _product_by_properties(self, cr, uid, properties, ids=None, context=None):
-        domain = []
+        domain = [('top_id', '=', False)]
         if 'category_id' in properties:
             domain.append(('category_id', '=', properties['category_id']))
             del properties['category_id']
@@ -115,7 +117,7 @@ class product_product(osv.osv):
         product_ids = []
         for service_id in service_ids:
             properties['service_id'] = service_id
-            product_id = self.search(cr, uid, [(prop, '=', prop_id) for prop, prop_id in properties.iteritems()])
+            product_id = self.search(cr, uid, [('top_id', '=', False)] + [(prop, '=', prop_id) for prop, prop_id in properties.iteritems()])
             if not product_id:
                 product_id = self._product_by_properties(cr, uid, properties, context=context)
                 product_id = product_id and [product_id] or False
@@ -129,7 +131,8 @@ class product_product(osv.osv):
 
             product_ids.append(product_id[0])
 
-        return product_ids
+        return [sub.id for product in self.browse(cr, uid, product_ids, context=context) for sub in (product.sub_ids if product.sub_ids else [product])]
+
 
 class lct_product_service(osv.osv):
     _name = 'lct.product.service'
