@@ -169,6 +169,9 @@
     <record id="lct_product_type_oog" model="lct.product.type">
       <field name="name">OOG</field>
     </record>
+    <record id="lct_product_type_dangerous_product" model="lct.product.type">
+      <field name="name">Dangerous Products</field>
+    </record>
 
 
     <!-- SIZE -->
