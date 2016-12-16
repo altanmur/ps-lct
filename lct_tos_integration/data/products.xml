@@ -2554,9 +2554,7 @@
     </record>
 
 
-<!----------------------------------->
-<!--------- 15 DEC 2016 ADD --------->
-<!----------------------------------->
+<!-- 15 DEC 2016 ADD -->
 
     <record model="product.product" id="15092016_import_shore_handling_local_import_20_reefer">
       <field name="name">Import Shore handling Local import 20 Reefer</field>
