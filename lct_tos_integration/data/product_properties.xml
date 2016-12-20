@@ -131,9 +131,6 @@
     <record id="lct_product_service_gearboxcount" model="lct.product.service">
       <field name="name">Gearbox Count</field>
     </record>
-    <record id="lct_product_service_oog" model="lct.product.service">
-      <field name="name">oog</field>
-    </record>
     <record id="lct_product_service_weighing" model="lct.product.service">
       <field name="name">Weighing</field>
     </record>
@@ -156,9 +153,6 @@
     </record>
     <record id="lct_product_type_gatedelivery" model="lct.product.type">
       <field name="name">Gate Delivery</field>
-    </record>
-    <record id="lct_product_type_cfs" model="lct.product.type">
-      <field name="name">CFS</field>
     </record>
     <record id="lct_product_type_gatereceive" model="lct.product.type">
       <field name="name">Gate Receive</field>
