@@ -166,6 +166,9 @@
     <record id="lct_product_type_dangerous_product" model="lct.product.type">
       <field name="name">Dangerous Products</field>
     </record>
+    <record id="lct_product_type_cfs" model="lct.product.type">
+      <field name="name">CFS</field>
+    </record>
 
 
     <!-- SIZE -->
