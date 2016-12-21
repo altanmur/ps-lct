@@ -2611,7 +2611,8 @@
     </record>
 
     <record model="product.product" id="15092016_import_shore_handling_transit_coastal_20_reefer_import">
-      <field name="name">Import Shore handling Transit coastal 20 Reefer Import</field>
+      <field name="name">Import Shore handling Transit coastal 20 Reefer</field>
+      <field name="category_id" ref="lct_product_category_import"/>
       <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
       <field name="service_id" ref="lct_product_service_shorehandling"/>
       <field name="size_id" ref="lct_product_size_20"/>
@@ -2619,7 +2620,8 @@
     </record>
 
     <record model="product.product" id="15092016_import_shore_handling_transit_coastal_40_reefer_import">
-      <field name="name">Import Shore handling Transit coastal 40 Reefer Import</field>
+      <field name="name">Import Shore handling Transit coastal 40 Reefer</field>
+      <field name="category_id" ref="lct_product_category_import"/>
       <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
       <field name="service_id" ref="lct_product_service_shorehandling"/>
       <field name="size_id" ref="lct_product_size_40"/>
@@ -2785,7 +2787,8 @@
     </record>
 
     <record model="product.product" id="15092016_import_shore_handling_transit_coastal_20_dp_import">
-      <field name="name">Import Shore handling Transit coastal 20 Dangerous Products Import</field>
+      <field name="name">Import Shore handling Transit coastal 20 Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_import"/>
       <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
       <field name="service_id" ref="lct_product_service_shorehandling"/>
       <field name="size_id" ref="lct_product_size_20"/>
@@ -2793,7 +2796,8 @@
     </record>
 
     <record model="product.product" id="15092016_import_shore_handling_transit_coastal_40_dp_import">
-      <field name="name">Import Shore handling Transit coastal 40 Dangerous Products Import</field>
+      <field name="name">Import Shore handling Transit coastal 40 Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_import"/>
       <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
       <field name="service_id" ref="lct_product_service_shorehandling"/>
       <field name="size_id" ref="lct_product_size_40"/>
@@ -2945,7 +2949,8 @@
     </record>
 
     <record model="product.product" id="15092016_import_wc_aw_transit_coastal_full_dp_import">
-      <field name="name">Import Weighing Charges (Axle Weighing) Transit coastal Full Dangerous Products Import</field>
+      <field name="name">Import Weighing Charges (Axle Weighing) Transit coastal Full Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_import"/>
       <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
       <field name="status_id" ref="lct_product_status_full"/>
       <field name="type_id" ref="lct_product_type_dangerous_product"/>
