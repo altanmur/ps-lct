@@ -716,13 +716,18 @@ class account_invoice(osv.osv):
 
     def _get_app_type_service_by_type(self, cr, uid, line):
         p_type = self._get_elmnt_text(line, 'container_type')
+        p_hc = self._get_elmnt_text(line, 'container_hazardous_class')
+
         if not p_type:
             return (False, False)
         if p_type in ['RE', 'RS', 'RT', 'TH', 'HR']:
             type_xml_id = 'lct_product_type_reeferdg'
             service_xml_id = 'lct_product_service_stevedoringcharges'
         elif p_type in ['BU', 'GP', 'UT', 'PC', 'PF', 'TA', 'TN']:
-            type_xml_id = 'lct_product_type_gp'
+            if p_hc == 'YES':
+                type_xml_id = 'lct_product_type_dangerous_product'
+            else:
+                type_xml_id = 'lct_product_type_gp'
             service_xml_id = 'lct_product_service_stevedoringcharges'
         else:
             raise osv.except_osv(('Error'), ('Unknown container_type: %s') % (p_type,))
@@ -956,10 +961,21 @@ class account_invoice(osv.osv):
         return self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', xml_id)
 
     def _get_shc_products(self, cr, uid, line, additional_storage, context=None):
+        imd_model = self.pool.get('ir.model.data')
+        module = 'lct_tos_integration'
         category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_specialhandlingcode')
         size_id = self._get_app_size(cr, uid, line)
 
+        sub_category_id = self._get_app_sub_category(cr, uid, line)
+        type_id, service_id = self._get_app_type_service_by_type(cr, uid, line)
+        if not sub_category_id:
+            sub_category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_sub_category_localimport')
+            type_id = False
+        type_id, service_id = self._get_app_type_service_by_type(cr, uid, line)
+
         properties = {
+            'type_id': type_id,
+            'sub_category_id': sub_category_id,
             'category_id': category_id,
             'size_id': size_id,
             'additional_storage': additional_storage,

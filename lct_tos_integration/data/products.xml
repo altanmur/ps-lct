@@ -1102,10 +1102,10 @@
       <field name="name">Bundle</field>
       <field name="service_id" ref="lct_product_service_bundle"/>
     </record>
-    <record id="oog" model="product.product">
+<!--     <record id="oog" model="product.product">
       <field name="name">oog</field>
       <field name="service_id" ref="lct_product_service_oog"/>
-    </record>
+    </record> -->
     <record id="export_storage_20_full_gp" model="product.product">
       <field name="name">Export Storage 20 Full GP</field>
       <field name="category_id" ref="lct_product_category_export"/>
@@ -2629,6 +2629,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_local_import_20_reefer">
       <field name="name">Special handling CFS Local import 20 Reefer</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="type_id" ref="lct_product_type_reeferdg"/>
@@ -2637,6 +2638,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_local_import_40_reefer">
       <field name="name">Special handling CFS Local import 40 Reefer</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="type_id" ref="lct_product_type_reeferdg"/>
@@ -2645,6 +2647,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_20_free_zone_reefer">
       <field name="name">Special handling CFS 20 Free zone Reefer</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="type_id" ref="lct_product_type_reeferdg"/>
@@ -2653,6 +2656,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_40_free_zone_reefer">
       <field name="name">Special handling CFS 40 Free zone Reefer</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="type_id" ref="lct_product_type_reeferdg"/>
@@ -2661,6 +2665,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_20_transit_sahel_reefer">
       <field name="name">Special handling CFS 20 Transit Sahel Reefer</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="type_id" ref="lct_product_type_reeferdg"/>
@@ -2669,6 +2674,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_transit_sahel_40_reefer">
       <field name="name">Special handling CFS Transit Sahel 40 Reefer</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="type_id" ref="lct_product_type_reeferdg"/>
@@ -2677,6 +2683,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_transit_coastal_20_reefer">
       <field name="name">Special handling CFS Transit coastal 20 Reefer</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="type_id" ref="lct_product_type_reeferdg"/>
@@ -2685,6 +2692,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_transit_coastal_40_reefer">
       <field name="name">Special handling CFS Transit coastal 40 Reefer</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="type_id" ref="lct_product_type_reeferdg"/>
@@ -2795,6 +2803,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_local_import_20_dp">
       <field name="name">Special handling CFS Local import 20 Dangerous Products</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="type_id" ref="lct_product_type_dangerous_product"/>
@@ -2803,6 +2812,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_local_import_40_dp">
       <field name="name">Special handling CFS Local import 40 Dangerous Products</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="type_id" ref="lct_product_type_dangerous_product"/>
@@ -2811,6 +2821,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_20_free_zone_dp">
       <field name="name">Special handling CFS 20 Free zone Dangerous Products</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="type_id" ref="lct_product_type_dangerous_product"/>
@@ -2819,6 +2830,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_40_free_zone_dp">
       <field name="name">Special handling CFS 40 Free zone Dangerous Products</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="type_id" ref="lct_product_type_dangerous_product"/>
@@ -2827,6 +2839,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_20_transit_sahel_dp">
       <field name="name">Special handling CFS 20 Transit Sahel Dangerous Products</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="type_id" ref="lct_product_type_dangerous_product"/>
@@ -2835,6 +2848,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_transit_sahel_40_dp">
       <field name="name">Special handling CFS Transit Sahel 40 Dangerous Products</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="type_id" ref="lct_product_type_dangerous_product"/>
@@ -2843,6 +2857,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_transit_coastal_20_dp">
       <field name="name">Special handling CFS Transit coastal 20 Dangerous Products</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="type_id" ref="lct_product_type_dangerous_product"/>
@@ -2851,6 +2866,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_transit_coastal_40_dp">
       <field name="name">Special handling CFS Transit coastal 40 Dangerous Products</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="type_id" ref="lct_product_type_dangerous_product"/>
@@ -3034,6 +3050,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_local_import_20_oog">
       <field name="name">Special handling CFS Local import 20 OOG</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="type_id" ref="lct_product_type_oog"/>
@@ -3042,6 +3059,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_local_import_40_oog">
       <field name="name">Special handling CFS Local import 40 OOG</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="type_id" ref="lct_product_type_oog"/>
@@ -3050,6 +3068,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_20_free_zone_oog">
       <field name="name">Special handling CFS 20 Free zone OOG</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="type_id" ref="lct_product_type_oog"/>
@@ -3058,6 +3077,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_40_free_zone_oog">
       <field name="name">Special handling CFS 40 Free zone OOG</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="type_id" ref="lct_product_type_oog"/>
@@ -3066,6 +3086,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_20_transit_sahel_oog">
       <field name="name">Special handling CFS 20 Transit Sahel OOG</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="type_id" ref="lct_product_type_oog"/>
@@ -3074,6 +3095,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_transit_sahel_40_oog">
       <field name="name">Special handling CFS Transit Sahel 40 OOG</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="type_id" ref="lct_product_type_oog"/>
@@ -3082,6 +3104,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_transit_coastal_20_oog">
       <field name="name">Special handling CFS Transit coastal 20 OOG</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_20"/>
       <field name="type_id" ref="lct_product_type_oog"/>
@@ -3090,6 +3113,7 @@
     <record model="product.product" id="15092016_special_handling_cfs_transit_coastal_40_oog">
       <field name="name">Special handling CFS Transit coastal 40 OOG</field>
       <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
       <field name="service_id" ref="lct_product_service_cfs"/>
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="type_id" ref="lct_product_type_oog"/>
@@ -3128,5 +3152,441 @@
     </record>
 
 
+
+
+<!-- STORAGE -->
+
+
+    <record model="product.product" id="15092016_import_storage_local_import_20_reefer">
+      <field name="name">Import Storage Local import 20 Reefer</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_local_import_40_reefer">
+      <field name="name">Import Storage Local import 40 Reefer</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_free_zone_20_reefer">
+      <field name="name">Import Storage Free zone 20 Reefer</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_free_zone_40_reefer">
+      <field name="name">Import Storage Free zone 40 Reefer</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_transit_sahel_20_reefer">
+      <field name="name">Import Storage Transit Sahel 20 Reefer</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_transit_sahel_40_reefer">
+      <field name="name">Import Storage Transit Sahel 40 Reefer</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_transit_coastal_20_reefer_import">
+      <field name="name">Import Storage Transit coastal 20 Reefer</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_transit_coastal_40_reefer_import">
+      <field name="name">Import Storage Transit coastal 40 Reefer</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_local_import_20_reefer">
+      <field name="name">Special handling Storage Local import 20 Reefer</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_local_import_40_reefer">
+      <field name="name">Special handling Storage Local import 40 Reefer</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_20_free_zone_reefer">
+      <field name="name">Special handling Storage 20 Free zone Reefer</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_40_free_zone_reefer">
+      <field name="name">Special handling Storage 40 Free zone Reefer</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_20_transit_sahel_reefer">
+      <field name="name">Special handling Storage 20 Transit Sahel Reefer</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_transit_sahel_40_reefer">
+      <field name="name">Special handling Storage Transit Sahel 40 Reefer</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_transit_coastal_20_reefer">
+      <field name="name">Special handling Storage Transit coastal 20 Reefer</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_transit_coastal_40_reefer">
+      <field name="name">Special handling Storage Transit coastal 40 Reefer</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_reeferdg"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_local_import_20_dp">
+      <field name="name">Import Storage Local import 20 Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_dangerous_product"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_local_import_40_dp">
+      <field name="name">Import Storage Local import 40 Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_dangerous_product"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_free_zone_20_dp">
+      <field name="name">Import Storage Free zone 20 Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_dangerous_product"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_free_zone_40_dp">
+      <field name="name">Import Storage Free zone 40 Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_dangerous_product"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_transit_sahel_20_dp">
+      <field name="name">Import Storage Transit Sahel 20 Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_dangerous_product"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_transit_sahel_40_dp">
+      <field name="name">Import Storage Transit Sahel 40 Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_dangerous_product"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_transit_coastal_20_dp_import">
+      <field name="name">Import Storage Transit coastal 20 Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_dangerous_product"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_transit_coastal_40_dp_import">
+      <field name="name">Import Storage Transit coastal 40 Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_dangerous_product"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_local_import_20_dp">
+      <field name="name">Special handling Storage Local import 20 Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_dangerous_product"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_local_import_40_dp">
+      <field name="name">Special handling Storage Local import 40 Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_dangerous_product"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_20_free_zone_dp">
+      <field name="name">Special handling Storage 20 Free zone Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_dangerous_product"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_40_free_zone_dp">
+      <field name="name">Special handling Storage 40 Free zone Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_dangerous_product"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_20_transit_sahel_dp">
+      <field name="name">Special handling Storage 20 Transit Sahel Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_dangerous_product"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_transit_sahel_40_dp">
+      <field name="name">Special handling Storage Transit Sahel 40 Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_dangerous_product"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_transit_coastal_20_dp">
+      <field name="name">Special handling Storage Transit coastal 20 Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_dangerous_product"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_transit_coastal_40_dp">
+      <field name="name">Special handling Storage Transit coastal 40 Dangerous Products</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_dangerous_product"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_local_import_20_oog">
+      <field name="name">Import Storage Local import 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_local_import_40_oog">
+      <field name="name">Import Storage Local import 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_free_zone_20_oog">
+      <field name="name">Import Storage Free zone 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_free_zone_40_oog">
+      <field name="name">Import Storage Free zone 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_transit_sahel_20_oog">
+      <field name="name">Import Storage Transit Sahel 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_transit_sahel_40_oog">
+      <field name="name">Import Storage Transit Sahel 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_transit_coastal_20_oog">
+      <field name="name">Import Storage Transit coastal 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+
+    <record model="product.product" id="15092016_import_storage_transit_coastal_40_oog">
+      <field name="name">Import Storage Transit coastal 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_local_import_20_oog">
+      <field name="name">Special handling Storage Local import 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_local_import_40_oog">
+      <field name="name">Special handling Storage Local import 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_localimport"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_20_free_zone_oog">
+      <field name="name">Special handling Storage 20 Free zone OOG</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_40_free_zone_oog">
+      <field name="name">Special handling Storage 40 Free zone OOG</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_freezone"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_20_transit_sahel_oog">
+      <field name="name">Special handling Storage 20 Transit Sahel OOG</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_transit_sahel_40_oog">
+      <field name="name">Special handling Storage Transit Sahel 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitsahel"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_transit_coastal_20_oog">
+      <field name="name">Special handling Storage Transit coastal 20 OOG</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
+
+    <record model="product.product" id="15092016_special_handling_storage_transit_coastal_40_oog">
+      <field name="name">Special handling Storage Transit coastal 40 OOG</field>
+      <field name="category_id" ref="lct_product_category_specialhandlingcode"/>
+      <field name="sub_category_id" ref="lct_product_sub_category_transitcoastal"/>
+      <field name="service_id" ref="lct_product_service_storage"/>
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_oog"/>
+    </record>
   </data>
 </openerp>
