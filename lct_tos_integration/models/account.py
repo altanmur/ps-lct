@@ -875,8 +875,9 @@ class account_invoice(osv.osv):
         for service_id, type_quantity in type_quantities_by_services.iteritems():
             properties['service_ids'] = [service_id]
             properties['type_id'] = type_quantity[0]
-            product_id = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context)[0]
-            quantities_by_products[product_id] = type_quantity[1]
+            product_ids = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context)
+            for product_id in product_ids:
+                quantities_by_products[product_id] = type_quantity[1]
 
         return quantities_by_products
 
