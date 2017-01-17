@@ -2552,5 +2552,38 @@
       <field name="size_id" ref="lct_product_size_40"/>
       <field name="type_id" ref="lct_product_type_oog"/>
     </record>
+
+
+    <!-- GENERIC PRODUCTS POC 2017-01-16 -->
+    <record id="local_import_loading_on_truck_20" model="product.product">
+      <field name="name">LOCAL IMPORT - Loading on truck for outside (20)</field>
+      <field name="cfs_activity" eval="0"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <!-- <field name="sub_category_id"/> -->
+      <field name="size_id" ref="lct_product_size_20"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="hazardous_class" eval="0"/>
+      <field name="active_reefer" eval="1"/>
+      <field name="oog" eval="0"/>
+      <field name="bundles" eval="0"/>
+      <!-- <field name="special_handling_code_id"/> -->
+      <!-- <field name="service_id"/> -->
+    </record>
+    <record id="local_import_loading_on_truck_40" model="product.product">
+      <field name="name">LOCAL IMPORT - Loading on truck for outside (40)</field>
+      <field name="cfs_activity" eval="0"/>
+      <field name="status_id" ref="lct_product_status_full"/>
+      <field name="category_id" ref="lct_product_category_import"/>
+      <!-- <field name="sub_category_id"/> -->
+      <field name="size_id" ref="lct_product_size_40"/>
+      <field name="type_id" ref="lct_product_type_gp"/>
+      <field name="hazardous_class" eval="0"/>
+      <field name="active_reefer" eval="1"/>
+      <field name="oog" eval="0"/>
+      <field name="bundles" eval="0"/>
+      <!-- <field name="special_handling_code_id"/> -->
+      <!-- <field name="service_id"/> -->
+    </record>
   </data>
 </openerp>

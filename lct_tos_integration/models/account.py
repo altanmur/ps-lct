@@ -830,104 +830,6 @@ class account_invoice(osv.osv):
                     return int(plugged_time)
         return 0
 
-    def _get_app_import_line_quantities_by_products(self, cr, uid, line, additional_storage, context=None):
-        imd_model = self.pool.get('ir.model.data')
-        module = 'lct_tos_integration'
-
-        type_quantities_by_services = {}
-
-        category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_category_import')
-        size_id = self._get_app_size(cr, uid, line)
-        sub_category_id = self._get_app_sub_category(cr, uid, line)
-        type_id, service_id = self._get_app_type_service_by_type(cr, uid, line)
-        if not sub_category_id:
-            sub_category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_sub_category_localimport')
-
-        type_quantities_by_services[service_id] = (type_id, 1)
-
-        storage = self._get_app_import_storage(line)
-        if storage > 0:
-            service_id = imd_model.get_record_id(cr, uid, module, 'lct_product_service_storage')
-            type_quantities_by_services[service_id] = (type_id, storage)
-
-        plugged_time = self._get_app_import_plugged_time(line)
-        if plugged_time > 0:
-            service_id = imd_model.get_record_id(cr, uid, module, 'lct_product_service_reeferelectricity')
-            type_quantities_by_services[service_id] = (type_id, plugged_time)
-
-        type_id, service_id = self._get_app_import_type_service_by_cfs_activity(cr, uid, line)
-        type_quantities_by_services[service_id] = (type_id, 1)
-
-        properties = {
-            'category_id': category_id,
-            'size_id': size_id,
-            'status_id': False,
-            'sub_category_id': sub_category_id,
-            'additional_storage': additional_storage,
-        }
-
-        if additional_storage:
-            for xml_id in ['lct_product_service_stevedoringcharges', 'lct_product_service_shorehandling']:
-                to_remove_service_id = imd_model.get_object_reference(cr, uid, module, xml_id)[1]
-                type_quantities_by_services.pop(to_remove_service_id, None)
-
-        quantities_by_products = {}
-        for service_id, type_quantity in type_quantities_by_services.iteritems():
-            properties['service_ids'] = [service_id]
-            properties['type_id'] = type_quantity[0]
-            product_ids = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context)
-            for product_id in product_ids:
-                quantities_by_products[product_id] = type_quantity[1]
-
-        return quantities_by_products
-
-    def _get_app_export_line_quantities_by_products(self, cr, uid, line, additional_storage, empty_release=False, context=None):
-        imd_model = self.pool.get('ir.model.data')
-        module = 'lct_tos_integration'
-        if empty_release:
-            category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_export_e_r')
-        else:
-            category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_export')
-        size_id = self._get_app_size(cr, uid, line)
-        sub_category_id = self._get_app_sub_category(cr, uid, line)
-        if not sub_category_id:
-            type_id = False
-        type_id, service_id = self._get_app_type_service_by_type(cr, uid, line)
-        properties = {
-            'category_id': category_id,
-            'type_id': type_id,
-            'size_id': size_id,
-            'status_id': False,
-            'sub_category_id': sub_category_id,
-            'service_ids': [service_id],
-            'additional_storage': additional_storage,
-        }
-        product_ids = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context)
-
-        type_id, service_id = self._get_app_export_type_service_by_cfs_activity(cr, uid, line)
-        properties.update({
-            'type_id': type_id,
-            'service_ids': [service_id],
-        })
-        product_ids.extend(self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context))
-
-        quantities_by_products = dict([(product_id, 1) for product_id in product_ids])
-        status = self._get_elmnt_text(line, 'status')
-        categ = self._get_elmnt_text(line, 'category')
-        if status == "F" and categ == "E":
-            serv_id = self.pool["ir.model.data"].get_object(cr, uid, module, "lct_product_service_weighing").id
-            properties.update({"service_ids": [serv_id]})
-            hazardous_class = self._get_elmnt_text(line, 'container_hazardous_class')
-            if hazardous_class:
-                properties.update({"hazardous_class": hazardous_class == "YES"})
-            active_reefer = self._get_elmnt_text(line, 'active_reefer')
-            if active_reefer:
-                properties.update({"active_reefer": active_reefer == "YES"})
-            weighing_id = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context)[0]
-            quantities_by_products.update({weighing_id: 1})
-
-        return quantities_by_products
-
     def _get_shc_service(self, cr, uid, shc):
         if shc == 'SCC':
             xml_id = 'lct_product_service_scanning'
@@ -977,6 +879,123 @@ class account_invoice(osv.osv):
             return self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context)
         else:
             return []
+
+    def _split(self, cr, uid, quantities_by_products, vals, context=None):
+        context = context or {}
+        product_model = self.pool.get('product.product')
+        res = {}
+
+        for product_id, qty in quantities_by_products.items():
+            product = product_model.browse(cr, uid, product_id, context=context)
+            if not product.child_ids:
+                res.update({
+                    product_id: qty,
+                })
+            for child_line in product.child_ids:
+                coef = 1
+                if child_line.qty_fixed:
+                    coef = child_line.qty_fixed
+                if child_line.qty_based_on:
+                    coef = vals.get(child_line.qty_based_on, 1)
+                res.update({
+                    child_line.child_id.id: qty * coef,
+                })
+        return res
+
+    def _get_product_id(self, cr, uid, line, type_, context=None):
+        context = context or {}
+
+        def _xml2bool(xml):
+            if xml == 'YES':
+                return True
+            return False
+
+        def _code2id(obj, cr, uid, code, context=None):
+            context = context or {}
+            if code is None:
+                return False
+
+            res = obj.search(cr, uid, [('code', '=', code)], context=context)
+            if res:
+                return res[0]
+            return False
+
+        if type_ == 'APP':
+            cfs_activity = self._get_elmnt_text(line, 'cfs_activity')
+            status = self._get_elmnt_text(line, 'status')
+            category = self._get_elmnt_text(line, 'category')
+            subcategory = self._get_elmnt_text(line, 'subcategory')
+            container_size = self._get_elmnt_text(line, 'container_size')
+            container_type = self._get_elmnt_text(line, 'container_type')
+            container_hazardous_class = self._get_elmnt_text(line, 'container_hazardous_class')
+            active_reefer = self._get_elmnt_text(line, 'active_reefer')
+            oog = self._get_elmnt_text(line, 'oog')
+            bundles = self._get_elmnt_text(line, 'bundles')
+            special_handling_code_id = self._get_elmnt_text(line, 'special_handling_code_id')
+            service_code_id = self._get_elmnt_text(line, 'service_code_id')
+
+            product_ids = self.pool.get('product.product').search(cr, uid, [
+                ('cfs_activity', '=', _xml2bool(cfs_activity)),
+                ('status_id', '=', _code2id(self.pool.get('lct.product.status'), cr, uid, status, context=context)),
+                ('category_id', '=', _code2id(self.pool.get('lct.product.category'), cr, uid, category, context=context)),
+                ('sub_category_id', '=', _code2id(self.pool.get('lct.product.sub.category'), cr, uid, subcategory, context=context)),
+                ('size_id', '=', _code2id(self.pool.get('lct.product.size'), cr, uid, container_size, context=context)),
+                ('type_id', '=', _code2id(self.pool.get('lct.product.type'), cr, uid, container_type, context=context)),
+                ('hazardous_class', '=', _xml2bool(container_hazardous_class)),
+                ('active_reefer', '=', _xml2bool(active_reefer)),
+                ('oog', '=', _xml2bool(oog)),
+                ('bundles', '=', _xml2bool(bundles)),
+                # TODO: Add special handling code (code2id)
+                ('service_id', '=', _code2id(self.pool.get('lct.product.service'), cr, uid, service_code_id, context=context)),
+            ], context=context)
+
+        if type_ == 'VBL':
+            category = self._get_elmnt_text(line, 'transaction_category_id')
+            container_size = self._get_elmnt_text(line, 'container_size')
+            container_type = self._get_elmnt_text(line, 'container_type_id')
+            container_hazardous_class = self._get_elmnt_text(line, 'container_hazardous_class_id')
+            active_reefer = self._get_elmnt_text(line, 'active_reefer')
+            oog = self._get_elmnt_text(line, 'oog')
+            bundles = self._get_elmnt_text(line, 'bundles')
+            service_code_id = self._get_elmnt_text(line, 'transaction_direction')
+
+            product_ids = self.pool.get('product.product').search(cr, uid, [
+                ('category_id', '=', _code2id(self.pool.get('lct.product.category'), cr, uid, category, context=context)),
+                ('size_id', '=', _code2id(self.pool.get('lct.product.size'), cr, uid, container_size, context=context)),
+                ('type_id', '=', _code2id(self.pool.get('lct.product.type'), cr, uid, container_type, context=context)),
+                ('hazardous_class', '=', _xml2bool(container_hazardous_class)),
+                ('active_reefer', '=', _xml2bool(active_reefer)),
+                ('oog', '=', _xml2bool(oog)),
+                ('bundles', '=', _xml2bool(bundles)),
+            ], context=context)
+
+        if type_ == 'YAC':
+            status = self._get_elmnt_text(line, 'status')
+            category = self._get_elmnt_text(line, 'category')
+            container_size = self._get_elmnt_text(line, 'container_size')
+            container_type = self._get_elmnt_text(line, 'container_type_id')
+            container_hazardous_class = self._get_elmnt_text(line, 'container_hazardous_class_id')
+            active_reefer = self._get_elmnt_text(line, 'active_reefer')
+            oog = self._get_elmnt_text(line, 'oog')
+            bundles = self._get_elmnt_text(line, 'bundles')
+            special_handling_code_id = self._get_elmnt_text(line, 'special_handling_code_id')
+            service_code_id = self._get_elmnt_text(line, 'transaction_direction')
+
+            product_ids = self.pool.get('product.product').search(cr, uid, [
+                ('status_id', '=', _code2id(self.pool.get('lct.product.status'), cr, uid, status, context=context)),
+                ('category_id', '=', _code2id(self.pool.get('lct.product.category'), cr, uid, category, context=context)),
+                ('size_id', '=', _code2id(self.pool.get('lct.product.size'), cr, uid, container_size, context=context)),
+                ('type_id', '=', _code2id(self.pool.get('lct.product.type'), cr, uid, container_type, context=context)),
+                ('hazardous_class', '=', _xml2bool(container_hazardous_class)),
+                ('active_reefer', '=', _xml2bool(active_reefer)),
+                ('oog', '=', _xml2bool(oog)),
+                ('bundles', '=', _xml2bool(bundles)),
+                # TODO: Add special handling code (code2id)
+                ('service_id', '=', _code2id(self.pool.get('lct.product.service'), cr, uid, service_code_id, context=context)),
+            ], context=context)
+
+        if product_ids:
+            return product_ids[0]
 
     def _create_app(self, cr, uid, appointment, context=None):
         imd_model = self.pool.get('ir.model.data')
@@ -1034,20 +1053,20 @@ class account_invoice(osv.osv):
         mult_rate = self.pool.get('lct.multiplying.rate').get_active_rate(cr, uid, context=context)
         invoice_lines = {}
         for line in lines.findall('line'):
-            category = self._get_elmnt_text(line, 'category')
-            if category == 'I':
-                quantities_by_products = self._get_app_import_line_quantities_by_products(cr, uid, line, additional_storage, context=context)
-            elif category in ['E', 'Z']:
-                quantities_by_products = self._get_app_export_line_quantities_by_products(cr, uid, line, additional_storage, empty_release=(category == 'Z'), context=context)
-
             if first_line:
                 first_line = False
                 app_direction_id = self._get_app_direction(cr, uid, line)
 
-            bundle = self._get_elmnt_text(line, 'bundles')
-            if bundle=='YES':
-                bundle_product_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'bundle')
-                quantities_by_products[bundle_product_id] = 1
+            parent_quantities_by_products = {}
+            product_id = self._get_product_id(cr, uid, line, 'APP', context=context)
+            if product_id:
+                parent_quantities_by_products.update({
+                    product_id: 1,
+                })
+            vals = {
+                'storage': self._get_elmnt_text(line, 'storage'),
+            }
+            quantities_by_products = self._split(cr, uid, parent_quantities_by_products, vals, context=context)
 
             shc_product_ids = self._get_shc_products(cr, uid, line, additional_storage, context=context)
 
@@ -1289,17 +1308,13 @@ class account_invoice(osv.osv):
                     properties.update({
                         'type_id': imd_model.get_record_id(cr, uid, module, 'lct_product_type_oog')
                         })
-                    # oog_qty += 1
 
-                product_ids = product_model.get_products_by_properties(cr, uid, dict(properties), line.sourceline, context=context)
+                product_ids = [self._get_product_id(cr, uid, line, 'VBL', context=context)]
+
                 if not all(product_ids):
                     error  = 'One or more product(s) could not be found with these combinations: '
                     error += ', '.join([key + ': ' + str(val) for key, val in properties.iteritems()])
                     raise osv.except_osv(('Error'), (error))
-
-                bundle = self._get_elmnt_text(line, 'bundles')
-                if bundle=='YES':
-                    product_ids.append(imd_model.get_record_id(cr, uid, module, 'bundle'))
 
                 for product_id in product_ids:
                     self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_id, product_id)
@@ -1737,14 +1752,14 @@ class account_invoice(osv.osv):
                     'status_id': status_id,
                     'type_id': type_id,
                 }
-                product_ids = product_model.get_products_by_properties(cr, uid, properties, line.sourceline, context=context)
+                product_ids = self._get_product_id(cr, uid, line, 'YAC', context=context)
 
                 oog = self._get_elmnt_text(line, 'oog')
                 oog = True if oog=='YES' else False
 
-                bundle = self._get_elmnt_text(line, 'bundles')
-                if bundle=='YES':
-                    product_ids.append(imd_model.get_record_id(cr, uid, module, 'bundle'))
+                # bundle = self._get_elmnt_text(line, 'bundles')
+                # if bundle=='YES':
+                #     product_ids.append(imd_model.get_record_id(cr, uid, module, 'bundle'))
                 cont_nr_vals = {
                     'name': self._get_elmnt_text(line, 'container_number'),
                     'quantity': 1,

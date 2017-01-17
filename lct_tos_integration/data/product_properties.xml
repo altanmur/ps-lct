@@ -4,9 +4,11 @@
     <!-- CATEGORY -->
     <record id="lct_product_category_import" model="lct.product.category">
       <field name="name">Import</field>
+      <field name="code">I</field>
     </record>
     <record id="lct_product_category_export" model="lct.product.category">
       <field name="name">Export</field>
+      <field name="code">E</field>
     </record>
     <record id="lct_product_category_export_e_r" model="lct.product.category">
       <field name="name">Export Empty Release</field>
@@ -58,6 +60,7 @@
     <!-- SERVICE -->
     <record id="lct_product_service_discharge" model="lct.product.service">
       <field name="name">Discharge</field>
+      <field name="code">R</field>
     </record>
     <record id="lct_product_service_load" model="lct.product.service">
       <field name="name">Load</field>
@@ -88,6 +91,7 @@
     </record>
     <record id="lct_product_service_reload" model="lct.product.service">
       <field name="name">Reload</field>
+      <field name="code">D</field>
     </record>
     <record id="lct_product_service_washing" model="lct.product.service">
       <field name="name">Washing</field>
@@ -141,15 +145,18 @@
     <!-- STATUS -->
     <record id="lct_product_status_full" model="lct.product.status">
       <field name="name">Full</field>
+      <field name="code">F</field>
     </record>
     <record id="lct_product_status_empty" model="lct.product.status">
       <field name="name">Empty</field>
+      <field name="code">E</field>
     </record>
 
 
     <!-- TYPE -->
     <record id="lct_product_type_gp" model="lct.product.type">
       <field name="name">GP</field>
+      <field name="code">GP</field>
     </record>
     <record id="lct_product_type_reeferdg" model="lct.product.type">
       <field name="name">Reefer/DG</field>
@@ -174,9 +181,11 @@
     <!-- SIZE -->
     <record id="lct_product_size_20" model="lct.product.size">
       <field name="size">20</field>
+      <field name="code">20</field>
     </record>
     <record id="lct_product_size_40" model="lct.product.size">
       <field name="size">40</field>
+      <field name="code">40</field>
     </record>
 
 
