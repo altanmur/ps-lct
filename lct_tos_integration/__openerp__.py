@@ -52,6 +52,8 @@
         'views/product.xml',
         'views/product_properties.xml',
         'data/product_properties.xml',
+        'data/Generic products/product.product.csv',
+        'data/Additional products/product.product.csv',
         'data/products.xml',
         'data/cron.xml',
         'data/ir_sequences.xml',

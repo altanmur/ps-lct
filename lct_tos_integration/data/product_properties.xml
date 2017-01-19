@@ -12,6 +12,7 @@
     </record>
     <record id="lct_product_category_export_e_r" model="lct.product.category">
       <field name="name">Export Empty Release</field>
+      <field name="code">Z</field>
     </record>
     <record id="lct_product_category_transshipment" model="lct.product.category">
       <field name="name">Transshipment</field>
@@ -70,24 +71,29 @@
     </record>
     <record id="lct_product_service_inspection" model="lct.product.service">
       <field name="name">Inspection</field>
+      <field name="code">INS</field>
     </record>
     <record id="lct_product_service_pretripinspection" model="lct.product.service">
       <field name="name">Pre-trip inspection</field>
+      <field name="code">PTI</field>
     </record>
     <record id="lct_product_service_scanning" model="lct.product.service">
       <field name="name">Scanning</field>
+      <field name="code">SCC</field>
     </record>
     <record id="lct_product_service_storage" model="lct.product.service">
       <field name="name">Storage</field>
     </record>
     <record id="lct_product_service_repaired" model="lct.product.service">
       <field name="name">Repaired</field>
+      <field name="code">REP</field>
     </record>
     <record id="lct_product_service_pti" model="lct.product.service">
       <field name="name">PTI</field>
     </record>
     <record id="lct_product_service_umccinspection" model="lct.product.service">
       <field name="name">UMCC: Inspection</field>
+      <field name="code">UMC</field>
     </record>
     <record id="lct_product_service_reload" model="lct.product.service">
       <field name="name">Reload</field>
@@ -95,21 +101,27 @@
     </record>
     <record id="lct_product_service_washing" model="lct.product.service">
       <field name="name">Washing</field>
+      <field name="code">WAS</field>
     </record>
     <record id="lct_product_service_cfs" model="lct.product.service">
       <field name="name">CFS</field>
+      <field name="code">CFS</field>
     </record>
     <record id="lct_product_service_cleaning" model="lct.product.service">
       <field name="name">Cleaning</field>
+      <field name="code">CLN</field>
     </record>
     <record id="lct_product_service_customs" model="lct.product.service">
       <field name="name">Customs</field>
+      <field name="code">CUS</field>
     </record>
     <record id="lct_product_service_deliveryforexamination" model="lct.product.service">
       <field name="name">Delivery for examination</field>
+      <field name="code">EXM</field>
     </record>
     <record id="lct_product_service_directdelivery" model="lct.product.service">
       <field name="name">Direct delivery</field>
+      <field name="code">DDA</field>
     </record>
     <record id="lct_product_service_stevedoringcharges" model="lct.product.service">
       <field name="name">Stevedoring charges</field>
@@ -192,24 +204,31 @@
     <!-- SUB-CATEGORY -->
     <record id="lct_product_sub_category_loa160mandbelow" model="lct.product.sub.category">
       <field name="name">LOA 160m and below</field>
+      <field name="code">LOA1</field>
     </record>
     <record id="lct_product_sub_category_loa160mto360m" model="lct.product.sub.category">
       <field name="name">LOA 160m to 360m</field>
+      <field name="code">LOA2</field>
     </record>
     <record id="lct_product_sub_category_loa360mandabove" model="lct.product.sub.category">
       <field name="name">LOA 360m and above</field>
+      <field name="code">LOA3</field>
     </record>
     <record id="lct_product_sub_category_localimport" model="lct.product.sub.category">
       <field name="name">Local import</field>
+      <field name="code"/>
     </record>
     <record id="lct_product_sub_category_transitsahel" model="lct.product.sub.category">
       <field name="name">Transit Sahel</field>
+      <field name="code">T1</field>
     </record>
     <record id="lct_product_sub_category_transitcoastal" model="lct.product.sub.category">
       <field name="name">Transit coastal</field>
+      <field name="code">T2</field>
     </record>
     <record id="lct_product_sub_category_freezone" model="lct.product.sub.category">
       <field name="name">Free zone</field>
+      <field name="code">FZ</field>
     </record>
   </data>
 </openerp>
