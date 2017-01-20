@@ -945,8 +945,18 @@ class account_invoice(osv.osv):
                 ('active_reefer', '=', _xml2bool(active_reefer)),
                 ('oog', '=', _xml2bool(oog)),
                 ('bundles', '=', _xml2bool(bundles)),
-                # TODO: Add special handling code (code2id)
-                ('service_id', '=', _code2id(self.pool.get('lct.product.service'), cr, uid, service_code_id, context=context)),
+                # ('service_id', '=', _code2id(self.pool.get('lct.product.service'), cr, uid, service_code_id, context=context)),
+            ], context=context)
+
+        if type_ == 'SHC':
+            special_handling_code_id = self._get_elmnt_text(line, 'special_handling_code_id')
+            subcategory = self._get_elmnt_text(line, 'subcategory')
+            container_size = self._get_elmnt_text(line, 'container_size')
+
+            product_ids = self.pool.get('product.product').search(cr, uid, [
+                ('sub_category_id', '=', _code2id(self.pool.get('lct.product.sub.category'), cr, uid, subcategory, context=context)),
+                ('size_id', '=', _code2id(self.pool.get('lct.product.size'), cr, uid, container_size, context=context)),
+                ('service_id', '=', _code2id(self.pool.get('lct.product.service'), cr, uid, special_handling_code_id, context=context)),
             ], context=context)
 
         if type_ == 'VBL':
@@ -1063,6 +1073,13 @@ class account_invoice(osv.osv):
                 parent_quantities_by_products.update({
                     product_id: 1,
                 })
+
+            special_handling_product_id = self._get_product_id(cr, uid, line, 'SHC', context=context)
+            if special_handling_product_id:
+                parent_quantities_by_products.update({
+                    special_handling_product_id: 1,
+                })
+
             vals = {
                 'storage': self._get_elmnt_text(line, 'storage'),
             }

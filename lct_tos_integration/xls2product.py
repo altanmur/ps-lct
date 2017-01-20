@@ -31,7 +31,7 @@ MAP_XMLIDS = {
         'F': 'lct_product_status_full',
         'E': 'lct_product_status_empty',
     },
-    'special_handling_code_id/id': {
+    'service_id/id': {
         'INS': 'lct_product_service_inspection',
         'PTI': 'lct_product_service_pretripinspection',
         'SCC': 'lct_product_service_scanning',
