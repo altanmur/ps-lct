@@ -96,7 +96,6 @@ class account_invoice_line(osv.osv):
                 'billed_quantity': billed_quantity,
                 'billed_price_unit': line.price_unit,
             }
-
         return res
 
     def _type2(self, cr, uid, ids, fields, arg, context=None):
@@ -912,9 +911,6 @@ class account_invoice(osv.osv):
 
         def _code2id(obj, cr, uid, code, context=None):
             context = context or {}
-            if code is None:
-                return False
-
             res = obj.search(cr, uid, [('code', '=', code)], context=context)
             if res:
                 return res[0]
@@ -926,7 +922,7 @@ class account_invoice(osv.osv):
             category = self._get_elmnt_text(line, 'category')
             subcategory = self._get_elmnt_text(line, 'subcategory')
             container_size = self._get_elmnt_text(line, 'container_size')
-            container_type = self._get_elmnt_text(line, 'container_type')
+            # container_type = self._get_elmnt_text(line, 'container_type')
             container_hazardous_class = self._get_elmnt_text(line, 'container_hazardous_class')
             active_reefer = self._get_elmnt_text(line, 'active_reefer')
             oog = self._get_elmnt_text(line, 'oog')
@@ -935,12 +931,13 @@ class account_invoice(osv.osv):
             service_code_id = self._get_elmnt_text(line, 'service_code_id')
 
             product_ids = self.pool.get('product.product').search(cr, uid, [
+                ('ptype', '=', 'generic'),
                 ('cfs_activity', '=', _xml2bool(cfs_activity)),
                 ('status_id', '=', _code2id(self.pool.get('lct.product.status'), cr, uid, status, context=context)),
                 ('category_id', '=', _code2id(self.pool.get('lct.product.category'), cr, uid, category, context=context)),
                 ('sub_category_id', '=', _code2id(self.pool.get('lct.product.sub.category'), cr, uid, subcategory, context=context)),
                 ('size_id', '=', _code2id(self.pool.get('lct.product.size'), cr, uid, container_size, context=context)),
-                ('type_id', '=', _code2id(self.pool.get('lct.product.type'), cr, uid, container_type, context=context)),
+                # ('type_id', '=', _code2id(self.pool.get('lct.product.type'), cr, uid, container_type, context=context)),
                 ('hazardous_class', '=', _xml2bool(container_hazardous_class)),
                 ('active_reefer', '=', _xml2bool(active_reefer)),
                 ('oog', '=', _xml2bool(oog)),
@@ -954,6 +951,7 @@ class account_invoice(osv.osv):
             container_size = self._get_elmnt_text(line, 'container_size')
 
             product_ids = self.pool.get('product.product').search(cr, uid, [
+                ('ptype', '=', 'shc'),
                 ('sub_category_id', '=', _code2id(self.pool.get('lct.product.sub.category'), cr, uid, subcategory, context=context)),
                 ('size_id', '=', _code2id(self.pool.get('lct.product.size'), cr, uid, container_size, context=context)),
                 ('service_id', '=', _code2id(self.pool.get('lct.product.service'), cr, uid, special_handling_code_id, context=context)),
@@ -970,6 +968,7 @@ class account_invoice(osv.osv):
             service_code_id = self._get_elmnt_text(line, 'transaction_direction')
 
             product_ids = self.pool.get('product.product').search(cr, uid, [
+                ('ptype', '=', 'generic'),
                 ('category_id', '=', _code2id(self.pool.get('lct.product.category'), cr, uid, category, context=context)),
                 ('size_id', '=', _code2id(self.pool.get('lct.product.size'), cr, uid, container_size, context=context)),
                 ('type_id', '=', _code2id(self.pool.get('lct.product.type'), cr, uid, container_type, context=context)),
@@ -992,6 +991,7 @@ class account_invoice(osv.osv):
             service_code_id = self._get_elmnt_text(line, 'transaction_direction')
 
             product_ids = self.pool.get('product.product').search(cr, uid, [
+                ('ptype', '=', 'generic'),
                 ('status_id', '=', _code2id(self.pool.get('lct.product.status'), cr, uid, status, context=context)),
                 ('category_id', '=', _code2id(self.pool.get('lct.product.category'), cr, uid, category, context=context)),
                 ('size_id', '=', _code2id(self.pool.get('lct.product.size'), cr, uid, container_size, context=context)),

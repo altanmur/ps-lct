@@ -58,7 +58,10 @@ class product_product(osv.osv):
         'oog': fields.boolean('OOG'),
         'bundles': fields.boolean('Bundles'),
         'child_ids': fields.one2many('product_parent_child', 'parent_id', string='Children'),
-
+        'ptype': fields.selection([
+            ('generic', 'Generic Product'),
+            ('shc', 'Shore Handling Code'),
+        ], string='Product Type'),
 
         'top_id': fields.many2one('product.product', 'Parent'),
         'sub_ids': fields.one2many('product.product', 'top_id', 'Children'),
