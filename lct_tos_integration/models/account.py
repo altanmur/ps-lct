@@ -891,13 +891,10 @@ class account_invoice(osv.osv):
                     product_id: qty,
                 })
             for child_line in product.child_ids:
-                coef = 1
-                if child_line.qty_fixed:
-                    coef = child_line.qty_fixed
-                if child_line.qty_based_on:
-                    coef = vals.get(child_line.qty_based_on, 1)
+                qty_fixed = child_line.qty_fixed if child_line.qty_fixed else 0
+                qty_based_on = vals.get(child_line.qty_based_on, 1)
                 res.update({
-                    child_line.child_id.id: qty * coef,
+                    child_line.child_id.id: qty * qty_fixed * qty_based_on,
                 })
         return res
 
@@ -927,8 +924,8 @@ class account_invoice(osv.osv):
             active_reefer = self._get_elmnt_text(line, 'active_reefer')
             oog = self._get_elmnt_text(line, 'oog')
             bundles = self._get_elmnt_text(line, 'bundles')
-            special_handling_code_id = self._get_elmnt_text(line, 'special_handling_code_id')
-            service_code_id = self._get_elmnt_text(line, 'service_code_id')
+            # special_handling_code_id = self._get_elmnt_text(line, 'special_handling_code_id')
+            # service_code_id = self._get_elmnt_text(line, 'service_code_id')
 
             product_ids = self.pool.get('product.product').search(cr, uid, [
                 ('ptype', '=', 'generic'),
@@ -987,7 +984,7 @@ class account_invoice(osv.osv):
             active_reefer = self._get_elmnt_text(line, 'active_reefer')
             oog = self._get_elmnt_text(line, 'oog')
             bundles = self._get_elmnt_text(line, 'bundles')
-            special_handling_code_id = self._get_elmnt_text(line, 'special_handling_code_id')
+            # special_handling_code_id = self._get_elmnt_text(line, 'special_handling_code_id')
             service_code_id = self._get_elmnt_text(line, 'transaction_direction')
 
             product_ids = self.pool.get('product.product').search(cr, uid, [
@@ -1085,7 +1082,7 @@ class account_invoice(osv.osv):
             }
             quantities_by_products = self._split(cr, uid, parent_quantities_by_products, vals, context=context)
 
-            shc_product_ids = self._get_shc_products(cr, uid, line, additional_storage, context=context)
+            # shc_product_ids = self._get_shc_products(cr, uid, line, additional_storage, context=context)
 
             oog = self._get_elmnt_text(line, 'oog')
             oog = True if oog=='YES' else False
@@ -1105,26 +1102,20 @@ class account_invoice(osv.osv):
                 'oog': oog,
                 'storage_offset': offset,
             }
-            service_elec = imd_model.get_record_id(cr, uid, module, 'lct_product_service_reeferelectricity')
-            service_storage = imd_model.get_record_id(cr, uid, module, 'lct_product_service_storage')
 
             for product_id, quantity in quantities_by_products.iteritems():
                 if product_id not in invoice_lines:
                     invoice_lines[product_id] = []
                 product = product_model.browse(cr, uid, product_id, context=context)
-                if additional_storage and ((product.service_id and product.service_id.id not in [service_elec, service_storage]) or not product.service_id):
-                    continue
                 cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=quantity, quantity=1), context=context)
                 invoice_lines[product_id].append(cont_nr_id)
 
-            for shc_product_id in shc_product_ids:
-                if shc_product_id not in invoice_lines:
-                    invoice_lines[shc_product_id] = []
-                product = product_model.browse(cr, uid, shc_product_id, context=context)
-                if additional_storage and ((product.service_id and product.service_id.id not in [service_elec, service_storage]) or not product.service_id):
-                    continue
-                cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=1, quantity=1), context=context)
-                invoice_lines[shc_product_id].append(cont_nr_id)
+            # for shc_product_id in shc_product_ids:
+            #     if shc_product_id not in invoice_lines:
+            #         invoice_lines[shc_product_id] = []
+            #     product = product_model.browse(cr, uid, shc_product_id, context=context)
+            #     cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=1, quantity=1), context=context)
+            #     invoice_lines[shc_product_id].append(cont_nr_id)
 
         for product_id, cont_nr_ids in  invoice_lines.iteritems():
             product = product_model.browse(cr, uid, product_id, context=context)
@@ -1140,6 +1131,7 @@ class account_invoice(osv.osv):
                 quantity += pricelist_qty
                 price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
                 price += pricelist_qty*price_multi[product_id][pricelist_id] * (oog and mult_rate or 1.)
+
             line_vals = {
                 'invoice_id': app_id,
                 'product_id': product_id,
