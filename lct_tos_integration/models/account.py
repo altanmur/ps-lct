@@ -944,13 +944,13 @@ class account_invoice(osv.osv):
                     })
         return res
 
-    def _get_product_id(self, cr, uid, line, type_, context=None):
+    def _get_product_id(self, cr, uid, line, type_, additional_storage='NO', context=None):
         context = context or {}
 
         def _xml2bool(xml):
-            if xml == 'YES':
-                return True
-            return False
+            if not xml or xml != 'NO':
+                return False
+            return True
 
         def _code2id(obj, cr, uid, code, context=None):
             context = context or {}
@@ -985,6 +985,7 @@ class account_invoice(osv.osv):
                 ('active_reefer', '=', _xml2bool(active_reefer)),
                 ('oog', '=', _xml2bool(oog)),
                 ('bundles', '=', _xml2bool(bundles)),
+                ('additional_storage', '=', _xml2bool(additional_storage)),
                 # ('service_id', '=', _code2id(self.pool.get('lct.product.service'), cr, uid, service_code_id, context=context)),
             ], context=context)
 
@@ -1043,7 +1044,6 @@ class account_invoice(osv.osv):
                 ('active_reefer', '=', _xml2bool(active_reefer)),
                 ('oog', '=', _xml2bool(oog)),
                 ('bundles', '=', _xml2bool(bundles)),
-                # TODO: Add special handling code (code2id)
                 ('service_id', '=', _code2id(self.pool.get('lct.product.service'), cr, uid, service_code_id, context=context)),
             ], context=context)
 
@@ -1112,7 +1112,7 @@ class account_invoice(osv.osv):
                 app_direction_id = self._get_app_direction(cr, uid, line)
 
             parent_quantities_by_products = {}
-            product_id = self._get_product_id(cr, uid, line, 'APP', context=context)
+            product_id = self._get_product_id(cr, uid, line, 'APP', additional_storage=additional_storage, context=context)
             if product_id:
                 parent_quantities_by_products.update({
                     product_id: 1,
