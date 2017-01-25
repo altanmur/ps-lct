@@ -260,7 +260,7 @@ class account_invoice_line(osv.osv):
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
         version = pricelist.version_id[0]
 
-        items = [item for item in version.items_id if item.product_tmpl_id == product.product_tmpl_id] or [item for item in version.items_id if not item.product_tmpl_id]
+        items = [item for item in version.items_id if item.product_tmpl_id == product.product_tmpl_id] or [item for item in version.items_id if not item.product_tmpl_id and not item.product_id]
         if len(items) != 1:
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
         item = items[0]
@@ -900,7 +900,7 @@ class account_invoice(osv.osv):
         else:
             storage_product = child_storages[0]
 
-        items = [item for item in version.items_id if item.product_tmpl_id == storage_product.product_tmpl_id] or [item for item in version.items_id if not item.product_tmpl_id]
+        items = [item for item in version.items_id if item.product_tmpl_id == storage_product.product_tmpl_id] or [item for item in version.items_id if not item.product_tmpl_id and not item.product_id]
         if len(items) != 1:
             raise('Pricelist Version %s do not have unique item for the product %s (based on template_id)' %(version.name, product.name))
         item = items[0]
@@ -935,7 +935,7 @@ class account_invoice(osv.osv):
                     product_id: qty,
                 })
             for child_line in product.child_ids:
-                qty_fixed = child_line.qty_fixed if child_line.qty_fixed else 0
+                qty_fixed = child_line.qty_fixed if child_line.qty_fixed else 1
                 qty_based_on = vals.get(child_line.qty_based_on, 1)
                 child_qty = qty * qty_fixed * (qty_based_on or 0)
                 if child_qty:
