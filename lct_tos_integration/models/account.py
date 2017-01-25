@@ -948,7 +948,7 @@ class account_invoice(osv.osv):
         context = context or {}
 
         def _xml2bool(xml):
-            if not xml or xml != 'NO':
+            if not xml or xml == 'NO':
                 return False
             return True
 
