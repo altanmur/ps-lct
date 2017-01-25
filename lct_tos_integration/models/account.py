@@ -260,7 +260,7 @@ class account_invoice_line(osv.osv):
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
         version = pricelist.version_id[0]
 
-        items = [item for item in version.items_id if item.product_tmpl_id == product.product_tmpl_id] or [item for item in version.items_id if not item.product_id]
+        items = [item for item in version.items_id if item.product_tmpl_id == product.product_tmpl_id] or [item for item in version.items_id if not item.product_tmpl_id]
         if len(items) != 1:
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
         item = items[0]
@@ -879,13 +879,57 @@ class account_invoice(osv.osv):
         else:
             return []
 
-    def _split(self, cr, uid, quantities_by_products, vals, context=None):
+    def _get_version(self, partner):
+        if not partner or not partner.property_product_pricelist:
+            return
+        pricelist = partner.property_product_pricelist
+
+        versions = [v for v in pricelist.version_id if (v.date_start or '1') <= fields.datetime.now() <= (v.date_end or '9')]
+        if len(versions) == 1:
+            return versions[0]
+
+    def _get_storage_val(self, cr, uid, appointment, line, product, version):
+        storage_val = self._get_elmnt_text(line, 'storage')
+        storage_service = self.pool["ir.model.data"].get_object(cr, uid, "lct_tos_integration", "lct_product_service_storage")
+        child_storages = [rel.child_id for rel in product.child_ids if rel.child_id.service_id == storage_service]
+        if not child_storages:
+            if product.service_id == storage_service:
+                storage_product = product
+            else:
+                return storage_val
+        else:
+            storage_product = child_storages[0]
+
+        items = [item for item in version.items_id if item.product_tmpl_id == storage_product.product_tmpl_id] or [item for item in version.items_id if not item.product_tmpl_id]
+        if len(items) != 1:
+            raise('Pricelist Version %s do not have unique item for the product %s (based on template_id)' %(version.name, product.name))
+        item = items[0]
+
+        if not item.slab_rate:
+            return storage_val
+
+        free_period = item.free_period
+        pay_through_date = datetime.strptime(self._get_elmnt_text(appointment, 'pay_through_date'), "%Y-%m-%d %H:%M:%S")
+        berthing_time = datetime.strptime(self._get_elmnt_text(appointment, 'berthing_time'), "%Y-%m-%d %H:%M:%S")
+        if (pay_through_date - berthing_time).days < free_period:
+            return (pay_through_date - berthing_time).days + 1
+        return storage_val
+
+    def _line2vals(self, cr, uid, appointment, line, product, version):
+        storage = self._get_storage_val(cr, uid, appointment, line, product, version)
+        return {
+            'storage': self._get_storage_val(cr, uid, appointment, line, product, version),
+            'plugged_time': self._get_elmnt_text(line, 'plugged_time'),
+        }
+
+    def _split(self, cr, uid, quantities_by_products, appointment, line, version, context=None):
         context = context or {}
         product_model = self.pool.get('product.product')
         res = {}
 
         for product_id, qty in quantities_by_products.items():
             product = product_model.browse(cr, uid, product_id, context=context)
+            vals = self._line2vals(cr, uid, appointment, line, product, version)
             if not product.child_ids:
                 res.update({
                     product_id: qty,
@@ -893,9 +937,11 @@ class account_invoice(osv.osv):
             for child_line in product.child_ids:
                 qty_fixed = child_line.qty_fixed if child_line.qty_fixed else 0
                 qty_based_on = vals.get(child_line.qty_based_on, 1)
-                res.update({
-                    child_line.child_id.id: qty * qty_fixed * qty_based_on,
-                })
+                child_qty = qty * qty_fixed * (qty_based_on or 0)
+                if child_qty:
+                    res.update({
+                        child_line.child_id.id: child_qty,
+                    })
         return res
 
     def _get_product_id(self, cr, uid, line, type_, context=None):
@@ -1024,6 +1070,7 @@ class account_invoice(osv.osv):
         else:
             raise osv.except_osv(('Error'), ("Unknown value for tag 'individual_customer': %s" % ind_cust))
         partner = partner_model.browse(cr, uid, partner_id, context=context)
+        version = self._get_version(partner)
         account = partner.property_account_receivable
         if not account:
             raise osv.except_osv(('Error'), ('No account receivable could be found on customer %s' % partner.name))
@@ -1077,10 +1124,7 @@ class account_invoice(osv.osv):
                     special_handling_product_id: 1,
                 })
 
-            vals = {
-                'storage': self._get_elmnt_text(line, 'storage'),
-            }
-            quantities_by_products = self._split(cr, uid, parent_quantities_by_products, vals, context=context)
+            quantities_by_products = self._split(cr, uid, parent_quantities_by_products, appointment, line, version, context=context)
 
             # shc_product_ids = self._get_shc_products(cr, uid, line, additional_storage, context=context)
 

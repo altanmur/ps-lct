@@ -29,7 +29,10 @@ class lct_product_parent_child(osv.osv):
         'parent_id': fields.many2one('product.product', string='Parent'),
         'child_id': fields.many2one('product.product', string='Child'),
         'qty_fixed': fields.integer('Fixed Quantity'),
-        'qty_based_on': fields.selection([('storage', 'Storage')], string="Based on"),
+        'qty_based_on': fields.selection([
+            ('storage', 'Storage'),
+            ('plugged_time', 'Plugged Time'),
+        ], string="Based on"),
     }
 
 
