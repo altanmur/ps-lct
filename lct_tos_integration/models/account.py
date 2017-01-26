@@ -229,14 +229,6 @@ class account_invoice_line(osv.osv):
         group_obj = self.pool["account.invoice.line.group"]
         invoice_obj = self.pool["account.invoice"]
 
-        pay_through = datetime.strptime(invoice.pay_through_date, "%Y-%m-%d %H:%M:%S")
-        berth = datetime.strptime(invoice.berth_time, "%Y-%m-%d %H:%M:%S")
-        diff_days = _get_timedelta_days(pay_through - berth)
-
-        invoice.write({
-            "expiry_date": berth if diff_days < 0 else pay_through,
-            })
-
         if 'invoice_id' in vals and vals['invoice_id']:
             invoice = self.pool.get('account.invoice').browse(cr, uid, vals['invoice_id'], context=context)
             if invoice.type2 and 'partner_id' in invoice and invoice.partner_id:
@@ -259,6 +251,14 @@ class account_invoice_line(osv.osv):
         if not vals.get("invoice_id"):
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
         invoice = self.pool["account.invoice"].browse(cr, uid, vals["invoice_id"], context=context)
+
+        pay_through = datetime.strptime(invoice.pay_through_date, "%Y-%m-%d %H:%M:%S")
+        berth = datetime.strptime(invoice.berth_time, "%Y-%m-%d %H:%M:%S")
+        diff_days = _get_timedelta_days(pay_through - berth)
+
+        invoice.write({
+            "expiry_date": berth if diff_days < 0 else pay_through,
+            })
 
         if not invoice.partner_id or not invoice.partner_id.property_product_pricelist:
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
@@ -993,6 +993,7 @@ class account_invoice(osv.osv):
                 ('additional_storage', '=', _xml2bool(additional_storage)),
                 # ('service_id', '=', _code2id(self.pool.get('lct.product.service'), cr, uid, service_code_id, context=context)),
             ], context=context)
+            import ipdb; ipdb.set_trace()
 
         if type_ == 'SHC':
             special_handling_code_id = self._get_elmnt_text(line, 'special_handling_code_id')
