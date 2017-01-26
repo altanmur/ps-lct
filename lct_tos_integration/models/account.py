@@ -229,6 +229,14 @@ class account_invoice_line(osv.osv):
         group_obj = self.pool["account.invoice.line.group"]
         invoice_obj = self.pool["account.invoice"]
 
+        pay_through = datetime.strptime(invoice.pay_through_date, "%Y-%m-%d %H:%M:%S")
+        berth = datetime.strptime(invoice.berth_time, "%Y-%m-%d %H:%M:%S")
+        diff_days = _get_timedelta_days(pay_through - berth)
+
+        invoice.write({
+            "expiry_date": berth if diff_days < 0 else pay_through,
+            })
+
         if 'invoice_id' in vals and vals['invoice_id']:
             invoice = self.pool.get('account.invoice').browse(cr, uid, vals['invoice_id'], context=context)
             if invoice.type2 and 'partner_id' in invoice and invoice.partner_id:
@@ -281,13 +289,10 @@ class account_invoice_line(osv.osv):
 
         invoice_id = vals.get("invoice_id")
         invoice = invoice_obj.browse(cr, uid, invoice_id, context)
-        pay_through = datetime.strptime(invoice.pay_through_date, "%Y-%m-%d %H:%M:%S")
-        berth = datetime.strptime(invoice.berth_time, "%Y-%m-%d %H:%M:%S")
-        diff_days = _get_timedelta_days(pay_through - berth)
-        if not invoice.expiry_date:
-            invoice.write({
-                "expiry_date": berth + timedelta(days=item.free_period) if diff_days < item.free_period else pay_through,
-                })
+
+        invoice.write({
+            "expiry_date": berth + timedelta(days=item.free_period) if diff_days < item.free_period else pay_through,
+            })
 
         for container in cont_nr_obj.browse(cr, uid, cont_ids, context=context):
             if not container:
