@@ -223,6 +223,12 @@ class account_invoice_line(osv.osv):
         return line1.id
 
     def create(self, cr, uid, vals, context=None):
+        def _compute_offset(a, b):
+            return max(a-b, 0), max(b-a, 0)
+
+        def _get_timedelta_days(td):
+            return td.days + (td.seconds !=0)
+
         context = context or {}
         pricelist_obj = self.pool.get('product.pricelist')
         cont_nr_obj = self.pool["lct.container.number"]
@@ -240,14 +246,6 @@ class account_invoice_line(osv.osv):
             if product.taxes_id:
                 vals['invoice_line_tax_id'] = [(6, False, [taxe.id for taxe in product.taxes_id])]
 
-        if not vals.get("product_id"):
-            return super(account_invoice_line, self).create(cr, uid, vals, context=context)
-        product = self.pool["product.product"].browse(cr, uid, vals["product_id"], context=context)
-
-        storage_service = self.pool["ir.model.data"].get_object(cr, uid, "lct_tos_integration", "lct_product_service_storage")
-        if not product.service_id or not storage_service or product.service_id.name != storage_service.name:
-            return super(account_invoice_line, self).create(cr, uid, vals, context=context)
-
         if not vals.get("invoice_id"):
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
         invoice = self.pool["account.invoice"].browse(cr, uid, vals["invoice_id"], context=context)
@@ -259,6 +257,14 @@ class account_invoice_line(osv.osv):
         invoice.write({
             "expiry_date": berth if diff_days < 0 else pay_through,
             })
+
+        if not vals.get("product_id"):
+            return super(account_invoice_line, self).create(cr, uid, vals, context=context)
+        product = self.pool["product.product"].browse(cr, uid, vals["product_id"], context=context)
+
+        storage_service = self.pool["ir.model.data"].get_object(cr, uid, "lct_tos_integration", "lct_product_service_storage")
+        if not product.service_id or not storage_service or product.service_id.name != storage_service.name:
+            return super(account_invoice_line, self).create(cr, uid, vals, context=context)
 
         if not invoice.partner_id or not invoice.partner_id.property_product_pricelist:
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
@@ -280,12 +286,6 @@ class account_invoice_line(osv.osv):
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
         cont_ids = vals.pop("cont_nr_ids", [(0,0,[])])[0][2]
         line_ids = [None]*4
-
-        def _compute_offset(a, b):
-            return max(a-b, 0), max(b-a, 0)
-
-        def _get_timedelta_days(td):
-            return td.days + (td.seconds !=0)
 
         invoice_id = vals.get("invoice_id")
         invoice = invoice_obj.browse(cr, uid, invoice_id, context)
@@ -993,7 +993,6 @@ class account_invoice(osv.osv):
                 ('additional_storage', '=', _xml2bool(additional_storage)),
                 # ('service_id', '=', _code2id(self.pool.get('lct.product.service'), cr, uid, service_code_id, context=context)),
             ], context=context)
-            import ipdb; ipdb.set_trace()
 
         if type_ == 'SHC':
             special_handling_code_id = self._get_elmnt_text(line, 'special_handling_code_id')
