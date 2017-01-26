@@ -1119,7 +1119,7 @@ class account_invoice(osv.osv):
                 })
 
             special_handling_product_id = self._get_product_id(cr, uid, line, 'SHC', context=context)
-            if special_handling_code_id:
+            if special_handling_product_id:
                 parent_quantities_by_products.update({
                     special_handling_product_id: 1,
                 })
