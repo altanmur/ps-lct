@@ -1000,7 +1000,6 @@ class account_invoice(osv.osv):
                 ('size_id', '=', _code2id(self.pool.get('lct.product.size'), cr, uid, container_size, context=context)),
                 ('service_id', '=', _code2id(self.pool.get('lct.product.service'), cr, uid, special_handling_code_id, context=context)),
             ], context=context)
-            return product_ids
 
         if type_ == 'VBL':
             category = self._get_elmnt_text(line, 'transaction_category_id')
@@ -1119,8 +1118,8 @@ class account_invoice(osv.osv):
                     product_id: 1,
                 })
 
-            special_handling_product_ids = self._get_product_id(cr, uid, line, 'SHC', context=context)
-            for special_handling_product_id in special_handling_product_ids:
+            special_handling_product_id = self._get_product_id(cr, uid, line, 'SHC', context=context)
+            if special_handling_code_id:
                 parent_quantities_by_products.update({
                     special_handling_product_id: 1,
                 })
