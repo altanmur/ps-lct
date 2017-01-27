@@ -996,7 +996,6 @@ class account_invoice(osv.osv):
                 return product_ids[0]
 
         if type_ == 'SHC':
-            subcategory = self._get_elmnt_text(line, 'subcategory')
             container_size = self._get_elmnt_text(line, 'container_size')
             service_ids = []
             for shc_tag in line.findall('special_handling_code_id'):
@@ -1007,7 +1006,6 @@ class account_invoice(osv.osv):
 
             product_ids = self.pool.get('product.product').search(cr, uid, [
                 ('ptype', '=', 'shc'),
-                ('sub_category_id', '=', _code2id(self.pool.get('lct.product.sub.category'), cr, uid, subcategory, context=context)),
                 ('size_id', '=', _code2id(self.pool.get('lct.product.size'), cr, uid, container_size, context=context)),
                 ('service_id', 'in', service_ids),
             ], context=context)
