@@ -250,13 +250,14 @@ class account_invoice_line(osv.osv):
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
         invoice = self.pool["account.invoice"].browse(cr, uid, vals["invoice_id"], context=context)
 
-        pay_through = datetime.strptime(invoice.pay_through_date, "%Y-%m-%d %H:%M:%S")
-        berth = datetime.strptime(invoice.berth_time, "%Y-%m-%d %H:%M:%S")
-        diff_days = _get_timedelta_days(pay_through - berth)
+        if invoice.pay_through_date and invoice.berth_time:
+            pay_through = datetime.strptime(invoice.pay_through_date, "%Y-%m-%d %H:%M:%S")
+            berth = datetime.strptime(invoice.berth_time, "%Y-%m-%d %H:%M:%S")
+            diff_days = _get_timedelta_days(pay_through - berth)
 
-        invoice.write({
-            "expiry_date": berth if diff_days < 0 else pay_through,
-            })
+            invoice.write({
+                "expiry_date": berth if diff_days < 0 else pay_through,
+                })
 
         if not vals.get("product_id"):
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
