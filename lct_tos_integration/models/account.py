@@ -970,13 +970,10 @@ class account_invoice(osv.osv):
             category = self._get_elmnt_text(line, 'category')
             subcategory = self._get_elmnt_text(line, 'subcategory')
             container_size = self._get_elmnt_text(line, 'container_size')
-            # container_type = self._get_elmnt_text(line, 'container_type')
             container_hazardous_class = self._get_elmnt_text(line, 'container_hazardous_class')
             active_reefer = self._get_elmnt_text(line, 'active_reefer')
             oog = self._get_elmnt_text(line, 'oog')
             bundles = self._get_elmnt_text(line, 'bundles')
-            # special_handling_code_id = self._get_elmnt_text(line, 'special_handling_code_id')
-            # service_code_id = self._get_elmnt_text(line, 'service_code_id')
 
             product_ids = self.pool.get('product.product').search(cr, uid, [
                 ('ptype', '=', 'generic'),
@@ -985,26 +982,35 @@ class account_invoice(osv.osv):
                 ('category_id', '=', _code2id(self.pool.get('lct.product.category'), cr, uid, category, context=context)),
                 ('sub_category_id', '=', _code2id(self.pool.get('lct.product.sub.category'), cr, uid, subcategory, context=context)),
                 ('size_id', '=', _code2id(self.pool.get('lct.product.size'), cr, uid, container_size, context=context)),
-                # ('type_id', '=', _code2id(self.pool.get('lct.product.type'), cr, uid, container_type, context=context)),
                 ('hazardous_class', '=', _xml2bool(container_hazardous_class)),
                 ('active_reefer', '=', _xml2bool(active_reefer)),
                 ('oog', '=', _xml2bool(oog)),
                 ('bundles', '=', _xml2bool(bundles)),
                 ('additional_storage', '=', _xml2bool(additional_storage)),
-                # ('service_id', '=', _code2id(self.pool.get('lct.product.service'), cr, uid, service_code_id, context=context)),
             ], context=context)
 
+            if not len(product_ids):
+                raise osv.except_osv(('Error'), ("No Generic Product found."))
+            else:
+                return product_ids[0]
+
         if type_ == 'SHC':
-            special_handling_code_id = self._get_elmnt_text(line, 'special_handling_code_id')
             subcategory = self._get_elmnt_text(line, 'subcategory')
             container_size = self._get_elmnt_text(line, 'container_size')
+            service_ids = []
+            for shc_tag in line.findall('special_handling_code_id'):
+                if shc_tag.text:
+                    service_ids.append(
+                        _code2id(self.pool.get('lct.product.service'), cr, uid, shc_tag.text, context=context)
+                    )
 
             product_ids = self.pool.get('product.product').search(cr, uid, [
                 ('ptype', '=', 'shc'),
                 ('sub_category_id', '=', _code2id(self.pool.get('lct.product.sub.category'), cr, uid, subcategory, context=context)),
                 ('size_id', '=', _code2id(self.pool.get('lct.product.size'), cr, uid, container_size, context=context)),
-                ('service_id', '=', _code2id(self.pool.get('lct.product.service'), cr, uid, special_handling_code_id, context=context)),
+                ('service_id', 'in', service_ids),
             ], context=context)
+            return product_ids
 
         if type_ == 'VBL':
             category = self._get_elmnt_text(line, 'transaction_category_id')
@@ -1036,7 +1042,6 @@ class account_invoice(osv.osv):
             active_reefer = self._get_elmnt_text(line, 'active_reefer')
             oog = self._get_elmnt_text(line, 'oog')
             bundles = self._get_elmnt_text(line, 'bundles')
-            # special_handling_code_id = self._get_elmnt_text(line, 'special_handling_code_id')
             service_code_id = self._get_elmnt_text(line, 'transaction_direction')
 
             product_ids = self.pool.get('product.product').search(cr, uid, [
@@ -1123,8 +1128,8 @@ class account_invoice(osv.osv):
                     product_id: 1,
                 })
 
-            special_handling_product_id = self._get_product_id(cr, uid, line, 'SHC', context=context)
-            if special_handling_product_id:
+            special_handling_product_ids = self._get_product_id(cr, uid, line, 'SHC', context=context)
+            for special_handling_product_id in special_handling_product_ids:
                 parent_quantities_by_products.update({
                     special_handling_product_id: 1,
                 })
