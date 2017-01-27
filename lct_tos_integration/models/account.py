@@ -1367,12 +1367,17 @@ class account_invoice(osv.osv):
                         'type_id': imd_model.get_record_id(cr, uid, module, 'lct_product_type_oog')
                         })
 
-                product_ids = [self._get_product_id(cr, uid, line, 'VBL', context=context)]
+                product_ids = product_model.get_products_by_properties(cr, uid, dict(properties), line.sourceline, context=context)
 
                 if not all(product_ids):
                     error  = 'One or more product(s) could not be found with these combinations: '
                     error += ', '.join([key + ': ' + str(val) for key, val in properties.iteritems()])
                     raise osv.except_osv(('Error'), (error))
+
+                bundle = self._get_elmnt_text(line, 'bundles')
+                if bundle=='YES':
+                    product_ids.append(imd_model.get_record_id(cr, uid, module, 'bundle'))
+
 
                 for product_id in product_ids:
                     self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_id, product_id)
@@ -1810,14 +1815,15 @@ class account_invoice(osv.osv):
                     'status_id': status_id,
                     'type_id': type_id,
                 }
-                product_ids = self._get_product_id(cr, uid, line, 'YAC', context=context)
+                product_ids = product_model.get_products_by_properties(cr, uid, properties, line.sourceline, context=context)
 
                 oog = self._get_elmnt_text(line, 'oog')
                 oog = True if oog=='YES' else False
 
-                # bundle = self._get_elmnt_text(line, 'bundles')
-                # if bundle=='YES':
-                #     product_ids.append(imd_model.get_record_id(cr, uid, module, 'bundle'))
+                bundle = self._get_elmnt_text(line, 'bundles')
+                if bundle=='YES':
+                    product_ids.append(imd_model.get_record_id(cr, uid, module, 'bundle'))
+
                 cont_nr_vals = {
                     'name': self._get_elmnt_text(line, 'container_number'),
                     'quantity': 1,
