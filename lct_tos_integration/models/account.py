@@ -288,12 +288,9 @@ class account_invoice_line(osv.osv):
         cont_ids = vals.pop("cont_nr_ids", [(0,0,[])])[0][2]
         line_ids = [None]*4
 
-        invoice_id = vals.get("invoice_id")
-        invoice = invoice_obj.browse(cr, uid, invoice_id, context)
-
-        invoice.write({
-            "expiry_date": berth + timedelta(days=item.free_period) if diff_days < item.free_period else pay_through,
-            })
+        def _compute_duration_offset(max_duration, remaining, offset):
+            duration = min(remaining, max(max_duration - offset, 0))
+            return duration, max(offset - max_duration, 0)
 
         for container in cont_nr_obj.browse(cr, uid, cont_ids, context=context):
             if not container:
@@ -302,15 +299,15 @@ class account_invoice_line(osv.osv):
             cumul_duration = offset
 
             remaining_days = diff_days if diff_days < item.free_period else container.pricelist_qty
-            free_duration, offset = _compute_offset(min(remaining_days, item.free_period), offset)
+            free_duration, offset = _compute_duration_offset(item.free_period, remaining_days, offset)
             remaining_days -= free_duration
 
             slab1_max_duration = item.first_slab_last_day - item.free_period
-            slab1_duration, offset = _compute_offset(min(slab1_max_duration, remaining_days), offset)
+            slab1_duration, offset = _compute_duration_offset(slab1_max_duration, remaining_days, offset)
             remaining_days -= slab1_duration
 
             slab2_max_duration = item.second_slab_last_day - item.first_slab_last_day
-            slab2_duration, offset = _compute_offset(min(slab2_max_duration, remaining_days), offset)
+            slab2_duration, offset = _compute_duration_offset(slab2_max_duration, remaining_days, offset)
             remaining_days -= slab2_duration
 
             slab3_duration = remaining_days
