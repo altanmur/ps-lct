@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+        <record id="product.product_normal_action_sell" model="ir.actions.act_window">
+            <field name="domain">[('additional_storage', '=', False)]</field>
+        </record>
+
         <record id="view_product_template_form_lct" model="ir.ui.view">
             <field name="name">product.template.form.lct</field>
             <field name="inherit_id" ref="account.product_normal_form_view"/>

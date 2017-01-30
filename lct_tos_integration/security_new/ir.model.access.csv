@@ -469,3 +469,6 @@ perm_read,perm_write,perm_create,perm_unlink,id,name,group_id/id,model_id/id
 1,0,0,0,billing_responsible.model_product_product,billing_responsible.model_product_product,lct_tos_integration.group_billing_responsible,product.model_product_product
 1,0,0,0,invoicing_clerks.model_product_product,invoicing_clerks.model_product_product,lct_tos_integration.group_invoice_clerk,product.model_product_product
 1,0,0,0,cfo.model_product_product,cfo.model_product_product,lct_tos_integration.group_cfo,product.model_product_product
+
+
+1,0,0,0,read_access_account_direction,read_access_account_direction,,lct_tos_integration.model_account_direction
