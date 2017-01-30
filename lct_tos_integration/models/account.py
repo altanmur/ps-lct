@@ -1523,7 +1523,7 @@ class account_invoice(osv.osv):
                         'product_id': product_docking_day_fee_id,
                         'name': product_docking_day_fee.name,
                         'quantity': (datetime.strptime(invoice.dep_time, "%Y-%m-%d %H:%M:%S").date() -  datetime.strptime(invoice.berth_time, "%Y-%m-%d %H:%M:%S").date()).days + 1,
-                        'price_unit': 0.14*(invoice.woa_vbl*invoice.loa_vbl)**(1.5/1000),
+                        'price_unit': 0.14*( (invoice.woa_vbl*invoice.loa_vbl)**1.5 )/1000,
                         'uos_id': product_docking_day_fee.uom_id.id,
                         'account_id': account_dockage.id,
                         'cont_nr_ids': [(0,0,{
