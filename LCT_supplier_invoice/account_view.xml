@@ -105,7 +105,7 @@
                             <field name="account_id" groups="account.group_account_invoice"
                                 domain="[('company_id', '=', parent.company_id), ('journal_id', '=', parent.journal_id), ('type', '=', 'other')]"
                                 on_change="onchange_account_id(product_id, parent.partner_id, parent.type, parent.fiscal_position,account_id)" />
-                            <field name="account_analytic_id" string="Cost Center" groups="analytic.group_analytic_accounting" required="1"
+                            <field name="account_analytic_id" string="Cost Center" required="1"
                                 domain="[('type','!=','view'), ('company_id', '=', parent.company_id)]" attrs="{'readonly': [('state','=','synchronized')]}"/>
                             <field name="cost_purpose" attrs="{'readonly': [('state','=','synchronized')]}"/>
                             <field name="object_nr" attrs="{'readonly': [('state','=','synchronized')]}"/>
@@ -164,7 +164,7 @@
                     <field name="price_subtotal" sum="Total"/>
                     <field name="discount" groups="sale.group_discount_per_so_line"/>
                     <field name="account_id" groups="account.group_account_invoice"/>
-                    <field name="account_analytic_id" string="Cost Center" groups="analytic.group_analytic_accounting"/>
+                    <field name="account_analytic_id" string="Cost Center"/>
                     <field name="cost_purpose"/>
                     <field name="object_nr"/>
                     <field name="object_description"/>
@@ -205,7 +205,7 @@
                             <group>
                                 <field name="account_id" groups="account.group_account_invoice"/>
                                 <field name="invoice_line_tax_id" widget="many2many_tags"/>
-                                <field name="account_analytic_id" string="Cost Center" groups="analytic.group_analytic_accounting"/>
+                                <field name="account_analytic_id" string="Cost Center"/>
                                 <field name="company_id" groups="base.group_multi_company" readonly="1"/>
                                 <field name="asset_category_id"/>
                                 <field name="first_depreciation_date"/>
