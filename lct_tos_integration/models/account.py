@@ -96,7 +96,6 @@ class account_invoice_line(osv.osv):
                 'billed_quantity': billed_quantity,
                 'billed_price_unit': line.price_unit,
             }
-
         return res
 
     def _type2(self, cr, uid, ids, fields, arg, context=None):
@@ -224,6 +223,12 @@ class account_invoice_line(osv.osv):
         return line1.id
 
     def create(self, cr, uid, vals, context=None):
+        def _compute_offset(a, b):
+            return max(a-b, 0), max(b-a, 0)
+
+        def _get_timedelta_days(td):
+            return td.days + (td.seconds !=0)
+
         context = context or {}
         pricelist_obj = self.pool.get('product.pricelist')
         cont_nr_obj = self.pool["lct.container.number"]
@@ -241,6 +246,19 @@ class account_invoice_line(osv.osv):
             if product.taxes_id:
                 vals['invoice_line_tax_id'] = [(6, False, [taxe.id for taxe in product.taxes_id])]
 
+        if not vals.get("invoice_id"):
+            return super(account_invoice_line, self).create(cr, uid, vals, context=context)
+        invoice = self.pool["account.invoice"].browse(cr, uid, vals["invoice_id"], context=context)
+
+        if invoice.pay_through_date and invoice.berth_time:
+            pay_through = datetime.strptime(invoice.pay_through_date, "%Y-%m-%d %H:%M:%S")
+            berth = datetime.strptime(invoice.berth_time, "%Y-%m-%d %H:%M:%S")
+            diff_days = _get_timedelta_days(pay_through - berth)
+
+            invoice.write({
+                "expiry_date": berth if diff_days < 0 else pay_through,
+                })
+
         if not vals.get("product_id"):
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
         product = self.pool["product.product"].browse(cr, uid, vals["product_id"], context=context)
@@ -248,10 +266,6 @@ class account_invoice_line(osv.osv):
         storage_service = self.pool["ir.model.data"].get_object(cr, uid, "lct_tos_integration", "lct_product_service_storage")
         if not product.service_id or not storage_service or product.service_id.name != storage_service.name:
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
-
-        if not vals.get("invoice_id"):
-            return super(account_invoice_line, self).create(cr, uid, vals, context=context)
-        invoice = self.pool["account.invoice"].browse(cr, uid, vals["invoice_id"], context=context)
 
         if not invoice.partner_id or not invoice.partner_id.property_product_pricelist:
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
@@ -261,7 +275,7 @@ class account_invoice_line(osv.osv):
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
         version = pricelist.version_id[0]
 
-        items = [item for item in version.items_id if item.product_tmpl_id == product.product_tmpl_id] or [item for item in version.items_id if not item.product_id]
+        items = [item for item in version.items_id if item.product_tmpl_id == product.product_tmpl_id] or [item for item in version.items_id if not item.product_tmpl_id and not item.product_id]
         if len(items) != 1:
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
         item = items[0]
@@ -274,21 +288,12 @@ class account_invoice_line(osv.osv):
         cont_ids = vals.pop("cont_nr_ids", [(0,0,[])])[0][2]
         line_ids = [None]*4
 
-        def _compute_offset(a, b):
-            return max(a-b, 0), max(b-a, 0)
-
-        def _get_timedelta_days(td):
-            return td.days + (td.seconds !=0)
-
         invoice_id = vals.get("invoice_id")
         invoice = invoice_obj.browse(cr, uid, invoice_id, context)
-        pay_through = datetime.strptime(invoice.pay_through_date, "%Y-%m-%d %H:%M:%S")
-        berth = datetime.strptime(invoice.berth_time, "%Y-%m-%d %H:%M:%S")
-        diff_days = _get_timedelta_days(pay_through - berth)
-        if not invoice.expiry_date:
-            invoice.write({
-                "expiry_date": berth + timedelta(days=item.free_period) if diff_days < item.free_period else pay_through,
-                })
+
+        invoice.write({
+            "expiry_date": berth + timedelta(days=item.free_period) if diff_days < item.free_period else pay_through,
+            })
 
         for container in cont_nr_obj.browse(cr, uid, cont_ids, context=context):
             if not container:
@@ -515,7 +520,7 @@ class account_invoice(osv.osv):
         'generic_customer': fields.related('partner_id', 'generic_customer', type='boolean', string="Generic customer"),
         'generic_customer_name': fields.char("Customer Name"),
         'direction_id': fields.many2one('account.direction', string='Direction'),
-        'expiry_date': fields.datetime(string='Expiry Date'),
+        'expiry_date': fields.date(string='Expiry Date'),
         'pay_through_date': fields.datetime(string='Pay Through Date'),
     }
 
@@ -830,104 +835,6 @@ class account_invoice(osv.osv):
                     return int(plugged_time)
         return 0
 
-    def _get_app_import_line_quantities_by_products(self, cr, uid, line, additional_storage, context=None):
-        imd_model = self.pool.get('ir.model.data')
-        module = 'lct_tos_integration'
-
-        type_quantities_by_services = {}
-
-        category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_category_import')
-        size_id = self._get_app_size(cr, uid, line)
-        sub_category_id = self._get_app_sub_category(cr, uid, line)
-        type_id, service_id = self._get_app_type_service_by_type(cr, uid, line)
-        if not sub_category_id:
-            sub_category_id = imd_model.get_record_id(cr, uid, module, 'lct_product_sub_category_localimport')
-
-        type_quantities_by_services[service_id] = (type_id, 1)
-
-        storage = self._get_app_import_storage(line)
-        if storage > 0:
-            service_id = imd_model.get_record_id(cr, uid, module, 'lct_product_service_storage')
-            type_quantities_by_services[service_id] = (type_id, storage)
-
-        plugged_time = self._get_app_import_plugged_time(line)
-        if plugged_time > 0:
-            service_id = imd_model.get_record_id(cr, uid, module, 'lct_product_service_reeferelectricity')
-            type_quantities_by_services[service_id] = (type_id, plugged_time)
-
-        type_id, service_id = self._get_app_import_type_service_by_cfs_activity(cr, uid, line)
-        type_quantities_by_services[service_id] = (type_id, 1)
-
-        properties = {
-            'category_id': category_id,
-            'size_id': size_id,
-            'status_id': False,
-            'sub_category_id': sub_category_id,
-            'additional_storage': additional_storage,
-        }
-
-        if additional_storage:
-            for xml_id in ['lct_product_service_stevedoringcharges', 'lct_product_service_shorehandling']:
-                to_remove_service_id = imd_model.get_object_reference(cr, uid, module, xml_id)[1]
-                type_quantities_by_services.pop(to_remove_service_id, None)
-
-        quantities_by_products = {}
-        for service_id, type_quantity in type_quantities_by_services.iteritems():
-            properties['service_ids'] = [service_id]
-            properties['type_id'] = type_quantity[0]
-            product_ids = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context)
-            for product_id in product_ids:
-                quantities_by_products[product_id] = type_quantity[1]
-
-        return quantities_by_products
-
-    def _get_app_export_line_quantities_by_products(self, cr, uid, line, additional_storage, empty_release=False, context=None):
-        imd_model = self.pool.get('ir.model.data')
-        module = 'lct_tos_integration'
-        if empty_release:
-            category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_export_e_r')
-        else:
-            category_id = self.pool.get('ir.model.data').get_record_id(cr, uid, 'lct_tos_integration', 'lct_product_category_export')
-        size_id = self._get_app_size(cr, uid, line)
-        sub_category_id = self._get_app_sub_category(cr, uid, line)
-        if not sub_category_id:
-            type_id = False
-        type_id, service_id = self._get_app_type_service_by_type(cr, uid, line)
-        properties = {
-            'category_id': category_id,
-            'type_id': type_id,
-            'size_id': size_id,
-            'status_id': False,
-            'sub_category_id': sub_category_id,
-            'service_ids': [service_id],
-            'additional_storage': additional_storage,
-        }
-        product_ids = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context)
-
-        type_id, service_id = self._get_app_export_type_service_by_cfs_activity(cr, uid, line)
-        properties.update({
-            'type_id': type_id,
-            'service_ids': [service_id],
-        })
-        product_ids.extend(self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context))
-
-        quantities_by_products = dict([(product_id, 1) for product_id in product_ids])
-        status = self._get_elmnt_text(line, 'status')
-        categ = self._get_elmnt_text(line, 'category')
-        if status == "F" and categ == "E":
-            serv_id = self.pool["ir.model.data"].get_object(cr, uid, module, "lct_product_service_weighing").id
-            properties.update({"service_ids": [serv_id]})
-            hazardous_class = self._get_elmnt_text(line, 'container_hazardous_class')
-            if hazardous_class:
-                properties.update({"hazardous_class": hazardous_class == "YES"})
-            active_reefer = self._get_elmnt_text(line, 'active_reefer')
-            if active_reefer:
-                properties.update({"active_reefer": active_reefer == "YES"})
-            weighing_id = self.pool.get('product.product').get_products_by_properties(cr, uid, properties, line.sourceline, context=context)[0]
-            quantities_by_products.update({weighing_id: 1})
-
-        return quantities_by_products
-
     def _get_shc_service(self, cr, uid, shc):
         if shc == 'SCC':
             xml_id = 'lct_product_service_scanning'
@@ -978,6 +885,180 @@ class account_invoice(osv.osv):
         else:
             return []
 
+    def _get_version(self, partner):
+        if not partner or not partner.property_product_pricelist:
+            return
+        pricelist = partner.property_product_pricelist
+
+        versions = [v for v in pricelist.version_id if (v.date_start or '1') <= fields.datetime.now() <= (v.date_end or '9')]
+        if len(versions) == 1:
+            return versions[0]
+
+    def _get_storage_val(self, cr, uid, appointment, line, product, version):
+        storage_val = self._get_elmnt_text(line, 'storage')
+        storage_service = self.pool["ir.model.data"].get_object(cr, uid, "lct_tos_integration", "lct_product_service_storage")
+        child_storages = [rel.child_id for rel in product.child_ids if rel.child_id.service_id == storage_service]
+        if not child_storages:
+            if product.service_id == storage_service:
+                storage_product = product
+            else:
+                return storage_val
+        else:
+            storage_product = child_storages[0]
+
+        items = [item for item in version.items_id if item.product_tmpl_id == storage_product.product_tmpl_id] or [item for item in version.items_id if not item.product_tmpl_id and not item.product_id]
+        if len(items) != 1:
+            raise('Pricelist Version %s do not have unique item for the product %s (based on template_id)' %(version.name, product.name))
+        item = items[0]
+
+        if not item.slab_rate:
+            return storage_val
+
+        free_period = item.free_period
+        pay_through_date = datetime.strptime(self._get_elmnt_text(appointment, 'pay_through_date'), "%Y-%m-%d %H:%M:%S")
+        berthing_time = datetime.strptime(self._get_elmnt_text(appointment, 'berthing_time'), "%Y-%m-%d %H:%M:%S")
+        if (pay_through_date - berthing_time).days < free_period:
+            return (pay_through_date - berthing_time).days + 1
+        return storage_val
+
+    def _line2vals(self, cr, uid, appointment, line, product, version):
+        storage = self._get_storage_val(cr, uid, appointment, line, product, version)
+        return {
+            'storage': self._get_storage_val(cr, uid, appointment, line, product, version),
+            'plugged_time': self._get_elmnt_text(line, 'plugged_time'),
+        }
+
+    def _split(self, cr, uid, quantities_by_products, appointment, line, version, context=None):
+        context = context or {}
+        product_model = self.pool.get('product.product')
+        res = {}
+
+        for product_id, qty in quantities_by_products.items():
+            product = product_model.browse(cr, uid, product_id, context=context)
+            vals = self._line2vals(cr, uid, appointment, line, product, version)
+            if not product.child_ids:
+                res.update({
+                    product_id: qty,
+                })
+            for child_line in product.child_ids:
+                qty_fixed = child_line.qty_fixed if child_line.qty_fixed else 1
+                qty_based_on = vals.get(child_line.qty_based_on, 1)
+                child_qty = qty * qty_fixed * (qty_based_on or 0)
+                if child_qty:
+                    res.update({
+                        child_line.child_id.id: child_qty,
+                    })
+        return res
+
+    def _get_product_id(self, cr, uid, line, type_, additional_storage='NO', context=None):
+        context = context or {}
+
+        def _xml2bool(xml):
+            if not xml or xml == 'NO':
+                return False
+            return True
+
+        def _code2id(obj, cr, uid, code, context=None):
+            context = context or {}
+            res = obj.search(cr, uid, [('code', '=', code)], context=context)
+            if res:
+                return res[0]
+            return False
+
+        if type_ == 'APP':
+            cfs_activity = self._get_elmnt_text(line, 'cfs_activity')
+            status = self._get_elmnt_text(line, 'status')
+            category = self._get_elmnt_text(line, 'category')
+            subcategory = self._get_elmnt_text(line, 'subcategory')
+            container_size = self._get_elmnt_text(line, 'container_size')
+            container_hazardous_class = self._get_elmnt_text(line, 'container_hazardous_class')
+            active_reefer = self._get_elmnt_text(line, 'active_reefer')
+            oog = self._get_elmnt_text(line, 'oog')
+            bundles = self._get_elmnt_text(line, 'bundles')
+
+            product_ids = self.pool.get('product.product').search(cr, uid, [
+                ('ptype', '=', 'generic'),
+                ('cfs_activity', '=', _xml2bool(cfs_activity)),
+                ('status_id', '=', _code2id(self.pool.get('lct.product.status'), cr, uid, status, context=context)),
+                ('category_id', '=', _code2id(self.pool.get('lct.product.category'), cr, uid, category, context=context)),
+                ('sub_category_id', '=', _code2id(self.pool.get('lct.product.sub.category'), cr, uid, subcategory, context=context)),
+                ('size_id', '=', _code2id(self.pool.get('lct.product.size'), cr, uid, container_size, context=context)),
+                ('hazardous_class', '=', _xml2bool(container_hazardous_class)),
+                ('active_reefer', '=', _xml2bool(active_reefer)),
+                ('oog', '=', _xml2bool(oog)),
+                ('bundles', '=', _xml2bool(bundles)),
+                ('additional_storage', '=', _xml2bool(additional_storage)),
+            ], context=context)
+
+            if not len(product_ids):
+                raise osv.except_osv(('Error'), ("No Generic Product found."))
+            else:
+                return product_ids[0]
+
+        if type_ == 'SHC':
+            container_size = self._get_elmnt_text(line, 'container_size')
+            service_ids = []
+            for shc_tag in line.findall('special_handling_code_id'):
+                if shc_tag.text:
+                    service_ids.append(
+                        _code2id(self.pool.get('lct.product.service'), cr, uid, shc_tag.text, context=context)
+                    )
+
+            product_ids = self.pool.get('product.product').search(cr, uid, [
+                ('ptype', '=', 'shc'),
+                ('size_id', '=', _code2id(self.pool.get('lct.product.size'), cr, uid, container_size, context=context)),
+                ('service_id', 'in', service_ids),
+            ], context=context)
+            return product_ids
+
+        if type_ == 'VBL':
+            category = self._get_elmnt_text(line, 'transaction_category_id')
+            container_size = self._get_elmnt_text(line, 'container_size')
+            container_type = self._get_elmnt_text(line, 'container_type_id')
+            container_hazardous_class = self._get_elmnt_text(line, 'container_hazardous_class_id')
+            active_reefer = self._get_elmnt_text(line, 'active_reefer')
+            oog = self._get_elmnt_text(line, 'oog')
+            bundles = self._get_elmnt_text(line, 'bundles')
+            service_code_id = self._get_elmnt_text(line, 'transaction_direction')
+
+            product_ids = self.pool.get('product.product').search(cr, uid, [
+                ('ptype', '=', 'generic'),
+                ('category_id', '=', _code2id(self.pool.get('lct.product.category'), cr, uid, category, context=context)),
+                ('size_id', '=', _code2id(self.pool.get('lct.product.size'), cr, uid, container_size, context=context)),
+                ('type_id', '=', _code2id(self.pool.get('lct.product.type'), cr, uid, container_type, context=context)),
+                ('hazardous_class', '=', _xml2bool(container_hazardous_class)),
+                ('active_reefer', '=', _xml2bool(active_reefer)),
+                ('oog', '=', _xml2bool(oog)),
+                ('bundles', '=', _xml2bool(bundles)),
+            ], context=context)
+
+        if type_ == 'YAC':
+            status = self._get_elmnt_text(line, 'status')
+            category = self._get_elmnt_text(line, 'category')
+            container_size = self._get_elmnt_text(line, 'container_size')
+            container_type = self._get_elmnt_text(line, 'container_type_id')
+            container_hazardous_class = self._get_elmnt_text(line, 'container_hazardous_class_id')
+            active_reefer = self._get_elmnt_text(line, 'active_reefer')
+            oog = self._get_elmnt_text(line, 'oog')
+            bundles = self._get_elmnt_text(line, 'bundles')
+            service_code_id = self._get_elmnt_text(line, 'transaction_direction')
+
+            product_ids = self.pool.get('product.product').search(cr, uid, [
+                ('ptype', '=', 'generic'),
+                ('status_id', '=', _code2id(self.pool.get('lct.product.status'), cr, uid, status, context=context)),
+                ('category_id', '=', _code2id(self.pool.get('lct.product.category'), cr, uid, category, context=context)),
+                ('size_id', '=', _code2id(self.pool.get('lct.product.size'), cr, uid, container_size, context=context)),
+                ('type_id', '=', _code2id(self.pool.get('lct.product.type'), cr, uid, container_type, context=context)),
+                ('hazardous_class', '=', _xml2bool(container_hazardous_class)),
+                ('active_reefer', '=', _xml2bool(active_reefer)),
+                ('oog', '=', _xml2bool(oog)),
+                ('bundles', '=', _xml2bool(bundles)),
+                ('service_id', '=', _code2id(self.pool.get('lct.product.service'), cr, uid, service_code_id, context=context)),
+            ], context=context)
+
+        if product_ids:
+            return product_ids[0]
+
     def _create_app(self, cr, uid, appointment, context=None):
         imd_model = self.pool.get('ir.model.data')
         product_model = self.pool.get('product.product')
@@ -998,6 +1079,7 @@ class account_invoice(osv.osv):
         else:
             raise osv.except_osv(('Error'), ("Unknown value for tag 'individual_customer': %s" % ind_cust))
         partner = partner_model.browse(cr, uid, partner_id, context=context)
+        version = self._get_version(partner)
         account = partner.property_account_receivable
         if not account:
             raise osv.except_osv(('Error'), ('No account receivable could be found on customer %s' % partner.name))
@@ -1034,22 +1116,26 @@ class account_invoice(osv.osv):
         mult_rate = self.pool.get('lct.multiplying.rate').get_active_rate(cr, uid, context=context)
         invoice_lines = {}
         for line in lines.findall('line'):
-            category = self._get_elmnt_text(line, 'category')
-            if category == 'I':
-                quantities_by_products = self._get_app_import_line_quantities_by_products(cr, uid, line, additional_storage, context=context)
-            elif category in ['E', 'Z']:
-                quantities_by_products = self._get_app_export_line_quantities_by_products(cr, uid, line, additional_storage, empty_release=(category == 'Z'), context=context)
-
             if first_line:
                 first_line = False
                 app_direction_id = self._get_app_direction(cr, uid, line)
 
-            bundle = self._get_elmnt_text(line, 'bundles')
-            if bundle=='YES':
-                bundle_product_id = imd_model.get_record_id(cr, uid, 'lct_tos_integration', 'bundle')
-                quantities_by_products[bundle_product_id] = 1
+            parent_quantities_by_products = {}
+            product_id = self._get_product_id(cr, uid, line, 'APP', additional_storage=additional_storage, context=context)
+            if product_id:
+                parent_quantities_by_products.update({
+                    product_id: 1,
+                })
 
-            shc_product_ids = self._get_shc_products(cr, uid, line, additional_storage, context=context)
+            special_handling_product_ids = self._get_product_id(cr, uid, line, 'SHC', context=context)
+            for special_handling_product_id in special_handling_product_ids:
+                parent_quantities_by_products.update({
+                    special_handling_product_id: 1,
+                })
+
+            quantities_by_products = self._split(cr, uid, parent_quantities_by_products, appointment, line, version, context=context)
+
+            # shc_product_ids = self._get_shc_products(cr, uid, line, additional_storage, context=context)
 
             oog = self._get_elmnt_text(line, 'oog')
             oog = True if oog=='YES' else False
@@ -1069,26 +1155,20 @@ class account_invoice(osv.osv):
                 'oog': oog,
                 'storage_offset': offset,
             }
-            service_elec = imd_model.get_record_id(cr, uid, module, 'lct_product_service_reeferelectricity')
-            service_storage = imd_model.get_record_id(cr, uid, module, 'lct_product_service_storage')
 
             for product_id, quantity in quantities_by_products.iteritems():
                 if product_id not in invoice_lines:
                     invoice_lines[product_id] = []
                 product = product_model.browse(cr, uid, product_id, context=context)
-                if additional_storage and ((product.service_id and product.service_id.id not in [service_elec, service_storage]) or not product.service_id):
-                    continue
                 cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=quantity, quantity=1), context=context)
                 invoice_lines[product_id].append(cont_nr_id)
 
-            for shc_product_id in shc_product_ids:
-                if shc_product_id not in invoice_lines:
-                    invoice_lines[shc_product_id] = []
-                product = product_model.browse(cr, uid, shc_product_id, context=context)
-                if additional_storage and ((product.service_id and product.service_id.id not in [service_elec, service_storage]) or not product.service_id):
-                    continue
-                cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=1, quantity=1), context=context)
-                invoice_lines[shc_product_id].append(cont_nr_id)
+            # for shc_product_id in shc_product_ids:
+            #     if shc_product_id not in invoice_lines:
+            #         invoice_lines[shc_product_id] = []
+            #     product = product_model.browse(cr, uid, shc_product_id, context=context)
+            #     cont_nr_id = cont_nr_model.create(cr, uid, dict(cont_nr_vals, pricelist_qty=1, quantity=1), context=context)
+            #     invoice_lines[shc_product_id].append(cont_nr_id)
 
         for product_id, cont_nr_ids in  invoice_lines.iteritems():
             product = product_model.browse(cr, uid, product_id, context=context)
@@ -1104,6 +1184,7 @@ class account_invoice(osv.osv):
                 quantity += pricelist_qty
                 price_multi = pricelist_model.price_get_multi(cr, uid, [pricelist_id], [(product_id, pricelist_qty, partner_id)], context=context)
                 price += pricelist_qty*price_multi[product_id][pricelist_id] * (oog and mult_rate or 1.)
+
             line_vals = {
                 'invoice_id': app_id,
                 'product_id': product_id,
@@ -1289,9 +1370,9 @@ class account_invoice(osv.osv):
                     properties.update({
                         'type_id': imd_model.get_record_id(cr, uid, module, 'lct_product_type_oog')
                         })
-                    # oog_qty += 1
 
                 product_ids = product_model.get_products_by_properties(cr, uid, dict(properties), line.sourceline, context=context)
+
                 if not all(product_ids):
                     error  = 'One or more product(s) could not be found with these combinations: '
                     error += ', '.join([key + ': ' + str(val) for key, val in properties.iteritems()])
@@ -1300,6 +1381,7 @@ class account_invoice(osv.osv):
                 bundle = self._get_elmnt_text(line, 'bundles')
                 if bundle=='YES':
                     product_ids.append(imd_model.get_record_id(cr, uid, module, 'bundle'))
+
 
                 for product_id in product_ids:
                     self._prepare_invoice_line_dict(invoice_lines, partner_id, vessel_id, product_id)
@@ -1745,6 +1827,7 @@ class account_invoice(osv.osv):
                 bundle = self._get_elmnt_text(line, 'bundles')
                 if bundle=='YES':
                     product_ids.append(imd_model.get_record_id(cr, uid, module, 'bundle'))
+
                 cont_nr_vals = {
                     'name': self._get_elmnt_text(line, 'container_number'),
                     'quantity': 1,

@@ -21,6 +21,21 @@
 
 from openerp.osv import fields, osv
 
+
+class lct_product_parent_child(osv.osv):
+    _name = 'product_parent_child'
+
+    _columns = {
+        'parent_id': fields.many2one('product.product', string='Parent'),
+        'child_id': fields.many2one('product.product', domain="[('additional_storage', '=', False)]", string='Child'),
+        'qty_fixed': fields.integer('Fixed Quantity'),
+        'qty_based_on': fields.selection([
+            ('storage', 'Storage'),
+            ('plugged_time', 'Plugged Time'),
+        ], string="Based on"),
+    }
+
+
 class product_product(osv.osv):
     _inherit = 'product.product'
 
@@ -41,6 +56,16 @@ class product_product(osv.osv):
         'additional_storage': fields.boolean(string="Additional storage"),
         'active_reefer': fields.boolean(string="Active Reefer"),
         'hazardous_class': fields.boolean(string="Hazardous Class"),
+        'cfs_activity': fields.boolean('CFS Activity'),
+        'active_reefer': fields.boolean('Active Reefer'),
+        'oog': fields.boolean('OOG'),
+        'bundles': fields.boolean('Bundles'),
+        'child_ids': fields.one2many('product_parent_child', 'parent_id', string='Children'),
+        'ptype': fields.selection([
+            ('generic', 'Generic Product'),
+            ('shc', 'Shore Handling Code'),
+        ], string='Product Type'),
+
         'top_id': fields.many2one('product.product', 'Parent'),
         'sub_ids': fields.one2many('product.product', 'top_id', 'Children'),
     }
@@ -138,21 +163,24 @@ class lct_product_service(osv.osv):
     _name = 'lct.product.service'
 
     _columns = {
-        'name' : fields.char('Name'),
+        'name': fields.char('Name'),
+        'code': fields.char('Code'),
     }
 
 class lct_product_category(osv.osv):
     _name = 'lct.product.category'
 
     _columns = {
-        'name' : fields.char('Name'),
+        'name': fields.char('Name'),
+        'code': fields.char('Code'),
     }
 
 class lct_product_sub_category(osv.osv):
     _name = 'lct.product.sub.category'
 
     _columns = {
-        'name' : fields.char('Name'),
+        'name': fields.char('Name'),
+        'code': fields.char('Code'),
     }
 
 class lct_product_size(osv.osv):
@@ -161,6 +189,7 @@ class lct_product_size(osv.osv):
 
     _columns = {
         'size': fields.integer('Size'),
+        'code': fields.char('Code'),
     }
 
 class lct_product_status(osv.osv):
@@ -168,6 +197,7 @@ class lct_product_status(osv.osv):
 
     _columns = {
         'name': fields.char('Name'),
+        'code': fields.char('Code'),
     }
 
 class lct_product_type(osv.osv):
@@ -175,4 +205,5 @@ class lct_product_type(osv.osv):
 
     _columns = {
         'name': fields.char('Name'),
+        'code': fields.char('Code'),
     }
