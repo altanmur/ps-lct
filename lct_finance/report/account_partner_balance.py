@@ -101,11 +101,17 @@ def _set_closing_value(d):
         'closing_credit': 0 if diff > 0 else (-diff if diff else 0),
         })
 
+def _add_special_restriction_on_query(query, special):
+    keyword = 'fiscalyear_id'
+    return query.replace(keyword, 'special = %s and %s' %('true' if special else 'false', keyword))
+
 # Monkey patching
 def set_context(self, objects, data, ids, report_type=None):
     self.display_partner = data['form'].get('display_partner', 'non-zero_balance')
     obj_move = self.pool.get('account.move.line')
     self.query = obj_move._query_get(self.cr, self.uid, obj='l', context=data['form'].get('used_context', {}))
+    self.query = _add_special_restriction_on_query(self.query, False)
+
     self.result_selection = data['form'].get('result_selection')
     self.target_move = data['form'].get('target_move', 'all')
 
@@ -126,13 +132,10 @@ def set_context(self, objects, data, ids, report_type=None):
     res = super(partner_balance, self).set_context(objects, data, ids, report_type=report_type)
 
     lines = self.lines()
-    ctx = data['form'].get('used_context', {})
-    opening_ctx = _get_prev_ctx(self, ctx)
-    if opening_ctx:
-        self.query = obj_move._query_get(self.cr, self.uid, obj='l', context=opening_ctx)
-        opening_lines = self.lines()
-    else:
-        opening_lines = []
+
+    self.query = obj_move._query_get(self.cr, self.uid, obj='l', context=data['form'].get('used_context', {}))
+    self.query = _add_special_restriction_on_query(self.query, True)
+    opening_lines = self.lines()
 
     mix_lines = {}
     for line in lines:
