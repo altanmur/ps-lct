@@ -101,11 +101,17 @@ def _set_closing_value(d):
         'closing_credit': 0 if diff > 0 else (-diff if diff else 0),
         })
 
+def _remove_opening_periods_from_query(query):
+    keyword = 'fiscalyear_id'
+    return query.replace(keyword, 'special = false and %s' %keyword)
+
 # Monkey patching
 def set_context(self, objects, data, ids, report_type=None):
     self.display_partner = data['form'].get('display_partner', 'non-zero_balance')
     obj_move = self.pool.get('account.move.line')
     self.query = obj_move._query_get(self.cr, self.uid, obj='l', context=data['form'].get('used_context', {}))
+    self.query = _remove_opening_periods_from_query(self.query)
+
     self.result_selection = data['form'].get('result_selection')
     self.target_move = data['form'].get('target_move', 'all')
 
@@ -130,6 +136,7 @@ def set_context(self, objects, data, ids, report_type=None):
     opening_ctx = _get_prev_ctx(self, ctx)
     if opening_ctx:
         self.query = obj_move._query_get(self.cr, self.uid, obj='l', context=opening_ctx)
+        self.query = _remove_opening_periods_from_query(self.query)
         opening_lines = self.lines()
     else:
         opening_lines = []
