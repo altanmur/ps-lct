@@ -23,8 +23,13 @@ import time
 from openerp.report import report_sxw
 from openerp.addons.account.report.account_aged_partner_balance import aged_trial_report
 
+def _get_openning_period_ids(self):
+    MoveLine = self.pool['account.period']
+    return tuple(MoveLine.search(self.cr, self.uid, [('special', '=', True)]))
+
 def _get_lines(self, form):
     res = []
+    opening_ids = _get_openning_period_ids(self)
     move_state = ['draft','posted']
     if self.target_move == 'posted':
         move_state = ['posted']
@@ -41,7 +46,8 @@ def _get_lines(self, form):
                 AND (l.partner_id=res_partner.id)\
                 AND (l.date <= %s)\
                 AND ' + self.query + ' \
-            ORDER BY res_partner.name', (tuple(move_state), tuple(self.ACCOUNT_TYPE), self.date_from, self.date_from,))
+                AND (l.period_id NOT IN %s)\
+            ORDER BY res_partner.name', (tuple(move_state), tuple(self.ACCOUNT_TYPE), self.date_from, self.date_from, opening_ids,))
     partners = self.cr.dictfetchall()
     ## mise a 0 du total
     for i in range(11):
@@ -65,7 +71,8 @@ def _get_lines(self, form):
                 AND ' + self.query + '\
                 AND account_account.active\
                 AND (l.date <= %s)\
-                GROUP BY l.partner_id ', (tuple(move_state), tuple(self.ACCOUNT_TYPE), tuple(partner_ids), self.date_from, self.date_from,))
+                AND (l.period_id NOT IN %s)\
+                GROUP BY l.partner_id ', (tuple(move_state), tuple(self.ACCOUNT_TYPE), tuple(partner_ids), self.date_from, self.date_from, opening_ids,))
     t = self.cr.fetchall()
     for i in t:
         totals[i[0]] = i[1]
@@ -84,8 +91,9 @@ def _get_lines(self, form):
                     OR (l.reconcile_id IN (SELECT recon.id FROM account_move_reconcile AS recon WHERE recon.create_date > %s )))\
                     AND '+ self.query + '\
                     AND account_account.active\
-                AND (l.date <= %s)\
-                    GROUP BY l.partner_id', (tuple(move_state), tuple(self.ACCOUNT_TYPE), self.date_from, tuple(partner_ids),self.date_from, self.date_from,))
+                    AND (l.date <= %s)\
+                    AND (l.period_id NOT IN %s)\
+                    GROUP BY l.partner_id', (tuple(move_state), tuple(self.ACCOUNT_TYPE), self.date_from, tuple(partner_ids),self.date_from, self.date_from, opening_ids,))
         t = self.cr.fetchall()
         for i in t:
             future_past[i[0]] = i[1]
@@ -101,8 +109,9 @@ def _get_lines(self, form):
                     OR (l.reconcile_id IN (SELECT recon.id FROM account_move_reconcile AS recon WHERE recon.create_date > %s )))\
                     AND '+ self.query + '\
                     AND account_account.active\
-                AND (l.date <= %s)\
-                    GROUP BY l.partner_id', (tuple(move_state), tuple(self.ACCOUNT_TYPE), self.date_from, tuple(partner_ids), self.date_from, self.date_from,))
+                    AND (l.date <= %s)\
+                    AND (l.period_id NOT IN %s)\
+                    GROUP BY l.partner_id', (tuple(move_state), tuple(self.ACCOUNT_TYPE), self.date_from, tuple(partner_ids), self.date_from, self.date_from, opening_ids,))
         t = self.cr.fetchall()
         for i in t:
             future_past[i[0]] = i[1]
@@ -134,7 +143,8 @@ def _get_lines(self, form):
                     AND ''' + self.query + '''
                     AND account_account.active
                     AND ''' + dates_query + '''
-                AND (l.date <= %s)
+                    AND (l.date <= %s)
+                    AND (l.period_id NOT IN ''' + str(opening_ids) + ''')
                 GROUP BY l.partner_id, l.reconcile_partial_id''', args_list)
         partners_partial = self.cr.fetchall()
         partners_amount = dict((i[0],0) for i in partners_partial)
@@ -157,7 +167,8 @@ def _get_lines(self, form):
                                        FROM account_move_line AS l, account_move AS am
                                        WHERE l.move_id = am.id AND am.state in %s
                                        AND l.reconcile_partial_id = %s
-                                       AND ''' + limit_date, (tuple(move_state), partner_info[2], self.date_from))
+                                       AND ''' + limit_date + '''
+                                       AND (l.period_id NOT IN %s)''', (tuple(move_state), partner_info[2], self.date_from, opening_ids,))
                     unreconciled_amount = self.cr.fetchall()
                     partners_amount[partner_info[0]] += unreconciled_amount[0][0]
             else:
@@ -211,6 +222,7 @@ def _get_lines(self, form):
 
 def _get_lines_with_out_partner(self, form):
     res = []
+    opening_ids = _get_openning_period_ids(self)
     move_state = ['draft','posted']
     if self.target_move == 'posted':
         move_state = ['posted']
@@ -229,7 +241,8 @@ def _get_lines_with_out_partner(self, form):
                 OR (l.reconcile_id IN (SELECT recon.id FROM account_move_reconcile AS recon WHERE recon.create_date > %s )))\
                 AND ' + self.query + '\
                 AND (l.date <= %s)\
-                AND account_account.active ',(tuple(move_state), tuple(self.ACCOUNT_TYPE), self.date_from, self.date_from,))
+                AND account_account.active\
+                AND (l.period_id NOT IN %s)',(tuple(move_state), tuple(self.ACCOUNT_TYPE), self.date_from, self.date_from, opening_ids,))
     t = self.cr.fetchall()
     for i in t:
         totals['Unknown Partner'] = i[0]
@@ -245,7 +258,8 @@ def _get_lines_with_out_partner(self, form):
                     AND ((l.reconcile_id IS NULL)\
                     OR (l.reconcile_id IN (SELECT recon.id FROM account_move_reconcile AS recon WHERE recon.create_date > %s )))\
                     AND '+ self.query + '\
-                    AND account_account.active ', (tuple(move_state), tuple(self.ACCOUNT_TYPE), self.date_from, self.date_from))
+                    AND account_account.active\
+                    AND (l.period_id NOT IN %s)', (tuple(move_state), tuple(self.ACCOUNT_TYPE), self.date_from, self.date_from, opening_ids,))
         t = self.cr.fetchall()
         for i in t:
             future_past['Unknown Partner'] = i[0]
@@ -260,7 +274,8 @@ def _get_lines_with_out_partner(self, form):
                     AND ((l.reconcile_id IS NULL)\
                     OR (l.reconcile_id IN (SELECT recon.id FROM account_move_reconcile AS recon WHERE recon.create_date > %s )))\
                     AND '+ self.query + '\
-                    AND account_account.active ', (tuple(move_state), tuple(self.ACCOUNT_TYPE), self.date_from, self.date_from))
+                    AND account_account.active\
+                    AND (l.period_id NOT IN %s)', (tuple(move_state), tuple(self.ACCOUNT_TYPE), self.date_from, self.date_from, opening_ids,))
         t = self.cr.fetchall()
         for i in t:
             future_past['Unknown Partner'] = i[0]
@@ -290,7 +305,8 @@ def _get_lines_with_out_partner(self, form):
                     AND '+ self.query + '\
                     AND account_account.active\
                     AND ' + dates_query + '\
-                AND (l.date <= %s)\
+                    AND (l.date <= %s)\
+                    AND (l.period_id NOT IN ' + str(opening_ids) + ')\
                 GROUP BY l.partner_id', args_list)
         t = self.cr.fetchall()
         d = {}
