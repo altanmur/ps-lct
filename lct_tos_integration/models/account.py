@@ -519,7 +519,7 @@ class account_invoice(osv.osv):
         'imported_file_id': fields.many2one('lct.tos.import.data', string="Imported File", ondelete='restrict'),
         'printed': fields.integer('Already printed'),
         'generic_customer': fields.related('partner_id', 'generic_customer', type='boolean', string="Generic customer"),
-        'generic_customer_id': fields.char('Customer Name'),
+        'generic_customer_id': fields.char('Customer ID'),
         'generic_customer_name': fields.char("Customer Name"),
         'generic_customer_information': fields.char('Customer Information'),
         'direction_id': fields.many2one('account.direction', string='Direction'),
