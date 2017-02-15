@@ -493,6 +493,8 @@ class account_invoice(osv.osv):
         'dep_time_vbl': fields.related('dep_time', type='datetime', string='Departure time'),
         'vessel_id_yac': fields.related('vessel_id', type='char', string='Vessel ID'),
         'vessel_name_yac': fields.related('vessel_name', type='char', string='Vessel name'),
+        'vessel_name_app': fields.char('Vessel Name'),
+        'berth_time_app': fields.datetime('Berthing Time'),
 
         'individual_cust': fields.boolean('Individual customer'),
         'appoint_ref': fields.char('Appointment reference'),
@@ -505,6 +507,8 @@ class account_invoice(osv.osv):
         'voyage_number_out_vbl': fields.related('voyage_number_out', type='char', string='Voyage Number Out'),
         'voyage_number_in_yac': fields.related('voyage_number_in', type='char', string='Voyage Number In'),
         'voyage_number_out_yac': fields.related('voyage_number_out', type='char', string='Voyage Number Out'),
+        'voyage_number_in_app': fields.char('Vessel In Voyage Number'),
+        'voyage_number_out_app': fields.char('Vessel Out Voyage Number'),
         'off_window': fields.boolean('OFF window'),
         'loa': fields.integer('Length'),
         'woa': fields.integer('Width'),
@@ -515,10 +519,14 @@ class account_invoice(osv.osv):
         'imported_file_id': fields.many2one('lct.tos.import.data', string="Imported File", ondelete='restrict'),
         'printed': fields.integer('Already printed'),
         'generic_customer': fields.related('partner_id', 'generic_customer', type='boolean', string="Generic customer"),
+        'generic_customer_id': fields.char('Customer Name'),
         'generic_customer_name': fields.char("Customer Name"),
+        'generic_customer_information': fields.char('Customer Information'),
         'direction_id': fields.many2one('account.direction', string='Direction'),
         'expiry_date': fields.date(string='Expiry Date'),
         'pay_through_date': fields.datetime(string='Pay Through Date'),
+
+        'bill_of_lading': fields.char('Bill of Lading'),
     }
 
     _defaults = {
@@ -1085,6 +1093,14 @@ class account_invoice(osv.osv):
         onchange_partner = self.onchange_partner_id(cr, uid, [], 'out_invoice', partner_id, context=context)
         app_vals = onchange_partner and onchange_partner.get('value', {})
 
+        customer_id = self._get_elmnt_text(appointment, 'customer_id')
+        customer_name = self._get_elmnt_text(appointment, 'individual_customer_name')
+        customer_info = self._get_elmnt_text(appointment, 'individual_customer_info')
+        vessel_name = self._get_elmnt_text(appointment, 'name')
+        voyage_number_in = self._get_elmnt_text(appointment, 'vessel_in_voyage_number')
+        voyage_number_out = self._get_elmnt_text(appointment, 'vessel_out_voyage_number')
+        berth_time = self._get_elmnt_text(appointment, 'berthing_time')
+
         app_vals.update({
                 'individual_cust': individual_cust,
                 'partner_id': partner_id,
@@ -1092,11 +1108,19 @@ class account_invoice(osv.osv):
                 'appoint_date': self._get_elmnt_text(appointment, 'appointment_date'),
                 'date_due': self._get_elmnt_text(appointment, 'pay_through_date'),
                 'pay_through_date': self._get_elmnt_text(appointment, 'pay_through_date'),
-                'berth_time': self._get_elmnt_text(appointment, 'berthing_time'),
+                'berth_time': berth_time,
                 'account_id': account.id,
                 'date_invoice': date_invoice,
                 'type2': 'appointment',
                 'currency_id': partner.property_product_pricelist.currency_id.id,
+
+                'voyage_number_in_app': voyage_number_in,
+                'voyage_number_out_app': voyage_number_out,
+                'vessel_name_app': vessel_name,
+                'generic_customer_id': customer_id,
+                'generic_customer_name': customer_name,
+                'generic_customer_information': customer_info,
+                'berth_time_app': berth_time,
             })
 
         app_id = self.create(cr, uid, app_vals, context=context)
@@ -1108,6 +1132,7 @@ class account_invoice(osv.osv):
             return app_id
 
         app_direction_id = None
+        bill_of_lading = None
         first_line = True
 
         mult_rate = self.pool.get('lct.multiplying.rate').get_active_rate(cr, uid, context=context)
@@ -1116,6 +1141,7 @@ class account_invoice(osv.osv):
             if first_line:
                 first_line = False
                 app_direction_id = self._get_app_direction(cr, uid, line)
+                bill_of_lading = self._get_elmnt_text(line, 'BL')
 
             parent_quantities_by_products = {}
             product_id = self._get_product_id(cr, uid, line, 'APP', additional_storage=additional_storage, context=context)
@@ -1194,7 +1220,10 @@ class account_invoice(osv.osv):
             }
             line_id = invoice_line_model.create(cr, uid, line_vals, context=context)
 
-        self.write(cr, uid, app_id, {"direction_id": app_direction_id})
+        self.write(cr, uid, app_id, {
+            "direction_id": app_direction_id,
+            "bill_of_lading": bill_of_lading,
+        })
         return app_id
 
     def xml_to_app(self, cr, uid, imp_data_id, context=None):

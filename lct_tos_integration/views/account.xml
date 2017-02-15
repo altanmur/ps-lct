@@ -40,11 +40,9 @@
                 </xpath>
                 <field name="partner_id" position="before">
                     <field name="generic_customer" invisible="1"/>
-                </field>
-                <field name="partner_id" position="after">
-                    <field name="generic_customer_name" attrs="{'invisible': [('generic_customer', '!=', True)]}"/>
                     <field name="type2" invisible="1"/>
                 </field>
+
                 <xpath expr="//page[@string='Invoice Lines']" position="after">
                     <page string="Vessel Billing Info" attrs="{'invisible':[('type2','!=','vessel')]}">
                         <group col="4">
@@ -67,6 +65,11 @@
                             <field name="appoint_date"/>
                             <field name="direction_id" readonly="1"/>
                             <field name="expiry_date" readonly="1"/>
+                            <field name="bill_of_lading"/>
+                            <field name="vessel_name_app"/>
+                            <field name="voyage_number_in_app"/>
+                            <field name="berth_time_app"/>
+                            <field name="voyage_number_out_app"/>
                         </group>
                     </page>
                     <page string="Dockage Info" attrs="{'invisible':[('type2','!=','dockage')]}">
@@ -176,6 +179,12 @@
                             <field name="price_subtotal"/>
                         </tree>
                     </field>
+                </xpath>
+
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="generic_customer_id" attrs="{'invisible': [('generic_customer', '=', False)]}"/>
+                    <field name="generic_customer_name" attrs="{'invisible': [('generic_customer', '=', False)]}"/>
+                    <field name="generic_customer_information" attrs="{'invisible': [('generic_customer', '=', False)]}"/>
                 </xpath>
             </field>
         </record>
