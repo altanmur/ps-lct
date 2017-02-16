@@ -522,7 +522,7 @@ class account_invoice(osv.osv):
         'generic_customer_id': fields.char('Customer ID'),
         'generic_customer_name': fields.char("Customer Name"),
         'generic_customer_information': fields.char('Customer Information'),
-        'direction_id': fields.many2one('account.direction', string='Direction'),
+        'direction_id': fields.many2one('account.direction', string='Destination'),
         'expiry_date': fields.date(string='Expiry Date'),
         'pay_through_date': fields.datetime(string='Pay Through Date'),
 

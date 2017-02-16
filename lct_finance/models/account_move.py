@@ -37,6 +37,11 @@ class account_move_line(osv.osv):
         'name': fields.char('Name', required=True),
         }
 
+    def onchange_partner_id_lct_fix_datetime(self, cr, uid, ids, move_id, partner_id, account_id=None, debit=0, credit=0, date=False, journal=False, context=None):
+        if ' ' in date:
+            date = date.split()[0]
+        return self.onchange_partner_id(cr, uid, ids, move_id, partner_id, account_id, debit, credit, date, journal, context)
+
     def _check_no_view(self, cr, uid, ids, context=None):
         # No super because it is not adaptable.
         lines = self.browse(cr, uid, ids, context=context)
