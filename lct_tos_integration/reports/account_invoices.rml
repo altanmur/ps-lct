@@ -121,7 +121,7 @@
                             <td><para style="terp_5f_default_5f_8">Appointment :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ o.appoint_ref ]]</para></td>
                         </tr><tr>
-                            <td><para style="terp_5f_default_5f_8">Direction :</para></td>
+                            <td><para style="terp_5f_default_5f_8">Destination :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ o.direction_id and o.direction_id.name or '']]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">Expiry Date :</para></td>

@@ -516,7 +516,7 @@ class account_invoice(osv.osv):
         'printed': fields.integer('Already printed'),
         'generic_customer': fields.related('partner_id', 'generic_customer', type='boolean', string="Generic customer"),
         'generic_customer_name': fields.char("Customer Name"),
-        'direction_id': fields.many2one('account.direction', string='Direction'),
+        'direction_id': fields.many2one('account.direction', string='Destination'),
         'expiry_date': fields.date(string='Expiry Date'),
         'pay_through_date': fields.datetime(string='Pay Through Date'),
     }
