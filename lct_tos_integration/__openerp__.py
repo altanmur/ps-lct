@@ -23,7 +23,7 @@
     'name': 'LCT TOS integration',
     'author': 'OpenERP SA',
     'version': '0.1',
-    'depends': ['account', 'product', 'account_voucher', 'hr',
+    'depends': ['account', 'product', 'account_voucher', 'hr', 'account_followup',
                 'base_vat', 'sale', 'account_check_writing', 'lct_finance',
                 'LCT_supplier_invoice', 'LCT_supplier_invoice', 'LCT_supplier_invoice', 'lct_security'],
     'category' : 'Tools',
