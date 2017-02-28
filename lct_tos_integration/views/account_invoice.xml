@@ -23,6 +23,6 @@
         </record>
 
         <menuitem action="account.action_invoice_tree1" id="account.menu_action_invoice_tree1" parent="account.menu_finance_receivables" sequence="8"/>
-        <menuitem action="action_invoice_customer_line" id="menu_action_invoice_customer_line" parent="account.menu_finance_receivables" sequence="8"/>
+        <menuitem action="action_invoice_customer_line" id="menu_action_invoice_customer_line1" parent="account.menu_finance_receivables" sequence="8"/>
     </data>
 </openerp>
