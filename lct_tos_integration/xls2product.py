@@ -82,6 +82,8 @@ def _name2xmlid(name, tail=XMLID_TAIL):
     res = res.replace('additional_storage', 'ad')
     res = res.replace('with_bundle', 'wb')
     res = res.replace('on_truck', 'ot')
+    res = res.replace('outside_port_yard', 'opy')
+    res = res.replace('inside_port_yard', 'ipy')
     if len(res) >= 64:
         print "XML_ID is limited to 64 (%s)" %res
     return res
