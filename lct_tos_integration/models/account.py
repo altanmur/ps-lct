@@ -1005,6 +1005,8 @@ class account_invoice(osv.osv):
             service_ids = []
             for shc_tag in line.findall('special_handling_code_id'):
                 if shc_tag.text:
+                    if shc_tag.text == 'CFS':
+                        continue
                     service_ids.append(
                         _code2id(self.pool.get('lct.product.service'), cr, uid, shc_tag.text, context=context)
                     )
