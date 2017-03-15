@@ -91,6 +91,9 @@
                         <tr>
                             <td><para style="terp_5f_default_5f_8">Client :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ not o.generic_customer and o.partner_id.name or o.generic_customer_name ]]</para></td>
+                        </tr><tr>[[ o.generic_customer_information or removeParentNode('tr') ]]
+                            <td><para style="terp_5f_default_5f_8">Client Info :</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ o.generic_customer_information ]]</para></td>
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">Adresses :</para></td>
                             <td>
@@ -110,14 +113,23 @@
                             <td><para style="terp_5f_default_5f_8">Devises :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ o.currency_id and o.currency_id.symbol or '' ]]</para></td>
                         </tr>
+                         <tr>
+                            <td><para style="terp_5f_default_5f_8">Numéro :</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ o.internal_number or '' ]]</para></td>
+                        </tr>
+                        <tr>
+                            <td><para style="terp_5f_default_5f_8">Expiry Date :</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ o.expiry_date ]]</para></td>
+                        </tr>
+                        <tr>[[ o.type2 == 'appointment' or removeParentNode('tr') ]]]
+                            <td><para style="terp_5f_default_5f_8">Paythrough Date :</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ formatLang(o.pay_through_date, date_time=True) ]]</para></td>
+                        </tr>
                     </blockTable>
                 </td>
                 <td>
                     <blockTable colWidths="120,129" style="Table1">
-                        <tr>
-                            <td><para style="terp_5f_default_5f_8">Numéro :</para></td>
-                            <td><para style="terp_5f_default_5f_8">[[ o.internal_number or '' ]]</para></td>
-                        </tr><tr>[[ o.type2 == 'appointment' or removeParentNode('tr') ]]
+                        <tr>[[ o.type2 == 'appointment' or removeParentNode('tr') ]]
                             <td><para style="terp_5f_default_5f_8">Appointment :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ o.appoint_ref ]]</para></td>
                         </tr><tr>
@@ -132,30 +144,39 @@
                         </tr><tr>[[ o.type2 == 'appointment' or removeParentNode('tr') ]]]
                             <td><para style="terp_5f_default_5f_8">Berthing Time :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ formatLang(o.berth_time, date_time=True) ]]</para></td>
-                        </tr><tr>[[ o.type2 == 'appointment' or removeParentNode('tr') ]]]
-                            <td><para style="terp_5f_default_5f_8">Paythrough Date :</para></td>
-                            <td><para style="terp_5f_default_5f_8">[[ formatLang(o.pay_through_date, date_time=True) ]]</para></td>
-                        </tr><tr>
+                        </tr><tr>[[ o.type2 == 'vessel' or removeParentNode('tr') ]]]
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and "Numéro d'appel :" or '']]</para></td>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and o.call_sign_vbl or '']]</para></td>
-                        </tr><tr>
+                        </tr><tr>[[ o.type2 == 'vessel' or removeParentNode('tr') ]]]
                             <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and "Navire :" or '']]</para></td>
                             <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and o.vessel_id or '']]</para></td>
-                        </tr><tr>
+                        </tr><tr>[[ o.type2 == 'vessel' or removeParentNode('tr') ]]]
                             <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and "Nom navire :" or '']]</para></td>
                             <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and o.vessel_name or '']]</para></td>
-                        </tr><tr>
+                        </tr><tr>[[ o.type2 == 'vessel' or removeParentNode('tr') ]]]
                             <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and "Voyage in :" or '']]</para></td>
                             <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and o.voyage_number_in or '']]</para></td>
-                        </tr><tr>
+                        </tr><tr>[[ o.type2 == 'vessel' or removeParentNode('tr') ]]]
                             <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and "Voyage out :" or '']]</para></td>
                             <td><para style="terp_5f_default_5f_8">[[o.type2 in ['vessel', 'yactivity', 'dockage'] and o.voyage_number_out or '']]</para></td>
-                        </tr><tr>
+                        </tr><tr>[[ o.type2 == 'vessel' or removeParentNode('tr') ]]]
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and "Arrivée :" or '']]</para></td>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and formatLang(o.berth_time, date_time=True) or '']]</para></td>
-                        </tr><tr>
+                        </tr><tr>[[ o.type2 == 'vessel' or removeParentNode('tr') ]]]
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and "Départ :" or '']]</para></td>
                             <td><para style="terp_5f_default_5f_8">[[o.type2=='vessel' and formatLang(o.dep_time, date_time=True) or '']]</para></td>
+                        </tr><tr>[[ o.type2 == 'appointment' or removeParentNode('tr') ]]]
+                            <td><para style="terp_5f_default_5f_8">Appointment Date :</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ o.appoint_date or '' ]]</para></td>
+                        </tr><tr>[[ o.type2 == 'appointment' or removeParentNode('tr') ]]]
+                            <td><para style="terp_5f_default_5f_8">Vessel Name :</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ o.vessel_name_app or '' ]]</para></td>
+                        </tr><tr>[[ o.type2 == 'appointment' or removeParentNode('tr') ]]]
+                            <td><para style="terp_5f_default_5f_8">Vessel IN Voyage :</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ o.voyage_number_in_app or '' ]]</para></td>
+                        </tr><tr>[[ o.type2 == 'appointment' or removeParentNode('tr') ]]]
+                            <td><para style="terp_5f_default_5f_8">Vessel OUT Voyage :</para></td>
+                            <td><para style="terp_5f_default_5f_8">[[ o.voyage_number_out_app or '' ]]</para></td>
                         </tr>
                     </blockTable>
                 </td>
