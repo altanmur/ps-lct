@@ -51,6 +51,7 @@
                     <button name="invoice_open" states='draft' string="Validate" class="oe_highlight" attrs="{'invisible': ['|', ('is_cmms_supplier', '=', True)]}"/>
                     <button name="invoice_synchronize" states="draft" string="Synchronize" class="oe_highlight" invisible="1"/>
                     <button name="val_synch" type="object" states="synchronized" string="Validate Synch" class="oe_highlight" attrs="{'invisible': ['|', ('synchronized', '=', False)]}"/>
+                    <button name="invoice_open" states="draft" string="Validate w/o CMMS Sync" class="oe_highlight" groups="lct_tos_integration.group_all_access_tos,lct_tos_integration.group_chief_accountant"/>
                 </xpath>
                 <xpath expr="//field[@name='origin']" position="replace">
                     <field name="origin" invisible="1"/>
@@ -75,6 +76,9 @@
                 </xpath>
                 <xpath expr="//field[@name='supplier_invoice_number']" position="after">
                     <field name="po_number"/>
+                    <field name="po_number_1"/>
+                    <field name="po_number_2"/>
+                    <field name="po_number_3"/>
                 </xpath>
                 <xpath expr="//field[@name='supplier_invoice_number']" position="attributes">
                     <attribute name="on_change">onchange_supplier_number(supplier_invoice_number)</attribute>

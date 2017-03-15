@@ -89,6 +89,9 @@ class account_invoice(osv.osv):
         'internal_number': fields.char('Invoice Number', size=32, help="Unique number of the invoice, computed automatically when the invoice is created."),
         'supplier_invoice_number': fields.char('Supplier Invoice Number', size=64, help="The reference of this invoice as provided by the supplier.", states={'draft':[('readonly',False)]}),
         'po_number': fields.char('PO number', size=32),
+        'po_number_1': fields.char('PO number 1', size=32),
+        'po_number_2': fields.char('PO number 2', size=32),
+        'po_number_3': fields.char('PO number 3', size=32),
         'is_cmms_supplier': fields.related('partner_id', 'is_cmms_supplier', type='boolean'),
         'template': fields.boolean(string="Template"),
     }
@@ -240,7 +243,7 @@ class account_export(osv.osv_memory):
         fields = [
             'id', 'partner_id', 'currency_id', 'date_invoice', 'date_due',
             'invoice_line/price_subtotal', 'invoice_line/invoice_line_tax_id',
-            'amount_total', 'internal_number', 'po_number',
+            'amount_total', 'internal_number', 'po_number', 'po_number_1', 'po_number_2', 'po_number_3',
             'supplier_invoice_number', 'amount_tax',
             ]
         rows = invoice_reg.export_data(cr, uid, [inv.id for inv in invoice_ids], fields, context=context)
