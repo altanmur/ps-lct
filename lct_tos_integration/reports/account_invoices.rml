@@ -138,9 +138,6 @@
                         </tr><tr>
                             <td><para style="terp_5f_default_5f_8">Bill of Lading :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ o.bill_of_lading or '']]</para></td>
-                        </tr><tr>
-                            <td><para style="terp_5f_default_5f_8">Expiry Date :</para></td>
-                            <td><para style="terp_5f_default_5f_8">[[ o.expiry_date ]]</para></td>
                         </tr><tr>[[ o.type2 == 'appointment' or removeParentNode('tr') ]]]
                             <td><para style="terp_5f_default_5f_8">Berthing Time :</para></td>
                             <td><para style="terp_5f_default_5f_8">[[ formatLang(o.berth_time, date_time=True) ]]</para></td>
