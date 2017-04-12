@@ -27,7 +27,7 @@ class lct_product_parent_child(osv.osv):
 
     _columns = {
         'parent_id': fields.many2one('product.product', string='Parent'),
-        'child_id': fields.many2one('product.product', domain="[('additional_storage', '=', False)]", string='Child'),
+        'child_id': fields.many2one('product.product', domain="[('additional_storage', '=', False)]", required=True, string='Child'),
         'qty_fixed': fields.integer('Fixed Quantity'),
         'qty_based_on': fields.selection([
             ('storage', 'Storage'),
