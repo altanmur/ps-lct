@@ -255,9 +255,10 @@ class account_invoice_line(osv.osv):
             berth = datetime.strptime(invoice.berth_time, "%Y-%m-%d %H:%M:%S")
             diff_days = _get_timedelta_days(pay_through - berth)
 
-            invoice.write({
-                "expiry_date": berth if diff_days < 0 else pay_through,
-                })
+            if not invoice.expiry_date:
+                invoice.write({
+                    "expiry_date": berth if diff_days < 0 else pay_through,
+                    })
 
         if not vals.get("product_id"):
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
@@ -287,6 +288,13 @@ class account_invoice_line(osv.osv):
             return super(account_invoice_line, self).create(cr, uid, vals, context=context)
         cont_ids = vals.pop("cont_nr_ids", [(0,0,[])])[0][2]
         line_ids = [None]*4
+
+        pay_through = datetime.strptime(invoice.pay_through_date, "%Y-%m-%d %H:%M:%S")
+        berth = datetime.strptime(invoice.berth_time, "%Y-%m-%d %H:%M:%S")
+        diff_days = _get_timedelta_days(pay_through - berth)
+        invoice.write({
+            "expiry_date": berth + timedelta(days=item.free_period) if diff_days < item.free_period else pay_through,
+            })
 
         def _compute_duration_offset(max_duration, remaining, offset):
             duration = min(remaining, max(max_duration - offset, 0))
