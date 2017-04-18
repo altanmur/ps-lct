@@ -293,7 +293,7 @@ class account_invoice_line(osv.osv):
         berth = datetime.strptime(invoice.berth_time, "%Y-%m-%d %H:%M:%S")
         diff_days = _get_timedelta_days(pay_through - berth)
         invoice.write({
-            "expiry_date": berth + timedelta(days=item.free_period) if diff_days < item.free_period else pay_through,
+            "expiry_date": berth + timedelta(days=item.free_period -1) if diff_days < item.free_period else pay_through,
             })
 
         def _compute_duration_offset(max_duration, remaining, offset):
@@ -1175,12 +1175,15 @@ class account_invoice(osv.osv):
 
             offset = 0
             if additional_storage:
-                arrival_timestamp = self._get_elmnt_text(line, "arrival_timestamp")
-                appointment_date = self._get_elmnt_text(appointment, "appointment_date")
-                appointment_day = datetime.strptime(appointment_date, "%Y-%m-%d %H:%M:%S").replace(hour=12, minute=0, second=0)
-                arrival_day = datetime.strptime(arrival_timestamp, "%Y-%m-%d %H:%M:%S").replace(hour=12, minute=0, second=0)
-                delta_day = appointment_day - arrival_day
-                offset = delta_day.days if delta_day.days > 0 else 0
+                pay_through_date = self._get_elmnt_text(appointment, "pay_through_date")
+                berthing_time = self._get_elmnt_text(appointment, "berthing_time")
+                pay_through_day = datetime.strptime(pay_through_date, "%Y-%m-%d %H:%M:%S").replace(hour=12, minute=0, second=0)
+                berthing_day = datetime.strptime(berthing_time, "%Y-%m-%d %H:%M:%S").replace(hour=12, minute=0, second=0)
+                storage = self._get_elmnt_text(line, "storage")
+                storage_days = int(storage) if storage else 0
+                delta_day = pay_through_day - berthing_day
+                offset = max(delta_day.days + 1 - storage_days, 0)
+
 
             cont_nr_vals = {
                 'name': self._get_elmnt_text(line, 'container_number'),
