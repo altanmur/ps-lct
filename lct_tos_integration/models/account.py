@@ -524,7 +524,7 @@ class account_invoice(osv.osv):
         'woa_vbl': fields.related('woa', type='integer', string='Width'),
         'loa_yac': fields.related('loa', type='integer', string='Length'),
         'woa_yac': fields.related('woa', type='integer', string='Width'),
-        'imported_file_id': fields.many2one('lct.tos.import.data', string="Imported File", ondelete='restrict'),
+        'imported_file_id': fields.many2one('lct.tos.import.data', string="Imported File"),
         'printed': fields.integer('Already printed'),
         'generic_customer': fields.related('partner_id', 'generic_customer', type='boolean', string="Generic customer"),
         'generic_customer_id': fields.char('Customer ID'),
