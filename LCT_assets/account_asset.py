@@ -77,6 +77,22 @@ class account_asset_asset(osv.osv):
         record.compute_depreciation_board()
 
 
+    def _compute_board_amount(self, cr, uid, asset, i, residual_amount, amount_to_depr, undone_dotation_number, posted_depreciation_line_ids, total_days, depreciation_date, context=None):
+        #by default amount = 0
+        amount = 0
+        if i == undone_dotation_number:
+            amount = residual_amount
+        else:
+            if asset.method == 'linear':
+                amount = amount_to_depr / (undone_dotation_number - len(posted_depreciation_line_ids))
+            elif asset.method == 'degressive':
+                amount = residual_amount * asset.method_progress_factor
+        return amount
+
+    def _compute_board_undone_dotation_nb(self, cr, uid, asset, depreciation_date, total_days, context=None):
+        return asset.method_number - len(asset.depreciation_line_ids)
+
+
 class account_asset_depreciation_line(osv.osv):
 
     _inherit = "account.asset.depreciation.line"
