@@ -20,7 +20,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='invoice_pay_customer']" position="replace">
                     <!-- <button name="invoice_pay_customer" type="object" string="Pay" attrs="{'invisible': ['!', '|', '&amp;', ('state', '=', 'synchronized'), ('is_cmms_supplier', '=', True), '&amp;', ('state', '=', 'open'), ('is_cmms_supplier', '=', False)]}" class="oe_highlight" groups="base.group_user"/>         -->
-                    <button name="invoice_pay_customer" type="object" string="Pay" attrs="{'invisible': [('state', '!=', 'open')]}"/>
+                    <button name="invoice_pay_customer" type="object" string="Pay" attrs="{'invisible': [('state', '!=', 'open')]}" groups="lct_tos_integration.group_chief_accountant"/>
                 </xpath>
             </field>
         </record>
@@ -48,7 +48,7 @@
             <field name="model">account.invoice</field>
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='invoice_open']" position="replace">
-                    <button name="invoice_open" states='draft' string="Validate" class="oe_highlight" attrs="{'invisible': ['|', ('is_cmms_supplier', '=', True)]}"/>
+                    <button name="invoice_open" states='draft' string="Validate" class="oe_highlight" attrs="{'invisible': ['|', ('is_cmms_supplier', '=', True)]}" groups="lct_tos_integration.group_chief_accountant"/>
                     <button name="invoice_synchronize" states="draft" string="Synchronize" class="oe_highlight" invisible="1"/>
                     <button name="val_synch" type="object" states="synchronized" string="Validate Synch" class="oe_highlight" attrs="{'invisible': ['|', ('synchronized', '=', False)]}"/>
                     <button name="invoice_open" states="draft" string="Validate w/o CMMS Sync" class="oe_highlight" groups="lct_tos_integration.group_all_access_tos,lct_tos_integration.group_chief_accountant"/>
