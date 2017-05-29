@@ -90,7 +90,7 @@ class account_asset_asset(osv.osv):
         return amount
 
     def _compute_board_undone_dotation_nb(self, cr, uid, asset, depreciation_date, total_days, context=None):
-        return asset.method_number - len(asset.depreciation_line_ids)
+        return super(account_asset_asset, self)._compute_board_undone_dotation_nb(cr, uid, asset, depreciation_date, total_days, context=context) - asset.prorata
 
 
 class account_asset_depreciation_line(osv.osv):
