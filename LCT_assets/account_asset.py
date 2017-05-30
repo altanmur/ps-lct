@@ -109,7 +109,7 @@ class account_asset_asset(osv.osv):
             for x in range(len(posted_depreciation_line_ids), undone_dotation_number):
                 i = x + 1
                 # Considering Depr. Period as months
-                if x:
+                if x and asset.prorata:
                     depreciation_date = (datetime(year, month, day) + relativedelta(months=+asset.method_period))
                     day = depreciation_date.day
                     month = depreciation_date.month
