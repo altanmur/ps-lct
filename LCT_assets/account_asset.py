@@ -109,10 +109,11 @@ class account_asset_asset(osv.osv):
             for x in range(len(posted_depreciation_line_ids), undone_dotation_number):
                 i = x + 1
                 # Considering Depr. Period as months
-                depreciation_date = (datetime(year, month, day) + relativedelta(months=+asset.method_period))
-                day = depreciation_date.day
-                month = depreciation_date.month
-                year = depreciation_date.year
+                if x:
+                    depreciation_date = (datetime(year, month, day) + relativedelta(months=+asset.method_period))
+                    day = depreciation_date.day
+                    month = depreciation_date.month
+                    year = depreciation_date.year
                 amount = self._compute_board_amount(cr, uid, asset, i, residual_amount, amount_to_depr, undone_dotation_number, posted_depreciation_line_ids, total_days, depreciation_date, context=context)
                 residual_amount -= amount
                 vals = {
