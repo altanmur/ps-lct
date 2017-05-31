@@ -126,10 +126,11 @@ class account_asset_asset(osv.osv):
                      'depreciation_date': depreciation_date.strftime('%Y-%m-%d'),
                 }
                 depreciation_lin_obj.create(cr, uid, vals, context=context)
-                depreciation_date = (datetime(year, month, day) + relativedelta(months=+asset.method_period))
-                day = depreciation_date.day
-                month = depreciation_date.month
-                year = depreciation_date.year
+                if not asset.prorata:
+                    depreciation_date = (datetime(year, month, day) + relativedelta(months=+asset.method_period))
+                    day = depreciation_date.day
+                    month = depreciation_date.month
+                    year = depreciation_date.year
         return True
 
     def _compute_board_amount(self, cr, uid, asset, i, residual_amount, amount_to_depr, undone_dotation_number, posted_depreciation_line_ids, total_days, depreciation_date, context=None):
